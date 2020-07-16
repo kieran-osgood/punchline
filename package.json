@@ -5,7 +5,14 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "start": "react-native start",
-    "test": "jest"
+    "test": "is-ci \"test:coverage\" \"test:watch\"",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --watch",
+    "setup": "npm install && npm run validate",
+    "validate": "npm run lint && npm run test",
+    "lint": "./node_modules/.bin/eslint --fix --ignore-path .gitignore src/",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(ts|tsx|js|json|css|html|md)\""
   },
   "dependencies": {
     "expo": "~38.0.1",
@@ -23,15 +30,39 @@
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "@testing-library/jest-dom": "^5.11.0",
+    "@testing-library/jest-native": "^3.1.0",
+    "@testing-library/react-native": "^5.0.3",
+    "@testing-library/user-event": "^12.0.11",
+    "@types/jest": "^26.0.3",
     "@types/react": "~16.9.23",
     "@types/react-dom": "~16.9.8",
     "@types/react-native": "~0.61.23",
     "babel-preset-expo": "~8.2.0",
+    "eslint": "^7.4.0",
+    "eslint-plugin-jest": "^23.17.1",
+    "eslint-plugin-jest-dom": "^3.0.1",
+    "husky": "^4.2.5",
+    "is-ci-cli": "^2.1.2",
+    "jest": "^26.1.0",
+    "jest-runner-eslint": "^0.10.0",
     "jest-expo": "~38.0.0",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5",
     "typescript": "~3.9.5"
   },
-  "jest": {
-    "preset": "react-native"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.+(ts|tsx|js|css|html|md)": [
+      "prettier",
+      "npm run lint",
+      "jest --findRelatedTests"
+    ]
   },
   "private": true
 }
