@@ -1,8 +1,8 @@
 {
-  "main": "index.js",
+  "main": "src/App.tsx",
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "android": "npx react-native run-android",
+    "ios": "npx react-native run-ios",
     "web": "expo start --web",
     "start": "react-native start",
     "test": "is-ci \"test:coverage\" \"test:watch\"",
@@ -15,7 +15,10 @@
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(ts|tsx|js|json|css|html|md)\""
   },
   "dependencies": {
-    "expo": "~38.0.1",
+    "@react-native-firebase/app": "^8.2.0",
+    "@react-native-firebase/database": "^7.3.2",
+    "@react-native-firebase/firestore": "^7.4.3",
+    "expo": "~38.0.8",
     "expo-splash-screen": "^0.3.1",
     "expo-status-bar": "^1.0.0",
     "expo-updates": "~0.2.8",
@@ -46,8 +49,8 @@
     "husky": "^4.2.5",
     "is-ci-cli": "^2.1.2",
     "jest": "^26.1.0",
-    "jest-runner-eslint": "^0.10.0",
     "jest-expo": "~38.0.0",
+    "jest-runner-eslint": "^0.10.0",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
     "reactotron-react-native": "^5.0.0",

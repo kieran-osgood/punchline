@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "681986405885",
+    "firebase_url": "https://punchline-f9af3.firebaseio.com",
+    "project_id": "punchline-f9af3",
+    "storage_bucket": "punchline-f9af3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681986405885:android:e17f4cecb37d3c4ed49594",
+        "android_client_info": {
+          "package_name": "com.punchline"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "681986405885-jq70bsbonfl2f9sl9aikc3687qklaf5m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.punchline",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "681986405885-dhai19n3c3kai1ad2i5l6u57ot14uorq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqdmu6Ls1j9rU4OUjWlyFHmp6jd8Tc4Ek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "681986405885-dhai19n3c3kai1ad2i5l6u57ot14uorq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,8 +5,6 @@
     "name": "punchline",
     "slug": "punchline",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "assetBundlePatterns": ["**/*"]
   }
 }
