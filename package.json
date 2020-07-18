@@ -50,6 +50,7 @@
     "jest-expo": "~38.0.0",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
+    "reactotron-react-native": "^5.0.0",
     "typescript": "~3.9.5"
   },
   "husky": {
