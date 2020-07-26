@@ -1,7 +1,10 @@
 {
   "main": "src/App.tsx",
   "scripts": {
-    "android": "npx react-native run-android && npm run lint:watch",
+    "android": "concurrently  \"npm run run:android-emulator\" \"sleep 2 && npm run run:android\"  \"npm run lint:watch\"",
+    "run:android": "npx react-native run-android",
+    "run:android-emulator": "emulator @Pixel_3a_API_29 -port 9090 -dns-server 8.8.8.8",
+    "atest": "sleep 5 && echo 'test'",
     "ios": "npx react-native run-ios && npm run lint:watch",
     "web": "expo start --web",
     "start": "react-native start",
@@ -47,6 +50,7 @@
     "@types/react-dom": "~16.9.8",
     "@types/react-native": "~0.61.23",
     "babel-preset-expo": "~8.2.0",
+    "concurrently": "^5.2.0",
     "eslint": "^7.5.0",
     "eslint-plugin-jest": "^23.17.1",
     "eslint-plugin-jest-dom": "^3.0.1",
