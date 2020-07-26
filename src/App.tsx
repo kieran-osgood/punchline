@@ -5,8 +5,19 @@ import { Button, StyleSheet, Text, View, TextInput } from 'react-native';
 import '@react-native-firebase/app';
 import Reactotron from 'reactotron-react-native';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-
 // import database from '@react-native-firebase/database';
+
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+} from '@react-native-community/google-signin';
+
+GoogleSignin.configure({
+  webClientId:
+    '681986405885-jq70bsbonfl2f9sl9aikc3687qklaf5m.apps.googleusercontent.com',
+  iosClientId:
+    '681986405885-oms8c4edds7s1cjlm550ss1sa8rqui7d.apps.googleusercontent.com',
+});
 
 export default function App() {
   // const usersCollection = firestore().collection('jokes').get();
@@ -49,6 +60,7 @@ export default function App() {
   }
   return (
     <View style={styles.container}>
+      <GoogleSignIn />
       <TextInput
         style={{ height: 40, width: 100, borderColor: 'gray', borderWidth: 1 }}
         onChangeText={(text) => onChangeUsername(text)}
@@ -113,3 +125,24 @@ const styles = StyleSheet.create({
 });
 
 registerRootComponent(App);
+
+const GoogleSignIn = () => {
+  async function onGoogleButtonPress() {
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
+
+  return (
+    <GoogleSigninButton
+      onPress={() =>
+        onGoogleButtonPress()
+          .then(() => console.log('Signed in with Google!'))
+          .catch((e) => Reactotron.log!(e))
+      }
+    />
+  );
+};

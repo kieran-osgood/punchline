@@ -1,10 +1,8 @@
-import '@testing-library/react-native';
-
 jest.mock('@react-native-firebase/app', () => ({
+  __esModule: true, // this property makes it work
   getFirebaseRoot: jest.fn(),
   onAuthStateChanged: jest.fn(),
   signOut: jest.fn(),
-  __esModule: true, // this property makes it work
   default: jest.fn(),
   namedExport: jest.fn(),
 }));
