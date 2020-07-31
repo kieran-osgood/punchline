@@ -4,12 +4,14 @@ import { render } from '@testing-library/react-native';
 
 import '../__mocks__/react-native-firebase'; // MUST come before <App /> import
 import '../__mocks__/react-native-comunity'; // MUST come before <App /> import
-import App from '../App';
+import Home from '../pages/home';
 
-test('should add a todo', () => {
+jest.useFakeTimers();
+
+test('should render the home page', () => {
   render(
     <View>
-      <App />
+      <Home />
     </View>,
   );
 });
