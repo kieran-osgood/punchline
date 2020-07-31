@@ -3,8 +3,10 @@ import { registerRootComponent } from 'expo';
 import { NavigationContainer } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import Home from './pages/home';
 import Settings from './pages/settings';
+import Login from './pages/login';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
@@ -20,6 +22,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
+        <Tab.Screen name="Login" component={Login} />
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Settings" component={Settings} />
         {/* <Tab.Screen name="Account" component={Account} /> */}
