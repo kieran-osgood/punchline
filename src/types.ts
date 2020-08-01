@@ -1,7 +1,7 @@
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
 
-type RouteParamList = {
+export type RouteParamList = {
   Home: undefined;
   Settings: undefined;
   Login: undefined;

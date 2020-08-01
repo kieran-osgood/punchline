@@ -4,12 +4,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { RouteParamList } from './types';
 import Home from './pages/home';
 import Settings from './pages/settings';
 import Login from './pages/login';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<RouteParamList>();
 
 GoogleSignin.configure({
   webClientId:
