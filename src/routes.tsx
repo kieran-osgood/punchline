@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-community/google-signin';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import Reactotron from 'reactotron-react-native';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { AuthStack } from './app/auth/auth-stack';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppTabs from './app/main/main-tabs';
 
 GoogleSignin.configure({
@@ -14,9 +16,23 @@ GoogleSignin.configure({
 });
 
 export default function Routes() {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+
+  useEffect(() => {
+    auth().onAuthStateChanged((userState) => {
+      Reactotron.log!(userState?.uid);
+      setUser(userState);
+
+      if (loading) {
+        setLoading(false);
+      }
+    });
+  }, [loading]);
+
   return (
     <NavigationContainer>
-      {true ? <AuthStack /> : <AppTabs />}
+      {!user ? <AuthStack /> : <AppTabs />}
     </NavigationContainer>
   );
 }

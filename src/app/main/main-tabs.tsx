@@ -7,7 +7,6 @@ import {
 
 import Home from './screens/home';
 import Settings from './screens/settings';
-import Login from './screens/login';
 
 export type RouteParamList = {
   Home: undefined;
@@ -25,7 +24,6 @@ const Tab = createBottomTabNavigator<RouteParamList>();
 export default function AppTabs() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Login" component={Login} />
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Settings" component={Settings} />
       {/* <Tab.Screen name="Account" component={Account} /> */}

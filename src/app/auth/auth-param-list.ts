@@ -2,7 +2,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 
 export type RouteParamList = {
+  LoginChoices: undefined;
   Login: undefined;
+  EmailPassword: undefined;
   Register: undefined;
 };
 

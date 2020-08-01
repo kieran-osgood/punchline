@@ -1,46 +1,33 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Button, Text } from 'react-native';
 
-import { AuthNavigationProps, RouteParamList } from './auth-param-list';
-import CenterView from '../../components/centerview';
+import { RouteParamList } from './auth-param-list';
 import Register from './screens/register';
+import LoginChoices from './screens/login-choices';
+import EmailPassword from './screens/email-password';
 
 const Stack = createStackNavigator<RouteParamList>();
-
-function Login({ navigation }: AuthNavigationProps<'Login'>) {
-  return (
-    <CenterView>
-      <Text>I am a login screen</Text>
-      <Button
-        title="log me in"
-        onPress={() => {
-          console.log('test');
-        }}
-      />
-      <Button
-        title="Register"
-        onPress={() => {
-          navigation.navigate('Register');
-        }}
-      />
-    </CenterView>
-  );
-}
 
 export const AuthStack = () => {
   return (
     <Stack.Navigator
-      screenOptions={{
-        header: () => null,
-      }}
-      initialRouteName="Login">
+      // screenOptions={{
+      //   header: () => null,
+      // }}
+      initialRouteName="LoginChoices">
       <Stack.Screen
         options={{
-          headerTitle: 'Sign In',
+          headerTitle: 'Email / Password',
         }}
-        name="Login"
-        component={Login}
+        name="EmailPassword"
+        component={EmailPassword}
+      />
+      <Stack.Screen
+        options={{
+          headerTitle: 'Login',
+        }}
+        name="LoginChoices"
+        component={LoginChoices}
       />
       <Stack.Screen
         options={{
