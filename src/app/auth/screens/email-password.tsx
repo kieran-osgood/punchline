@@ -7,6 +7,24 @@ import CenterView from '../../../components/centerview';
 export default function EmailPassword() {
   const [email, onChangeUsername] = useState('');
   const [password, onChangePassword] = useState('');
+  const login = () => {
+    auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        console.log('User account created & signed in!');
+      })
+      .catch((error) => {
+        if (error.code === 'auth/email-already-in-use') {
+          console.log('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          console.log('That email address is invalid!');
+        }
+
+        console.error(error);
+      });
+  };
   return (
     <CenterView>
       <TextInput
@@ -19,27 +37,7 @@ export default function EmailPassword() {
         onChangeText={(text) => onChangePassword(text)}
         value={password}
       />
-      <Button
-        onPress={() => {
-          auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then(() => {
-              console.log('User account created & signed in!');
-            })
-            .catch((error) => {
-              if (error.code === 'auth/email-already-in-use') {
-                console.log('That email address is already in use!');
-              }
-
-              if (error.code === 'auth/invalid-email') {
-                console.log('That email address is invalid!');
-              }
-
-              console.error(error);
-            });
-        }}
-        title="Login email/pass"
-      />
+      <Button onPress={() => login()} title="Login email/pass" />
     </CenterView>
   );
 }
