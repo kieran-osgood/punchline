@@ -10,7 +10,7 @@ import {
 } from '@react-native-community/google-signin';
 
 import CenterView from '../components/centerview';
-import { NavigationProps } from '../types';
+import { NavigationProps } from '../app-navigation-types';
 
 GoogleSignin.configure({
   webClientId:
