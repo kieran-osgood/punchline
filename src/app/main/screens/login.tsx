@@ -9,15 +9,8 @@ import {
   GoogleSigninButton,
 } from '@react-native-community/google-signin';
 
-import CenterView from '../components/centerview';
-import { NavigationProps } from '../app-navigation-types';
-
-GoogleSignin.configure({
-  webClientId:
-    '681986405885-jq70bsbonfl2f9sl9aikc3687qklaf5m.apps.googleusercontent.com',
-  iosClientId:
-    '681986405885-oms8c4edds7s1cjlm550ss1sa8rqui7d.apps.googleusercontent.com',
-});
+import CenterView from '../../../components/centerview';
+import { NavigationProps } from '../main-tabs';
 
 export default function Login({ navigation }: NavigationProps<'Login'>) {
   const [loading, setLoading] = useState<boolean>(true);

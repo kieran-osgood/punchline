@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 // import database from '@react-native-firebase/database';
-import CenterView from '../components/centerview';
+import CenterView from '../../../components/centerview';
 
 export default function Home() {
   // const usersCollection = firestore().collection('jokes').get();

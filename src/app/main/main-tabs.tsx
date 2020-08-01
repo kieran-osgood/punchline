@@ -5,9 +5,9 @@ import {
   BottomTabNavigationProp,
 } from '@react-navigation/bottom-tabs';
 
-import Home from '../home';
-import Settings from '../settings';
-import Login from '../login';
+import Home from './pages/home';
+import Settings from './pages/settings';
+import Login from './pages/login';
 
 export type RouteParamList = {
   Home: undefined;

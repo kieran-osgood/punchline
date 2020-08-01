@@ -2,9 +2,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-community/google-signin';
 
-import { AuthStack } from './pages/auth/authstack';
+import { AuthStack } from './app/auth/authstack';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
-import AppTabs from './pages/app/AppTabs';
+import AppTabs from './app/main/main-tabs';
 
 GoogleSignin.configure({
   webClientId:
