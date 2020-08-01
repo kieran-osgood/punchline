@@ -7,4 +7,7 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'jest-dom', 'jest'],
+  env: {
+    jest: true,
+  },
 };

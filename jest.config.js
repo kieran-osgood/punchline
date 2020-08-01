@@ -3,6 +3,7 @@ const expoPreset = require('jest-expo/jest-preset');
 module.exports = {
   ...expoPreset,
   preset: '@testing-library/react-native',
+  setupFiles: ['<rootDir>/jest.setup.js'],
   setupFilesAfterEnv: [
     '@testing-library/jest-dom',
     '@testing-library/jest-native/extend-expect',
