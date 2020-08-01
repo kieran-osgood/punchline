@@ -74,9 +74,9 @@
     }
   },
   "lint-staged": {
-    "**/*.+(ts|tsx|js|css|html|md)": [
+    "src/**/*.+(ts|tsx|js|css|html|md)": [
       "prettier",
-      "npm run lint",
+      "eslint --fix --ignore-path .gitignore",
       "jest --findRelatedTests"
     ]
   },
