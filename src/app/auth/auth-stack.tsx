@@ -2,8 +2,9 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Button, Text } from 'react-native';
 
-import { AuthNavigationProps, RouteParamList } from './authparamlist';
+import { AuthNavigationProps, RouteParamList } from './auth-param-list';
 import CenterView from '../../components/centerview';
+import Register from './screens/register';
 
 const Stack = createStackNavigator<RouteParamList>();
 
@@ -18,24 +19,9 @@ function Login({ navigation }: AuthNavigationProps<'Login'>) {
         }}
       />
       <Button
-        title="go to register"
+        title="Register"
         onPress={() => {
           navigation.navigate('Register');
-        }}
-      />
-    </CenterView>
-  );
-}
-
-function Register({ navigation, route }: AuthNavigationProps<'Register'>) {
-  return (
-    <CenterView>
-      <Text>route name: {route.name}</Text>
-      <Button
-        title="go to login"
-        onPress={() => {
-          navigation.navigate('Login');
-          // navigation.goBack()
         }}
       />
     </CenterView>

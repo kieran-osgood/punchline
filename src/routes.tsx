@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-community/google-signin';
 
-import { AuthStack } from './app/auth/authstack';
+import { AuthStack } from './app/auth/auth-stack';
 // import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppTabs from './app/main/main-tabs';
 
