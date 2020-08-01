@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState, useEffect } from 'react';
-import { Button, StyleSheet, View, TextInput } from 'react-native';
+import { Button, TextInput } from 'react-native';
 import '@react-native-firebase/app';
 import Reactotron from 'reactotron-react-native';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
@@ -8,6 +8,8 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-community/google-signin';
+
+import CenterView from '../components/centerview';
 import { NavigationProps } from '../types';
 
 GoogleSignin.configure({
@@ -49,7 +51,7 @@ export default function Login({ navigation }: NavigationProps<'Login'>) {
     // );
   }
   return (
-    <View style={styles.container}>
+    <CenterView>
       <GoogleSignIn />
       <TextInput
         style={{ height: 40, width: 100, borderColor: 'gray', borderWidth: 1 }}
@@ -101,18 +103,9 @@ export default function Login({ navigation }: NavigationProps<'Login'>) {
         }}
         title="Login Anon"
       />
-    </View>
+    </CenterView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 const GoogleSignIn = () => {
   async function onGoogleButtonPress() {
