@@ -7,6 +7,15 @@
     "noEmit": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "strict": true
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["src/*"],
+      "components/*": ["src/components/*"],
+      "images/*": ["src/images/"],
+      "app/*": ["src/app/*"],
+      "auth/*": ["src/app/auth/*"],
+      "main/*": ["src/app/main/*"],
+    }
   }
 }

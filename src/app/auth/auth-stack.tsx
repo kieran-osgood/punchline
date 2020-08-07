@@ -1,10 +1,10 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { RouteParamList } from './auth-param-list';
-import Register from './screens/register';
-import LoginChoices from './screens/login-choices';
-import EmailPassword from './screens/email-password';
+import { RouteParamList } from 'auth/auth-param-list';
+import Register from 'auth/screens/register';
+import LoginChoices from 'auth/screens/login-choices';
+import EmailPassword from 'auth/screens/email-password';
 
 const Stack = createStackNavigator<RouteParamList>();
 

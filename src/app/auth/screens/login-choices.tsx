@@ -7,10 +7,10 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-community/google-signin';
-
-import CenterView from '../../../components/centerview';
-import { AuthNavigationProps } from '../auth-param-list';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import CenterView from 'components/centerview';
+import { AuthNavigationProps } from 'auth/auth-param-list';
 
 export default function Login({ navigation }: AuthNavigationProps<'Login'>) {
   return (

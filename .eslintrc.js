@@ -10,4 +10,9 @@ module.exports = {
   env: {
     jest: true,
   },
+  settings: {
+    'import/resolver': {
+      'babel-module': {},
+    },
+  },
 };

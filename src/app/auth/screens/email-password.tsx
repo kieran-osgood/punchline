@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { Button, TextInput } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import CenterView from '../../../components/centerview';
+
+import CenterView from 'components/centerview';
 
 export default function EmailPassword() {
   const [email, onChangeUsername] = useState('');
