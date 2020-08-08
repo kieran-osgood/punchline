@@ -4,9 +4,10 @@ import {
   createBottomTabNavigator,
   BottomTabNavigationProp,
 } from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import Home from './screens/home';
-import Settings from './screens/settings';
+import Home from 'main/screens/home';
+import Settings from 'main/screens/settings';
 
 export type RouteParamList = {
   Home: undefined;
@@ -23,7 +24,26 @@ const Tab = createBottomTabNavigator<RouteParamList>();
 
 export default function AppTabs() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color = 'red', size = 12 }) => {
+          let iconName = '';
+
+          if (route.name === 'Home') {
+            iconName = focused ? 'home' : 'home';
+          }
+          if (route.name === 'Settings') {
+            iconName = focused ? 'cog' : 'cog';
+          }
+
+          // You can return any component that you like here!
+          return <Icon name={iconName} size={size} color={color} />;
+        },
+      })}
+      tabBarOptions={{
+        activeTintColor: 'tomato',
+        inactiveTintColor: 'gray',
+      }}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Settings" component={Settings} />
       {/* <Tab.Screen name="Account" component={Account} /> */}
