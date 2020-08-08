@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
+import { ThemeProvider } from 'react-native-elements';
 
 import { AuthStack } from './app/auth/auth-stack';
 import AppTabs from './app/main/main-tabs';
@@ -25,8 +25,10 @@ export default function Routes() {
   });
 
   return (
-    <NavigationContainer>
-      {!user ? <AuthStack /> : <AppTabs />}
-    </NavigationContainer>
+    <ThemeProvider>
+      <NavigationContainer>
+        {!user ? <AuthStack /> : <AppTabs />}
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }

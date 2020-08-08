@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import '@react-native-firebase/app';
 import Reactotron from 'reactotron-react-native';
 import auth from '@react-native-firebase/auth';
@@ -7,67 +7,42 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-community/google-signin';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Button, Text } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import CenterView from 'components/centerview';
 import { AuthNavigationProps } from 'auth/auth-param-list';
 
-export default function Login({ navigation }: AuthNavigationProps<'Login'>) {
+export default function LoginChoices({
+  navigation,
+}: AuthNavigationProps<'Login'>) {
   return (
     <CenterView>
       <GoogleSignIn />
-
-      <LoginButton
-        title={'Email/Password'}
-        onPress={() => {
-          navigation.navigate('EmailPassword');
-        }}
-      />
-
-      <LoginButton
-        title="Continue as guest"
-        onPress={() => {
-          auth()
-            .signInAnonymously()
-            .then(() => {
-              console.log('User signed in anonymously');
-            })
-            .catch((error) => {
-              if (error.code === 'auth/operation-not-allowed') {
-                console.log('Enable anonymous in your firebase console.');
-              }
-              console.error(error);
-            });
-        }}
-      />
+      <EmailSignIn onPressEvent={() => navigation.navigate('EmailPassword')} />
+      <GuestSignIn />
     </CenterView>
   );
 }
-interface LoginButtonProps {
-  onPress: () => void;
-  title: string;
-}
-const LoginButton = ({ onPress, title }: LoginButtonProps) => (
-  <TouchableOpacity
-    style={styles.loginButton}
-    accessibilityLabel={title}
-    onPress={() => onPress()}>
-    <Text style={styles.loginButtonText}>{title}</Text>
-  </TouchableOpacity>
-);
-
 const styles = StyleSheet.create({
-  loginButton: {
-    backgroundColor: '#F3F4F4',
-    width: 305,
-    height: 42,
-    marginVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 5,
+  icon: {
+    paddingTop: 2,
+    paddingRight: 15,
   },
-  loginButtonText: {
-    color: '#000',
+  loginButton: {
+    backgroundColor: 'rgb(66, 133, 244)',
+  },
+  loginButtonTitle: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  loginButtonContainer: {
+    width: 305,
+    marginVertical: 16,
+  },
+  textSeperator: {
+    fontSize: 15,
+    marginVertical: 8,
   },
 });
 
@@ -90,3 +65,39 @@ const GoogleSignIn = () => {
     />
   );
 };
+
+const EmailSignIn = ({ onPressEvent }: { onPressEvent: () => void }) => (
+  <Button
+    title="Email & Password"
+    raised
+    buttonStyle={styles.loginButton}
+    titleStyle={styles.loginButtonTitle}
+    containerStyle={styles.loginButtonContainer}
+    icon={<Icon name="md-mail" size={16} color="white" style={styles.icon} />}
+    onPress={onPressEvent}
+  />
+);
+
+const GuestSignIn = () => (
+  <>
+    <Text style={styles.textSeperator}>Or</Text>
+
+    <Button
+      title="Continue as guest"
+      type="clear"
+      onPress={() => {
+        auth()
+          .signInAnonymously()
+          .then(() => {
+            console.log('User signed in anonymously');
+          })
+          .catch((error) => {
+            if (error.code === 'auth/operation-not-allowed') {
+              console.log('Enable anonymous in your firebase console.');
+            }
+            console.error(error);
+          });
+      }}
+    />
+  </>
+);
