@@ -14,15 +14,16 @@ module.exports = function (api) {
             '.android.js',
             '.android.tsx',
             '.ios.js',
-            '.ios.tsx'
+            '.ios.tsx',
           ],
           root: ['.'],
           alias: {
-            src: './src',
+            src: './src/',
             main: './src/app/main/',
             auth: './src/app/auth/',
             components: './src/components/',
             images: './src/images/',
+            utils: './src/utils',
           },
         },
       ],

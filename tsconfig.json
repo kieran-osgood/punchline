@@ -10,12 +10,13 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "*": ["src/*"],
+      // "*": ["src/*"],
       "components/*": ["src/components/*"],
       "images/*": ["src/images/"],
       "app/*": ["src/app/*"],
       "auth/*": ["src/app/auth/*"],
       "main/*": ["src/app/main/*"],
+      "src/*": ["src/*"]
     }
   }
 }
