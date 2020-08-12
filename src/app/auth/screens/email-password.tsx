@@ -78,7 +78,7 @@ export default function EmailPassword() {
       <Button
         onPress={login}
         title="Login"
-        disabled={!(email.length > 0 && emailIsOk && password.length > 0)}
+        disabled={!(email.length > 0 && emailIsOk && password.length > 5)}
       />
     </CenterView>
   );
