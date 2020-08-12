@@ -5,6 +5,15 @@
     "name": "punchline",
     "slug": "punchline",
     "version": "1.0.0",
-    "assetBundlePatterns": ["**/*"]
+    "icon": "./icon.svg",
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "bundleIdentifier": "com.punchline",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.punchline",
+      "versionCode": 1
+    }
   }
 }
