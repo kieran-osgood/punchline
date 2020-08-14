@@ -8,6 +8,7 @@ jest.mock('@react-native-firebase/firestore', () => () => ({
     doc: jest.fn('k0ZbGcuaLHTbH0aBZo8BktcnV883').mockReturnValue({
       update: jest.fn(),
       uid: 'k0ZbGcuaLHTbH0aBZo8BktcnV883',
+      onSnapshot: jest.fn().mockReturnValue(jest.fn()),
     }),
     add: jest.fn().mockResolvedValue({
       id: 'k0ZbGcuaLHTbH0aBZo8BktcnV883',

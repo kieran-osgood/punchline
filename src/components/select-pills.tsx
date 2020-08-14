@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
+export type CategorySettings = Array<
+  Record<'name' | 'isActive', string | boolean>
+>;
 interface Props {
-  data: Array<Record<'name' | 'isActive', string | boolean>>;
+  data: CategorySettings;
   activeStyle?: Record<string, string | number>;
   inactiveStyle?: Record<string, string | number>;
   onValueChange?: (data: Props['data']) => void;

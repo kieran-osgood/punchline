@@ -15,4 +15,7 @@ module.exports = {
       'babel-module': {},
     },
   },
+  rules: {
+    'react-native/no-inline-styles': 'off',
+  },
 };

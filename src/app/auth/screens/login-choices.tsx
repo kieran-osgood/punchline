@@ -89,7 +89,10 @@ const GuestSignIn = () => (
       onPress={() => {
         auth()
           .signInAnonymously()
-          .then((userCredential) => createUserSettings(userCredential))
+          .then((userCredential) => {
+            console.log(userCredential);
+            createUserSettings(userCredential);
+          })
           .catch((error) => {
             if (error.code === 'auth/operation-not-allowed') {
               console.log('Enable anonymous in your firebase console.');
@@ -107,4 +110,5 @@ export const createUserSettings = (
   firestore()
     .collection('users')
     .doc(userCredential.user.uid)
-    .set({ categories: [] });
+    .set({ categories: [] })
+    .catch((error) => console.log(error));

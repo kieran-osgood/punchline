@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import { emailRegex } from 'src/utils';
 import CenterView from 'components/centerview';
-import { createUserSettings } from 'auth/screens/login-choices';
 
 export default function EmailPassword() {
   const emailInput = useRef(null);
@@ -29,7 +28,7 @@ export default function EmailPassword() {
     auth()
       // .createUserWithEmailAndPassword(email, password)
       .signInWithEmailAndPassword(email, password)
-      .then((userCredential) => createUserSettings(userCredential))
+      // .then((userCredential) => createUserSettings(userCredential))
       .catch((error) => {
         if (error.code === 'auth/email-already-in-use') {
           console.log('That email address is already in use!');
