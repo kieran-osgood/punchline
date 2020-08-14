@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import '@react-native-firebase/app';
 import Reactotron from 'reactotron-react-native';
-import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -15,7 +16,7 @@ import { AuthNavigationProps } from 'auth/auth-param-list';
 
 export default function LoginChoices({
   navigation,
-}: AuthNavigationProps<'Login'>) {
+}: AuthNavigationProps<'LoginChoices'>) {
   return (
     <CenterView>
       <GoogleSignIn />
@@ -59,7 +60,7 @@ const GoogleSignIn = () => {
       color={GoogleSigninButton.Color.Dark}
       onPress={() =>
         onGoogleButtonPress()
-          .then(() => console.log('Signed in with Google!'))
+          .then((userCredential) => createUserSettings(userCredential))
           .catch((e) => Reactotron.log!(e))
       }
     />
@@ -88,9 +89,7 @@ const GuestSignIn = () => (
       onPress={() => {
         auth()
           .signInAnonymously()
-          .then(() => {
-            console.log('User signed in anonymously');
-          })
+          .then((userCredential) => createUserSettings(userCredential))
           .catch((error) => {
             if (error.code === 'auth/operation-not-allowed') {
               console.log('Enable anonymous in your firebase console.');
@@ -101,3 +100,11 @@ const GuestSignIn = () => (
     />
   </>
 );
+
+export const createUserSettings = (
+  userCredential: FirebaseAuthTypes.UserCredential,
+) =>
+  firestore()
+    .collection('users')
+    .doc(userCredential.user.uid)
+    .set({ categories: [] });

@@ -1,31 +1,35 @@
 import React, { useState, useRef } from 'react';
+import { StyleSheet } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { Input, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { StyleSheet } from 'react-native';
 
 import { emailRegex } from 'src/utils';
 import CenterView from 'components/centerview';
+import { createUserSettings } from 'auth/screens/login-choices';
 
 export default function EmailPassword() {
+  const emailInput = useRef(null);
   const [email, onChangeUsername] = useState('');
   const [password, onChangePassword] = useState('');
-  const emailInput = useRef(null);
-  const [hasBeenTouched, setHasBeenTouched] = useState(false);
+  const [emailHasBeenTouched, setEmailHasBeenTouched] = useState(false);
+  const [passwordHasBeenTouched, setPasswordHasBeenTouched] = useState(false);
   // Only test regex if the field has been touched (e.g. not on pageload)
-  const emailIsOk = hasBeenTouched
+  const emailIsOk = emailHasBeenTouched
     ? emailRegex.test(email)
       ? true
       : false
     : true;
-
+  const passwordIsOk = passwordHasBeenTouched
+    ? password.length >= 6
+      ? true
+      : false
+    : true;
   const login = () => {
     auth()
-      .createUserWithEmailAndPassword(email, password)
-      // .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log('User account created & signed in!');
-      })
+      // .createUserWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => createUserSettings(userCredential))
       .catch((error) => {
         if (error.code === 'auth/email-already-in-use') {
           console.log('That email address is already in use!');
@@ -53,7 +57,7 @@ export default function EmailPassword() {
             style={styles.inputIcon}
           />
         }
-        onFocus={() => setHasBeenTouched(true)}
+        onFocus={() => setEmailHasBeenTouched(true)}
         errorStyle={styles.inputError}
         errorMessage={emailIsOk ? '' : 'Enter a valid email'}
         label="Email Address"
@@ -71,8 +75,11 @@ export default function EmailPassword() {
             style={styles.inputIcon}
           />
         }
-        secureTextEntry={true}
+        onFocus={() => setPasswordHasBeenTouched(true)}
+        errorStyle={styles.inputError}
+        errorMessage={passwordIsOk ? '' : 'Minimum length 6'}
         label="Password"
+        secureTextEntry={true}
       />
 
       <Button

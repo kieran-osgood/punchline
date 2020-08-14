@@ -1,4 +1,19 @@
 import 'react-native-gesture-handler/jestSetup';
+// import * as firebase from 'firebase';
+// import 'firebase/firebase-storage'; //added that line
+
+//curried function fixes TypeError: (0 , _firestore.default) is not a function
+jest.mock('@react-native-firebase/firestore', () => () => ({
+  collection: jest.fn().mockReturnValue({
+    doc: jest.fn('k0ZbGcuaLHTbH0aBZo8BktcnV883').mockReturnValue({
+      update: jest.fn(),
+      uid: 'k0ZbGcuaLHTbH0aBZo8BktcnV883',
+    }),
+    add: jest.fn().mockResolvedValue({
+      id: 'k0ZbGcuaLHTbH0aBZo8BktcnV883',
+    }),
+  }),
+}));
 
 jest.mock('@react-native-firebase/app', () => ({
   __esModule: true, // this property makes it work
