@@ -5,7 +5,7 @@ import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { ThemeProvider } from 'react-native-elements';
 
 import { AuthStack } from './app/auth/auth-stack';
-import AppTabs from './app/main/main-tabs';
+import MainTabs from './app/main/main-tabs';
 
 GoogleSignin.configure({
   webClientId:
@@ -27,7 +27,7 @@ export default function Routes() {
   return (
     <ThemeProvider>
       <NavigationContainer>
-        {!user ? <AuthStack /> : <AppTabs />}
+        {!user ? <AuthStack /> : <MainTabs />}
       </NavigationContainer>
     </ThemeProvider>
   );

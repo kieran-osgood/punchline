@@ -4,7 +4,7 @@ import { Button, Text } from 'react-native-elements';
 
 import CenterView from 'components/centerview';
 
-export default function settings() {
+export default function Settings() {
   return (
     <CenterView>
       <Text>test</Text>

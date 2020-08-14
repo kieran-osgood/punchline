@@ -22,7 +22,7 @@ export type NavigationProps<T extends keyof RouteParamList> = {
 
 const Tab = createBottomTabNavigator<RouteParamList>();
 
-export default function AppTabs() {
+export default function MainTabs() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
