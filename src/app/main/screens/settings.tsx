@@ -11,50 +11,44 @@ type reducerAction = { type: 'CATEGORY'; payload: CategorySettings[] };
 type reducerState = {
   categories: CategorySettings[];
 };
+
 const settingsReducer = (state: reducerState, action: reducerAction) => {
   switch (action.type) {
     case 'CATEGORY':
       return { ...state, categories: [...action.payload] };
   }
 };
+
 export default function Settings() {
   const [state, dispatch] = useReducer<Reducer<reducerState, reducerAction>>(
     settingsReducer,
     { categories: [] },
   );
 
-  const getMarker = async () => {
-    const snapshot = await firestore().collection('categories').get();
-    return snapshot.docs.map((doc) => doc.data() as CategorySettings);
-  };
-
   useEffect(() => {
     async function fetchData() {
-      // console.log('fetchData');
-      const result = await getMarker();
-      dispatch({ type: 'CATEGORY', payload: result });
+      const categories = await getCategories();
+      const userCategories = await getUserCategories();
+      const results = categories.map((category) => {
+        const match = userCategories?.find((x) => x.id === category.id);
+        if (match) {
+          return { ...category, ...match };
+        }
+        return category;
+      });
+      dispatch({ type: 'CATEGORY', payload: results });
     }
     fetchData();
   }, []);
 
-  // console.log('state: ', state.categories);
-  // useEffect(() => {
-  //   const user = firestore()
-  //     .collection('users')
-  //     .doc(auth().currentUser?.uid)
-  //     .onSnapshot((snap) => {
-  //       setSettings(snap.data()?.categories);
-  //     });
-  //   return () => user();
-  // }, []);
+  const handleValueChanged = (value: CategorySettings[]) => {
+    firestore()
+      .collection('users')
+      .doc(auth().currentUser?.uid)
+      .set({ categories: value });
 
-  // const handleValueChanged = (value: CategorySettings) => {
-  //   firestore()
-  //     .collection('users')
-  //     .doc(auth().currentUser?.uid)
-  //     .set({ categories: value });
-  //   setSettings(value);
-  // };
+    dispatch({ type: 'CATEGORY', payload: value });
+  };
 
   return (
     <CenterView>
@@ -62,7 +56,7 @@ export default function Settings() {
         <Text>Categories</Text>
         <SelectPills
           data={state.categories}
-          // onValueChange={(value) => handleValueChanged(value)}
+          onValueChange={(value) => handleValueChanged(value)}
         />
       </CenterView>
       <View>
@@ -71,3 +65,21 @@ export default function Settings() {
     </CenterView>
   );
 }
+
+const getCategories = async () => {
+  const snapshot = await firestore().collection('categories').get();
+  return snapshot.docs.map((doc) => {
+    return {
+      ...(doc.data() as CategorySettings),
+      id: doc.id,
+    };
+  });
+};
+
+const getUserCategories = async (): Promise<CategorySettings[] | undefined> => {
+  const snapshot = await firestore()
+    .collection('users')
+    .doc(auth().currentUser?.uid)
+    .get();
+  return snapshot?.data()?.categories;
+};
