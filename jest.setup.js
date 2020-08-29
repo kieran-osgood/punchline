@@ -1,6 +1,8 @@
 import 'react-native-gesture-handler/jestSetup';
-// import * as firebase from 'firebase';
-// import 'firebase/firebase-storage'; //added that line
+
+jest.mock('@react-native-community/async-storage', () => ({
+  useAsyncStorage: jest.fn(),
+}));
 
 //curried function fixes TypeError: (0 , _firestore.default) is not a function
 jest.mock('@react-native-firebase/firestore', () => () => ({

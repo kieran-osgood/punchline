@@ -19,6 +19,7 @@
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(ts|tsx|js|json|css|html|md)\""
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/google-signin": "^4.0.3",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-firebase/app": "^8.2.0",
