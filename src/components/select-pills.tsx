@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 export type CategorySettings = Record<
-  'name' | 'isActive' | 'sources',
+  'id' | 'name' | 'isActive' | 'sources',
   string | boolean
 >;
 interface Props {
@@ -26,7 +26,7 @@ const SelectPills = ({
 
   function handlePress(i: number) {
     const _data = [...inputData];
-    _data[i].isActive = !_data[i].isActive;
+    _data[i].isActive = !_data[i].isActive || false;
     handleDataChange(_data);
   }
 
@@ -46,7 +46,6 @@ const SelectPills = ({
   return (
     <View style={styles.container}>
       {inputData.map((item, i) => {
-        console.log('item', item);
         return (
           <TouchableOpacity
             key={i}
