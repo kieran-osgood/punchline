@@ -8,9 +8,10 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-community/google-signin';
-import { Button, Text } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import Text from 'components/text';
 import CenterView from 'components/centerview';
 import { AuthNavigationProps } from 'auth/auth-param-list';
 

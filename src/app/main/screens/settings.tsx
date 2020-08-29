@@ -1,11 +1,12 @@
 import React, { useEffect, useReducer, Reducer } from 'react';
 import { View } from 'react-native';
-import auth from '@react-native-firebase/auth';
-import { Button, Text } from 'react-native-elements';
-import SelectPills from 'components/select-pills';
-import CenterView from 'components/centerview';
 import firestore from '@react-native-firebase/firestore';
-import { CategorySettings } from 'components/select-pills';
+import auth from '@react-native-firebase/auth';
+import { Button } from 'react-native-elements';
+
+import SelectPills, { CategorySettings } from 'components/select-pills';
+import CenterView from 'components/centerview';
+import Text from 'components/text';
 
 type reducerAction = { type: 'CATEGORY'; payload: CategorySettings[] };
 type reducerState = {

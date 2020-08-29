@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+
+import Text from 'components/text';
 
 export type CategorySettings = Record<
   'id' | 'name' | 'isActive' | 'sources',
@@ -80,11 +82,9 @@ const styles = StyleSheet.create({
   activeSelect: {
     backgroundColor: '#2b49f0',
     color: 'white',
-    textTransform: 'capitalize',
   },
   inactiveSelect: {
     backgroundColor: '#dcdee8',
     color: 'black',
-    textTransform: 'capitalize',
   },
 });

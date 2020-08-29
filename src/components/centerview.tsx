@@ -13,7 +13,7 @@ export default function CenterView({ children, style }: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F2C94C',
     alignItems: 'center',
     justifyContent: 'center',
   },
