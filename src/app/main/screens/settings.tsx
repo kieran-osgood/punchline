@@ -52,8 +52,10 @@ export default function Settings() {
 
   return (
     <CenterView>
-      <CenterView style={{ flex: 0, marginBottom: 80 }}>
-        <Text>Categories</Text>
+      <CenterView style={{ flex: 0, marginBottom: 80, width: '100%' }}>
+        <Text h3 style={{ width: '90%' }}>
+          Categories
+        </Text>
         <SelectPills
           data={state.categories}
           onValueChange={(value) => handleValueChanged(value)}
