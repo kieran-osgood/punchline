@@ -1,5 +1,5 @@
 {
-  "main": "src/App.tsx",
+  "main": "src/routes.tsx",
   "scripts": {
     "android": "concurrently  \"npm run run:android-emulator\" \"sleep 2 && npm run run:android\"  \"npm run lint:watch\"",
     "run:android": "npx react-native run-android",
