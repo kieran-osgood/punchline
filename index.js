@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
+
 if (__DEV__) {
-  import('./ReactotronConfig').then(() => console.log('Reactotron Configured'));
+  import('./ReactotronConfig');
 }
 import { registerRootComponent } from 'expo';
 import Routes from './src/routes';
