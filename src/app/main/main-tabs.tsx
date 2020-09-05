@@ -6,6 +6,8 @@ import {
 } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
+import { color } from 'theme/index';
+
 import Home from 'main/screens/home';
 import Settings from 'main/screens/settings';
 
@@ -41,9 +43,9 @@ export default function MainTabs() {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'tomato',
-        inactiveTintColor: 'gray',
-        style: { fontFamily: 'Montserrat' },
+        activeTintColor: color.palette.black,
+        inactiveTintColor: color.palette.lightGrey,
+        style: { fontFamily: 'Montserrat', backgroundColor: color.background },
       }}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Settings" component={Settings} />

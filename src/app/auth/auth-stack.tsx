@@ -1,6 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import { color } from 'theme/index';
+
 import { RouteParamList } from 'auth/auth-param-list';
 import Register from 'auth/screens/register';
 import LoginChoices from 'auth/screens/login-choices';
@@ -18,6 +20,9 @@ export const AuthStack = () => {
       <Stack.Screen
         options={{
           headerTitle: 'Email / Password',
+          headerStyle: {
+            backgroundColor: color.background,
+          },
         }}
         name="EmailPassword"
         component={EmailPassword}
