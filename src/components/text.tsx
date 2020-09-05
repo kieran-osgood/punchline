@@ -1,7 +1,6 @@
 /* eslint-disable curly */
 import React from 'react';
 import { Text as TextEl, StyleSheet, TextStyle } from 'react-native';
-import { AppLoading } from 'expo';
 import { useFonts, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 
 type Props = {
@@ -28,7 +27,7 @@ const Text = ({
   });
 
   if (!loaded) {
-    return <AppLoading />;
+    return null;
   }
   const headingStyles = () => {
     let headingStyle: TextStyle = styles.base;
