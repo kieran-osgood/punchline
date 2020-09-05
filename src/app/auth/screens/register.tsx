@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button } from 'react-native';
-import Text from 'components/text';
 
 import { AuthNavigationProps } from 'auth/auth-param-list';
+import Text from 'components/text';
 import CenterView from 'components/centerview';
 
 export default function Register({

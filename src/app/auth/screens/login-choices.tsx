@@ -50,8 +50,11 @@ const styles = StyleSheet.create({
 
 const GoogleSignIn = () => {
   async function onGoogleButtonPress() {
+    Reactotron.log!('GoogleSignIn');
     const { idToken } = await GoogleSignin.signIn();
+    Reactotron.log!('id', idToken);
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    Reactotron.log!('googleCredential: ', googleCredential);
     return auth().signInWithCredential(googleCredential);
   }
 
@@ -59,11 +62,12 @@ const GoogleSignIn = () => {
     <GoogleSigninButton
       size={GoogleSigninButton.Size.Wide}
       color={GoogleSigninButton.Color.Dark}
-      onPress={() =>
+      onPress={() => {
+        Reactotron.log!('test');
         onGoogleButtonPress()
           .then((userCredential) => createUserSettings(userCredential))
-          .catch((e) => Reactotron.log!(e))
-      }
+          .catch((e) => Reactotron.log!('onpresserrror', e));
+      }}
     />
   );
 };
@@ -91,12 +95,12 @@ const GuestSignIn = () => (
         auth()
           .signInAnonymously()
           .then((userCredential) => {
-            console.log(userCredential);
+            Reactotron.log!(userCredential);
             createUserSettings(userCredential);
           })
           .catch((error) => {
             if (error.code === 'auth/operation-not-allowed') {
-              console.log('Enable anonymous in your firebase console.');
+              Reactotron.log!('Enable anonymous in your firebase console.');
             }
             console.error(error);
           });
@@ -112,4 +116,4 @@ export const createUserSettings = (
     .collection('users')
     .doc(userCredential.user.uid)
     .set({ categories: [] })
-    .catch((error) => console.log(error));
+    .catch((error) => Reactotron.log!(error));

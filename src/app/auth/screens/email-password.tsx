@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { Input, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Reactotron from 'reactotron-react-native';
 
 import { emailRegex } from 'src/utils';
 import CenterView from 'components/centerview';
@@ -31,12 +32,12 @@ export default function EmailPassword() {
       // .then((userCredential) => createUserSettings(userCredential))
       .catch((error) => {
         if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
+          Reactotron.log!('That email address is already in use!');
         }
         if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
+          Reactotron.log!('That email address is invalid!');
         }
-        console.log(error);
+        Reactotron.log!(error);
       });
   };
 
