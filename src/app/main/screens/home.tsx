@@ -6,7 +6,7 @@ import CenterView from 'components/centerview';
 export default function Home() {
   return (
     <CenterView>
-      <Text h1>Home</Text>
+      <Text h1 text="Home" />
     </CenterView>
   );
 }

@@ -1,23 +1,52 @@
+/* eslint-disable curly */
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import * as Font from 'expo-font';
-import { Text as TextEl } from 'react-native-elements';
+import { Text as TextEl, StyleSheet, TextStyle } from 'react-native';
+import { AppLoading } from 'expo';
+import { useFonts, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 
 type Props = {
-  children: React.ReactNode;
-} & TextEl['props'];
+  children?: React.ReactNode;
+  text?: string;
+  style?: Record<string, string | number>;
+  h1?: boolean;
+  h2?: boolean;
+  h3?: boolean;
+  h4?: boolean;
+};
 
-const Text = (props: Props) => {
-  const [loaded] = Font.useFonts({
-    Montserrat: require('../../assets/fonts/Montserrat-Regular.ttf'),
+const Text = ({
+  style,
+  children = '',
+  text = '',
+  h1 = false,
+  h2 = false,
+  h3 = false,
+  h4 = false,
+}: Props) => {
+  const [loaded] = useFonts({
+    Montserrat_400Regular,
   });
 
   if (!loaded) {
-    return null;
+    return <AppLoading />;
   }
+  const headingStyles = () => {
+    let headingStyle: TextStyle = styles.base;
+    if (h1) headingStyle = styles.h1;
+    if (h2) headingStyle = styles.h2;
+    if (h3) headingStyle = styles.h3;
+    if (h4) headingStyle = styles.h4;
+    return headingStyle;
+  };
   return (
-    <TextEl {...props} style={{ ...styles.text, ...(props.style as {}) }}>
-      {props.children}
+    <TextEl
+      style={{
+        fontFamily: 'Montserrat_400Regular',
+        ...styles.base,
+        ...headingStyles(),
+        ...(style as {}),
+      }}>
+      {children || text}
     </TextEl>
   );
 };
@@ -25,7 +54,11 @@ const Text = (props: Props) => {
 export default Text;
 
 const styles = StyleSheet.create({
-  text: {
-    fontFamily: 'Montserrat',
+  base: {
+    fontSize: 16,
   },
+  h1: { fontSize: 40 },
+  h2: { fontSize: 34 },
+  h3: { fontSize: 28 },
+  h4: { fontSize: 22 },
 });
