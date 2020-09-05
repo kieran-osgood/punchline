@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-
 import Text from 'components/text';
 
 export type CategorySettings = Record<
@@ -9,41 +8,31 @@ export type CategorySettings = Record<
 >;
 interface Props {
   data: CategorySettings[];
-  activeStyle?: Record<string, string | number>;
-  inactiveStyle?: Record<string, string | number>;
   onValueChange?: (data: Props['data']) => void;
 }
 
-const SelectPills = ({
-  data,
-  onValueChange,
-  activeStyle,
-  inactiveStyle,
-}: Props) => {
+const SelectPills = ({ data, onValueChange }: Props) => {
   const [inputData, setInputData] = useState(data);
 
   useEffect(() => {
     setInputData(data);
   }, [data]);
 
-  function handlePress(i: number) {
+  const handlePress = (i: number) => {
     const _data = [...inputData];
     _data[i].isActive = !_data[i].isActive || false;
     handleDataChange(_data);
-  }
+  };
 
-  function handleDataChange(eData: Props['data']) {
+  const handleDataChange = (eData: Props['data']) => {
     setInputData(eData);
     if (onValueChange) {
       onValueChange(eData);
     }
-  }
+  };
 
-  function handleStyles(isActive: boolean) {
-    return isActive
-      ? [styles.activeSelect, activeStyle]
-      : [styles.inactiveSelect, inactiveStyle];
-  }
+  const handleStyles = (isActive: boolean) =>
+    isActive ? styles.activeSelect : styles.inactiveSelect;
 
   return (
     <View style={styles.container}>
@@ -53,8 +42,10 @@ const SelectPills = ({
             key={i}
             onPress={() => handlePress(i)}
             activeOpacity={0.9}
-            style={[handleStyles(!!item.isActive), styles.select]}>
-            <Text style={handleStyles(!!item.isActive)}>{item.name}</Text>
+            style={{ ...handleStyles(!!item.isActive), ...styles.select }}>
+            <Text style={{ ...handleStyles(!!item.isActive) }}>
+              {item.name}
+            </Text>
           </TouchableOpacity>
         );
       })}
