@@ -64,3 +64,8 @@ web-build/
 
 coverage/*
 .env
+
+# Builds
+*.apk
+android/app/debug/*
+android/app/release/*
