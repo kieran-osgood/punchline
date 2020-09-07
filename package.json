@@ -1,11 +1,10 @@
 {
   "main": "src/routes.tsx",
   "scripts": {
-    "android": "concurrently  \"npm run run:android-emulator\" \"sleep 2 && npm run run:android\"  \"npm run lint:watch\"",
+    "android": "npx react-native run-android",
+    "android1": "concurrently  \"npm run run:android-emulator\" \"sleep 2 && npm run run:android\"  \"npm run lint:watch\"",
     "run:android": "npx react-native run-android",
-    "run:android-emulator": "emulator @Pixel_3a_API_29 -dns-server 8.8.8.8",
-    "run:android-emulator1": "emulator @Pixel_3a_API_29 -port 9090 -dns-server 8.8.8.8",
-    "atest": "sleep 5 && echo 'test'",
+    "run:android-emulator": "emulator @Pixel_3a_API_29 -port 9090 -dns-server 8.8.8.8",
     "ios": "npx react-native run-ios && npm run lint:watch",
     "web": "expo start --web",
     "start": "react-native start",
