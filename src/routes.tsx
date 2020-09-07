@@ -9,9 +9,11 @@ import MainTabs from './app/main/main-tabs';
 
 GoogleSignin.configure({
   webClientId:
-    '681986405885-jq70bsbonfl2f9sl9aikc3687qklaf5m.apps.googleusercontent.com',
+    // '681986405885-eb59nigfp7jejgk8cn02dqor9jm2sqft.apps.googleusercontent.com',
+    '681986405885-dhai19n3c3kai1ad2i5l6u57ot14uorq.apps.googleusercontent.com',
   iosClientId:
     '681986405885-oms8c4edds7s1cjlm550ss1sa8rqui7d.apps.googleusercontent.com',
+  offlineAccess: true,
 });
 
 export default function Routes() {

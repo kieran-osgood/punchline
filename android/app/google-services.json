@@ -15,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "681986405885-jq70bsbonfl2f9sl9aikc3687qklaf5m.apps.googleusercontent.com",
+          "client_id": "681986405885-h18bi681l38qddk9g95fr8plhs9cihii.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.punchline",
@@ -38,6 +38,13 @@
             {
               "client_id": "681986405885-dhai19n3c3kai1ad2i5l6u57ot14uorq.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "681986405885-oms8c4edds7s1cjlm550ss1sa8rqui7d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.punchline"
+              }
             }
           ]
         }
