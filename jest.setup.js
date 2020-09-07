@@ -1,5 +1,11 @@
 import 'react-native-gesture-handler/jestSetup';
 
+jest.mock('@react-native-firebase/admob', () => ({
+  BannerAd: jest.fn(() => null),
+  BannerAdSize: jest.fn(),
+  TestIds: jest.fn(),
+}));
+
 jest.mock('@expo-google-fonts/montserrat', () => ({
   useFonts: jest.fn(() => [true]),
 }));
