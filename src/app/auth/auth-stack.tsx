@@ -30,6 +30,7 @@ export const AuthStack = () => {
       <Stack.Screen
         options={{
           headerTitle: 'Login',
+          header: () => null,
         }}
         name="LoginChoices"
         component={LoginChoices}
