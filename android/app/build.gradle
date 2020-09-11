@@ -87,7 +87,8 @@ project.ext.react = [
 apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 apply from: "../../node_modules/react-native/react.gradle"
 apply from: "../../node_modules/expo-updates/scripts/create-manifest-android.gradle"
-
+//apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -158,7 +159,16 @@ android {
     }
     buildTypes {
         debug {
+            // Note: CodePush updates should not be tested in Debug mode as they are overriden by the RN packager. However, because CodePush checks for updates in all modes, we must supply a key.
+            resValue "string", "CodePushDeploymentKey", ""
             signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug']
+        }
+        releaseStaging {
+            resValue "string", "CodePushDeploymentKey", "lbCJ2uYM_9JSe9zSdjTtRmEh1vMNzFPLwb5sl"
+            // Note: It is a good idea to provide matchingFallbacks for the new buildType you create to prevent build issues
+            // Add the following line if not already there
+            matchingFallbacks = ['release']
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -166,6 +176,9 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            
+            resValue "string", "CodePushDeploymentKey", "g9SK1mCnj6_Ukx3JUQb8CF6zCmES-TiM6PVTu"
+            matchingFallbacks = ['release', 'debug']
         }
     }
 

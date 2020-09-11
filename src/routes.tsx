@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { ThemeProvider } from 'react-native-elements';
+import codePush from 'react-native-code-push';
 
 import { AuthStack } from './app/auth/auth-stack';
 import MainTabs from './app/main/main-tabs';
@@ -16,7 +17,7 @@ GoogleSignin.configure({
   offlineAccess: true,
 });
 
-export default function Routes() {
+const Routes = () => {
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
   useEffect(() => {
@@ -33,4 +34,10 @@ export default function Routes() {
       </NavigationContainer>
     </ThemeProvider>
   );
-}
+};
+
+const codePushOptions = {
+  checkFrequency: codePush.CheckFrequency.ON_APP_START,
+};
+
+export default codePush(codePushOptions)(Routes);
