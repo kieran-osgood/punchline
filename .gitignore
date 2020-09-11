@@ -69,3 +69,4 @@ coverage/*
 *.apk
 android/app/debug/*
 android/app/release/*
+Production
