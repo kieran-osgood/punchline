@@ -40,4 +40,5 @@ const codePushOptions = {
   checkFrequency: codePush.CheckFrequency.ON_APP_START,
 };
 
-export default codePush(codePushOptions)(Routes);
+// Prevents 404 errors in DEBUG configuration due to no valid keys provided
+export default __DEV__ ? Routes : codePush(codePushOptions)(Routes);
