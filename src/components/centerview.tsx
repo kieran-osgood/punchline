@@ -1,11 +1,11 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { ReactNode } from 'react';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 
 import { color } from 'theme/index';
 
 interface Props {
-  children: JSX.Element | JSX.Element[];
-  style?: Record<string, string | number>;
+  children: ReactNode;
+  style?: ViewStyle;
 }
 
 export default function CenterView({ children, style }: Props) {

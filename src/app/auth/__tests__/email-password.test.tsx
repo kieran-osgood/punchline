@@ -31,18 +31,18 @@ test('should show an error for the email', async () => {
 });
 
 test('should show disabled button', async () => {
-  const { getByRole } = render(<EmailPassword />);
-  const loginButton = getByRole('button');
+  const { getByText } = render(<EmailPassword />);
+  const loginButton = getByText(/login/i);
   // Button is disabled on page load - this test will fail if disabled style changes
   expect(loginButton).toBeDisabled(); // Does this work????
 });
 
 test('should disable button when insufficient input', async () => {
-  const { getByPlaceholderText, getByRole } = render(<EmailPassword />);
+  const { getByPlaceholderText, getByText } = render(<EmailPassword />);
 
   const emailInput = getByPlaceholderText(/email@example.com/i);
   const passwordInput = getByPlaceholderText(/\*\*\*\*\*\*\*\*/i);
-  const loginButton = getByRole('button');
+  const loginButton = getByText(/login/i);
 
   fireEvent.changeText(emailInput, 'test@gmail.com');
   fireEvent.changeText(passwordInput, '12345');

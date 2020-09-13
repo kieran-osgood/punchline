@@ -1,12 +1,16 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { Input, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Reactotron from 'reactotron-react-native';
 
 import { emailRegex } from 'src/utils';
+import { color, spacing } from 'theme/index';
+import { pillButton, buttonContainer } from 'auth/screens/login-choices';
+
 import CenterView from 'components/centerview';
+import Text from 'components/text';
 
 export default function EmailPassword() {
   const emailInput = useRef(null);
@@ -42,69 +46,66 @@ export default function EmailPassword() {
   };
 
   return (
-    <CenterView style={styles.container}>
+    <CenterView style={container}>
       <Input
         ref={emailInput}
-        style={styles.input}
+        style={input}
         onChangeText={(text) => onChangeUsername(text)}
         value={email}
         placeholder="email@example.com"
         leftIcon={
-          <Icon
-            name="ios-mail"
-            size={20}
-            color="black"
-            style={styles.inputIcon}
-          />
+          <Icon name="ios-mail" size={20} color="black" style={inputIcon} />
         }
         onFocus={() => setEmailHasBeenTouched(true)}
-        errorStyle={styles.inputError}
+        errorStyle={inputError}
         errorMessage={emailIsOk ? '' : 'Enter a valid email'}
         label="Email Address"
       />
       <Input
-        style={styles.input}
+        style={input}
         onChangeText={(text) => onChangePassword(text)}
         value={password}
         placeholder="********"
         leftIcon={
-          <Icon
-            name="md-key"
-            size={20}
-            color="black"
-            style={styles.inputIcon}
-          />
+          <Icon name="md-key" size={20} color="black" style={inputIcon} />
         }
         onFocus={() => setPasswordHasBeenTouched(true)}
-        errorStyle={styles.inputError}
+        errorStyle={inputError}
         errorMessage={passwordIsOk ? '' : 'Minimum length 6'}
         label="Password"
         secureTextEntry={true}
       />
 
       <Button
+        buttonStyle={pillButton}
+        titleStyle={{ color: color.text }}
+        containerStyle={buttonContainer}
         onPress={login}
         title="Login"
         disabled={!(email.length > 0 && emailIsOk && password.length > 5)}
       />
+      <Text text="Don't have an account yet?" style={text} />
+      <Button title="Register" type="clear" />
     </CenterView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 40,
-  },
-  input: {
-    height: 40,
-    width: 100,
-    borderColor: 'gray',
-    borderWidth: 1,
-  },
-  inputError: {
-    color: 'red',
-  },
-  inputIcon: {
-    paddingRight: 8,
-  },
-});
+const container: ViewStyle = {
+  paddingHorizontal: spacing[6],
+};
+const input: ViewStyle = {
+  height: 40,
+  width: 100,
+  borderColor: 'transparent',
+  borderWidth: 1,
+};
+const inputError: TextStyle = {
+  color: color.error,
+};
+const inputIcon: ViewStyle = {
+  paddingRight: spacing[2],
+};
+const text: TextStyle = {
+  color: color.text,
+  marginTop: spacing[4],
+};

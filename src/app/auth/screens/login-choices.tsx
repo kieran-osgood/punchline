@@ -33,19 +33,19 @@ export default function LoginChoices({
   );
 }
 
-const pillButton: ViewStyle = {
+export const pillButton: ViewStyle = {
   borderRadius: 100,
   paddingVertical: spacing[4],
   paddingHorizontal: spacing[4],
   backgroundColor: color.palette.white,
 };
 
-const buttonIcon: ViewStyle = {
+export const buttonIcon: ViewStyle = {
   position: 'absolute',
   left: spacing[6],
 };
 
-const buttonTitle: TextStyle = {
+export const buttonTitle: TextStyle = {
   fontSize: 18,
   fontWeight: 'bold',
   width: '100%',
@@ -55,7 +55,7 @@ const buttonTitle: TextStyle = {
   textAlign: 'left',
 };
 
-const buttonContainer: ViewStyle = {
+export const buttonContainer: ViewStyle = {
   width: 305,
   marginVertical: spacing[4],
 };
