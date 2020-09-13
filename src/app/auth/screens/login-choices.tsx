@@ -1,93 +1,116 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { TextStyle, ViewStyle } from 'react-native';
 import '@react-native-firebase/app';
 import Reactotron from 'reactotron-react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-} from '@react-native-community/google-signin';
 import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/Ionicons';
 
+import { AuthNavigationProps } from 'auth/auth-param-list';
+
+import { color, spacing } from 'theme/index';
 import Text from 'components/text';
 import CenterView from 'components/centerview';
-import { AuthNavigationProps } from 'auth/auth-param-list';
+
+import Facebook from 'assets/images/facebook';
+import GoogleIcon from 'assets/images/google';
+import Gmail from 'assets/images/gmail';
 
 export default function LoginChoices({
   navigation,
 }: AuthNavigationProps<'LoginChoices'>) {
   return (
     <CenterView>
+      <Text h1 text="Login" />
       <GoogleSignIn />
+      <FacebookSignIn />
       <EmailSignIn onPressEvent={() => navigation.navigate('EmailPassword')} />
+
+      <Text style={textSeperator} text="Or" />
+
       <GuestSignIn />
     </CenterView>
   );
 }
-const styles = StyleSheet.create({
-  icon: {
-    paddingTop: 2,
-    paddingRight: 15,
-  },
-  loginButton: {
-    backgroundColor: 'rgb(66, 133, 244)',
-  },
-  loginButtonTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  loginButtonContainer: {
-    width: 305,
-    marginVertical: 16,
-  },
-  textSeperator: {
-    fontSize: 15,
-    marginVertical: 8,
-  },
-});
+
+const pillButton: ViewStyle = {
+  borderRadius: 100,
+  paddingVertical: spacing[4],
+  paddingHorizontal: spacing[4],
+  backgroundColor: color.palette.white,
+};
+
+const buttonIcon: ViewStyle = {
+  position: 'absolute',
+  left: spacing[6],
+};
+
+const buttonTitle: TextStyle = {
+  fontSize: 18,
+  fontWeight: 'bold',
+  width: '100%',
+  color: color.text,
+  borderRadius: 100,
+  marginLeft: '40%',
+  textAlign: 'left',
+};
+
+const buttonContainer: ViewStyle = {
+  width: 305,
+  marginVertical: spacing[4],
+};
+
+const textSeperator: TextStyle = {
+  fontSize: 15,
+  marginVertical: spacing[2],
+};
 
 const GoogleSignIn = () => {
-  async function onGoogleButtonPress() {
-    Reactotron.log!('GoogleSignIn');
-    const { idToken } = await GoogleSignin.signIn();
-    Reactotron.log!('id', idToken);
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    Reactotron.log!('googleCredential: ', googleCredential);
-    return auth().signInWithCredential(googleCredential);
-  }
+  const handlePress = async () => Reactotron.log!('Press');
 
   return (
-    <GoogleSigninButton
-      size={GoogleSigninButton.Size.Wide}
-      color={GoogleSigninButton.Color.Dark}
-      onPress={() => {
-        Reactotron.log!('test');
-        onGoogleButtonPress()
-          .then((userCredential) => createUserSettings(userCredential))
-          .catch((e) => Reactotron.log!('onpresserrror', e));
-      }}
+    <Button
+      title="Log in with Google"
+      buttonStyle={pillButton}
+      titleStyle={buttonTitle}
+      containerStyle={buttonContainer}
+      raised
+      icon={<GoogleIcon style={buttonIcon} />}
+      onPress={() => handlePress()}
+    />
+  );
+};
+
+const FacebookSignIn = () => {
+  const handlePress = async () => Reactotron.log!('Press');
+
+  return (
+    <Button
+      title="Log in with Facebook"
+      buttonStyle={pillButton}
+      titleStyle={buttonTitle}
+      containerStyle={buttonContainer}
+      raised
+      icon={<Facebook style={buttonIcon} />}
+      onPress={() => handlePress()}
     />
   );
 };
 
 const EmailSignIn = ({ onPressEvent }: { onPressEvent: () => void }) => (
   <Button
-    title="Email & Password"
+    title="Log in with Email"
     raised
-    buttonStyle={styles.loginButton}
-    titleStyle={styles.loginButtonTitle}
-    containerStyle={styles.loginButtonContainer}
-    icon={<Icon name="md-mail" size={16} color="white" style={styles.icon} />}
+    buttonStyle={pillButton}
+    titleStyle={buttonTitle}
+    containerStyle={buttonContainer}
+    icon={<Gmail style={buttonIcon} />}
     onPress={onPressEvent}
   />
 );
 
 const GuestSignIn = () => (
   <>
-    <Text style={styles.textSeperator}>Or</Text>
-
     <Button
       title="Continue as guest"
       type="clear"

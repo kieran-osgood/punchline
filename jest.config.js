@@ -20,4 +20,7 @@ module.exports = {
     '!**/babel.config.js',
     '!**/jest.setup.js',
   ],
+  moduleNameMapper: {
+    '\\.svg': '<rootDir>/src/__mocks__/svgMock.js',
+  },
 };

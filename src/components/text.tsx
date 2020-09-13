@@ -6,7 +6,7 @@ import { useFonts, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 type Props = {
   children?: React.ReactNode;
   text?: string;
-  style?: Record<string, string | number>;
+  style?: TextStyle;
   h1?: boolean;
   h2?: boolean;
   h3?: boolean;
