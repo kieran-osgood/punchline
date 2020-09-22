@@ -97,7 +97,8 @@
       "prettier",
       "eslint --fix --ignore-path .gitignore",
       "jest --findRelatedTests"
-    ]
+    ],
+    "*.{ts,tsx}": "bash -c tsc"
   },
   "private": true
 }
