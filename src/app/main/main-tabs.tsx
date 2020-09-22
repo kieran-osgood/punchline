@@ -45,7 +45,7 @@ export default function MainTabs() {
       tabBarOptions={{
         activeTintColor: color.palette.black,
         inactiveTintColor: color.palette.lightGrey,
-        style: { fontFamily: 'Montserrat', backgroundColor: color.background },
+        style: { backgroundColor: color.background },
       }}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Settings" component={Settings} />
