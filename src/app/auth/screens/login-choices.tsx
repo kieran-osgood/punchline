@@ -5,6 +5,7 @@ import Reactotron from 'reactotron-react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { Button } from 'react-native-elements';
+import { GoogleSignin } from '@react-native-community/google-signin';
 
 import { AuthNavigationProps } from 'auth/auth-param-list';
 
@@ -50,7 +51,6 @@ export const buttonTitle: TextStyle = {
   fontWeight: 'bold',
   width: '100%',
   color: color.text,
-  borderRadius: 100,
   marginLeft: '40%',
   textAlign: 'left',
 };
@@ -66,7 +66,12 @@ const textSeperator: TextStyle = {
 };
 
 const GoogleSignIn = () => {
-  const handlePress = async () => Reactotron.log!('Press');
+  const handlePress = async () => {
+    const { idToken } = await GoogleSignin.signIn();
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    const userCredential = await auth().signInWithCredential(googleCredential);
+    createUserSettings(userCredential);
+  };
 
   return (
     <Button
@@ -134,9 +139,17 @@ const GuestSignIn = () => (
 
 export const createUserSettings = (
   userCredential: FirebaseAuthTypes.UserCredential,
-) =>
-  firestore()
-    .collection('users')
-    .doc(userCredential.user.uid)
-    .set({ categories: [] })
-    .catch((error) => Reactotron.log!(error));
+) => {
+  // Create a reference to the user
+  const userReference = firestore().doc(`users/${userCredential.user.uid}`);
+
+  return firestore().runTransaction(async (transaction) => {
+    // Get post data first
+    const userSnapshot = await transaction.get(userReference);
+    if (!userSnapshot.exists) {
+      userReference
+        .set({ categories: [] })
+        .catch((error) => Reactotron.log!(error));
+    }
+  });
+};
