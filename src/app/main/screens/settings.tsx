@@ -1,8 +1,10 @@
 import React, { useEffect, useReducer, Reducer } from 'react';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { Button } from 'react-native-elements';
+
+import { spacing } from 'theme';
 
 import SelectPills, { CategorySettings } from 'components/select-pills';
 import CenterView from 'components/centerview';
@@ -52,11 +54,9 @@ export default function Settings() {
   };
 
   return (
-    <CenterView>
+    <CenterView style={CONTAINER}>
       <CenterView style={{ flex: 0, marginBottom: 80, width: '100%' }}>
-        <Text h3 style={{ width: '90%' }}>
-          Categories
-        </Text>
+        <Text h3>Categories</Text>
         <SelectPills
           data={state.categories}
           onValueChange={(value) => handleValueChanged(value)}
@@ -68,7 +68,9 @@ export default function Settings() {
     </CenterView>
   );
 }
-
+const CONTAINER: ViewStyle = {
+  paddingHorizontal: spacing[3],
+};
 const getCategories = async () => {
   const snapshot = await firestore().collection('categories').get();
   return snapshot.docs.map((doc) => {
