@@ -22,12 +22,12 @@ export default function LoginChoices({
   navigation,
 }: AuthNavigationProps<'LoginChoices'>) {
   return (
-    <CenterView>
-      <AppLogo style={{ marginBottom: 'auto' }} />
+    <CenterView style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <AppLogo />
 
-      <Text h1 text="Register & Login" style={{ marginBottom: 'auto' }} />
+      <Text h1 text="Login" />
 
-      <CenterView style={{ flex: 0, marginBottom: 'auto' }}>
+      <CenterView style={BUTTONS_CONTAINER}>
         <GoogleSignIn />
         <FacebookSignIn />
         <EmailSignIn
@@ -67,18 +67,21 @@ const BUTTON_TITLE: TextStyle = {
 
 export const BUTTON_CONTAINER: ViewStyle = {
   width: 305,
-  marginVertical: spacing[4],
+  marginVertical: spacing[3],
 };
 
 const TEXT_SEPERATOR: TextStyle = {
   fontSize: 15,
-  marginVertical: spacing[2],
+  marginVertical: spacing[5],
 };
 
 const COPYRIGHT_TEXT: TextStyle = {
-  paddingBottom: spacing[2],
+  paddingBottom: spacing[3],
 };
 
+const BUTTONS_CONTAINER: ViewStyle = {
+  flex: 0,
+};
 const GoogleSignIn = () => {
   const handlePress = async () => {
     const { idToken } = await GoogleSignin.signIn();
