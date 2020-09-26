@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Text from 'components/text';
 
+import { color } from 'theme';
+
 export type CategorySettings = Record<
   'id' | 'name' | 'isActive' | 'sources',
   string | boolean
@@ -63,7 +65,7 @@ const styles = StyleSheet.create({
   select: {
     borderStyle: 'solid',
     borderWidth: 2,
-    borderRadius: 5,
+    borderRadius: 15,
     borderColor: 'transparent',
     padding: 8,
     marginTop: 8,
@@ -71,11 +73,11 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   activeSelect: {
-    backgroundColor: '#2b49f0',
-    color: 'white',
+    backgroundColor: color.success,
+    color: color.line,
   },
   inactiveSelect: {
-    backgroundColor: '#dcdee8',
-    color: 'black',
+    backgroundColor: color.primaryDarker,
+    color: color.text,
   },
 });
