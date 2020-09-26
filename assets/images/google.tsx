@@ -2,7 +2,7 @@ import { SVGProps } from 'assets/images/facebook';
 import * as React from 'react';
 import Svg, { Path } from 'react-native-svg';
 
-function SvgComponent(props: SVGProps) {
+function Google(props: SVGProps) {
   return (
     <Svg
       style={props.style}
@@ -30,4 +30,4 @@ function SvgComponent(props: SVGProps) {
   );
 }
 
-export default SvgComponent;
+export default Google;

@@ -4,8 +4,10 @@ import Svg, { Path } from 'react-native-svg';
 
 export interface SVGProps {
   style?: StyleProp<ViewStyle>;
+  width?: number;
+  height?: number;
 }
-function SvgComponent(props: SVGProps) {
+function Facebook(props: SVGProps) {
   return (
     <Svg
       style={props.style}
@@ -20,4 +22,4 @@ function SvgComponent(props: SVGProps) {
   );
 }
 
-export default SvgComponent;
+export default Facebook;
