@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+import Slider from '@react-native-community/slider';
 
 import { color, spacing } from 'theme';
 
@@ -15,10 +16,19 @@ export default function Home() {
     <CenterView>
       <Header />
       <JokeSection />
+      <Slider
+        style={{ width: 300, height: 40 }}
+        minimumValue={0}
+        maximumValue={1}
+        minimumTrackTintColor={color.primaryDarker}
+        maximumTrackTintColor="#FFFFFF"
+        thumbImage={require('assets/images/laughing-emoji.png')}
+      />
       {/* <RatingButtons /> */}
     </CenterView>
   );
 }
+
 const Header = () => (
   <>
     <BannerAd
@@ -58,18 +68,18 @@ const JokeSection = () => (
           'A married couple were asleep when the phone rang at 2 in the morning. The wife (a blonde), picked up the phone, listened a moment and said, "How should I know, that\'s 200 miles from here!" and hung up. Curious, the husband said, "Who was that?"And his lovely wife replies, "I don\'t have any idea who it was. It was some stupid woman wanting to know "if the coast is clear."'
         }
       />
+      <Microphone
+        style={{
+          width: 200,
+          height: 200,
+          zIndex: 10,
+          opacity: 0.4,
+          position: 'absolute',
+          bottom: '-100%',
+          left: '25%',
+          transform: [{ rotateZ: '-40deg' }],
+        }}
+      />
     </ChatBubble>
-    <Microphone
-      style={{
-        width: 200,
-        height: 200,
-        zIndex: -1,
-        opacity: 0.6,
-        position: 'absolute',
-        bottom: '-13%',
-        left: '25%',
-        transform: [{ rotateZ: '-40deg' }],
-      }}
-    />
   </View>
 );
