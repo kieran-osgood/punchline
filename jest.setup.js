@@ -1,5 +1,8 @@
 import 'react-native-gesture-handler/jestSetup';
 
+global.window = {};
+global.window = global;
+
 jest.mock('@react-native-firebase/admob', () => ({
   BannerAd: jest.fn(() => null),
   BannerAdSize: jest.fn(),
@@ -26,6 +29,10 @@ jest.mock('@react-native-firebase/firestore', () => () => ({
       id: 'k0ZbGcuaLHTbH0aBZo8BktcnV883',
     }),
   }),
+}));
+
+jest.mock('@react-native-firebase/crashlytics', () => ({
+  __esModule: true, // this property makes it work
 }));
 
 jest.mock('@react-native-firebase/app', () => ({
