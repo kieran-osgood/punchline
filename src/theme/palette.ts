@@ -10,4 +10,5 @@ export const palette = {
   angry: '#dd3333',
   yellow: '#F2C94C',
   background: '#F2C94C',
+  green: '#06c258',
 };

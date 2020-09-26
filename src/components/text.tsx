@@ -3,6 +3,8 @@ import React from 'react';
 import { Text as TextEl, StyleSheet, TextStyle } from 'react-native';
 import { useFonts, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 
+import { color } from 'theme';
+
 type Props = {
   children?: React.ReactNode;
   text?: string;
@@ -55,6 +57,7 @@ export default Text;
 const styles = StyleSheet.create({
   base: {
     fontSize: 16,
+    color: color.text,
   },
   h1: { fontSize: 40 },
   h2: { fontSize: 34 },
