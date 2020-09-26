@@ -8,8 +8,8 @@ import { color, spacing } from 'theme';
 import Text from 'components/text';
 import CenterView from 'components/centerview';
 import ChatBubble from 'components/chat-bubble';
-import Punchline from 'assets/images/punchline';
 import Microphone from 'assets/images/microphone';
+import AppLogo from 'components/app-logo';
 
 export default function Home() {
   return (
@@ -17,7 +17,7 @@ export default function Home() {
       <Header />
       <JokeSection />
       <Slider
-        style={{ width: 300, height: 40 }}
+        style={{ width: 300, height: 140 }}
         minimumValue={0}
         maximumValue={1}
         minimumTrackTintColor={color.primaryDarker}
@@ -41,8 +41,7 @@ const Header = () => (
       unitId={TestIds.BANNER} // Setup to check process.env
       size={BannerAdSize.FULL_BANNER}
     />
-
-    <Punchline width={200} style={{ opacity: 0.8 }} />
+    <AppLogo />
   </>
 );
 

@@ -16,6 +16,7 @@ import CenterView from 'components/centerview';
 import Facebook from 'assets/images/facebook';
 import GoogleIcon from 'assets/images/google';
 import Gmail from 'assets/images/gmail';
+import AppLogo from 'components/app-logo';
 
 export default function LoginChoices({
   navigation,
@@ -30,6 +31,7 @@ export default function LoginChoices({
       <Text style={textSeperator} text="Or" />
 
       <GuestSignIn />
+      <AppLogo style={{ marginBottom: 'auto' }} />
     </CenterView>
   );
 }
