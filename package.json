@@ -17,7 +17,8 @@
     "validate": "npm run lint && npm run test",
     "lint": "./node_modules/.bin/eslint --fix --ignore-path .gitignore src/",
     "lint:watch": "./node_modules/.bin/esw ./src/**.* -w --clear",
-    "format": "prettier --ignore-path .gitignore --write \"**/*.+(ts|tsx|js|json|css|html|md)\""
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(ts|tsx|js|json|css|html|md)\"",
+    "splashscreen": "yarn run configure-splash-screen \"rgba(242, 201, 76, 1)\" ./icon2.png "
   },
   "dependencies": {
     "@expo-google-fonts/montserrat": "^0.1.0",

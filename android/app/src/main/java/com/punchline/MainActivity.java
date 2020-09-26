@@ -19,7 +19,7 @@ public class MainActivity extends ReactActivity {
         // discouraged to modify it manually
         // SplashScreen.show(this, SplashScreenImageResizeMode.CONTAIN,
         // ReactRootView.class);
-        SplashScreen.show(this, SplashScreenImageResizeMode.CONTAIN, true);
+        SplashScreen.show(this, SplashScreenImageResizeMode.CONTAIN, false);
     }
 
     /**
