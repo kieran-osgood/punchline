@@ -11,7 +11,8 @@
     "baseUrl": ".",
     "paths": {
       // "*": ["src/*"],
-      "theme/*": ["src/theme/*"],
+      "theme": ["src/theme"], // import {padding} from 'theme'
+      "theme/*": ["src/theme/*"], // import padding from 'theme/padding'
       "components/*": ["src/components/*"],
       "images/*": ["src/images/"],
       "app/*": ["src/app/*"],
