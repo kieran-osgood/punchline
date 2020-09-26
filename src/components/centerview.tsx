@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleSheet, ViewStyle } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { color } from 'theme/index';
 
@@ -9,7 +10,11 @@ interface Props {
 }
 
 export default function CenterView({ children, style }: Props) {
-  return <View style={{ ...styles.container, ...style }}>{children}</View>;
+  return (
+    <SafeAreaView style={{ ...styles.container, ...style }}>
+      {children}
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
