@@ -11,8 +11,8 @@ import crashlytics from '@react-native-firebase/crashlytics';
 
 import { color, spacing } from 'theme/index';
 import {
-  pillButton,
-  buttonContainer,
+  PILL_BUTTON,
+  BUTTON_CONTAINER,
   createUserSettings,
 } from 'auth/screens/login-choices';
 
@@ -113,9 +113,9 @@ export default function EmailPassword() {
 
       {returnError ? <Text style={inputError}>{returnError}</Text> : null}
       <Button
-        buttonStyle={pillButton}
+        buttonStyle={PILL_BUTTON}
         titleStyle={{ color: color.text }}
-        containerStyle={buttonContainer}
+        containerStyle={BUTTON_CONTAINER}
         onPress={handleSubmit(submit)}
         title="Login"
         disabled={touched < 2 || !!errors.email || !!errors.password}

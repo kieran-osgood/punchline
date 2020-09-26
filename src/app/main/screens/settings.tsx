@@ -6,7 +6,7 @@ import { Button } from 'react-native-elements';
 
 import { color, spacing } from 'theme';
 
-import { buttonContainer, pillButton } from 'auth/screens/login-choices';
+import { BUTTON_CONTAINER, PILL_BUTTON } from 'auth/screens/login-choices';
 
 import Text from 'components/text';
 import CenterView from 'components/centerview';
@@ -66,9 +66,9 @@ export default function Settings() {
       </CenterView>
       <View>
         <Button
-          buttonStyle={pillButton}
+          buttonStyle={PILL_BUTTON}
           titleStyle={{ color: color.text }}
-          containerStyle={buttonContainer}
+          containerStyle={BUTTON_CONTAINER}
           onPress={() => auth().signOut()}
           title="Logout"
           // disabled={touched < 2 || !!errors.email || !!errors.password}
