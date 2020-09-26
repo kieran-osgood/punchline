@@ -4,11 +4,13 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { Button } from 'react-native-elements';
 
-import { spacing } from 'theme';
+import { color, spacing } from 'theme';
 
-import SelectPills, { CategorySettings } from 'components/select-pills';
-import CenterView from 'components/centerview';
+import { buttonContainer, pillButton } from 'auth/screens/login-choices';
+
 import Text from 'components/text';
+import CenterView from 'components/centerview';
+import SelectPills, { CategorySettings } from 'components/select-pills';
 
 type reducerAction = { type: 'CATEGORY'; payload: CategorySettings[] };
 type reducerState = {
@@ -63,7 +65,14 @@ export default function Settings() {
         />
       </CenterView>
       <View>
-        <Button title="Logout" raised onPress={() => auth().signOut()} />
+        <Button
+          buttonStyle={pillButton}
+          titleStyle={{ color: color.text }}
+          containerStyle={buttonContainer}
+          onPress={() => auth().signOut()}
+          title="Logout"
+          // disabled={touched < 2 || !!errors.email || !!errors.password}
+        />
       </View>
     </CenterView>
   );
