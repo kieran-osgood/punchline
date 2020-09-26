@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Svg, { Path, G, Circle, Defs } from 'react-native-svg';
-import { SVGProps } from 'assets/images/facebook';
+import { SVGProps } from 'src/types';
 
 function Punchline(props: SVGProps) {
   return (

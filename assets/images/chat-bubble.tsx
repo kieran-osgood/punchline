@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { SVGProps } from 'assets/images/facebook';
 import Svg, { Path, Rect } from 'react-native-svg';
+import { SVGProps } from 'src/types';
 
 function SvgComponent(props: SVGProps) {
   return (

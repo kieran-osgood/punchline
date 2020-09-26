@@ -1,6 +1,6 @@
-import { SVGProps } from 'assets/images/facebook';
 import * as React from 'react';
 import Svg, { Path } from 'react-native-svg';
+import { SVGProps } from 'src/types';
 
 function Google(props: SVGProps) {
   return (

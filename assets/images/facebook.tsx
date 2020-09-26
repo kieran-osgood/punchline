@@ -1,12 +1,7 @@
 import * as React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import { SVGProps } from 'src/types';
 
-export interface SVGProps {
-  style?: StyleProp<ViewStyle>;
-  width?: number;
-  height?: number;
-}
 function Facebook(props: SVGProps) {
   return (
     <Svg
