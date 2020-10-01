@@ -30,7 +30,8 @@ const schema = yup.object().shape({
     .required('Email is required.'),
   password: yup
     .string()
-    .required('Password is required (minimum 6 characters).'),
+    .min(6, 'Password is required (minimum 6 characters).')
+    .required(),
 });
 export default function EmailPassword() {
   const { errors, handleSubmit, trigger, control } = useForm<Inputs>({

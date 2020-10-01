@@ -4,13 +4,14 @@ import {
   fireEvent,
   waitFor,
   waitForElementToBeRemoved,
+  act,
 } from '@testing-library/react-native';
 
 import EmailPassword from '../screens/email-password';
 
-test('should render the EmailPassword page', async () => {
-  render(<EmailPassword />);
-});
+// test('should render the EmailPassword page', async () => {
+//   render(<EmailPassword />);
+// });
 
 test('should show an error for the email', async () => {
   const { getByPlaceholderText, getByText, queryByText } = render(
@@ -35,25 +36,31 @@ test('should show an error for the email', async () => {
   await waitForElementToBeRemoved(() => getByText(errorMessage2));
 }, 30000);
 
-test('should show disabled button', async () => {
+test('should show disabled button', () => {
   const { getByText } = render(<EmailPassword />);
   const loginButton = getByText(/login/i);
   // Button is disabled on page load - this test will fail if disabled style changes
-  expect(loginButton).toBeDisabled(); // Does this work????
+  expect(loginButton).toBeDisabled();
 });
 
 test('should disable button when password length is short', async () => {
   const { getByPlaceholderText, getByText } = render(<EmailPassword />);
-
   const emailInput = getByPlaceholderText(/email@example.com/i);
   const passwordInput = getByPlaceholderText(/\*\*\*\*\*\*\*\*/i);
   const loginButton = getByText(/Login/i);
 
-  fireEvent.changeText(emailInput, 'test@gmail.com'); // valid email
-  expect(loginButton).toBeDisabled(); // short password so disabled
-  fireEvent.changeText(passwordInput, '12345');
+  await act(async () => {
+    fireEvent.changeText(emailInput, 'test@gmail.com'); // valid email
+  });
   expect(loginButton).toBeDisabled(); // short password so disabled
 
-  fireEvent.changeText(passwordInput, '123456');
+  await act(async () => {
+    fireEvent.changeText(passwordInput, '12345');
+  });
+  expect(loginButton).toBeDisabled(); // short password so disabled
+
+  await act(async () => {
+    fireEvent.changeText(passwordInput, '123456');
+  });
   expect(loginButton).toBeEnabled();
 });
