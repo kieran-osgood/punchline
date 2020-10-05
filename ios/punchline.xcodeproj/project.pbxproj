@@ -14,6 +14,7 @@
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		96905EF65AED1B983A6B3ABC /* libPods-punchline.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-punchline.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
+		E4852C51252B744E001BA691 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4852C50252B744E001BA691 /* File.swift */; };
 		E49443AB250AA98A002A274F /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = E49443AA250AA989002A274F /* AppCenter-Config.plist */; };
 		E4BA5EDF24C0C54500BBBF8D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E4BA5EDE24C0C54500BBBF8D /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
@@ -33,6 +34,8 @@
 		7A4D352CD337FB3A3BF06240 /* Pods-punchline.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline.release.xcconfig"; path = "Target Support Files/Pods-punchline/Pods-punchline.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = punchline/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
+		E4852C4B252B73EC001BA691 /* punchline-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "punchline-Bridging-Header.h"; sourceTree = "<group>"; };
+		E4852C50252B744E001BA691 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		E493D3FE24DDA87200086A17 /* Fontisto.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fontisto.ttf; sourceTree = "<group>"; };
 		E493D3FF24DDA87200086A17 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
 		E493D40024DDA87200086A17 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Feather.ttf; sourceTree = "<group>"; };
@@ -80,6 +83,8 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
+				E4852C4B252B73EC001BA691 /* punchline-Bridging-Header.h */,
+				E4852C50252B744E001BA691 /* File.swift */,
 			);
 			name = punchline;
 			sourceTree = "<group>";
@@ -203,7 +208,7 @@
 				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1200;
 					};
 				};
 			};
@@ -381,6 +386,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				E4852C51252B744E001BA691 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -422,6 +428,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.name.punchline;
 				PRODUCT_NAME = punchline;
+				SWIFT_OBJC_BRIDGING_HEADER = "punchline-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -445,6 +452,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.name.punchline;
 				PRODUCT_NAME = punchline;
+				SWIFT_OBJC_BRIDGING_HEADER = "punchline-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -639,6 +647,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.name.punchline;
 				PRODUCT_NAME = punchline;
+				SWIFT_OBJC_BRIDGING_HEADER = "punchline-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
