@@ -6,6 +6,7 @@ import firestore from '@react-native-firebase/firestore';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { Button } from 'react-native-elements';
 import { GoogleSignin } from '@react-native-community/google-signin';
+import { LoginManager, AccessToken } from 'react-native-fbsdk';
 
 import { AuthNavigationProps } from 'auth/auth-param-list';
 
@@ -104,8 +105,34 @@ const GoogleSignIn = () => {
 };
 
 const FacebookSignIn = () => {
-  const handlePress = async () => Reactotron.log!('Press');
+  async function onFacebookButtonPress() {
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions([
+      'public_profile',
+      'email',
+    ]);
 
+    if (result.isCancelled) {
+      Reactotron.log!('User cancelled the login process');
+      throw 'User cancelled the login process';
+    }
+
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+
+    if (!data) {
+      Reactotron.log!('Something went wrong obtaining access token');
+      throw 'Something went wrong obtaining access token';
+    }
+
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(
+      data.accessToken,
+    );
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(facebookCredential);
+  }
   return (
     <Button
       title="Log in with Facebook"
@@ -114,7 +141,11 @@ const FacebookSignIn = () => {
       containerStyle={BUTTON_CONTAINER}
       raised
       icon={<Facebook style={BUTTON_ICON} />}
-      onPress={() => handlePress()}
+      onPress={() =>
+        onFacebookButtonPress().then(() =>
+          console.log('Signed in with Facebook!'),
+        )
+      }
     />
   );
 };
