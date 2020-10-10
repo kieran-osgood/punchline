@@ -1,7 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
-import Slider from '@react-native-community/slider';
 
 import { color, spacing } from 'theme';
 
@@ -16,14 +15,6 @@ export default function Home() {
     <CenterView>
       <Header />
       <JokeSection />
-      <Slider
-        style={{ width: 300, height: 140 }}
-        minimumValue={0}
-        maximumValue={1}
-        minimumTrackTintColor={color.primaryDarker}
-        maximumTrackTintColor="#FFFFFF"
-        thumbImage={require('assets/images/laughing-emoji.png')}
-      />
       {/* <RatingButtons /> */}
     </CenterView>
   );
