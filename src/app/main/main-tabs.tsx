@@ -10,11 +10,13 @@ import { color } from 'theme/index';
 
 import Home from 'main/screens/home';
 import Settings from 'main/screens/settings';
+import UserProfile from 'app/main/screens/user-profile';
 
 export type RouteParamList = {
   Home: undefined;
   Settings: undefined;
   Login: undefined;
+  UserProfile: undefined;
 };
 
 export type NavigationProps<T extends keyof RouteParamList> = {
@@ -48,6 +50,7 @@ export default function MainTabs() {
         inactiveTintColor: color.palette.lightGrey,
         style: { backgroundColor: color.background },
       }}>
+      <Tab.Screen name="UserProfile" component={UserProfile} />
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Settings" component={Settings} />
       {/* <Tab.Screen name="Account" component={Account} /> */}

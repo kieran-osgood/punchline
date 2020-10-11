@@ -97,7 +97,7 @@ const GoogleSignIn = () => {
       buttonStyle={PILL_BUTTON}
       titleStyle={BUTTON_TITLE}
       containerStyle={BUTTON_CONTAINER}
-      raised
+      // raised
       icon={<GoogleIcon style={BUTTON_ICON} />}
       onPress={() => handlePress()}
     />
@@ -139,12 +139,12 @@ const FacebookSignIn = () => {
       buttonStyle={PILL_BUTTON}
       titleStyle={BUTTON_TITLE}
       containerStyle={BUTTON_CONTAINER}
-      raised
+      // raised
       icon={<Facebook style={BUTTON_ICON} />}
       onPress={() =>
-        onFacebookButtonPress().then(() =>
-          console.log('Signed in with Facebook!'),
-        )
+        onFacebookButtonPress()
+          .then(() => console.log('Signed in with Facebook!'))
+          .catch(() => Reactotron.log!('Error signin in with facebook'))
       }
     />
   );
@@ -153,7 +153,7 @@ const FacebookSignIn = () => {
 const EmailSignIn = ({ onPressEvent }: { onPressEvent: () => void }) => (
   <Button
     title="Log in with Email"
-    raised
+    // raised
     buttonStyle={PILL_BUTTON}
     titleStyle={BUTTON_TITLE}
     containerStyle={BUTTON_CONTAINER}
@@ -178,6 +178,7 @@ const GuestSignIn = () => (
             if (error.code === 'auth/operation-not-allowed') {
               Reactotron.log!('Enable anonymous in your firebase console.');
             }
+            Reactotron.log!(error);
             console.error(error);
           });
       }}
@@ -197,7 +198,9 @@ export const createUserSettings = (
     if (!userSnapshot.exists) {
       userReference
         .set({ categories: [] })
-        .catch((error) => Reactotron.log!(error));
+        .catch((error) =>
+          Reactotron.log!('login-choices.tsx - createUserSettings: ', error),
+        );
     }
   });
 };
