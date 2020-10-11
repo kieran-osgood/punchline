@@ -15,6 +15,7 @@
       "theme/*": ["src/theme/*"], // import padding from 'theme/padding'
       "components/*": ["src/components/*"],
       "images/*": ["src/images/"],
+      "screens/*": ["src/app/main/screens/*"],
       "app/*": ["src/app/*"],
       "auth/*": ["src/app/auth/*"],
       "main/*": ["src/app/main/*"],

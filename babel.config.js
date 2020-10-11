@@ -19,6 +19,7 @@ module.exports = function (api) {
           root: ['.'],
           alias: {
             src: './src/',
+            app: './src/app/',
             main: './src/app/main/',
             auth: './src/app/auth/',
             components: './src/components/',

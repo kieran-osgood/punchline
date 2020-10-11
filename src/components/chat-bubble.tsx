@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { View, ViewStyle, ScrollView } from 'react-native';
 import { spacing } from 'theme';
 // import Microphone from 'assets/images/microphone';
 import ChatBubbleSVG from 'assets/images/chat-bubble';
@@ -23,9 +23,19 @@ const ChatBubble = ({ children }: Props) => {
         setSize({ x, y, width, height });
       }}>
       <View style={CHAT_BUBBLE}>
-        <ChatBubbleSVG width={size.width} height={size.height + 80} />
+        <ChatBubbleSVG
+          style={{ top: 0, left: 0, position: 'absolute' }}
+          width={size.width}
+          height={size.height}
+        />
       </View>
-      {children}
+      <ScrollView
+        contentContainerStyle={{
+          width: size.width - 20,
+          height: '60%',
+        }}>
+        {children}
+      </ScrollView>
     </View>
   );
 };
@@ -34,10 +44,10 @@ export default ChatBubble;
 
 const CHAT_BUBBLE_CONTAINER: ViewStyle = {
   position: 'relative',
-  width: '95%',
-  minWidth: '90%',
-  maxWidth: 1000,
+  width: '90%',
+  minWidth: '80%',
   alignItems: 'center',
+  maxHeight: 600,
   borderRadius: 15,
   minHeight: 300,
   padding: spacing[4],
@@ -47,6 +57,7 @@ const CHAT_BUBBLE_CONTAINER: ViewStyle = {
 const CHAT_BUBBLE: ViewStyle = {
   position: 'absolute',
   width: '100%',
+  height: '70%',
   top: 0,
   left: 0,
 };
