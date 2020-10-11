@@ -1,12 +1,11 @@
 import React from 'react';
 import { ViewStyle } from 'react-native';
-
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import { color, spacing } from 'theme';
+import { color } from 'theme';
 
-import CenterView from 'components/centerview';
-import Text from 'components/text';
+import BookmarksScreen from 'app/main/screens/user-profile/bookmarks-screen';
+import HistoryScreen from 'app/main/screens/user-profile/history-screen';
 
 export type RouteParamList = {
   Bookmarks: undefined;
@@ -20,8 +19,8 @@ export default function UserProfile() {
       tabBarOptions={{
         style: TAB_STYLE,
       }}>
-      <Tab.Screen name="Bookmarks" component={Bookmarks} />
-      <Tab.Screen name="History" component={History} />
+      <Tab.Screen name="Bookmarks" component={BookmarksScreen} />
+      <Tab.Screen name="History" component={HistoryScreen} />
     </Tab.Navigator>
   );
 }
@@ -29,19 +28,3 @@ export default function UserProfile() {
 const TAB_STYLE: ViewStyle = {
   backgroundColor: color.background,
 };
-
-const CONTAINER: ViewStyle = {
-  paddingHorizontal: spacing[3],
-};
-
-const Bookmarks = () => (
-  <CenterView style={CONTAINER}>
-    <Text text="test" />
-  </CenterView>
-);
-
-const History = () => (
-  <CenterView style={CONTAINER}>
-    <Text text="test" />
-  </CenterView>
-);
