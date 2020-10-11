@@ -35,6 +35,8 @@ export default ChatBubble;
 const CHAT_BUBBLE_CONTAINER: ViewStyle = {
   position: 'relative',
   width: '95%',
+  minWidth: '90%',
+  maxWidth: 1000,
   alignItems: 'center',
   borderRadius: 15,
   minHeight: 300,
