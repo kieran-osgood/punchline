@@ -44,12 +44,13 @@ const Header = () => (
   </>
 );
 
-type Joke = {
+export type Joke = {
   body: string;
   id: string;
   category: string;
   random: string;
   title: string;
+  bookmarked: boolean;
 };
 
 const JokeSection = () => {
@@ -68,6 +69,7 @@ const JokeSection = () => {
     category: '',
     random: '',
     title: '',
+    bookmarked: false,
   });
   const { categories } = useCategoriesContext();
 
