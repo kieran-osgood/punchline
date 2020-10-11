@@ -4,10 +4,12 @@ import Text from 'components/text';
 
 import { color } from 'theme';
 
-export type CategorySettings = Record<
-  'id' | 'name' | 'isActive' | 'sources',
-  string | boolean
->;
+export type CategorySettings = {
+  id: string;
+  name: string;
+  isActive: boolean;
+};
+
 interface Props {
   data: CategorySettings[];
   onValueChange?: (data: Props['data']) => void;

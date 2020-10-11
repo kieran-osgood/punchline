@@ -8,6 +8,7 @@ import codePush from 'react-native-code-push';
 import { AuthStack } from './app/auth/auth-stack';
 import MainTabs from './app/main/main-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { CategoriesProvider } from 'components/categories-context';
 
 GoogleSignin.configure({
   webClientId:
@@ -31,7 +32,9 @@ const Routes = () => {
     <ThemeProvider>
       <SafeAreaProvider>
         <NavigationContainer>
-          {!user ? <AuthStack /> : <MainTabs />}
+          <CategoriesProvider>
+            {!user ? <AuthStack /> : <MainTabs />}
+          </CategoriesProvider>
         </NavigationContainer>
       </SafeAreaProvider>
     </ThemeProvider>
