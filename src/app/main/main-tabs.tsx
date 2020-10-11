@@ -42,6 +42,7 @@ export default function MainTabs() {
           return <Icon name={iconName} size={size} color={color} />;
         },
       })}
+      lazy={false}
       tabBarOptions={{
         activeTintColor: color.palette.black,
         inactiveTintColor: color.palette.lightGrey,
