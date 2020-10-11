@@ -11,6 +11,7 @@ import { BUTTON_CONTAINER, PILL_BUTTON } from 'auth/screens/login-choices';
 import Text from 'components/text';
 import CenterView from 'components/centerview';
 import SelectPills, { CategorySettings } from 'components/select-pills';
+import { getCategories, getUserCategories } from 'src/app/api';
 
 type reducerAction = { type: 'CATEGORY'; payload: CategorySettings[] };
 type reducerState = {
@@ -79,21 +80,4 @@ export default function Settings() {
 }
 const CONTAINER: ViewStyle = {
   paddingHorizontal: spacing[3],
-};
-const getCategories = async () => {
-  const snapshot = await firestore().collection('categories').get();
-  return snapshot.docs.map((doc) => {
-    return {
-      ...(doc.data() as CategorySettings),
-      id: doc.id,
-    };
-  });
-};
-
-const getUserCategories = async (): Promise<CategorySettings[] | undefined> => {
-  const snapshot = await firestore()
-    .collection('users')
-    .doc(auth().currentUser?.uid)
-    .get();
-  return snapshot?.data()?.categories;
 };
