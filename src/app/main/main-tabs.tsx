@@ -1,9 +1,9 @@
 import React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import {
-  createBottomTabNavigator,
-  BottomTabNavigationProp,
-} from '@react-navigation/bottom-tabs';
+  createMaterialBottomTabNavigator,
+  MaterialBottomTabNavigationProp,
+} from '@react-navigation/material-bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { color } from 'theme/index';
@@ -21,16 +21,21 @@ export type RouteParamList = {
 
 export type NavigationProps<T extends keyof RouteParamList> = {
   route: RouteProp<RouteParamList, T>;
-  navigation: BottomTabNavigationProp<RouteParamList, T>;
+  navigation: MaterialBottomTabNavigationProp<RouteParamList, T>;
 };
 
-const Tab = createBottomTabNavigator<RouteParamList>();
+const Tab = createMaterialBottomTabNavigator<RouteParamList>();
 
 export default function MainTabs() {
   return (
     <Tab.Navigator
+      activeColor={color.palette.black}
+      inactiveColor={color.palette.lightGrey}
+      sceneAnimationEnabled
+      labeled={false}
+      barStyle={{ backgroundColor: color.background }}
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color = 'red', size = 12 }) => {
+        tabBarIcon: ({ focused, color = 'red' }) => {
           let iconName = '';
 
           if (route.name === 'Home') {
@@ -39,18 +44,19 @@ export default function MainTabs() {
           if (route.name === 'Settings') {
             iconName = focused ? 'cog' : 'cog';
           }
+          if (route.name === 'UserProfile') {
+            iconName = 'user-alt';
+          }
 
-          // You can return any component that you like here!
-          return <Icon name={iconName} size={size} color={color} />;
+          return <Icon name={iconName} size={20} color={color} />;
         },
       })}
-      lazy={false}
-      tabBarOptions={{
-        activeTintColor: color.palette.black,
-        inactiveTintColor: color.palette.lightGrey,
-        style: { backgroundColor: color.background },
-      }}>
-      <Tab.Screen name="UserProfile" component={UserProfile} />
+      initialRouteName="Home">
+      <Tab.Screen
+        name="UserProfile"
+        component={UserProfile}
+        options={{ tabBarLabel: 'Profile' }}
+      />
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Settings" component={Settings} />
       {/* <Tab.Screen name="Account" component={Account} /> */}
