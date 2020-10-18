@@ -34,14 +34,8 @@ export default function Home() {
 const Header = () => (
   <>
     <BannerAd
-      style={{
-        position: 'absolute',
-        left: 0,
-        top: 0,
-        width: '90%',
-      }}
       unitId={TestIds.BANNER} // ! Setup to check process.env
-      size={BannerAdSize.FULL_BANNER}
+      size={BannerAdSize.SMART_BANNER}
     />
     <AppLogo />
   </>
