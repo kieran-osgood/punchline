@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer, Reducer } from 'react';
 import { View, ViewStyle } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { Button } from 'react-native-elements';
 
@@ -11,7 +10,7 @@ import { BUTTON_CONTAINER, PILL_BUTTON } from 'auth/screens/login-choices';
 import Text from 'components/text';
 import CenterView from 'components/centerview';
 import SelectPills, { CategorySettings } from 'components/select-pills';
-import { getCategories, getUserCategories } from 'src/app/api';
+import { getCategories, getCurrentUser, getUserCategories } from 'src/app/api';
 
 type reducerAction = { type: 'CATEGORY'; payload: CategorySettings[] };
 type reducerState = {
@@ -47,11 +46,10 @@ export default function Settings() {
     fetchData();
   }, []);
 
-  const handleValueChanged = (value: CategorySettings[]) => {
-    firestore()
-      .collection('users')
-      .doc(auth().currentUser?.uid)
-      .set({ categories: value });
+  const handleValueChanged = async (value: CategorySettings[]) => {
+    const user = await getCurrentUser(false);
+
+    user.set({ categories: value });
 
     dispatch({ type: 'CATEGORY', payload: value });
   };

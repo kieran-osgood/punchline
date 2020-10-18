@@ -4,7 +4,7 @@ import { SVGProps } from 'src/types';
 
 function SvgComponent(props: SVGProps) {
   return (
-    <Svg width={63} height={63} viewBox="0 0 63 63" fill="none" {...props}>
+    <Svg width={112} height={84} viewBox="3 10 55 44" fill="none" {...props}>
       <Path
         d="M31.5 52.369c11.414 0 20.667-9.253 20.667-20.667 0-11.414-9.253-20.666-20.667-20.666-11.414 0-20.667 9.252-20.667 20.666S20.086 52.37 31.5 52.37z"
         fill="#FCEA2B"

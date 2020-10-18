@@ -100,7 +100,8 @@ const BOOKMARK_BUTTON_CONTAINER: ViewStyle = {
   justifyContent: 'center',
   alignItems: 'center',
 };
-const arr = [
+
+const arr: Joke[] = [
   {
     title: 'joke',
     body:
@@ -109,41 +110,9 @@ const arr = [
     random: 'asd',
     category: 'blonde',
     bookmarked: false,
-  },
-  {
-    title: 'joke',
-    body:
-      'body body body body body body body body body body body body body body body body body body body body body body body body body body ',
-    id: '2',
-    random: 'asd',
-    category: 'blonde',
-    bookmarked: false,
-  },
-  {
-    title: 'joke',
-    body:
-      'body body body body body body body body body body body body body body body body body body body body body body body body body body ',
-    id: '3',
-    random: 'asd',
-    category: 'blonde',
-    bookmarked: false,
-  },
-  {
-    title: 'joke',
-    body:
-      'body body body body body body body body body body body body body body body body body body body body body body body body body body ',
-    id: '4',
-    random: 'asd',
-    category: 'blonde',
-    bookmarked: false,
-  },
-  {
-    title: 'joke',
-    body:
-      'body body body body body body body body body body body body body body body body body body body body body body body body body body ',
-    id: '5',
-    random: 'asd',
-    category: 'blonde',
-    bookmarked: false,
+    reviews: {
+      count: 0,
+      score: 0,
+    },
   },
 ];
