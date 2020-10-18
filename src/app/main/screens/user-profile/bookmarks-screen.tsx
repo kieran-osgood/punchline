@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { ViewStyle, FlatList, View, TouchableOpacity } from 'react-native';
+import {
+  ViewStyle,
+  FlatList,
+  View,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -75,7 +81,20 @@ const ListItem = ({ joke }: { joke: JokeHistory }) => {
   if (!visible) {
     return null;
   }
-
+  const handleDeletePress = () => {
+    Alert.alert(
+      'Confirm',
+      'Are you sure you wish to remove this bookmark?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        { text: 'Confirm', onPress: () => deleteBookmark() },
+      ],
+      { cancelable: false },
+    );
+  };
   return (
     <View style={LIST_ITEM}>
       <View style={EXPANSION_HEADER}>
@@ -117,7 +136,7 @@ const ListItem = ({ joke }: { joke: JokeHistory }) => {
             name="ios-trash"
             size={33}
             color={color.error}
-            onPress={() => deleteBookmark()}
+            onPress={() => handleDeletePress()}
           />
         </View>
       </View>
