@@ -140,41 +140,30 @@ const JokeSection = () => {
           }}
         />
       </ChatBubble>
-
-      <View style={BOOKMARK_BUTTON_CONTAINER}>
+      <View style={BUTTONS_CONTAINER}>
+        <TouchableOpacity onPress={() => newJoke(false)}>
+          <CryingEmoji style={{ marginHorizontal: spacing[3] }} />
+        </TouchableOpacity>
         <Icon
           name={bookmarked ? 'star' : 'staro'}
           size={40}
           color={bookmarked ? color.success : color.palette.black}
           onPress={() => setBookmarked(!bookmarked)}
         />
-      </View>
-
-      <View style={RATING_CONTROLS}>
-        <TouchableOpacity onPress={() => newJoke(false)}>
-          <CryingEmoji style={{ marginLeft: 20 }} />
-        </TouchableOpacity>
         <TouchableOpacity onPress={() => newJoke(true)}>
-          <LaughingEmoji style={{ marginLeft: 15 }} />
+          <LaughingEmoji style={{ marginLeft: 0 }} />
         </TouchableOpacity>
       </View>
     </View>
   );
 };
-
-const BOOKMARK_BUTTON_CONTAINER: ViewStyle = {
-  width: '100%',
-  borderRadius: 300,
-  alignItems: 'center',
+const BUTTONS_CONTAINER: ViewStyle = {
   position: 'absolute',
-  top: '82%',
-  left: 0,
-};
-const RATING_CONTROLS: ViewStyle = {
-  display: 'flex',
   flexDirection: 'row',
-  width: '90%',
-  justifyContent: 'space-around',
+  justifyContent: 'space-between',
+  alignItems: 'flex-end',
+  width: '80%',
+  bottom: 15,
 };
 const getRandomJoke = async (categories: CategorySettings[]): Promise<Joke> => {
   var randomIdx = Math.floor(Math.random() * categories.length);
