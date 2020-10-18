@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ViewStyle, FlatList, View } from 'react-native';
+import { ViewStyle, FlatList, View, TouchableOpacity } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -11,9 +11,14 @@ import { color, spacing } from 'theme';
 import { Joke } from 'app/main/screens/home';
 import Text from 'components/text';
 import CenterView from 'components/centerview';
+import CryingEmoji from 'assets/images/crying-emoji';
+import LaughingEmoji from 'assets/images/laughing-emoji';
+
+type BookmarkedJoke = Joke & { rating: boolean };
 
 const BookmarksScreen = () => {
-  const [bookmarks, setBookmarks] = useState<Joke[] | undefined>();
+  const [bookmarks, setBookmarks] = useState<BookmarkedJoke[] | undefined>();
+
   useEffect(() => {
     let userRef;
     async function loadBookmarks() {
@@ -23,10 +28,11 @@ const BookmarksScreen = () => {
         // .limit(10)
         .get();
       const data = userRef.docs.map((doc) => doc.data());
-      setBookmarks(data as Joke[]);
+      setBookmarks(data as BookmarkedJoke[]);
     }
     loadBookmarks();
   }, []);
+
   return (
     <CenterView style={CONTAINER}>
       {typeof bookmarks !== 'undefined' && (
@@ -43,9 +49,18 @@ const BookmarksScreen = () => {
 
 export default BookmarksScreen;
 
-const ListItem = ({ joke }: { joke: Joke }) => {
+const ListItem = ({ joke }: { joke: BookmarkedJoke }) => {
+  const [rating, setRating] = useState(joke.rating);
   const [collapsed, setCollapsed] = useState(true);
   const [bookmarked, setBookmarked] = useState(false);
+
+  const changeRating = (newRating: boolean) => {
+    firestore()
+      .doc(`users/${auth().currentUser?.uid}/bookmarks/${joke.random}`)
+      .set({ rating: newRating }, { merge: true });
+    setRating(newRating);
+  };
+
   return (
     <View style={LIST_ITEM}>
       <View style={EXPANSION_HEADER}>
@@ -61,11 +76,28 @@ const ListItem = ({ joke }: { joke: Joke }) => {
               name="chevron-down"
               size={10}
               color={color.text}
-              style={{ paddingRight: spacing[2] }}
+              style={{ paddingTop: spacing[1], paddingRight: spacing[2] }}
             />
           }
         />
         <View style={BOOKMARK_BUTTON_CONTAINER}>
+          {rating === false ? (
+            <TouchableOpacity
+              style={{
+                ...RATING_BUTTON,
+                marginVertical: 1,
+                marginHorizontal: 3,
+              }}
+              onPress={() => changeRating(true)}>
+              <CryingEmoji width={26} height={26} />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={RATING_BUTTON}
+              onPress={() => changeRating(false)}>
+              <LaughingEmoji width={32} height={28} />
+            </TouchableOpacity>
+          )}
           <Icon
             name="ios-trash"
             size={33}
@@ -124,6 +156,11 @@ const EXPANSION_BUTTON_CONTAINER: ViewStyle = {
 const BOOKMARK_BUTTON_CONTAINER: ViewStyle = {
   width: '20%',
   borderRadius: 300,
-  justifyContent: 'center',
+  justifyContent: 'flex-end',
   alignItems: 'center',
+  flexDirection: 'row',
+  paddingRight: spacing[3],
+};
+const RATING_BUTTON: ViewStyle = {
+  paddingRight: spacing[5],
 };
