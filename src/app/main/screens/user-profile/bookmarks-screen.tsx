@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ViewStyle, FlatList, View } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 import { color, spacing } from 'theme';
 
@@ -11,14 +13,30 @@ import Text from 'components/text';
 import CenterView from 'components/centerview';
 
 const BookmarksScreen = () => {
+  const [bookmarks, setBookmarks] = useState<Joke[] | undefined>();
+  useEffect(() => {
+    let userRef;
+    async function loadBookmarks() {
+      userRef = await firestore()
+        .doc(`users/${auth().currentUser?.uid}`)
+        .collection('bookmarks')
+        .limit(10)
+        .get();
+      const data = userRef.docs.map((doc) => doc.data());
+      setBookmarks(data as Joke[]);
+    }
+    loadBookmarks();
+  }, []);
   return (
     <CenterView style={CONTAINER}>
-      <FlatList
-        style={FLAT_LIST}
-        data={arr}
-        renderItem={({ index, item }) => <ListItem key={index} joke={item} />}
-        keyExtractor={(joke) => joke.id}
-      />
+      {typeof bookmarks !== 'undefined' && (
+        <FlatList
+          style={FLAT_LIST}
+          data={bookmarks}
+          renderItem={({ index, item }) => <ListItem key={index} joke={item} />}
+          keyExtractor={(joke) => joke.id}
+        />
+      )}
     </CenterView>
   );
 };
@@ -100,19 +118,3 @@ const BOOKMARK_BUTTON_CONTAINER: ViewStyle = {
   justifyContent: 'center',
   alignItems: 'center',
 };
-
-const arr: Joke[] = [
-  {
-    title: 'joke',
-    body:
-      'body body body body body body body body body body body body body body body body body body body body body body body body body body ',
-    id: '1',
-    random: 'asd',
-    category: 'blonde',
-    bookmarked: false,
-    reviews: {
-      count: 0,
-      score: 0,
-    },
-  },
-];
