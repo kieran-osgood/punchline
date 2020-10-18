@@ -97,14 +97,9 @@ const EXPANSION_BUTTON_CONTAINER: ViewStyle = {
 const BOOKMARK_BUTTON_CONTAINER: ViewStyle = {
   width: '20%',
   borderRadius: 300,
-  // margin: spacing[2],
   justifyContent: 'center',
   alignItems: 'center',
 };
-// const BOOKMARK_BUTTON: ViewStyle = {
-//   height: '100%',
-//   width: '100%',
-// };
 const arr = [
   {
     title: 'joke',
