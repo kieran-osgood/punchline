@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { TextStyle, View, ViewStyle } from 'react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -67,16 +67,6 @@ export type Joke = {
 };
 
 const JokeSection = () => {
-  /**
-   * ===== ORDER OF ATTACK ======
-   * When a user submits they're rating for a joke, add it to the 'user/{user}/jokes' sub-collection
-   * add the FULL joke + rating they gave (not to be confused with the average rating)
-   * this enables us to show a history/bookmark page (need to add a bookmark field also)
-   * ! use the array-contains?: https://cloud.google.com/firestore/docs/query-data/queries#node.js_6
-   * const joke = jokesRef.where('category', 'array-contains', 'blonde').get(); (works if 'category' === Category[])
-   * when we've pulled the joke, we need to make sure it doesn't match an id in the 'user/{user}/jokes' sub-collection
-   */
-
   const [bookmarked, setBookmarked] = useState(false);
   const [joke, setJoke] = useState<Joke>({
     body: '',
@@ -91,23 +81,27 @@ const JokeSection = () => {
     },
   });
   const { categories } = useCategoriesContext();
-
   useEffect(() => {
     const loadFirstJoke = async () => setJoke(await getRandomJoke(categories));
     loadFirstJoke();
   }, [categories]);
 
-  const newJoke = async (feedback?: boolean) => {
-    if (typeof feedback === 'boolean') {
-      updateRating({ rating: feedback, joke });
-      addToHistory({ rating: Number(feedback), joke });
-    }
-    if (bookmarked && typeof feedback === 'boolean') {
-      addToBookmarks({ joke, feedback });
+  const newJoke = async (rating?: boolean) => {
+    if (typeof rating === 'boolean') {
+      updateRating({ rating, joke });
+      addToHistory({ joke, rating, bookmark: bookmarked });
     }
     setJoke(await getRandomJoke(categories));
     setBookmarked(false);
   };
+  const calculateScore = () => {
+    if (joke?.reviews?.count > 0) {
+      const score = joke?.reviews?.score / joke?.reviews?.count;
+      return score;
+    }
+    return '50';
+  };
+  const getTextColor = () => (calculateScore() >= 50 ? GREEN_TEXT : RED_TEXT);
 
   return (
     <View
@@ -125,21 +119,31 @@ const JokeSection = () => {
           color: color.storybookDarkBg,
         }}
       />
-      <ChatBubble>
-        <Text style={{ fontSize: 18, padding: spacing[2] }} text={joke.body} />
-        <Microphone
-          style={{
-            width: 200,
-            height: 200,
-            zIndex: 10,
-            opacity: 0.4,
-            position: 'absolute',
-            bottom: '-100%',
-            left: '25%',
-            transform: [{ rotateZ: '-40deg' }],
-          }}
-        />
-      </ChatBubble>
+      <View>
+        <ChatBubble>
+          <Text
+            style={{ fontSize: 18, padding: spacing[2] }}
+            text={joke.body}
+          />
+          <Microphone
+            style={{
+              width: 200,
+              height: 200,
+              zIndex: 10,
+              opacity: 0.4,
+              position: 'absolute',
+              bottom: '-100%',
+              left: '25%',
+              transform: [{ rotateZ: '-40deg' }],
+            }}
+          />
+        </ChatBubble>
+        <View style={RATINGS_STRIP}>
+          {/* <Icon name="thumb" /> */}
+          <Text h3 style={getTextColor()} text={String(calculateScore())} />
+          <Text h3 style={getTextColor()} text="%" />
+        </View>
+      </View>
       <View style={BUTTONS_CONTAINER}>
         <TouchableOpacity onPress={() => newJoke(false)}>
           <CryingEmoji style={{ marginHorizontal: spacing[3] }} />
@@ -156,6 +160,15 @@ const JokeSection = () => {
       </View>
     </View>
   );
+};
+const RATINGS_STRIP: ViewStyle = {
+  flexDirection: 'row',
+};
+const GREEN_TEXT: TextStyle = {
+  color: 'green',
+};
+const RED_TEXT: TextStyle = {
+  color: 'red',
 };
 const BUTTONS_CONTAINER: ViewStyle = {
   position: 'absolute',
@@ -174,7 +187,7 @@ const getRandomJoke = async (categories: CategorySettings[]): Promise<Joke> => {
   let jokesQuery = jokesRef.where('random', '>', randomId).limit(1);
 
   if (category !== undefined) {
-    console.log('category: ', category);
+    // console.log('category: ', category);
     jokesQuery = jokesRef
       .where('category', '==', category.name)
       .where('random', '>', randomId)
@@ -182,40 +195,46 @@ const getRandomJoke = async (categories: CategorySettings[]): Promise<Joke> => {
   }
 
   const jokesSnapshot = await jokesQuery.get();
-  return jokesSnapshot.docs[0].data() as Joke;
+  const joke = jokesSnapshot.docs[0].data() as Joke;
+  if (!joke.hasOwnProperty('reviews')) {
+    joke.reviews = {
+      count: 0,
+      score: 0,
+    };
+  }
+  return joke;
 };
 
 export const addToHistory = async ({
   joke,
   rating,
+  bookmark,
 }: {
   joke: Joke;
-  rating: number;
+  rating: boolean;
+  bookmark: boolean;
 }): Promise<boolean> => {
   const userRef = await getCurrentUser(false);
-  userRef
-    .collection('history')
-    .doc(joke.random)
-    .set({ joke, rating: Number(rating) });
-  return true;
-};
-
-export const addToBookmarks = async ({
-  joke,
-  feedback,
-}: {
-  joke: Joke;
-  feedback: boolean;
-}): Promise<boolean> => {
+  const addToBookmark = {
+    bookmarked: bookmark,
+    dateBookmarked: bookmark ? new Date() : null,
+  };
+  const ratings = rating !== undefined ? { rating } : {};
   try {
-    const userRef = await getCurrentUser(false);
     userRef
-      .collection('bookmarks')
+      .collection('history')
       .doc(joke.random)
-      .set({ ...joke, rating: feedback });
+      .set({
+        ...joke,
+        rating,
+        dateSeen: new Date(),
+        ...addToBookmark,
+        ...ratings,
+      });
     return true;
   } catch (error) {
     crashlytics().log(error);
+
     return false;
   }
 };

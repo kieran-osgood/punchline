@@ -8,27 +8,27 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import { color, spacing } from 'theme';
 
-import { Joke } from 'app/main/screens/home';
 import Text from 'components/text';
 import CenterView from 'components/centerview';
 import CryingEmoji from 'assets/images/crying-emoji';
 import LaughingEmoji from 'assets/images/laughing-emoji';
-
-type BookmarkedJoke = Joke & { rating: boolean };
+import { JokeHistory } from 'screens/user-profile/history-screen';
 
 const BookmarksScreen = () => {
-  const [bookmarks, setBookmarks] = useState<BookmarkedJoke[] | undefined>();
+  const [bookmarks, setBookmarks] = useState<JokeHistory[] | undefined>();
 
   useEffect(() => {
     let userRef;
     async function loadBookmarks() {
       userRef = await firestore()
         .doc(`users/${auth().currentUser?.uid}`)
-        .collection('bookmarks')
-        // .limit(10)
+        .collection('history')
+        .where('bookmarked', '==', true)
+        .orderBy('dateBookmarked', 'desc')
         .get();
-      const data = userRef.docs.map((doc) => doc.data());
-      setBookmarks(data as BookmarkedJoke[]);
+      const data = userRef.docs.map((doc) => doc.data()) ?? [];
+      console.log('data: ', data);
+      setBookmarks(data as JokeHistory[]);
     }
     loadBookmarks();
   }, []);
@@ -39,8 +39,10 @@ const BookmarksScreen = () => {
         <FlatList
           style={FLAT_LIST}
           data={bookmarks}
-          renderItem={({ index, item }) => <ListItem key={index} joke={item} />}
-          keyExtractor={(joke) => joke.id}
+          renderItem={({ item }) => (
+            <ListItem key={String(item.random)} joke={item} />
+          )}
+          keyExtractor={(joke) => String(joke.random)}
         />
       )}
     </CenterView>
@@ -49,17 +51,30 @@ const BookmarksScreen = () => {
 
 export default BookmarksScreen;
 
-const ListItem = ({ joke }: { joke: BookmarkedJoke }) => {
+const ListItem = ({ joke }: { joke: JokeHistory }) => {
   const [rating, setRating] = useState(joke.rating);
   const [collapsed, setCollapsed] = useState(true);
-  const [bookmarked, setBookmarked] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   const changeRating = (newRating: boolean) => {
     firestore()
-      .doc(`users/${auth().currentUser?.uid}/bookmarks/${joke.random}`)
+      .doc(`users/${auth().currentUser?.uid}/history/${joke.random}`)
       .set({ rating: newRating }, { merge: true });
     setRating(newRating);
   };
+
+  const deleteBookmark = () => {
+    firestore()
+      .doc(`users/${auth().currentUser?.uid}/history/${joke.random}`)
+      .set({ bookmarked: false }, { merge: true })
+      .then(() => {
+        setVisible(false);
+      });
+  };
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <View style={LIST_ITEM}>
@@ -102,7 +117,7 @@ const ListItem = ({ joke }: { joke: BookmarkedJoke }) => {
             name="ios-trash"
             size={33}
             color={color.error}
-            onPress={() => setBookmarked(!bookmarked)}
+            onPress={() => deleteBookmark()}
           />
         </View>
       </View>

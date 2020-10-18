@@ -1,21 +1,46 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ViewStyle, FlatList, View } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/AntDesign';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 import { color, spacing } from 'theme';
 
-import { Joke } from 'app/main/screens/home';
+import { addToHistory, Joke } from 'app/main/screens/home';
 import Text from 'components/text';
 import CenterView from 'components/centerview';
 
+export type JokeHistory = Joke & {
+  rating: boolean;
+  dateSeen: Date;
+  dateBookmarked: Date | null;
+  bookmarked: boolean;
+};
+
 const HistoryScreen = () => {
+  const [history, setHistory] = useState<JokeHistory[] | undefined>();
+
+  useEffect(() => {
+    let userRef;
+    async function loadHistory() {
+      userRef = await firestore()
+        .doc(`users/${auth().currentUser?.uid}`)
+        .collection('history')
+        .orderBy('dateSeen', 'desc')
+        .get();
+      const data = userRef.docs.map((doc) => doc.data());
+      setHistory(data as JokeHistory[]);
+    }
+    loadHistory();
+  }, []);
+
   return (
     <CenterView style={CONTAINER}>
       <FlatList
         style={FLAT_LIST}
-        data={arr}
+        data={history}
         renderItem={({ index, item }) => <ListItem key={index} joke={item} />}
         keyExtractor={(joke) => joke.id}
       />
@@ -25,9 +50,15 @@ const HistoryScreen = () => {
 
 export default HistoryScreen;
 
-const ListItem = ({ joke }: { joke: Joke }) => {
+const ListItem = ({ joke }: { joke: JokeHistory }) => {
   const [collapsed, setCollapsed] = useState(true);
   const [bookmarked, setBookmarked] = useState(false);
+
+  const handleBookmarkPress = () => {
+    setBookmarked(!bookmarked);
+    addToHistory({ joke, rating: joke.rating, bookmark: !bookmarked });
+  };
+
   return (
     <View style={LIST_ITEM}>
       <View style={EXPANSION_HEADER}>
@@ -44,7 +75,7 @@ const ListItem = ({ joke }: { joke: Joke }) => {
             name={bookmarked ? 'star' : 'staro'}
             size={40}
             color={bookmarked ? color.success : color.text}
-            onPress={() => setBookmarked(!bookmarked)}
+            onPress={() => handleBookmarkPress()}
           />
         </View>
       </View>
@@ -100,19 +131,3 @@ const BOOKMARK_BUTTON_CONTAINER: ViewStyle = {
   justifyContent: 'center',
   alignItems: 'center',
 };
-
-const arr: Joke[] = [
-  {
-    title: 'joke',
-    body:
-      'body body body body body body body body body body body body body body body body body body body body body body body body body body ',
-    id: '1',
-    random: 'asd',
-    category: 'blonde',
-    bookmarked: false,
-    reviews: {
-      count: 0,
-      score: 0,
-    },
-  },
-];
