@@ -33,15 +33,8 @@ export default function Home() {
 
 const Header = () => (
   <>
-    <View style={{ width: '100%' }}>
-      <AppLogo
-        style={{
-          padding: spacing[1],
-          alignSelf: 'auto',
-          justifyContent: 'flex-start',
-        }}
-        width={130}
-      />
+    <View style={LOGO_CONTAINER}>
+      <AppLogo style={LOGO} width={130} />
     </View>
     <BannerAd
       unitId={TestIds.BANNER} // ! Setup to check process.env
@@ -49,6 +42,16 @@ const Header = () => (
     />
   </>
 );
+
+const LOGO_CONTAINER: ViewStyle = {
+  width: '100%',
+};
+
+const LOGO: ViewStyle = {
+  padding: spacing[1],
+  alignSelf: 'auto',
+  justifyContent: 'flex-start',
+};
 
 export type Joke = {
   body: string;
@@ -90,19 +93,20 @@ const JokeSection = () => {
   const { categories } = useCategoriesContext();
 
   useEffect(() => {
-    // he5b6ObqJZU6rAqRlUnm
     const loadFirstJoke = async () => setJoke(await getRandomJoke(categories));
-
     loadFirstJoke();
   }, [categories]);
 
   const newJoke = async (feedback?: boolean) => {
-    console.log('test');
     if (typeof feedback === 'boolean') {
       updateRating({ rating: feedback, joke });
       addToHistory({ rating: Number(feedback), joke });
     }
-    // setJoke(await getRandomJoke(categories));
+    if (bookmarked && typeof feedback === 'boolean') {
+      addToBookmarks({ joke, feedback });
+    }
+    setJoke(await getRandomJoke(categories));
+    setBookmarked(false);
   };
 
   return (
@@ -154,7 +158,6 @@ const JokeSection = () => {
           <LaughingEmoji style={{ marginLeft: 15 }} />
         </TouchableOpacity>
       </View>
-      {/* <Button onPress={() => newJoke()} title="test" /> */}
     </View>
   );
 };
@@ -177,8 +180,6 @@ const getRandomJoke = async (categories: CategorySettings[]): Promise<Joke> => {
   var randomIdx = Math.floor(Math.random() * categories.length);
   const category = categories[randomIdx];
   const jokesRef = firestore().collection('jokes');
-  // const jokesRef = firestore().collection('test');
-  // return (await jokesRef.doc('49sNjtkfpYPczFePsduj').get()).data();
   const randomId = jokesRef.doc().id;
 
   let jokesQuery = jokesRef.where('random', '>', randomId).limit(1);
@@ -210,10 +211,19 @@ export const addToHistory = async ({
   return true;
 };
 
-export const addToBookmarks = async (joke: Joke): Promise<boolean> => {
+export const addToBookmarks = async ({
+  joke,
+  feedback,
+}: {
+  joke: Joke;
+  feedback: boolean;
+}): Promise<boolean> => {
   try {
     const userRef = await getCurrentUser(false);
-    userRef.collection('bookmarks').doc(joke.random).set(joke);
+    userRef
+      .collection('bookmarks')
+      .doc(joke.random)
+      .set({ joke, rating: feedback });
     return true;
   } catch (error) {
     crashlytics().log(error);
@@ -233,7 +243,6 @@ export const updateRating = async ({
       ? { score: firestore.FieldValue.increment(1) }
       : {};
     await firestore()
-      // .collection('test')
       .collection('jokes')
       .doc(joke.random)
       .set(
