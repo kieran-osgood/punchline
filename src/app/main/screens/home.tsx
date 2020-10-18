@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TextStyle, View, ViewStyle } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -9,7 +9,7 @@ import { color, spacing } from 'theme';
 import Text from 'components/text';
 import CenterView from 'components/centerview';
 import ChatBubble from 'components/chat-bubble';
-import Microphone from 'assets/images/microphone';
+// import Microphone from 'assets/images/microphone';
 import AppLogo from 'components/app-logo';
 import useGetCategories from 'components/useGetCategories';
 import { useCategoriesContext } from 'components/categories-context';
@@ -94,14 +94,15 @@ const JokeSection = () => {
     setJoke(await getRandomJoke(categories));
     setBookmarked(false);
   };
-  const calculateScore = () => {
-    if (joke?.reviews?.count > 0) {
-      const score = joke?.reviews?.score / joke?.reviews?.count;
-      return score;
-    }
-    return '50';
-  };
-  const getTextColor = () => (calculateScore() >= 50 ? GREEN_TEXT : RED_TEXT);
+  // const calculateScore = () => {
+  //   if (joke?.reviews?.count > 0) {
+  //     const score = joke?.reviews?.score / joke?.reviews?.count;
+  //     return score;
+  //   }
+  //   return '50';
+  // };
+
+  // const getTextColor = () => (calculateScore() >= 50 ? GREEN_TEXT : RED_TEXT);
 
   return (
     <View
@@ -125,24 +126,16 @@ const JokeSection = () => {
             style={{ fontSize: 18, padding: spacing[2] }}
             text={joke.body}
           />
-          <Microphone
-            style={{
-              width: 200,
-              height: 200,
-              zIndex: 10,
-              opacity: 0.4,
-              position: 'absolute',
-              bottom: '-100%',
-              left: '25%',
-              transform: [{ rotateZ: '-40deg' }],
-            }}
-          />
         </ChatBubble>
+        {/*
         <View style={RATINGS_STRIP}>
-          {/* <Icon name="thumb" /> */}
-          <Text h3 style={getTextColor()} text={String(calculateScore())} />
-          <Text h3 style={getTextColor()} text="%" />
-        </View>
+          <Icon name="thumb" />
+          <Text
+            h3
+            style={getTextColor()}
+            text={`${String(calculateScore())}%`}
+          />
+        </View> */}
       </View>
       <View style={BUTTONS_CONTAINER}>
         <TouchableOpacity onPress={() => newJoke(false)}>
@@ -161,15 +154,15 @@ const JokeSection = () => {
     </View>
   );
 };
-const RATINGS_STRIP: ViewStyle = {
-  flexDirection: 'row',
-};
-const GREEN_TEXT: TextStyle = {
-  color: 'green',
-};
-const RED_TEXT: TextStyle = {
-  color: 'red',
-};
+// const RATINGS_STRIP: ViewStyle = {
+//   flexDirection: 'row',
+// };
+// const GREEN_TEXT: TextStyle = {
+//   color: 'green',
+// };
+// const RED_TEXT: TextStyle = {
+//   color: 'red',
+// };
 const BUTTONS_CONTAINER: ViewStyle = {
   position: 'absolute',
   flexDirection: 'row',
@@ -187,7 +180,6 @@ const getRandomJoke = async (categories: CategorySettings[]): Promise<Joke> => {
   let jokesQuery = jokesRef.where('random', '>', randomId).limit(1);
 
   if (category !== undefined) {
-    // console.log('category: ', category);
     jokesQuery = jokesRef
       .where('category', '==', category.name)
       .where('random', '>', randomId)
