@@ -3,9 +3,9 @@ import { ViewStyle, FlatList, View } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
+import FAIcon from 'react-native-vector-icons/FontAwesome5';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-
 import { color, spacing } from 'theme';
 
 import { Joke } from 'app/main/screens/home';
@@ -20,7 +20,7 @@ const BookmarksScreen = () => {
       userRef = await firestore()
         .doc(`users/${auth().currentUser?.uid}`)
         .collection('bookmarks')
-        .limit(10)
+        // .limit(10)
         .get();
       const data = userRef.docs.map((doc) => doc.data());
       setBookmarks(data as Joke[]);
@@ -56,6 +56,14 @@ const ListItem = ({ joke }: { joke: Joke }) => {
           buttonStyle={EXPANSION_BUTTON}
           titleStyle={{ color: color.text }}
           type="clear"
+          icon={
+            <FAIcon
+              name="chevron-down"
+              size={10}
+              color={color.text}
+              style={{ paddingRight: spacing[2] }}
+            />
+          }
         />
         <View style={BOOKMARK_BUTTON_CONTAINER}>
           <Icon
@@ -102,6 +110,7 @@ const EXPANSION_HEADER: ViewStyle = {
   width: '100%',
   flex: 1,
   flexDirection: 'row',
+  alignItems: 'center',
 };
 const EXPANSION_BUTTON: ViewStyle = {
   justifyContent: 'flex-start',
