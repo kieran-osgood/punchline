@@ -118,6 +118,7 @@ const JokeSection = () => {
         text={joke.title}
         style={{
           color: color.storybookDarkBg,
+          paddingHorizontal: spacing[5],
         }}
       />
       <View>
