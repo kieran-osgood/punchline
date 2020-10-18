@@ -223,7 +223,7 @@ export const addToBookmarks = async ({
     userRef
       .collection('bookmarks')
       .doc(joke.random)
-      .set({ joke, rating: feedback });
+      .set({ ...joke, rating: feedback });
     return true;
   } catch (error) {
     crashlytics().log(error);
