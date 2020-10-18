@@ -35,9 +35,9 @@ export default function MainTabs() {
       labeled={false}
       barStyle={{ backgroundColor: color.background }}
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color = 'red' }) => {
+        tabBarIcon: ({ focused, color: tabColor = 'red' }) => {
           let iconName = '';
-
+          let size = focused ? 22 : 15;
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home';
           }
@@ -48,7 +48,7 @@ export default function MainTabs() {
             iconName = 'user-alt';
           }
 
-          return <Icon name={iconName} size={20} color={color} />;
+          return <Icon name={iconName} size={size} color={tabColor} />;
         },
       })}
       initialRouteName="Home">
