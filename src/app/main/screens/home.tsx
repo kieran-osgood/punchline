@@ -33,11 +33,20 @@ export default function Home() {
 
 const Header = () => (
   <>
+    <View style={{ width: '100%' }}>
+      <AppLogo
+        style={{
+          padding: spacing[1],
+          alignSelf: 'auto',
+          justifyContent: 'flex-start',
+        }}
+        width={130}
+      />
+    </View>
     <BannerAd
       unitId={TestIds.BANNER} // ! Setup to check process.env
       size={BannerAdSize.SMART_BANNER}
     />
-    <AppLogo />
   </>
 );
 
