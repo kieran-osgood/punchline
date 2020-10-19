@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, ViewStyle } from 'react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import firestore from '@react-native-firebase/firestore';
@@ -8,8 +8,6 @@ import { color, spacing } from 'theme';
 
 import Text from 'components/text';
 import CenterView from 'components/centerview';
-import ChatBubble from 'components/chat-bubble';
-// import Microphone from 'assets/images/microphone';
 import AppLogo from 'components/app-logo';
 import useGetCategories from 'components/useGetCategories';
 import { useCategoriesContext } from 'components/categories-context';
@@ -19,7 +17,7 @@ import { getCurrentUser } from 'app/api';
 import CryingEmoji from 'assets/images/crying-emoji';
 import LaughingEmoji from 'assets/images/laughing-emoji';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function Home() {
   useGetCategories();
@@ -103,6 +101,7 @@ const JokeSection = () => {
   // };
 
   // const getTextColor = () => (calculateScore() >= 50 ? GREEN_TEXT : RED_TEXT);
+  const ref = useRef<ScrollView>();
 
   return (
     <View
@@ -121,14 +120,38 @@ const JokeSection = () => {
           paddingHorizontal: spacing[5],
         }}
       />
-      <View>
-        <ChatBubble>
-          <Text
-            style={{ fontSize: 18, padding: spacing[2] }}
-            text={joke.body}
-          />
-        </ChatBubble>
-        {/*
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingTop: spacing[2],
+          width: '100%',
+          // borderWidth: 2,
+          // borderColor: 'white',
+        }}>
+        <View
+          style={{
+            borderRadius: 30,
+            height: '75%',
+            marginHorizontal: spacing[2],
+            backgroundColor: 'white',
+            padding: spacing[2],
+            // borderWidth: 1,
+            // borderColor: 'red',
+          }}>
+          <ScrollView
+            ref={ref}
+            onContentSizeChange={() => ref?.current?.flashScrollIndicators()}>
+            <Text
+              style={{ fontSize: 18, padding: spacing[2] }}
+              text={joke.body
+                .split(/\n/g)
+                .map((x) => x.charAt(0).toUpperCase() + x.substr(1))
+                .join('\n')}
+            />
+          </ScrollView>
+          {/*
         <View style={RATINGS_STRIP}>
           <Icon name="thumb" />
           <Text
@@ -137,20 +160,21 @@ const JokeSection = () => {
             text={`${String(calculateScore())}%`}
           />
         </View> */}
-      </View>
-      <View style={BUTTONS_CONTAINER}>
-        <TouchableOpacity onPress={() => newJoke(false)}>
-          <CryingEmoji style={{ marginHorizontal: spacing[3] }} />
-        </TouchableOpacity>
-        <Icon
-          name={bookmarked ? 'star' : 'staro'}
-          size={40}
-          color={bookmarked ? color.success : color.palette.black}
-          onPress={() => setBookmarked(!bookmarked)}
-        />
-        <TouchableOpacity onPress={() => newJoke(true)}>
-          <LaughingEmoji style={{ marginLeft: 0 }} />
-        </TouchableOpacity>
+        </View>
+        <View style={BUTTONS_CONTAINER}>
+          <TouchableOpacity onPress={() => newJoke(false)}>
+            <CryingEmoji style={{ marginHorizontal: spacing[3] }} />
+          </TouchableOpacity>
+          <Icon
+            name={bookmarked ? 'star' : 'staro'}
+            size={40}
+            color={bookmarked ? color.success : color.palette.black}
+            onPress={() => setBookmarked(!bookmarked)}
+          />
+          <TouchableOpacity onPress={() => newJoke(true)}>
+            <LaughingEmoji style={{ marginLeft: 0 }} />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -165,12 +189,14 @@ const JokeSection = () => {
 //   color: 'red',
 // };
 const BUTTONS_CONTAINER: ViewStyle = {
-  position: 'absolute',
+  position: 'relative',
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'flex-end',
-  width: '80%',
-  bottom: 15,
+  // borderWidth: 1,
+  // borderColor: 'green',
+  // width: '80%',
+  // bottom: 15,
 };
 const getRandomJoke = async (categories: CategorySettings[]): Promise<Joke> => {
   var randomIdx = Math.floor(Math.random() * categories.length);
