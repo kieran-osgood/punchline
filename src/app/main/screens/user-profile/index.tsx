@@ -6,6 +6,7 @@ import { color } from 'theme';
 
 import BookmarksScreen from 'app/main/screens/user-profile/bookmarks-screen';
 import HistoryScreen from 'app/main/screens/user-profile/history-screen';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type RouteParamList = {
   Bookmarks: undefined;
@@ -14,10 +15,12 @@ export type RouteParamList = {
 
 const Tab = createMaterialTopTabNavigator<RouteParamList>();
 export default function UserProfile() {
+  const insets = useSafeAreaInsets();
+
   return (
     <Tab.Navigator
       tabBarOptions={{
-        style: TAB_STYLE,
+        style: { ...TAB_STYLE, paddingTop: insets.top },
       }}>
       <Tab.Screen name="Bookmarks" component={BookmarksScreen} />
       <Tab.Screen name="History" component={HistoryScreen} />
