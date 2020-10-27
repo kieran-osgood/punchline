@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { ScrollView, View, ViewStyle } from 'react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
@@ -17,7 +17,7 @@ import { getCurrentUser } from 'app/api';
 import CryingEmoji from 'assets/images/crying-emoji';
 import LaughingEmoji from 'assets/images/laughing-emoji';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function Home() {
   useGetCategories();
@@ -101,7 +101,7 @@ const JokeSection = () => {
   // };
 
   // const getTextColor = () => (calculateScore() >= 50 ? GREEN_TEXT : RED_TEXT);
-  const ref = useRef<ScrollView>();
+  const ref = useRef<ScrollView>(null);
 
   return (
     <View
@@ -142,6 +142,7 @@ const JokeSection = () => {
           }}>
           <ScrollView
             ref={ref}
+            // @ts-ignore
             onContentSizeChange={() => ref?.current?.flashScrollIndicators()}>
             <Text
               style={{ fontSize: 18, padding: spacing[2] }}
