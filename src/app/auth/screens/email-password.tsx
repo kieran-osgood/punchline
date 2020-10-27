@@ -119,6 +119,7 @@ export default function EmailPassword() {
         containerStyle={BUTTON_CONTAINER}
         onPress={handleSubmit(submit)}
         title="Login"
+        raised
         disabled={touched < 2 || !!errors.email || !!errors.password}
       />
       <Text text="Don't have an account yet?" style={text} />

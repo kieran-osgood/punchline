@@ -70,6 +70,7 @@ export default function Settings() {
           containerStyle={BUTTON_CONTAINER}
           onPress={() => auth().signOut()}
           title="Logout"
+          raised
           // disabled={touched < 2 || !!errors.email || !!errors.password}
         />
       </View>

@@ -97,7 +97,7 @@ const GoogleSignIn = () => {
       buttonStyle={PILL_BUTTON}
       titleStyle={BUTTON_TITLE}
       containerStyle={BUTTON_CONTAINER}
-      // raised
+      raised
       icon={<GoogleIcon style={BUTTON_ICON} />}
       onPress={() => handlePress()}
     />
@@ -139,7 +139,7 @@ const FacebookSignIn = () => {
       buttonStyle={PILL_BUTTON}
       titleStyle={BUTTON_TITLE}
       containerStyle={BUTTON_CONTAINER}
-      // raised
+      raised
       icon={<Facebook style={BUTTON_ICON} />}
       onPress={() =>
         onFacebookButtonPress()
@@ -153,7 +153,7 @@ const FacebookSignIn = () => {
 const EmailSignIn = ({ onPressEvent }: { onPressEvent: () => void }) => (
   <Button
     title="Log in with Email"
-    // raised
+    raised
     buttonStyle={PILL_BUTTON}
     titleStyle={BUTTON_TITLE}
     containerStyle={BUTTON_CONTAINER}
