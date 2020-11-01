@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "681986405885-qme53q4bs2n54pagfmm0jktfgide2dd5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.punchline",
+            "certificate_hash": "293026fa4807818c0682cc0b28e76a57d56cd19f"
+          }
+        },
+        {
           "client_id": "681986405885-h18bi681l38qddk9g95fr8plhs9cihii.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -152,12 +152,22 @@ android {
     }
     signingConfigs {
         release {
+            // Only one of the blocks below should be active at a time
+            // ---- CODE PUSH SIGNING ---- //
             if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
                 storeFile file(MYAPP_UPLOAD_STORE_FILE)
                 storePassword MYAPP_UPLOAD_STORE_PASSWORD
                 keyAlias MYAPP_UPLOAD_KEY_ALIAS
                 keyPassword MYAPP_UPLOAD_KEY_PASSWORD
             }
+            // ---- CODE PUSH SIGNING ---- //
+
+            // ---- LOCAL KEYSTORE SIGNING ---- //
+            // storeFile file('punchline.keystore')
+            // storePassword 'letmein'
+            // keyAlias 'punchline'
+            // keyPassword 'letmein'
+            // ---- LOCAL KEYSTORE SIGNING ---- //
         }
         debug {
             storeFile file('debug.keystore')
@@ -177,6 +187,7 @@ android {
         releaseStaging {
             resValue "string", "app_name", "@string/app_name_staging"
             resValue "string", "CodePushDeploymentKey", "lbCJ2uYM_9JSe9zSdjTtRmEh1vMNzFPLwb5sl"
+
             // Note: It is a good idea to provide matchingFallbacks for the new buildType you create to prevent build issues
             // Add the following line if not already there
             matchingFallbacks = ['release']
