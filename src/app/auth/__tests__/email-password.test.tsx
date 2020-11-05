@@ -1,17 +1,12 @@
 import React from 'react';
-import {
-  render,
-  fireEvent,
-  waitFor,
-  waitForElementToBeRemoved,
-  act,
-} from '@testing-library/react-native';
+import { render, fireEvent, act } from '@testing-library/react-native';
 
 import EmailPassword from '../screens/email-password';
+import { fireAsyncChangeText } from 'src/test';
 
-// test('should render the EmailPassword page', async () => {
-//   render(<EmailPassword />);
-// });
+test('should render the EmailPassword page', async () => {
+  render(<EmailPassword />);
+});
 
 test('should show an error for the email', async () => {
   const { getByPlaceholderText, getByText, queryByText } = render(
@@ -26,14 +21,14 @@ test('should show an error for the email', async () => {
 
   expect(queryByText(errorMessage1)).toBeFalsy(); // Hidden on pageload
 
-  fireEvent.changeText(emailInput, badEmail1); // empty string
-  await waitFor(() => getByText(errorMessage1));
+  await fireAsyncChangeText(emailInput, badEmail1); // empty string
+  getByText(errorMessage1);
 
-  fireEvent.changeText(emailInput, badEmail2); //invalid
-  await waitFor(() => getByText(errorMessage2));
+  await fireAsyncChangeText(emailInput, badEmail2); //invalid
+  getByText(errorMessage2);
 
-  fireEvent.changeText(emailInput, 'test@gmail.com');
-  await waitForElementToBeRemoved(() => getByText(errorMessage2));
+  await fireAsyncChangeText(emailInput, 'test@gmail.com');
+  expect(queryByText(errorMessage2)).toBeFalsy();
 }, 30000);
 
 test('should show disabled button', () => {
