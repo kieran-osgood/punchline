@@ -23,17 +23,15 @@ const HistoryScreen = () => {
   const [history, setHistory] = useState<JokeHistory[] | undefined>();
 
   useEffect(() => {
-    let userRef;
-    async function loadHistory() {
-      userRef = await firestore()
-        .doc(`users/${auth().currentUser?.uid}`)
-        .collection('history')
-        .orderBy('dateSeen', 'desc')
-        .get();
-      const data = userRef.docs.map((doc) => doc.data());
-      setHistory(data as JokeHistory[]);
-    }
-    loadHistory();
+    const unsubscribe = firestore()
+      .doc(`users/${auth().currentUser?.uid}`)
+      .collection('history')
+      .orderBy('dateSeen', 'desc')
+      .onSnapshot((docSnapshot) => {
+        const data = docSnapshot.docs.map((doc) => doc.data()) ?? [];
+        setHistory(data as JokeHistory[]);
+      });
+    return () => unsubscribe();
   }, []);
 
   return (

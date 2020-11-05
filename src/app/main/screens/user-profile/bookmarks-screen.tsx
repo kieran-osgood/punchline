@@ -24,19 +24,19 @@ const BookmarksScreen = () => {
   const [bookmarks, setBookmarks] = useState<JokeHistory[] | undefined>();
 
   useEffect(() => {
-    let userRef;
-    async function loadBookmarks() {
-      userRef = await firestore()
-        .doc(`users/${auth().currentUser?.uid}`)
-        .collection('history')
-        .where('bookmarked', '==', true)
-        .orderBy('dateBookmarked', 'desc')
-        .get();
-      const data = userRef.docs.map((doc) => doc.data()) ?? [];
-      console.log('data: ', data);
-      setBookmarks(data as JokeHistory[]);
-    }
-    loadBookmarks();
+    const unsubscribe = firestore()
+      .doc(`users/${auth().currentUser?.uid}`)
+      .collection('history')
+      .where('bookmarked', '==', true)
+      .orderBy('dateBookmarked', 'desc')
+      .onSnapshot((docSnapshot) => {
+        // console.log('docSnapshot: ', docSnapshot);
+        if (docSnapshot !== null) {
+          const data = docSnapshot.docs.map((doc) => doc.data()) ?? [];
+          setBookmarks(data as JokeHistory[]);
+        }
+      });
+    return () => unsubscribe();
   }, []);
 
   return (
