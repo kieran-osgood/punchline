@@ -3,7 +3,7 @@ import { ViewStyle } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import { color } from 'theme';
-
+import Icon from 'react-native-vector-icons/AntDesign';
 import BookmarksScreen from 'app/main/screens/user-profile/bookmarks-screen';
 import HistoryScreen from 'app/main/screens/user-profile/history-screen';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -21,9 +21,30 @@ export default function UserProfile() {
     <Tab.Navigator
       tabBarOptions={{
         style: { ...TAB_STYLE, paddingTop: insets.top },
+        showIcon: true,
+        indicatorStyle: {
+          borderBottomColor: '#87B56A',
+          borderBottomWidth: 4,
+        },
       }}>
-      <Tab.Screen name="Bookmarks" component={BookmarksScreen} />
-      <Tab.Screen name="History" component={HistoryScreen} />
+      <Tab.Screen
+        name="Bookmarks"
+        component={BookmarksScreen}
+        options={{
+          tabBarIcon: ({ color: tabBarColor = '#fff' }) => (
+            <Icon name="staro" size={25} color={tabBarColor} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="History"
+        component={HistoryScreen}
+        options={{
+          tabBarIcon: ({ color: tabBarColor = '#fff' }) => (
+            <Icon name="book" size={25} color={tabBarColor} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
