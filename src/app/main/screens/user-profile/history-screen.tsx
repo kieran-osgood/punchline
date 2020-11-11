@@ -40,7 +40,7 @@ const HistoryScreen = () => {
         style={FLAT_LIST}
         data={history}
         renderItem={({ index, item }) => <ListItem key={index} joke={item} />}
-        keyExtractor={(joke) => joke.id}
+        keyExtractor={(joke) => String(joke.id)}
       />
     </CenterView>
   );
