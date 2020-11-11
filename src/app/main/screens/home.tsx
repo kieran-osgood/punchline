@@ -82,6 +82,7 @@ const JokeSection = () => {
     },
   });
   const { userCategories } = useCategoriesContext();
+  const ref = useRef<ScrollView>(null);
 
   useEffect(() => {
     const loadFirstJoke = async () =>
@@ -105,9 +106,6 @@ const JokeSection = () => {
   //   return '50';
   // };
 
-  // const getTextColor = () => (calculateScore() >= 50 ? GREEN_TEXT : RED_TEXT);
-  const ref = useRef<ScrollView>(null);
-
   return (
     <View
       style={{
@@ -115,7 +113,7 @@ const JokeSection = () => {
         justifyContent: 'flex-start',
         alignItems: 'center',
         paddingTop: spacing[2],
-        width: '100%',
+        width: '90%',
       }}>
       <Text
         h2
@@ -132,8 +130,6 @@ const JokeSection = () => {
           alignItems: 'center',
           paddingTop: spacing[2],
           width: '100%',
-          // borderWidth: 2,
-          // borderColor: 'white',
         }}>
         <View
           style={{
@@ -142,8 +138,7 @@ const JokeSection = () => {
             marginHorizontal: spacing[2],
             backgroundColor: 'white',
             padding: spacing[2],
-            // borderWidth: 1,
-            // borderColor: 'red',
+            width: '100%',
           }}>
           <ScrollView
             ref={ref}
