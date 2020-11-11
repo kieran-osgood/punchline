@@ -50,7 +50,7 @@ export default HistoryScreen;
 
 const ListItem = ({ joke }: { joke: JokeHistory }) => {
   const [collapsed, setCollapsed] = useState(true);
-  const [bookmarked, setBookmarked] = useState(false);
+  const [bookmarked, setBookmarked] = useState(joke.bookmarked);
 
   const handleBookmarkPress = () => {
     setBookmarked(!bookmarked);
