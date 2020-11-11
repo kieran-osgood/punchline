@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, Reducer } from 'react';
+import React, { useEffect } from 'react';
 import { View, ViewStyle } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { Button } from 'react-native-elements';
@@ -13,36 +13,21 @@ import SelectPills, { CategorySettings } from 'components/select-pills';
 import { getCategories, getCurrentUser } from 'src/app/api';
 import useGetUserCategories from 'components/useGetUserCategories';
 
-type reducerAction = { type: 'CATEGORY'; payload: CategorySettings[] };
-type reducerState = {
-  categories: CategorySettings[];
-};
-
-const settingsReducer = (state: reducerState, action: reducerAction) => {
-  switch (action.type) {
-    case 'CATEGORY':
-      return { ...state, categories: [...action.payload] };
-  }
-};
-
 export default function Settings() {
   const userCategories = useGetUserCategories();
-  const [state, dispatch] = useReducer<Reducer<reducerState, reducerAction>>(
-    settingsReducer,
-    { categories: [] },
-  );
+  const [categories, setCategories] = React.useState<CategorySettings[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const categories = await getCategories();
-      const results = categories.map((category) => {
+      const categoriesApi = await getCategories();
+      const results = categoriesApi.map((category) => {
         const match = userCategories?.find((x) => x.id === category.id);
         if (match) {
           return { ...category, ...match };
         }
         return category;
       });
-      dispatch({ type: 'CATEGORY', payload: results });
+      setCategories(results);
     }
     fetchData();
   }, [userCategories]);
@@ -50,7 +35,7 @@ export default function Settings() {
   const handleValueChanged = async (value: CategorySettings[]) => {
     const user = await getCurrentUser(false);
     user.set({ categories: value });
-    dispatch({ type: 'CATEGORY', payload: value });
+    setCategories(value);
   };
 
   return (
@@ -58,7 +43,7 @@ export default function Settings() {
       <CenterView style={{ flex: 0, marginBottom: 80, width: '100%' }}>
         <Text h3>Categories</Text>
         <SelectPills
-          data={state.categories}
+          data={categories}
           onValueChange={(value) => handleValueChanged(value)}
         />
       </CenterView>
