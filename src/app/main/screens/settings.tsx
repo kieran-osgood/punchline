@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, ViewStyle } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { Button } from 'react-native-elements';
@@ -10,27 +10,20 @@ import { BUTTON_CONTAINER, PILL_BUTTON } from 'auth/screens/login-choices';
 import Text from 'components/text';
 import CenterView from 'components/centerview';
 import SelectPills, { CategorySettings } from 'components/select-pills';
-import { getCategories, getCurrentUser } from 'src/app/api';
-import useGetUserCategories from 'components/useGetUserCategories';
+import { getCurrentUser } from 'src/app/api';
+import { useCategoriesContext } from 'components/categories-context';
 
 export default function Settings() {
-  const userCategories = useGetUserCategories();
-  const [categories, setCategories] = React.useState<CategorySettings[]>([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      const categoriesApi = await getCategories();
-      const results = categoriesApi.map((category) => {
-        const match = userCategories?.find((x) => x.id === category.id);
-        if (match) {
-          return { ...category, ...match };
-        }
-        return category;
-      });
-      setCategories(results);
-    }
-    fetchData();
-  }, [userCategories]);
+  const { userCategories, categories: apiCategories } = useCategoriesContext();
+  const [categories, setCategories] = React.useState<CategorySettings[]>(() =>
+    apiCategories.map((category) => {
+      const match = userCategories?.find((x) => x.id === category.id);
+      if (match) {
+        return { ...category, ...match };
+      }
+      return { ...category, isActive: false };
+    }),
+  );
 
   const handleValueChanged = async (value: CategorySettings[]) => {
     const user = await getCurrentUser(false);

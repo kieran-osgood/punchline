@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useCategoriesContext } from 'components/categories-context';
+import { Category, useCategoriesContext } from 'components/categories-context';
 import firestore from '@react-native-firebase/firestore';
 
 const useGetCategories = () => {
@@ -9,9 +9,9 @@ const useGetCategories = () => {
       .collection('categories')
       .onSnapshot((docSnapshot) => {
         if (docSnapshot !== null) {
-          const data = docSnapshot.docs.map(
-            (doc) => doc.data() as { name: string },
-          );
+          const data = docSnapshot.docs.map((doc) => {
+            return { ...doc.data(), id: doc.id } as Category;
+          });
           setCategories(data);
         }
       });

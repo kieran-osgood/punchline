@@ -5,8 +5,8 @@ const CategoriesContext = React.createContext<{
   userCategories: CategorySettings[];
   setUserCategories: Dispatch<SetStateAction<CategorySettings[]>>;
 
-  categories: { name: string }[];
-  setCategories: Dispatch<SetStateAction<{ name: string }[]>>;
+  categories: Category[];
+  setCategories: Dispatch<SetStateAction<Category[]>>;
 }>({
   userCategories: [],
   setUserCategories: () => {},
@@ -20,8 +20,8 @@ export const CategoriesProvider = ({
   children: React.ReactNode;
 }) => {
   const [userCategories, setUserCategories] = useState<CategorySettings[]>([]);
-  const [categories, setCategories] = useState<{ name: string }[]>([]);
 
+  const [categories, setCategories] = useState<Category[]>([]);
   const value = {
     userCategories,
     setUserCategories,
@@ -36,3 +36,8 @@ export const CategoriesProvider = ({
 };
 
 export const useCategoriesContext = () => useContext(CategoriesContext);
+
+export type Category = {
+  id: string;
+  name: string;
+};
