@@ -1,17 +1,23 @@
 import { useEffect } from 'react';
 import { useCategoriesContext } from 'components/categories-context';
-import { getUserCategories } from 'src/app/api';
+import firestore from '@react-native-firebase/firestore';
 
 const useGetCategories = () => {
-  const { setCategories } = useCategoriesContext();
-
+  const { categories, setCategories } = useCategoriesContext();
   useEffect(() => {
-    async function getCategories() {
-      const userCategories = await getUserCategories();
-      setCategories(userCategories?.filter((categ) => categ.isActive) ?? []);
-    }
-    getCategories();
+    const unsubscribe = firestore()
+      .collection('categories')
+      .onSnapshot((docSnapshot) => {
+        if (docSnapshot !== null) {
+          const data = docSnapshot.docs.map(
+            (doc) => doc.data() as { name: string },
+          );
+          setCategories(data);
+        }
+      });
+    return () => unsubscribe();
   }, [setCategories]);
+  return categories;
 };
 
 export default useGetCategories;

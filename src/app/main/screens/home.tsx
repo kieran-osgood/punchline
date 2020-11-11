@@ -9,7 +9,7 @@ import { color, spacing } from 'theme';
 import Text from 'components/text';
 import CenterView from 'components/centerview';
 import AppLogo from 'components/app-logo';
-import useGetCategories from 'components/useGetCategories';
+import useGetUserCategories from 'components/useGetUserCategories';
 import { useCategoriesContext } from 'components/categories-context';
 import { CategorySettings } from 'components/select-pills';
 import { getCurrentUser } from 'app/api';
@@ -18,9 +18,12 @@ import CryingEmoji from 'assets/images/crying-emoji';
 import LaughingEmoji from 'assets/images/laughing-emoji';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import useGetCategories from 'components/useGetCategories';
 
 export default function Home() {
+  useGetUserCategories();
   useGetCategories();
+
   return (
     <CenterView>
       <Header />
@@ -78,18 +81,20 @@ const JokeSection = () => {
       score: 0,
     },
   });
-  const { categories } = useCategoriesContext();
+  const { userCategories } = useCategoriesContext();
+
   useEffect(() => {
-    const loadFirstJoke = async () => setJoke(await getRandomJoke(categories));
+    const loadFirstJoke = async () =>
+      setJoke(await getRandomJoke(userCategories));
     loadFirstJoke();
-  }, [categories]);
+  }, [userCategories]);
 
   const newJoke = async (rating?: boolean) => {
     if (typeof rating === 'boolean') {
       updateRating({ rating, joke });
       addToHistory({ joke, rating, bookmark: bookmarked });
     }
-    setJoke(await getRandomJoke(categories));
+    setJoke(await getRandomJoke(userCategories));
     setBookmarked(false);
   };
   // const calculateScore = () => {
@@ -152,15 +157,6 @@ const JokeSection = () => {
                 .join('\n')}
             />
           </ScrollView>
-          {/*
-        <View style={RATINGS_STRIP}>
-          <Icon name="thumb" />
-          <Text
-            h3
-            style={getTextColor()}
-            text={`${String(calculateScore())}%`}
-          />
-        </View> */}
         </View>
         <View style={BUTTONS_CONTAINER}>
           <TouchableOpacity onPress={() => newJoke(false)}>
@@ -180,24 +176,12 @@ const JokeSection = () => {
     </View>
   );
 };
-// const RATINGS_STRIP: ViewStyle = {
-//   flexDirection: 'row',
-// };
-// const GREEN_TEXT: TextStyle = {
-//   color: 'green',
-// };
-// const RED_TEXT: TextStyle = {
-//   color: 'red',
-// };
+
 const BUTTONS_CONTAINER: ViewStyle = {
   position: 'relative',
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'flex-end',
-  // borderWidth: 1,
-  // borderColor: 'green',
-  // width: '80%',
-  // bottom: 15,
 };
 const getRandomJoke = async (categories: CategorySettings[]): Promise<Joke> => {
   var randomIdx = Math.floor(Math.random() * categories.length);
@@ -215,6 +199,7 @@ const getRandomJoke = async (categories: CategorySettings[]): Promise<Joke> => {
   }
 
   const jokesSnapshot = await jokesQuery.get();
+
   const joke = jokesSnapshot.docs[0].data() as Joke;
   if (!joke.hasOwnProperty('reviews')) {
     joke.reviews = {

@@ -19,7 +19,13 @@ jest.mock('@react-native-community/async-storage', () => ({
 
 //curried function fixes TypeError: (0 , _firestore.default) is not a function
 jest.mock('@react-native-firebase/firestore', () => () => ({
+  doc: jest.fn('k0ZbGcuaLHTbH0aBZo8BktcnV883').mockReturnValue({
+    update: jest.fn(),
+    uid: 'k0ZbGcuaLHTbH0aBZo8BktcnV883',
+    onSnapshot: jest.fn().mockReturnValue(jest.fn()),
+  }),
   collection: jest.fn().mockReturnValue({
+    onSnapshot: jest.fn().mockReturnValue(jest.fn()),
     doc: jest.fn('k0ZbGcuaLHTbH0aBZo8BktcnV883').mockReturnValue({
       update: jest.fn(),
       uid: 'k0ZbGcuaLHTbH0aBZo8BktcnV883',

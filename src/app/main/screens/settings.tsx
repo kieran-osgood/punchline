@@ -10,7 +10,8 @@ import { BUTTON_CONTAINER, PILL_BUTTON } from 'auth/screens/login-choices';
 import Text from 'components/text';
 import CenterView from 'components/centerview';
 import SelectPills, { CategorySettings } from 'components/select-pills';
-import { getCategories, getCurrentUser, getUserCategories } from 'src/app/api';
+import { getCategories, getCurrentUser } from 'src/app/api';
+import useGetUserCategories from 'components/useGetUserCategories';
 
 type reducerAction = { type: 'CATEGORY'; payload: CategorySettings[] };
 type reducerState = {
@@ -25,6 +26,7 @@ const settingsReducer = (state: reducerState, action: reducerAction) => {
 };
 
 export default function Settings() {
+  const userCategories = useGetUserCategories();
   const [state, dispatch] = useReducer<Reducer<reducerState, reducerAction>>(
     settingsReducer,
     { categories: [] },
@@ -33,7 +35,6 @@ export default function Settings() {
   useEffect(() => {
     async function fetchData() {
       const categories = await getCategories();
-      const userCategories = await getUserCategories();
       const results = categories.map((category) => {
         const match = userCategories?.find((x) => x.id === category.id);
         if (match) {
@@ -44,13 +45,11 @@ export default function Settings() {
       dispatch({ type: 'CATEGORY', payload: results });
     }
     fetchData();
-  }, []);
+  }, [userCategories]);
 
   const handleValueChanged = async (value: CategorySettings[]) => {
     const user = await getCurrentUser(false);
-
     user.set({ categories: value });
-
     dispatch({ type: 'CATEGORY', payload: value });
   };
 
@@ -71,7 +70,6 @@ export default function Settings() {
           onPress={() => auth().signOut()}
           title="Logout"
           raised
-          // disabled={touched < 2 || !!errors.email || !!errors.password}
         />
       </View>
     </CenterView>

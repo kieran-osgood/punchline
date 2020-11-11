@@ -16,13 +16,12 @@ export const getCategories = async () => {
 };
 
 export const getUserCategories = async (): Promise<
-  CategorySettings[] | undefined
+  FirebaseFirestoreTypes.DocumentReference<FirebaseFirestoreTypes.DocumentData>
 > => {
-  const snapshot = await getCurrentUser(true);
-  return snapshot?.categories;
+  return await getCurrentUser(false);
 };
 
-type User = {
+export type User = {
   categories: CategorySettings[];
   history: Joke[];
   bookmarks: Joke[];
@@ -35,9 +34,7 @@ export function getCurrentUser(
   FirebaseFirestoreTypes.DocumentReference<FirebaseFirestoreTypes.DocumentData>
 >;
 export async function getCurrentUser(dataOnly: boolean = false) {
-  const userRef = await firestore()
-    .collection('users')
-    .doc(auth().currentUser?.uid);
+  const userRef = firestore().collection('users').doc(auth().currentUser?.uid);
   if (dataOnly) {
     const userSnapshot = await userRef.get();
     return userSnapshot.data() as User;

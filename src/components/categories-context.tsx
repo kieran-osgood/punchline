@@ -2,9 +2,14 @@ import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { CategorySettings } from 'components/select-pills';
 
 const CategoriesContext = React.createContext<{
-  categories: CategorySettings[];
-  setCategories: Dispatch<SetStateAction<CategorySettings[]>>;
+  userCategories: CategorySettings[];
+  setUserCategories: Dispatch<SetStateAction<CategorySettings[]>>;
+
+  categories: { name: string }[];
+  setCategories: Dispatch<SetStateAction<{ name: string }[]>>;
 }>({
+  userCategories: [],
+  setUserCategories: () => {},
   categories: [],
   setCategories: () => {},
 });
@@ -14,8 +19,15 @@ export const CategoriesProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [categories, setCategories] = useState<CategorySettings[]>([]);
-  const value = { categories, setCategories };
+  const [userCategories, setUserCategories] = useState<CategorySettings[]>([]);
+  const [categories, setCategories] = useState<{ name: string }[]>([]);
+
+  const value = {
+    userCategories,
+    setUserCategories,
+    categories,
+    setCategories,
+  };
   return (
     <CategoriesContext.Provider value={value}>
       {children}
