@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { ThemeProvider } from 'react-native-elements';
 import codePush from 'react-native-code-push';
+import * as SplashScreen from 'expo-splash-screen';
 
 import { AuthStack } from './app/auth/auth-stack';
 import MainTabs from './app/main/main-tabs';
@@ -19,9 +20,15 @@ GoogleSignin.configure({
 });
 
 const Routes = () => {
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+  const [user, setUser] = React.useState<FirebaseAuthTypes.User | null>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
+    if (user) {
+      SplashScreen.preventAutoHideAsync();
+    }
+  }, [user]);
+
+  React.useEffect(() => {
     let unsubscribe = auth().onAuthStateChanged((userState) => {
       setUser(userState);
     });

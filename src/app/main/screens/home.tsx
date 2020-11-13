@@ -3,6 +3,7 @@ import { ScrollView, View, ViewStyle } from 'react-native';
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
+import * as SplashScreen from 'expo-splash-screen';
 
 import { color, spacing } from 'theme';
 
@@ -83,11 +84,27 @@ const JokeSection = () => {
   });
   const { userCategories } = useCategoriesContext();
   const ref = useRef<ScrollView>(null);
-
+  const firstRender = useRef(true);
   useEffect(() => {
-    const loadFirstJoke = async () =>
-      setJoke(await getRandomJoke(userCategories));
-    loadFirstJoke();
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+    if (userCategories !== undefined) {
+      const loadFirstJoke = async () => {
+        getRandomJoke(userCategories).then((newJoke) => {
+          setJoke(newJoke);
+          SplashScreen.hideAsync();
+        });
+      };
+
+      // let timer = setTimeout(() => {
+      //   SplashScreen.hideAsync();
+      // }, 3500);
+      // return () => clearTimeout(timer);
+
+      loadFirstJoke();
+    }
   }, [userCategories]);
 
   const newJoke = async (rating?: boolean) => {
@@ -95,8 +112,10 @@ const JokeSection = () => {
       updateRating({ rating, joke });
       addToHistory({ joke, rating, bookmark: bookmarked });
     }
-    setJoke(await getRandomJoke(userCategories));
-    setBookmarked(false);
+    if (userCategories !== undefined) {
+      setJoke(await getRandomJoke(userCategories));
+      setBookmarked(false);
+    }
   };
   // const calculateScore = () => {
   //   if (joke?.reviews?.count > 0) {
@@ -186,6 +205,7 @@ const getRandomJoke = async (categories: CategorySettings[]): Promise<Joke> => {
 
   let jokesQuery = jokesRef.where('random', '>', randomId).limit(1);
 
+  console.log('category: ', category);
   if (category !== undefined) {
     jokesQuery = jokesRef
       .where('category', '==', category.name)

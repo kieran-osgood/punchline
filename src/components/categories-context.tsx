@@ -2,15 +2,15 @@ import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { CategorySettings } from 'components/select-pills';
 
 const CategoriesContext = React.createContext<{
-  userCategories: CategorySettings[];
+  userCategories: CategorySettings[] | undefined;
   setUserCategories: Dispatch<SetStateAction<CategorySettings[]>>;
 
-  categories: Category[];
+  categories: Category[] | undefined;
   setCategories: Dispatch<SetStateAction<Category[]>>;
 }>({
-  userCategories: [],
+  userCategories: undefined,
   setUserCategories: () => {},
-  categories: [],
+  categories: undefined,
   setCategories: () => {},
 });
 

@@ -15,8 +15,10 @@ import { useCategoriesContext } from 'components/categories-context';
 
 export default function Settings() {
   const { userCategories, categories: apiCategories } = useCategoriesContext();
-  const [categories, setCategories] = React.useState<CategorySettings[]>(() =>
-    apiCategories.map((category) => {
+  const [categories, setCategories] = React.useState<
+    CategorySettings[] | undefined
+  >(() =>
+    apiCategories?.map((category) => {
       const match = userCategories?.find((x) => x.id === category.id);
       if (match) {
         return { ...category, ...match };
@@ -36,7 +38,7 @@ export default function Settings() {
       <CenterView style={{ flex: 0, marginBottom: 80, width: '100%' }}>
         <Text h3>Categories</Text>
         <SelectPills
-          data={categories}
+          data={categories ?? []}
           onValueChange={(value) => handleValueChanged(value)}
         />
       </CenterView>
