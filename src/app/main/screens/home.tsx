@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, View, ViewStyle } from 'react-native';
-import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import * as SplashScreen from 'expo-splash-screen';
@@ -9,7 +8,6 @@ import { color, spacing } from 'theme';
 
 import Text from 'components/text';
 import CenterView from 'components/centerview';
-import AppLogo from 'components/app-logo';
 import useGetUserCategories from 'components/useGetUserCategories';
 import { useCategoriesContext } from 'components/categories-context';
 import { CategorySettings } from 'components/select-pills';
@@ -20,6 +18,7 @@ import LaughingEmoji from 'assets/images/laughing-emoji';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import useGetCategories from 'components/useGetCategories';
+import Header from 'components/header';
 
 export default function Home() {
   useGetUserCategories();
@@ -32,28 +31,6 @@ export default function Home() {
     </CenterView>
   );
 }
-
-const Header = () => (
-  <>
-    <View style={LOGO_CONTAINER}>
-      <AppLogo style={LOGO} width={130} />
-    </View>
-    <BannerAd
-      unitId={TestIds.BANNER} // ! Setup to check process.env
-      size={BannerAdSize.SMART_BANNER}
-    />
-  </>
-);
-
-const LOGO_CONTAINER: ViewStyle = {
-  width: '100%',
-};
-
-const LOGO: ViewStyle = {
-  padding: spacing[1],
-  alignSelf: 'auto',
-  justifyContent: 'flex-start',
-};
 
 export type Joke = {
   body: string;
