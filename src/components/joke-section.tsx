@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, ViewStyle } from 'react-native';
+import { ScrollView, TextStyle, View, ViewStyle } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -94,18 +94,16 @@ const JokeSection = () => {
           ref={swiper}
           cards={jokes}
           cardHorizontalMargin={0}
-          // infinite
           cardVerticalMargin={0}
           containerStyle={{ marginTop: 20 }}
           verticalSwipe={false}
           horizontalSwipe={false}
           disablePanresponder={false}
           showSecondCard
-          // onSwiped={(cardIndex) => setNextValue(cardIndex + 1)}
           keyExtractor={(jokeCard) => jokeCard.random}
-          renderCard={(jokeCard) => {
-            return <JokeCard key={jokeCard.random} joke={jokeCard} />;
-          }}
+          renderCard={(jokeCard) => (
+            <JokeCard key={jokeCard.random} joke={jokeCard} />
+          )}
           backgroundColor={color.background}
           stackSize={3}
         />
@@ -145,47 +143,51 @@ const BUTTONS_CONTAINER: ViewStyle = {
   justifyContent: 'space-between',
   alignItems: 'flex-end',
 };
+
 const JokeCard = ({ joke }: { joke: Joke }) => {
   const ref = React.useRef<ScrollView>(null);
 
   return (
-    <React.Fragment key={joke.random}>
-      <View
-        style={{
-          borderRadius: 50,
-          marginHorizontal: spacing[2],
-          backgroundColor: 'white',
-          padding: spacing[4],
-          borderColor: 'grey',
-          borderWidth: 1,
-          position: 'relative',
-          flex: 0.5,
+    <View style={JOKE_CARD}>
+      <ScrollView
+        ref={ref}
+        // @ts-ignore
+        onContentSizeChange={() => ref?.current?.flashScrollIndicators()}
+        scrollEnabled
+        showsVerticalScrollIndicator
+        persistentScrollbar
+        scrollIndicatorInsets={{
+          top: spacing[4],
+          bottom: spacing[4],
+          right: spacing[1],
         }}>
-        <ScrollView
-          ref={ref}
-          // @ts-ignore
-          onContentSizeChange={() => ref?.current?.flashScrollIndicators()}
-          scrollEnabled
-          showsVerticalScrollIndicator
-          persistentScrollbar
-          scrollIndicatorInsets={{
-            top: spacing[4],
-            bottom: spacing[4],
-            right: spacing[1],
-          }}>
-          <View style={{ paddingBottom: hp('5%') }}>
-            <Text
-              style={{ fontSize: 18, padding: spacing[2] }}
-              text={joke.body
-                .split(/\n/g)
-                .map((x) => x.charAt(0).toUpperCase() + x.substr(1))
-                .join('\n')}
-            />
-          </View>
-        </ScrollView>
-      </View>
-    </React.Fragment>
+        <Text
+          style={JOKE_TEXT}
+          text={joke.body
+            .split(/\n/g)
+            .map((x) => x.charAt(0).toUpperCase() + x.substr(1))
+            .join('\n')}
+        />
+      </ScrollView>
+    </View>
   );
+};
+
+const JOKE_CARD: ViewStyle = {
+  borderRadius: 50,
+  marginHorizontal: spacing[2],
+  backgroundColor: 'white',
+  padding: spacing[4],
+  borderColor: 'grey',
+  borderWidth: 1,
+  position: 'relative',
+  flex: 0.5,
+};
+
+const JOKE_TEXT: TextStyle = {
+  fontSize: 18,
+  padding: spacing[2],
+  paddingBottom: hp('5%'),
 };
 
 export type Joke = {
