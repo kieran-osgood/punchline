@@ -1,0 +1,45 @@
+diff --git a/node_modules/react-native-deck-swiper/Swiper.js b/node_modules/react-native-deck-swiper/Swiper.js
+index edcc140..f15cc33 100644
+--- a/node_modules/react-native-deck-swiper/Swiper.js
++++ b/node_modules/react-native-deck-swiper/Swiper.js
+@@ -115,7 +115,7 @@ class Swiper extends Component {
+ 
+   initializePanResponder = () => {
+     this._panResponder = PanResponder.create({
+-      onStartShouldSetPanResponder: (event, gestureState) => true,
++      onStartShouldSetPanResponder: (event, gestureState) => this.props.disablePanresponder,
+       onMoveShouldSetPanResponder: (event, gestureState) => false,
+ 
+       onMoveShouldSetPanResponderCapture: (evt, gestureState) => {
+@@ -915,7 +915,8 @@ Swiper.propTypes = {
+   verticalSwipe: PropTypes.bool,
+   verticalThreshold: PropTypes.number,
+   zoomAnimationDuration: PropTypes.number,
+-  zoomFriction: PropTypes.number
++  zoomFriction: PropTypes.number,
++  disablePanresponder: PropTypes.bool,
+ }
+ 
+ Swiper.defaultProps = {
+@@ -1009,7 +1010,8 @@ Swiper.defaultProps = {
+   verticalSwipe: true,
+   verticalThreshold: height / 5,
+   zoomAnimationDuration: 100,
+-  zoomFriction: 7
++  zoomFriction: 7,
++  disablePanresponder: true,
+ }
+ 
+ export default Swiper
+diff --git a/node_modules/react-native-deck-swiper/index.d.ts b/node_modules/react-native-deck-swiper/index.d.ts
+index 7970912..dd4bf2b 100644
+--- a/node_modules/react-native-deck-swiper/index.d.ts
++++ b/node_modules/react-native-deck-swiper/index.d.ts
+@@ -71,6 +71,7 @@ declare module 'react-native-deck-swiper' {
+     verticalThreshold?: number;
+     zoomAnimationDuration?: number;
+     zoomFriction?: number;
++    disablePanresponder?: boolean,
+   }
+ 
+   export default class Swiper<T> extends React.Component<SwiperProps<T>> {

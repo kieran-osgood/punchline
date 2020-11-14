@@ -2,7 +2,7 @@ import auth from '@react-native-firebase/auth';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import { Joke } from 'app/main/screens/home';
+import { Joke } from 'components/joke-section';
 import { CategorySettings } from 'components/select-pills';
 
 export const getCategories = async () => {
