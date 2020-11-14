@@ -21,132 +21,6 @@ import {
   getInitialJokes,
 } from 'app/api';
 
-export type Joke = {
-  body: string;
-  id: string;
-  category: string;
-  random: string;
-  title: string;
-  bookmarked: boolean;
-  reviews: {
-    count: number;
-    score: number;
-  };
-};
-const defaultJokeState = {
-  body: '',
-  id: '',
-  category: '',
-  random: '',
-  title: '',
-  bookmarked: false,
-  reviews: {
-    count: 0,
-    score: 0,
-  },
-};
-// const defaultJokeStates = [
-//   {
-//     id: 'a',
-//     body: 'a',
-//     category: '',
-//     random: 'a',
-//     title: 'a',
-//     bookmarked: false,
-//     reviews: {
-//       count: 0,
-//       score: 0,
-//     },
-//   },
-//   {
-//     id: 'b',
-//     body: 'b',
-//     category: '',
-//     random: 'b',
-//     title: 'b',
-//     bookmarked: false,
-//     reviews: {
-//       count: 0,
-//       score: 0,
-//     },
-//   },
-//   {
-//     id: 'c',
-//     body: 'c',
-//     category: '',
-//     random: 'c',
-//     title: 'c',
-//     bookmarked: false,
-//     reviews: {
-//       count: 0,
-//       score: 0,
-//     },
-//   },
-//   {
-//     id: 'e',
-//     body: 'e',
-//     category: '',
-//     random: 'e',
-//     title: 'e',
-//     bookmarked: false,
-//     reviews: {
-//       count: 0,
-//       score: 0,
-//     },
-//   },
-// ];
-
-// const addNewJokes = [
-//   {
-//     id: '1',
-//     body: '1',
-//     category: '',
-//     random: '1',
-//     title: '1',
-//     bookmarked: false,
-//     reviews: {
-//       count: 0,
-//       score: 0,
-//     },
-//   },
-//   {
-//     id: '2',
-//     body: '2',
-//     category: '',
-//     random: '2',
-//     title: '2',
-//     bookmarked: false,
-//     reviews: {
-//       count: 0,
-//       score: 0,
-//     },
-//   },
-//   {
-//     id: '3',
-//     body: '3',
-//     category: '',
-//     random: '3',
-//     title: '3',
-//     bookmarked: false,
-//     reviews: {
-//       count: 0,
-//       score: 0,
-//     },
-//   },
-//   {
-//     id: '4',
-//     body: '4',
-//     category: '',
-//     random: '4',
-//     title: '4',
-//     bookmarked: false,
-//     reviews: {
-//       count: 0,
-//       score: 0,
-//     },
-//   },
-// ];
-
 const JokeSection = () => {
   const [bookmarked, setBookmarked] = React.useState(false);
   const [jokes, setJokes] = React.useState<Joke[]>([defaultJokeState]);
@@ -164,12 +38,12 @@ const JokeSection = () => {
       const loadFirstJoke = async () => {
         getInitialJokes(userCategories).then((newJokes) => {
           setJokes(newJokes);
+          // @ts-ignore
+          setCurrentJoke(newJokes[swiper.current?.state.firstCardIndex]);
           swiper.current?.setState((prevState) => ({
             ...prevState,
             cards: newJokes,
           }));
-          // @ts-ignore
-          setCurrentJoke(newJokes[swiper.current?.state.firstCardIndex]);
           SplashScreen.hideAsync();
         });
       };
@@ -184,17 +58,19 @@ const JokeSection = () => {
       addToHistory({ joke: currentJoke, rating, bookmark: bookmarked });
     }
     if (userCategories !== undefined) {
-      const newJoke = await getRandomJoke(userCategories);
-      setJokes((currentJokes) => [...currentJokes, newJoke]);
-      swiper.current?.setState((prevState) => ({
-        ...prevState,
-        cards: [...jokes, newJoke],
-      }));
-      // @ts-ignore
-      setCurrentJoke(jokes[swiper.current?.state.firstCardIndex + 1]);
-      setBookmarked(false);
+      getRandomJoke(userCategories).then((newJoke) => {
+        setJokes((currentJokes) => [...currentJokes, newJoke]);
+        swiper.current?.setState((prevState) => ({
+          ...prevState,
+          cards: [...jokes, newJoke],
+        }));
+        // @ts-ignore
+        setCurrentJoke(jokes[swiper.current?.state.firstCardIndex + 1]);
+        setBookmarked(false);
+      });
     }
   };
+
   // const calculateScore = () => {
   //   if (joke?.reviews?.count > 0) {
   //     const score = joke?.reviews?.score / joke?.reviews?.count;
@@ -310,4 +186,29 @@ const JokeCard = ({ joke }: { joke: Joke }) => {
       </View>
     </React.Fragment>
   );
+};
+
+export type Joke = {
+  body: string;
+  id: string;
+  category: string;
+  random: string;
+  title: string;
+  bookmarked: boolean;
+  reviews: {
+    count: number;
+    score: number;
+  };
+};
+const defaultJokeState = {
+  body: '',
+  id: '',
+  category: '',
+  random: '',
+  title: '',
+  bookmarked: false,
+  reviews: {
+    count: 0,
+    score: 0,
+  },
 };
