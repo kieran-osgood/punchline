@@ -8,10 +8,6 @@ import { color, spacing } from 'theme';
 import Text from 'components/text';
 import { useCategoriesContext } from 'components/categories-context';
 
-import CryingEmoji from 'assets/images/crying-emoji';
-import LaughingEmoji from 'assets/images/laughing-emoji';
-import Icon from 'react-native-vector-icons/AntDesign';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import CenterView from 'components/centerview';
 import Swiper from 'react-native-deck-swiper';
 import {
@@ -20,6 +16,7 @@ import {
   addToHistory,
   getInitialJokes,
 } from 'app/api';
+import Controls from 'components/controls';
 
 const JokeSection = () => {
   const [bookmarked, setBookmarked] = React.useState(false);
@@ -109,40 +106,23 @@ const JokeSection = () => {
         />
       </CenterView>
 
-      <View style={BUTTONS_CONTAINER}>
-        <TouchableOpacity
-          onPress={() => {
-            swiper.current?.swipeLeft();
-            fetchNewJoke(false);
-          }}>
-          <CryingEmoji style={{ marginHorizontal: spacing[3] }} />
-        </TouchableOpacity>
-        <Icon
-          name={bookmarked ? 'star' : 'staro'}
-          size={40}
-          color={bookmarked ? color.success : color.palette.black}
-          onPress={() => setBookmarked(!bookmarked)}
-        />
-        <TouchableOpacity
-          onPress={() => {
-            swiper.current?.swipeRight();
-            fetchNewJoke(true);
-          }}>
-          <LaughingEmoji style={{ marginLeft: 0 }} />
-        </TouchableOpacity>
-      </View>
+      <Controls
+        bookmarked={bookmarked}
+        onBookmarkPress={() => setBookmarked(!bookmarked)}
+        onDownVotePress={() => {
+          swiper.current?.swipeLeft();
+          fetchNewJoke(false);
+        }}
+        onUpVotePress={() => {
+          swiper.current?.swipeRight();
+          fetchNewJoke(true);
+        }}
+      />
     </>
   );
 };
 
 export default JokeSection;
-
-const BUTTONS_CONTAINER: ViewStyle = {
-  position: 'relative',
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'flex-end',
-};
 
 const JokeCard = ({ joke }: { joke: Joke }) => {
   const ref = React.useRef<ScrollView>(null);

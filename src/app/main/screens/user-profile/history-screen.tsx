@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { ViewStyle, FlatList, View } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/AntDesign';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
@@ -12,6 +11,7 @@ import { addToHistory } from 'app/api';
 import { Joke } from 'components/joke-section';
 import Text from 'components/text';
 import CenterView from 'components/centerview';
+import BookmarkButton from 'components/bookmark-button';
 
 export type JokeHistory = Joke & {
   rating: boolean;
@@ -70,10 +70,8 @@ const ListItem = ({ joke }: { joke: JokeHistory }) => {
           type="clear"
         />
         <View style={BOOKMARK_BUTTON_CONTAINER}>
-          <Icon
-            name={bookmarked ? 'star' : 'staro'}
-            size={40}
-            color={bookmarked ? color.success : color.text}
+          <BookmarkButton
+            bookmarked={bookmarked}
             onPress={() => handleBookmarkPress()}
           />
         </View>
