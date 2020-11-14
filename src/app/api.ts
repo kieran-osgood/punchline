@@ -6,7 +6,7 @@ import crashlytics from '@react-native-firebase/crashlytics';
 
 import { Joke } from 'components/joke-section';
 import { CategorySettings } from 'components/select-pills';
-import { getRandomArrayItem } from 'src/utils';
+import { logErrorToCrashlytics, getRandomArrayItem } from 'src/utils';
 
 export const getCategories = async () => {
   const snapshot = await firestore().collection('categories').get();
@@ -123,8 +123,7 @@ export const addToHistory = async ({
       });
     return true;
   } catch (error) {
-    crashlytics().log(error);
-
+    logErrorToCrashlytics('addToHistory');
     return false;
   }
 };
@@ -154,7 +153,11 @@ export const updateRating = async ({
       );
     return true;
   } catch (error) {
-    crashlytics().log(error);
+    let errorMessage = 'updateRating';
+    if (typeof error === 'string') {
+      errorMessage = error;
+    }
+    logErrorToCrashlytics(errorMessage);
     return false;
   }
 };

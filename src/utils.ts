@@ -1,3 +1,6 @@
+import auth from '@react-native-firebase/auth';
+import crashlytics from '@react-native-firebase/crashlytics';
+
 export const isOfType = <T>(
   varToBeChecked: any,
   propertyToCheckFor: keyof T,
@@ -10,4 +13,24 @@ export const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=
 export const getRandomArrayItem = <T>(arr: T[]): T => {
   const randomIdx = Math.floor(Math.random() * arr.length);
   return arr[randomIdx];
+};
+
+export const logErrorToCrashlytics = (
+  error: string,
+  variables?: { key: string; value: unknown },
+): void => {
+  let logMessage = '';
+  logMessage += `user: ${auth().currentUser?.uid}\n`;
+  if (typeof variables !== 'undefined') {
+    if (typeof variables.value === 'string') {
+      logMessage += variables;
+    }
+    if (Array.isArray(variables.value)) {
+      logMessage += variables.value.join(', ');
+    }
+  }
+
+  logMessage += error;
+
+  crashlytics().log(logMessage);
 };
