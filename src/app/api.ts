@@ -75,7 +75,14 @@ export const getRandomJoke = async (
   }
 
   const jokesSnapshot = await jokesQuery.get();
-  if (jokesSnapshot === undefined) {
+  if (jokesSnapshot.docs.length === 0) {
+    if (count > 10) {
+      const errorMessage = `Can't find a new joke for user: ${
+        auth().currentUser?.uid
+      } with categories: ${categories.map((x) => x.name).join(', ')}`;
+      crashlytics().log(errorMessage);
+      throw Error(errorMessage);
+    }
     return getRandomJoke(categories, ++count);
   }
   const joke = jokesSnapshot.docs[0].data() as Joke;
