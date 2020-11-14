@@ -1,7 +1,5 @@
 import React from 'react';
 import { ScrollView, View, ViewStyle } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
-import crashlytics from '@react-native-firebase/crashlytics';
 import * as SplashScreen from 'expo-splash-screen';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -9,8 +7,6 @@ import { color, spacing } from 'theme';
 
 import Text from 'components/text';
 import { useCategoriesContext } from 'components/categories-context';
-import { CategorySettings } from 'components/select-pills';
-import { getCurrentUser } from 'app/api';
 
 import CryingEmoji from 'assets/images/crying-emoji';
 import LaughingEmoji from 'assets/images/laughing-emoji';
@@ -18,6 +14,12 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import CenterView from 'components/centerview';
 import Swiper from 'react-native-deck-swiper';
+import {
+  getRandomJoke,
+  updateRating,
+  addToHistory,
+  getInitialJokes,
+} from 'app/api';
 
 export type Joke = {
   body: string;
@@ -31,24 +33,127 @@ export type Joke = {
     score: number;
   };
 };
+const defaultJokeState = {
+  body: '',
+  id: '',
+  category: '',
+  random: '',
+  title: '',
+  bookmarked: false,
+  reviews: {
+    count: 0,
+    score: 0,
+  },
+};
+// const defaultJokeStates = [
+//   {
+//     id: 'a',
+//     body: 'a',
+//     category: '',
+//     random: 'a',
+//     title: 'a',
+//     bookmarked: false,
+//     reviews: {
+//       count: 0,
+//       score: 0,
+//     },
+//   },
+//   {
+//     id: 'b',
+//     body: 'b',
+//     category: '',
+//     random: 'b',
+//     title: 'b',
+//     bookmarked: false,
+//     reviews: {
+//       count: 0,
+//       score: 0,
+//     },
+//   },
+//   {
+//     id: 'c',
+//     body: 'c',
+//     category: '',
+//     random: 'c',
+//     title: 'c',
+//     bookmarked: false,
+//     reviews: {
+//       count: 0,
+//       score: 0,
+//     },
+//   },
+//   {
+//     id: 'e',
+//     body: 'e',
+//     category: '',
+//     random: 'e',
+//     title: 'e',
+//     bookmarked: false,
+//     reviews: {
+//       count: 0,
+//       score: 0,
+//     },
+//   },
+// ];
+
+// const addNewJokes = [
+//   {
+//     id: '1',
+//     body: '1',
+//     category: '',
+//     random: '1',
+//     title: '1',
+//     bookmarked: false,
+//     reviews: {
+//       count: 0,
+//       score: 0,
+//     },
+//   },
+//   {
+//     id: '2',
+//     body: '2',
+//     category: '',
+//     random: '2',
+//     title: '2',
+//     bookmarked: false,
+//     reviews: {
+//       count: 0,
+//       score: 0,
+//     },
+//   },
+//   {
+//     id: '3',
+//     body: '3',
+//     category: '',
+//     random: '3',
+//     title: '3',
+//     bookmarked: false,
+//     reviews: {
+//       count: 0,
+//       score: 0,
+//     },
+//   },
+//   {
+//     id: '4',
+//     body: '4',
+//     category: '',
+//     random: '4',
+//     title: '4',
+//     bookmarked: false,
+//     reviews: {
+//       count: 0,
+//       score: 0,
+//     },
+//   },
+// ];
 
 const JokeSection = () => {
   const [bookmarked, setBookmarked] = React.useState(false);
-  const [joke, setJoke] = React.useState<Joke>({
-    body: '',
-    id: '',
-    category: '',
-    random: '',
-    title: '',
-    bookmarked: false,
-    reviews: {
-      count: 0,
-      score: 0,
-    },
-  });
+  const [jokes, setJokes] = React.useState<Joke[]>([defaultJokeState]);
   const { userCategories } = useCategoriesContext();
   const firstRender = React.useRef(true);
-  const swiper = React.useRef<Swiper<string>>(null);
+  const swiper = React.useRef<Swiper<Joke>>(null);
+  const [currentJoke, setCurrentJoke] = React.useState<Joke>(defaultJokeState);
 
   React.useEffect(() => {
     if (firstRender.current) {
@@ -57,8 +162,14 @@ const JokeSection = () => {
     }
     if (userCategories !== undefined) {
       const loadFirstJoke = async () => {
-        getRandomJoke(userCategories).then((newJoke) => {
-          setJoke(newJoke);
+        getInitialJokes(userCategories).then((newJokes) => {
+          setJokes(newJokes);
+          swiper.current?.setState((prevState) => ({
+            ...prevState,
+            cards: newJokes,
+          }));
+          // @ts-ignore
+          setCurrentJoke(newJokes[swiper.current?.state.firstCardIndex]);
           SplashScreen.hideAsync();
         });
       };
@@ -67,13 +178,20 @@ const JokeSection = () => {
     }
   }, [userCategories]);
 
-  const newJoke = async (rating?: boolean) => {
+  const fetchNewJoke = async (rating?: boolean) => {
     if (typeof rating === 'boolean') {
-      updateRating({ rating, joke });
-      addToHistory({ joke, rating, bookmark: bookmarked });
+      updateRating({ rating, joke: currentJoke });
+      addToHistory({ joke: currentJoke, rating, bookmark: bookmarked });
     }
     if (userCategories !== undefined) {
-      setJoke(await getRandomJoke(userCategories));
+      const newJoke = await getRandomJoke(userCategories);
+      setJokes((currentJokes) => [...currentJokes, newJoke]);
+      swiper.current?.setState((prevState) => ({
+        ...prevState,
+        cards: [...jokes, newJoke],
+      }));
+      // @ts-ignore
+      setCurrentJoke(jokes[swiper.current?.state.firstCardIndex + 1]);
       setBookmarked(false);
     }
   };
@@ -88,8 +206,8 @@ const JokeSection = () => {
   return (
     <>
       <Text
-        h2
-        text={joke.title}
+        h3
+        text={currentJoke.title}
         style={{
           color: color.storybookDarkBg,
           paddingHorizontal: spacing[5],
@@ -98,17 +216,22 @@ const JokeSection = () => {
       <CenterView style={{ width: '100%', marginTop: spacing[2] }}>
         <Swiper
           ref={swiper}
-          cards={cards}
+          cards={jokes}
           cardHorizontalMargin={0}
-          infinite
+          // infinite
           cardVerticalMargin={0}
+          containerStyle={{ marginTop: 20 }}
           verticalSwipe={false}
           horizontalSwipe={false}
           disablePanresponder={false}
-          renderCard={(jokeCard) => <JokeCard joke={jokeCard} />}
-          cardIndex={0}
+          showSecondCard
+          // onSwiped={(cardIndex) => setNextValue(cardIndex + 1)}
+          keyExtractor={(jokeCard) => jokeCard.random}
+          renderCard={(jokeCard) => {
+            return <JokeCard key={jokeCard.random} joke={jokeCard} />;
+          }}
           backgroundColor={color.background}
-          stackSize={2}
+          stackSize={3}
         />
       </CenterView>
 
@@ -116,7 +239,7 @@ const JokeSection = () => {
         <TouchableOpacity
           onPress={() => {
             swiper.current?.swipeLeft();
-            newJoke(false);
+            fetchNewJoke(false);
           }}>
           <CryingEmoji style={{ marginHorizontal: spacing[3] }} />
         </TouchableOpacity>
@@ -129,7 +252,7 @@ const JokeSection = () => {
         <TouchableOpacity
           onPress={() => {
             swiper.current?.swipeRight();
-            newJoke(true);
+            fetchNewJoke(true);
           }}>
           <LaughingEmoji style={{ marginLeft: 0 }} />
         </TouchableOpacity>
@@ -146,103 +269,11 @@ const BUTTONS_CONTAINER: ViewStyle = {
   justifyContent: 'space-between',
   alignItems: 'flex-end',
 };
-const getRandomJoke = async (categories: CategorySettings[]): Promise<Joke> => {
-  var randomIdx = Math.floor(Math.random() * categories.length);
-  const category = categories[randomIdx];
-  const jokesRef = firestore().collection('jokes');
-  const randomId = jokesRef.doc().id;
-
-  let jokesQuery = jokesRef.where('random', '>', randomId).limit(1);
-
-  console.log('category: ', category);
-  if (category !== undefined) {
-    jokesQuery = jokesRef
-      .where('category', '==', category.name)
-      .where('random', '>', randomId)
-      .limit(1);
-  }
-
-  const jokesSnapshot = await jokesQuery.get();
-
-  const joke = jokesSnapshot.docs[0].data() as Joke;
-  if (!joke.hasOwnProperty('reviews')) {
-    joke.reviews = {
-      count: 0,
-      score: 0,
-    };
-  }
-  return joke;
-};
-
-export const addToHistory = async ({
-  joke,
-  rating,
-  bookmark,
-}: {
-  joke: Joke;
-  rating: boolean;
-  bookmark: boolean;
-}): Promise<boolean> => {
-  const userRef = await getCurrentUser(false);
-  const addToBookmark = {
-    bookmarked: bookmark,
-    dateBookmarked: bookmark ? new Date() : null,
-  };
-  const ratings = rating !== undefined ? { rating } : {};
-  try {
-    userRef
-      .collection('history')
-      .doc(joke.random)
-      .set({
-        ...joke,
-        rating,
-        dateSeen: new Date(),
-        ...addToBookmark,
-        ...ratings,
-      });
-    return true;
-  } catch (error) {
-    crashlytics().log(error);
-
-    return false;
-  }
-};
-
-export const updateRating = async ({
-  rating,
-  joke,
-}: {
-  rating: boolean;
-  joke: Joke;
-}): Promise<boolean> => {
-  try {
-    const scoreAdjustment = rating
-      ? { score: firestore.FieldValue.increment(1) }
-      : {};
-    await firestore()
-      .collection('jokes')
-      .doc(joke.random)
-      .set(
-        {
-          reviews: {
-            count: firestore.FieldValue.increment(1),
-            ...scoreAdjustment,
-          },
-        },
-        { merge: true },
-      );
-    return true;
-  } catch (error) {
-    crashlytics().log(error);
-    return false;
-  }
-};
-
-const JokeCard = ({ joke }: { joke: string }) => {
+const JokeCard = ({ joke }: { joke: Joke }) => {
   const ref = React.useRef<ScrollView>(null);
 
   return (
-    <>
+    <React.Fragment key={joke.random}>
       <View
         style={{
           borderRadius: 50,
@@ -269,20 +300,14 @@ const JokeCard = ({ joke }: { joke: string }) => {
           <View style={{ paddingBottom: hp('5%') }}>
             <Text
               style={{ fontSize: 18, padding: spacing[2] }}
-              text={joke}
-              // text={joke.body
-              //   .split(/\n/g)
-              //   .map((x) => x.charAt(0).toUpperCase() + x.substr(1))
-              //   .join('\n')}
+              text={joke.body
+                .split(/\n/g)
+                .map((x) => x.charAt(0).toUpperCase() + x.substr(1))
+                .join('\n')}
             />
           </View>
         </ScrollView>
       </View>
-    </>
+    </React.Fragment>
   );
 };
-
-const cards = [
-  'DO DOODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODDO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DO',
-  'DO DOODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODDO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DO',
-];

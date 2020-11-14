@@ -2,8 +2,11 @@ import auth from '@react-native-firebase/auth';
 import firestore, {
   FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
+import crashlytics from '@react-native-firebase/crashlytics';
+
 import { Joke } from 'components/joke-section';
 import { CategorySettings } from 'components/select-pills';
+import { getRandomArrayItem } from 'src/utils';
 
 export const getCategories = async () => {
   const snapshot = await firestore().collection('categories').get();
@@ -41,3 +44,110 @@ export async function getCurrentUser(dataOnly: boolean = false) {
   }
   return userRef;
 }
+
+export const getInitialJokes = async (
+  categories: CategorySettings[],
+): Promise<Joke[]> => {
+  const jokes: Joke[] = [];
+  for (let idx = 0; idx < 5; idx++) {
+    const joke = await getRandomJoke(categories);
+    jokes.push(joke);
+  }
+  return jokes;
+};
+
+export const getRandomJoke = async (
+  categories: CategorySettings[],
+  previousCount: number = 0,
+): Promise<Joke> => {
+  let count = previousCount;
+  const category = getRandomArrayItem(categories);
+  const jokesRef = firestore().collection('jokes');
+  const randomFirestoreDocId = jokesRef.doc().id;
+
+  let jokesQuery = jokesRef.where('random', '>', randomFirestoreDocId).limit(1);
+
+  if (category !== undefined) {
+    jokesQuery = jokesRef
+      .where('category', '==', category.name)
+      .where('random', '>', randomFirestoreDocId)
+      .limit(1);
+  }
+
+  const jokesSnapshot = await jokesQuery.get();
+  if (jokesSnapshot === undefined) {
+    return getRandomJoke(categories, ++count);
+  }
+  const joke = jokesSnapshot.docs[0].data() as Joke;
+  if (!joke.hasOwnProperty('reviews')) {
+    joke.reviews = {
+      count: 0,
+      score: 0,
+    };
+  }
+  return joke;
+};
+
+export const addToHistory = async ({
+  joke,
+  rating,
+  bookmark,
+}: {
+  joke: Joke;
+  rating: boolean;
+  bookmark: boolean;
+}): Promise<boolean> => {
+  const userRef = await getCurrentUser(false);
+  const addToBookmark = {
+    bookmarked: bookmark,
+    dateBookmarked: bookmark ? new Date() : null,
+  };
+  const ratings = rating !== undefined ? { rating } : {};
+  try {
+    userRef
+      .collection('history')
+      .doc(joke.random)
+      .set({
+        ...joke,
+        rating,
+        dateSeen: new Date(),
+        ...addToBookmark,
+        ...ratings,
+      });
+    return true;
+  } catch (error) {
+    crashlytics().log(error);
+
+    return false;
+  }
+};
+
+export const updateRating = async ({
+  rating,
+  joke,
+}: {
+  rating: boolean;
+  joke: Joke;
+}): Promise<boolean> => {
+  try {
+    const scoreAdjustment = rating
+      ? { score: firestore.FieldValue.increment(1) }
+      : {};
+    await firestore()
+      .collection('jokes')
+      .doc(joke.random)
+      .set(
+        {
+          reviews: {
+            count: firestore.FieldValue.increment(1),
+            ...scoreAdjustment,
+          },
+        },
+        { merge: true },
+      );
+    return true;
+  } catch (error) {
+    crashlytics().log(error);
+    return false;
+  }
+};

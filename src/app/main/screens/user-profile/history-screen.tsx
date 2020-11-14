@@ -7,8 +7,9 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 import { color, spacing } from 'theme';
+import { addToHistory } from 'app/api';
 
-import { addToHistory, Joke } from 'components/joke-section';
+import { Joke } from 'components/joke-section';
 import Text from 'components/text';
 import CenterView from 'components/centerview';
 
