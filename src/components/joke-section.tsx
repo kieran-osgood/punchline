@@ -3,6 +3,7 @@ import { ScrollView, View, ViewStyle } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import crashlytics from '@react-native-firebase/crashlytics';
 import * as SplashScreen from 'expo-splash-screen';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import { color, spacing } from 'theme';
 
@@ -15,6 +16,8 @@ import CryingEmoji from 'assets/images/crying-emoji';
 import LaughingEmoji from 'assets/images/laughing-emoji';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import CenterView from 'components/centerview';
+import Swiper from 'react-native-deck-swiper';
 
 export type Joke = {
   body: string;
@@ -44,8 +47,8 @@ const JokeSection = () => {
     },
   });
   const { userCategories } = useCategoriesContext();
-  const ref = React.useRef<ScrollView>(null);
   const firstRender = React.useRef(true);
+  const swiper = React.useRef<Swiper<string>>(null);
 
   React.useEffect(() => {
     if (firstRender.current) {
@@ -83,14 +86,7 @@ const JokeSection = () => {
   // };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        paddingTop: spacing[2],
-        width: '90%',
-      }}>
+    <>
       <Text
         h2
         text={joke.title}
@@ -99,52 +95,46 @@ const JokeSection = () => {
           paddingHorizontal: spacing[5],
         }}
       />
-      <View
-        style={{
-          flex: 1,
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          paddingTop: spacing[2],
-          width: '100%',
-        }}>
-        <View
-          style={{
-            borderRadius: 30,
-            height: '75%',
-            marginHorizontal: spacing[2],
-            backgroundColor: 'white',
-            padding: spacing[2],
-            width: '100%',
+      <CenterView style={{ width: '100%', marginTop: spacing[2] }}>
+        <Swiper
+          ref={swiper}
+          cards={cards}
+          cardHorizontalMargin={0}
+          infinite
+          cardVerticalMargin={0}
+          verticalSwipe={false}
+          horizontalSwipe={false}
+          disablePanresponder={false}
+          renderCard={(jokeCard) => <JokeCard joke={jokeCard} />}
+          cardIndex={0}
+          backgroundColor={color.background}
+          stackSize={2}
+        />
+      </CenterView>
+
+      <View style={BUTTONS_CONTAINER}>
+        <TouchableOpacity
+          onPress={() => {
+            swiper.current?.swipeLeft();
+            newJoke(false);
           }}>
-          <ScrollView
-            ref={ref}
-            // @ts-ignore
-            onContentSizeChange={() => ref?.current?.flashScrollIndicators()}>
-            <Text
-              style={{ fontSize: 18, padding: spacing[2] }}
-              text={joke.body
-                .split(/\n/g)
-                .map((x) => x.charAt(0).toUpperCase() + x.substr(1))
-                .join('\n')}
-            />
-          </ScrollView>
-        </View>
-        <View style={BUTTONS_CONTAINER}>
-          <TouchableOpacity onPress={() => newJoke(false)}>
-            <CryingEmoji style={{ marginHorizontal: spacing[3] }} />
-          </TouchableOpacity>
-          <Icon
-            name={bookmarked ? 'star' : 'staro'}
-            size={40}
-            color={bookmarked ? color.success : color.palette.black}
-            onPress={() => setBookmarked(!bookmarked)}
-          />
-          <TouchableOpacity onPress={() => newJoke(true)}>
-            <LaughingEmoji style={{ marginLeft: 0 }} />
-          </TouchableOpacity>
-        </View>
+          <CryingEmoji style={{ marginHorizontal: spacing[3] }} />
+        </TouchableOpacity>
+        <Icon
+          name={bookmarked ? 'star' : 'staro'}
+          size={40}
+          color={bookmarked ? color.success : color.palette.black}
+          onPress={() => setBookmarked(!bookmarked)}
+        />
+        <TouchableOpacity
+          onPress={() => {
+            swiper.current?.swipeRight();
+            newJoke(true);
+          }}>
+          <LaughingEmoji style={{ marginLeft: 0 }} />
+        </TouchableOpacity>
       </View>
-    </View>
+    </>
   );
 };
 
@@ -247,3 +237,52 @@ export const updateRating = async ({
     return false;
   }
 };
+
+const JokeCard = ({ joke }: { joke: string }) => {
+  const ref = React.useRef<ScrollView>(null);
+
+  return (
+    <>
+      <View
+        style={{
+          borderRadius: 50,
+          marginHorizontal: spacing[2],
+          backgroundColor: 'white',
+          padding: spacing[4],
+          borderColor: 'grey',
+          borderWidth: 1,
+          position: 'relative',
+          flex: 0.5,
+        }}>
+        <ScrollView
+          ref={ref}
+          // @ts-ignore
+          onContentSizeChange={() => ref?.current?.flashScrollIndicators()}
+          scrollEnabled
+          showsVerticalScrollIndicator
+          persistentScrollbar
+          scrollIndicatorInsets={{
+            top: spacing[4],
+            bottom: spacing[4],
+            right: spacing[1],
+          }}>
+          <View style={{ paddingBottom: hp('5%') }}>
+            <Text
+              style={{ fontSize: 18, padding: spacing[2] }}
+              text={joke}
+              // text={joke.body
+              //   .split(/\n/g)
+              //   .map((x) => x.charAt(0).toUpperCase() + x.substr(1))
+              //   .join('\n')}
+            />
+          </View>
+        </ScrollView>
+      </View>
+    </>
+  );
+};
+
+const cards = [
+  'DO DOODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODDO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DO',
+  'DO DOODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODDO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DODO DO',
+];

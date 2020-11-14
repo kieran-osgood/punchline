@@ -18,12 +18,14 @@ const Header = () => (
 
 const LOGO_CONTAINER: ViewStyle = {
   width: '100%',
+  // flex: 0.1,
 };
 
 const LOGO: ViewStyle = {
   padding: spacing[1],
   alignSelf: 'auto',
   justifyContent: 'flex-start',
+  // flex: 0.2,
 };
 
 export default Header;
