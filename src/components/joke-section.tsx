@@ -118,6 +118,7 @@ export default JokeSection;
 
 const JokeCard = ({ joke }: { joke: Joke }) => {
   const ref = React.useRef<ScrollView>(null);
+  if (joke === undefined) return null;
 
   return (
     <View style={JOKE_CARD}>
@@ -125,9 +126,6 @@ const JokeCard = ({ joke }: { joke: Joke }) => {
         ref={ref}
         // @ts-ignore
         onContentSizeChange={() => ref?.current?.flashScrollIndicators()}
-        scrollEnabled
-        showsVerticalScrollIndicator
-        persistentScrollbar
         contentContainerStyle={SCROLL_VIEW_STYLE}
         scrollIndicatorInsets={{
           top: spacing[4],
@@ -142,10 +140,12 @@ const JokeCard = ({ joke }: { joke: Joke }) => {
             .map((x) => x.charAt(0).toUpperCase() + x.substr(1))
             .join('\n')}
         />
-        <View style={CATEGORY_SECTION}>
-          <Text text="Category: " />
-          <Text style={CATEGORY_PILL} text={joke.category} />
-        </View>
+        {joke.category ? (
+          <View style={CATEGORY_SECTION}>
+            <Text text="Category: " />
+            <Text style={CATEGORY_PILL} text={joke.category} />
+          </View>
+        ) : null}
       </ScrollView>
     </View>
   );
@@ -153,6 +153,9 @@ const JokeCard = ({ joke }: { joke: Joke }) => {
 const SCROLL_VIEW_STYLE: ViewStyle = {
   alignItems: 'center',
   marginTop: spacing[2],
+  justifyContent: 'space-between',
+  minHeight: '84%',
+  paddingBottom: hp('5%'),
 };
 const JOKE_CARD: ViewStyle = {
   borderRadius: 50,

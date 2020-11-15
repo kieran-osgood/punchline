@@ -17,5 +17,6 @@ module.exports = {
   },
   rules: {
     'react-native/no-inline-styles': 'off',
+    curly: 'off',
   },
 };
