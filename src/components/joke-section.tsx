@@ -100,14 +100,18 @@ const JokeSection = () => {
 
       <Controls
         bookmarked={bookmarked}
-        onBookmarkPress={() => setBookmarked(!bookmarked)}
+        onUpVotePress={() => {
+          swiper.current?.swipeRight();
+          fetchNewJoke(true);
+        }}
         onDownVotePress={() => {
           swiper.current?.swipeLeft();
           fetchNewJoke(false);
         }}
-        onUpVotePress={() => {
-          swiper.current?.swipeRight();
-          fetchNewJoke(true);
+        onBookmarkPress={() => setBookmarked(!bookmarked)}
+        onSkipPress={() => {
+          swiper.current?.swipeTop();
+          fetchNewJoke();
         }}
       />
     </>
@@ -175,7 +179,7 @@ const JOKE_TEXT: TextStyle = {
   marginTop: spacing[3],
   fontSize: 18,
   padding: spacing[2],
-  paddingBottom: hp('5%'),
+  paddingBottom: '5%',
   textAlign: 'center',
 };
 const CATEGORY_SECTION: ViewStyle = {
