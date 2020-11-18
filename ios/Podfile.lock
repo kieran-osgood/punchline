@@ -251,6 +251,10 @@ PODS:
     - React
     - SSZipArchive (~> 2.2.2)
   - DoubleConversion (1.1.6)
+  - EXAV (8.2.1):
+    - UMCore
+    - UMFileSystemInterface
+    - UMPermissionsInterface
   - EXConstants (9.2.0):
     - UMConstantsInterface
     - UMCore
@@ -757,8 +761,8 @@ PODS:
     - React-Core (= 0.63.2)
     - React-cxxreact (= 0.63.2)
     - React-jsi (= 0.63.2)
-  - RNCAsyncStorage (1.12.0):
-    - React
+  - RNCAsyncStorage (1.12.1):
+    - React-Core
   - RNCMaskedView (0.1.10):
     - React
   - RNFBAdMob (7.6.5):
@@ -826,6 +830,7 @@ DEPENDENCIES:
   - appcenter-crashes (from `../node_modules/appcenter-crashes/ios`)
   - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - EXAV (from `../node_modules/expo-av/ios`)
   - EXConstants (from `../node_modules/expo-linking/node_modules/expo-constants/ios`)
   - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
@@ -975,6 +980,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-code-push"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  EXAV:
+    :path: "../node_modules/expo-av/ios"
   EXConstants:
     :path: "../node_modules/expo-linking/node_modules/expo-constants/ios"
   EXErrorRecovery:
@@ -1123,6 +1130,7 @@ SPEC CHECKSUMS:
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
   CodePush: 18dd72e6176d261832d036f22c70f910370d6b64
   DoubleConversion: cde416483dac037923206447da6e1454df403714
+  EXAV: d69c3ffbe091a5083d56cb950550015977fdf0af
   EXConstants: 6ec1ea4a13ec734c7e2274bc9e5b7408d73007a1
   EXErrorRecovery: a9ef867e1d5479a7c08279be84c5164d38647e08
   EXFileSystem: 8d1dc2924d62046275c84d70b88fa3aa7daeb116
@@ -1196,7 +1204,7 @@ SPEC CHECKSUMS:
   React-RCTText: 1b6773e776e4b33f90468c20fe3b16ca3e224bb8
   React-RCTVibration: 4d2e726957f4087449739b595f107c0d4b6c2d2d
   ReactCommon: a0a1edbebcac5e91338371b72ffc66aa822792ce
-  RNCAsyncStorage: 3eea36d9460c5159b592f9ecbe5a77f8aca98006
+  RNCAsyncStorage: cb9a623793918c6699586281f0b51cbc38f046f9
   RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
   RNFBAdMob: 5d6a39c6b5ca14b31f2d4875c6494c46be759694
   RNFBApp: a74d8259d827c8bf55100e759cffa2e50ba6fe30

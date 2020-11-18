@@ -44,6 +44,7 @@
     "appcenter-analytics": "3.1.1",
     "appcenter-crashes": "3.1.1",
     "expo": "~38.0.8",
+    "expo-av": "^8.6.0",
     "expo-font": "~8.2.1",
     "expo-splash-screen": "^0.5.0",
     "expo-status-bar": "^1.0.0",

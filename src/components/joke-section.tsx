@@ -17,6 +17,7 @@ import {
   getInitialJokes,
 } from 'app/api';
 import Controls from 'components/controls';
+import useSound from 'src/hooks/use-sound';
 
 const JokeSection = () => {
   const [bookmarked, setBookmarked] = React.useState(false);
@@ -25,6 +26,9 @@ const JokeSection = () => {
   const firstRender = React.useRef(true);
   const swiper = React.useRef<Swiper<Joke>>(null);
   const [currentJoke, setCurrentJoke] = React.useState<Joke>(defaultJokeState);
+
+  const laugh = useSound(require('assets/sounds/laugh.mp3'));
+  const boo = useSound(require('assets/sounds/boo.mp3'));
 
   React.useEffect(() => {
     if (firstRender.current) {
@@ -49,8 +53,21 @@ const JokeSection = () => {
     }
   }, [userCategories]);
 
+  const resetAudio = async () => {
+    laugh.pauseAsync();
+    boo.pauseAsync();
+    laugh.setPositionAsync(0);
+    boo.setPositionAsync(0);
+  };
+
   const fetchNewJoke = async (rating?: boolean) => {
+    await resetAudio();
     if (typeof rating === 'boolean') {
+      if (rating) {
+        laugh.playAsync();
+      } else {
+        boo.playAsync();
+      }
       updateRating({ rating, joke: currentJoke });
       addToHistory({ joke: currentJoke, rating, bookmark: bookmarked });
     }
