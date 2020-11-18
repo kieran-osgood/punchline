@@ -18,16 +18,20 @@ import Facebook from 'assets/images/facebook';
 import GoogleIcon from 'assets/images/google';
 import Gmail from 'assets/images/gmail';
 import AppLogo from 'components/app-logo';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
 
 export default function LoginChoices({
   navigation,
 }: AuthNavigationProps<'LoginChoices'>) {
   return (
-    <CenterView style={{ display: 'flex', justifyContent: 'space-between' }}>
+    <CenterView style={CONTAINER}>
       <AppLogo />
 
       <Text h1 text="Login" />
-
+      <Text
+        style={COPY}
+        text="Login to save your history and create bookmarks for your favourite jokes!"
+      />
       <CenterView style={BUTTONS_CONTAINER}>
         <GoogleSignIn />
         <FacebookSignIn />
@@ -44,7 +48,16 @@ export default function LoginChoices({
     </CenterView>
   );
 }
-
+const CONTAINER: ViewStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  width: '100%',
+};
+const COPY: TextStyle = {
+  width: widthPercentageToDP('70'),
+  textAlign: 'center',
+};
 export const PILL_BUTTON: ViewStyle = {
   borderRadius: 100,
   paddingVertical: spacing[4],
