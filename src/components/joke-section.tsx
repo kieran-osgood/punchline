@@ -21,7 +21,7 @@ import useSound from 'src/hooks/use-sound';
 
 const JokeSection = () => {
   const [bookmarked, setBookmarked] = React.useState(false);
-  const [jokes, setJokes] = React.useState<Joke[]>([defaultJokeState]);
+  const [jokes, setJokes] = React.useState<Joke[]>([]);
   const { userCategories } = useCategoriesContext();
   const firstRender = React.useRef(true);
   const swiper = React.useRef<Swiper<Joke>>(null);
@@ -45,7 +45,9 @@ const JokeSection = () => {
             ...prevState,
             cards: newJokes,
           }));
-          SplashScreen.hideAsync();
+          setTimeout(() => {
+            SplashScreen.hideAsync();
+          }, 100);
         });
       };
 
@@ -96,23 +98,25 @@ const JokeSection = () => {
   return (
     <>
       <CenterView style={{ width: '100%' }}>
-        <Swiper
-          ref={swiper}
-          cards={jokes}
-          cardHorizontalMargin={0}
-          cardVerticalMargin={0}
-          containerStyle={{ marginTop: 20 }}
-          verticalSwipe={false}
-          horizontalSwipe={false}
-          disablePanresponder={false}
-          showSecondCard
-          keyExtractor={(jokeCard) => jokeCard.random}
-          renderCard={(jokeCard) => (
-            <JokeCard key={jokeCard.random} joke={jokeCard} />
-          )}
-          backgroundColor={color.background}
-          stackSize={3}
-        />
+        {jokes.length > 0 ? (
+          <Swiper
+            ref={swiper}
+            cards={jokes}
+            cardHorizontalMargin={0}
+            cardVerticalMargin={0}
+            containerStyle={{ marginTop: 20 }}
+            verticalSwipe={false}
+            horizontalSwipe={false}
+            disablePanresponder={false}
+            showSecondCard
+            keyExtractor={(jokeCard) => jokeCard.random}
+            renderCard={(jokeCard) => (
+              <JokeCard key={jokeCard.random} joke={jokeCard} />
+            )}
+            backgroundColor={color.background}
+            stackSize={3}
+          />
+        ) : null}
       </CenterView>
 
       <Controls
