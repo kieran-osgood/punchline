@@ -9,7 +9,7 @@ import {
 } from 'react-native-responsive-screen';
 import { useAsyncStorage } from '@react-native-community/async-storage';
 
-import { color } from 'theme';
+import { color, spacing } from 'theme';
 
 import { BUTTON_CONTAINER, PILL_BUTTON } from 'auth/screens/login-choices';
 
@@ -40,7 +40,6 @@ export default function Settings() {
 
   React.useEffect(() => {
     getItem().then((res) => {
-      console.log('res', res);
       setSoundSetting(res as SoundSetting);
     });
   }, [getItem]);
@@ -60,16 +59,20 @@ export default function Settings() {
     <CenterView>
       <ScrollView
         style={{
-          paddingHorizontal: wp('5'),
+          paddingTop: wp('10%'),
         }}>
+        <Text h3 style={{ alignSelf: 'center' }}>
+          Settings
+        </Text>
         <CenterView
           style={{
             width: wp('90%'),
-            paddingVertical: hp('5%'),
+            paddingVertical: hp('2.5%'),
           }}>
           <CenterView
             style={{
-              width: '90%',
+              width: '100%',
+              paddingRight: spacing[3],
               marginBottom: hp('2.5%'),
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -79,7 +82,7 @@ export default function Settings() {
             <Text h4>Sound</Text>
             <Icon
               name={soundSetting === 'muted' ? 'volume-mute' : 'volume-up'}
-              size={30}
+              size={35}
               onPress={() => {
                 setSoundSetting((current) =>
                   current === 'muted' ? 'unmuted' : 'muted',
@@ -89,7 +92,9 @@ export default function Settings() {
             />
           </CenterView>
           <CenterView style={{ marginBottom: hp('2.5%') }}>
-            <Text h3>Categories</Text>
+            <Text h4 style={{ alignSelf: 'flex-start' }}>
+              Categories
+            </Text>
             <SelectPills
               data={categories ?? []}
               onValueChange={(value) => handleValueChanged(value)}

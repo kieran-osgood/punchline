@@ -13,10 +13,6 @@ jest.mock('@expo-google-fonts/montserrat', () => ({
   useFonts: jest.fn(() => [true]),
 }));
 
-jest.mock('@react-native-community/async-storage', () => ({
-  useAsyncStorage: jest.fn(),
-}));
-
 //curried function fixes TypeError: (0 , _firestore.default) is not a function
 jest.mock('@react-native-firebase/firestore', () => () => ({
   doc: jest.fn('k0ZbGcuaLHTbH0aBZo8BktcnV883').mockReturnValue({
@@ -77,3 +73,20 @@ jest.mock('react-native-reanimated', () => {
 
   return Reanimated;
 });
+
+// jest.mock('@react-native-community/async-storage', () => ({
+//   useAsyncStorage: () => ({
+//     getItem: jest.fn(),
+//     setItem: jest.fn(),
+//   }),
+// }));
+
+jest.mock('@react-native-community/async-storage', () => ({
+  useAsyncStorage: () => ({
+    getItem: async (...args) => args,
+    setItem: async (...args) => args,
+    removeItem: async (...args) => args,
+  }),
+}));
+
+jest.useFakeTimers();
