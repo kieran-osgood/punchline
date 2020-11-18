@@ -5,3 +5,7 @@ export interface SVGProps {
   width?: number;
   height?: number;
 }
+
+export enum LocalStorageKeys {
+  soundIsMuted = 'sound_is_muted',
+}
