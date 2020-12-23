@@ -48,7 +48,6 @@ const SoundSetting = () => {
   const { getItem, setItem } = useAsyncStorage(LocalStorageKeys.soundIsMuted);
 
   const storeData = async (value: SoundSetting) => {
-    console.log('value: ', value);
     await setItem(String(value));
   };
   React.useEffect(() => {
