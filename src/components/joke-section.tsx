@@ -18,6 +18,9 @@ import {
 } from 'app/api';
 import Controls from 'components/controls';
 import useSound from 'src/hooks/use-sound';
+import { useAsyncStorage } from '@react-native-community/async-storage';
+import { LocalStorageKeys } from 'src/types';
+import { SoundSetting } from 'screens/settings';
 
 const JokeSection = () => {
   const [bookmarked, setBookmarked] = React.useState(false);
@@ -26,9 +29,17 @@ const JokeSection = () => {
   const firstRender = React.useRef(true);
   const swiper = React.useRef<Swiper<Joke>>(null);
   const [currentJoke, setCurrentJoke] = React.useState<Joke>(defaultJokeState);
+  const [soundSetting, setSoundSetting] = React.useState<SoundSetting>();
 
+  const { getItem } = useAsyncStorage(LocalStorageKeys.soundIsMuted);
   const laugh = useSound(require('assets/sounds/laugh.mp3'));
   const boo = useSound(require('assets/sounds/boo.mp3'));
+
+  React.useEffect(() => {
+    getItem().then((res) => {
+      setSoundSetting(res as SoundSetting);
+    });
+  }, [getItem]);
 
   React.useEffect(() => {
     if (firstRender.current) {
@@ -65,10 +76,12 @@ const JokeSection = () => {
   const fetchNewJoke = async (rating?: boolean) => {
     await resetAudio();
     if (typeof rating === 'boolean') {
-      if (rating) {
-        laugh.playAsync();
-      } else {
-        boo.playAsync();
+      if (soundSetting === 'unmuted') {
+        if (rating) {
+          laugh.playAsync();
+        } else {
+          boo.playAsync();
+        }
       }
       updateRating({ rating, joke: currentJoke });
       addToHistory({ joke: currentJoke, rating, bookmark: bookmarked });

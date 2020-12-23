@@ -20,7 +20,7 @@ import { getCurrentUser } from 'src/app/api';
 import { useCategoriesContext } from 'components/categories-context';
 import { LocalStorageKeys } from 'src/types';
 
-type SoundSetting = 'muted' | 'unmuted';
+export type SoundSetting = 'muted' | 'unmuted';
 
 export default function Settings() {
   return (
