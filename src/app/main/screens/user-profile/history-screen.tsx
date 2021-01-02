@@ -58,6 +58,8 @@ const ListItem = ({ joke }: { joke: JokeHistory }) => {
     addToHistory({ joke, rating: joke.rating, bookmark: !bookmarked });
   };
 
+  if (!joke.id) return null;
+
   return (
     <View style={LIST_ITEM}>
       <View style={EXPANSION_HEADER}>
