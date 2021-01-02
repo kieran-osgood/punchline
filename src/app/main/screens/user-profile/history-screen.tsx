@@ -106,7 +106,7 @@ const LIST_ITEM: ViewStyle = {
   borderBottomWidth: 0.5,
   display: 'flex',
 };
-const COLLAPSIBLE = {
+const COLLAPSIBLE: ViewStyle = {
   width: '100%',
 };
 const EXPANDED_VIEW: ViewStyle = {
