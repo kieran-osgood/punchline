@@ -48,18 +48,21 @@ const JokeSection = () => {
     }
     if (userCategories !== undefined) {
       const loadFirstJoke = async () => {
-        getInitialJokes(userCategories).then((newJokes) => {
-          setJokes(newJokes);
-          // @ts-ignore
-          setCurrentJoke(newJokes[swiper.current?.state.firstCardIndex]);
-          swiper.current?.setState((prevState) => ({
-            ...prevState,
-            cards: newJokes,
-          }));
-          setTimeout(() => {
-            SplashScreen.hideAsync();
-          }, 100);
-        });
+        getInitialJokes(userCategories)
+          .then((newJokes) => {
+            setJokes(newJokes);
+            // @ts-ignore
+            setCurrentJoke(newJokes[swiper.current?.state.firstCardIndex]);
+            swiper.current?.setState((prevState) => ({
+              ...prevState,
+              cards: newJokes,
+            }));
+          })
+          .finally(() => {
+            setTimeout(() => {
+              SplashScreen.hideAsync();
+            }, 100);
+          });
       };
 
       loadFirstJoke();
