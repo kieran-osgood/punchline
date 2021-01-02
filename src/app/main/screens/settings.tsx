@@ -11,7 +11,12 @@ import { useAsyncStorage } from '@react-native-community/async-storage';
 
 import { color, spacing } from 'theme';
 
-import { BUTTON_CONTAINER, PILL_BUTTON } from 'auth/screens/login-choices';
+import {
+  BUTTON_CONTAINER,
+  FacebookSignIn,
+  GoogleSignIn,
+  PILL_BUTTON,
+} from 'auth/screens/login-choices';
 
 import Text from 'components/text';
 import CenterView from 'components/centerview';
@@ -25,19 +30,22 @@ export type SoundSetting = 'muted' | 'unmuted';
 export default function Settings() {
   return (
     <CenterView>
-      <ScrollView style={{ paddingTop: wp('10%') }}>
-        <Text h3 style={{ alignSelf: 'center' }}>
-          Settings
-        </Text>
-        <CenterView
-          style={{
-            width: wp('90%'),
-            paddingVertical: hp('2.5%'),
-          }}>
-          <SoundSetting />
-          <CategorySetting />
-          <LogoutButton />
-        </CenterView>
+      <ScrollView>
+        <View style={{ paddingTop: hp('5%') }}>
+          <Text h3 style={{ alignSelf: 'center' }}>
+            Settings
+          </Text>
+          <CenterView
+            style={{
+              width: wp('90%'),
+              paddingVertical: hp('2.5%'),
+            }}>
+            <SoundSetting />
+            <CategorySetting />
+            {auth().currentUser?.isAnonymous && <LoginConversion />}
+            <LogoutButton />
+          </CenterView>
+        </View>
       </ScrollView>
     </CenterView>
   );
@@ -133,5 +141,15 @@ const LogoutButton = () => {
         />
       </View>
     </>
+  );
+};
+
+const LoginConversion = () => {
+  return (
+    <CenterView style={{ paddingBottom: spacing[4] }}>
+      <Text text="Link via your social media account in order to save your bookmarks and preferences." />
+      <GoogleSignIn isAnonymousConversion={true} />
+      <FacebookSignIn isAnonymousConversion={true} />
+    </CenterView>
   );
 };

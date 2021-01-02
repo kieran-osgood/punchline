@@ -1,12 +1,12 @@
 import React from 'react';
-import { TextStyle, ViewStyle } from 'react-native';
+import { Alert, TextStyle, ViewStyle } from 'react-native';
 import '@react-native-firebase/app';
-import Reactotron from 'reactotron-react-native';
 import firestore from '@react-native-firebase/firestore';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { Button } from 'react-native-elements';
 import { GoogleSignin } from '@react-native-community/google-signin';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
+import crashlytics from '@react-native-firebase/crashlytics';
 
 import { AuthNavigationProps } from 'auth/auth-param-list';
 
@@ -16,13 +16,12 @@ import CenterView from 'components/centerview';
 
 import Facebook from 'assets/images/facebook';
 import GoogleIcon from 'assets/images/google';
-import Gmail from 'assets/images/gmail';
+// import Gmail from 'assets/images/gmail';
 import AppLogo from 'components/app-logo';
 import { widthPercentageToDP } from 'react-native-responsive-screen';
 
-export default function LoginChoices({
-  navigation,
-}: AuthNavigationProps<'LoginChoices'>) {
+export default function LoginChoices({}: // navigation,
+AuthNavigationProps<'LoginChoices'>) {
   return (
     <CenterView style={CONTAINER}>
       <AppLogo />
@@ -35,9 +34,9 @@ export default function LoginChoices({
       <CenterView style={BUTTONS_CONTAINER}>
         <GoogleSignIn />
         <FacebookSignIn />
-        <EmailSignIn
+        {/* <EmailSignIn
           onPressEvent={() => navigation.navigate('EmailPassword')}
-        />
+        /> */}
         <Text style={TEXT_SEPERATOR} text="Or" />
         <GuestSignIn />
       </CenterView>
@@ -96,17 +95,47 @@ const COPYRIGHT_TEXT: TextStyle = {
 const BUTTONS_CONTAINER: ViewStyle = {
   flex: 0,
 };
-const GoogleSignIn = () => {
+export const GoogleSignIn = ({
+  isAnonymousConversion = false,
+  title = 'Log in with Google',
+}: {
+  isAnonymousConversion?: boolean;
+  title?: string;
+}) => {
   const handlePress = async () => {
     const { idToken } = await GoogleSignin.signIn();
+    if (isAnonymousConversion) {
+      convertGoogle(idToken);
+    } else {
+      signInWithGoogle(idToken);
+    }
+  };
+
+  const signInWithGoogle = async (idToken: string | null) => {
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
     const userCredential = await auth().signInWithCredential(googleCredential);
     createUserSettings(userCredential);
   };
 
+  const convertGoogle = (idToken: string | null) => {
+    if (idToken === null) {
+      errorPopup();
+    }
+
+    const credential = auth.GoogleAuthProvider.credential(idToken);
+    auth()
+      .currentUser?.linkWithCredential(credential)
+      .then(function () {
+        successPopup();
+      })
+      .catch(function () {
+        errorPopup();
+      });
+  };
+
   return (
     <Button
-      title="Log in with Google"
+      title={title}
       buttonStyle={PILL_BUTTON}
       titleStyle={BUTTON_TITLE}
       containerStyle={BUTTON_CONTAINER}
@@ -117,25 +146,22 @@ const GoogleSignIn = () => {
   );
 };
 
-const FacebookSignIn = () => {
+export const FacebookSignIn = ({
+  isAnonymousConversion = false,
+  title = 'Log in with Facebook',
+}: {
+  isAnonymousConversion?: boolean;
+  title?: string;
+}) => {
   async function onFacebookButtonPress() {
     // Attempt login with permissions
-    const result = await LoginManager.logInWithPermissions([
-      'public_profile',
-      'email',
-    ]);
-
-    if (result.isCancelled) {
-      Reactotron.log!('User cancelled the login process');
-      throw 'User cancelled the login process';
-    }
-
+    await LoginManager.logInWithPermissions(['public_profile', 'email']);
     // Once signed in, get the users AccesToken
     const data = await AccessToken.getCurrentAccessToken();
 
     if (!data) {
-      Reactotron.log!('Something went wrong obtaining access token');
-      throw 'Something went wrong obtaining access token';
+      crashlytics().log('Something went wrong obtaining access token');
+      return;
     }
 
     // Create a Firebase credential with the AccessToken
@@ -143,37 +169,58 @@ const FacebookSignIn = () => {
       data.accessToken,
     );
 
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(facebookCredential);
+    if (isAnonymousConversion) {
+      convertFacebook(data.accessToken);
+    } else {
+      signInWithFacebook(facebookCredential);
+    }
   }
+
+  const signInWithFacebook = (
+    facebookCredential: FirebaseAuthTypes.AuthCredential,
+  ) => {
+    auth()
+      .signInWithCredential(facebookCredential)
+      .catch(() => crashlytics().log('Error signin in with facebook'));
+  };
+
+  const convertFacebook = (accessToken: string | null) => {
+    var credential = auth.FacebookAuthProvider.credential(accessToken);
+    auth()
+      .currentUser?.linkWithCredential(credential)
+      .then(function () {
+        successPopup();
+      })
+      .catch(function (error) {
+        errorPopup();
+        crashlytics().log(`Error upgrading anonymous account ${error}`);
+      });
+  };
+
   return (
     <Button
-      title="Log in with Facebook"
+      title={title}
       buttonStyle={PILL_BUTTON}
       titleStyle={BUTTON_TITLE}
       containerStyle={BUTTON_CONTAINER}
       raised
       icon={<Facebook style={BUTTON_ICON} />}
-      onPress={() =>
-        onFacebookButtonPress()
-          .then(() => console.log('Signed in with Facebook!'))
-          .catch(() => Reactotron.log!('Error signin in with facebook'))
-      }
+      onPress={() => onFacebookButtonPress()}
     />
   );
 };
 
-const EmailSignIn = ({ onPressEvent }: { onPressEvent: () => void }) => (
-  <Button
-    title="Log in with Email"
-    raised
-    buttonStyle={PILL_BUTTON}
-    titleStyle={BUTTON_TITLE}
-    containerStyle={BUTTON_CONTAINER}
-    icon={<Gmail style={BUTTON_ICON} />}
-    onPress={onPressEvent}
-  />
-);
+// const EmailSignIn = ({ onPressEvent }: { onPressEvent: () => void }) => (
+//   <Button
+//     title="Log in with Email"
+//     raised
+//     buttonStyle={PILL_BUTTON}
+//     titleStyle={BUTTON_TITLE}
+//     containerStyle={BUTTON_CONTAINER}
+//     icon={<Gmail style={BUTTON_ICON} />}
+//     onPress={onPressEvent}
+//   />
+// );
 
 const GuestSignIn = () => (
   <>
@@ -184,14 +231,13 @@ const GuestSignIn = () => (
         auth()
           .signInAnonymously()
           .then((userCredential) => {
-            Reactotron.log!(userCredential);
             createUserSettings(userCredential);
           })
           .catch((error) => {
             if (error.code === 'auth/operation-not-allowed') {
-              Reactotron.log!('Enable anonymous in your firebase console.');
+              crashlytics().log('Enable anonymous in your firebase console.');
             }
-            Reactotron.log!(error);
+            crashlytics().log(error);
             console.error(error);
           });
       }}
@@ -212,8 +258,32 @@ export const createUserSettings = (
       userReference
         .set({ categories: [] })
         .catch((error) =>
-          Reactotron.log!('login-choices.tsx - createUserSettings: ', error),
+          crashlytics().log(`login-choices.tsx - createUserSettings: ${error}`),
         );
     }
   });
+};
+
+const successPopup = () => {
+  Alert.alert(
+    'Success',
+    'Successfully linked your account, your bookmarks and history has been transferred to this account.',
+    [
+      {
+        text: 'Ok',
+      },
+    ],
+  );
+};
+
+const errorPopup = () => {
+  Alert.alert(
+    'Error',
+    'Unable to link acccounts, please reload the app and try again or contact support.',
+    [
+      {
+        text: 'Ok',
+      },
+    ],
+  );
 };
