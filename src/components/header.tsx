@@ -14,7 +14,11 @@ const Header = () => (
       <AppLogo style={LOGO} height={hp('5%')} width={wp('35%')} />
     </View>
     <BannerAd
-      unitId={TestIds.BANNER} // ! Setup to check process.env
+      unitId={
+        process.env.NODE_ENV === 'production'
+          ? process.env.HEADER_UNIT_ID
+          : TestIds.BANNER
+      }
       size={BannerAdSize.SMART_BANNER}
     />
   </>
