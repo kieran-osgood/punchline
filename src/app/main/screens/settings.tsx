@@ -34,8 +34,8 @@ export default function Settings() {
             width: wp('90%'),
             paddingVertical: hp('2.5%'),
           }}>
-          <CategorySetting />
           <SoundSetting />
+          <CategorySetting />
           <LogoutButton />
         </CenterView>
       </ScrollView>
