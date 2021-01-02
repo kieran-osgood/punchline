@@ -111,8 +111,7 @@
   "lint-staged": {
     "src/**/*.+(ts|tsx|js|css|html|md)": [
       "prettier",
-      "eslint --fix --ignore-path .gitignore",
-      "jest --findRelatedTests"
+      "eslint --fix --ignore-path .gitignore"
     ],
     "*.{ts,tsx}": "bash -c tsc"
   },
