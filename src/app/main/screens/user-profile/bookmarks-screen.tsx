@@ -41,7 +41,8 @@ const BookmarksScreen = () => {
 
   return (
     <CenterView style={CONTAINER}>
-      {typeof bookmarks !== 'undefined' && (
+      <Text text="Bookmarked jokes will appear here." />
+      {typeof bookmarks !== 'undefined' && bookmarks.length > 0 && (
         <FlatList
           style={FLAT_LIST}
           data={bookmarks}
