@@ -16,7 +16,7 @@ const Header = () => (
     <BannerAd
       unitId={
         process.env.NODE_ENV === 'production'
-          ? process.env.HEADER_UNIT_ID
+          ? 'ca-app-pub-3681973098458031/3206308809'
           : TestIds.BANNER
       }
       size={BannerAdSize.SMART_BANNER}
