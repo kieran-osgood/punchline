@@ -1,4 +1,4 @@
-package com.kopunchline.generated;
+package com.ko.punchline.generated;
 
 import java.util.Arrays;
 import java.util.List;

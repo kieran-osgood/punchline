@@ -8,11 +8,11 @@
     "icon": "./icon.svg",
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "bundleIdentifier": "com.kopunchline",
+      "bundleIdentifier": "com.ko.punchline",
       "buildNumber": "1.0.0"
     },
     "android": {
-      "package": "com.kopunchline",
+      "package": "com.ko.punchline",
       "versionCode": 1
     },
     "packagerOpts": {

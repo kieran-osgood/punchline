@@ -136,7 +136,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.kopunchline"
+        applicationId "com.ko.punchline"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

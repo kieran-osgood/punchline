@@ -1,4 +1,4 @@
-package com.kopunchline;
+package com.ko.punchline;
 
 import android.os.Bundle;
 
