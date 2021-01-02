@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>681986405885-oms8c4edds7s1cjlm550ss1sa8rqui7d.apps.googleusercontent.com</string>
+	<string>681986405885-gfppj7edi8rbb3h1t1gms2el14gr2c1l.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.681986405885-oms8c4edds7s1cjlm550ss1sa8rqui7d</string>
+	<string>com.googleusercontent.apps.681986405885-gfppj7edi8rbb3h1t1gms2el14gr2c1l</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>681986405885-eb59nigfp7jejgk8cn02dqor9jm2sqft.apps.googleusercontent.com</string>
+	<string>681986405885-eo2qfeqgps14ha197rionb2jqa48r8cn.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyA6cuMAL88umUhVmgsdyDoaCecE6a_cl9s</string>
 	<key>GCM_SENDER_ID</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:681986405885:ios:d196a1d8e8fb7049d49594</string>
+	<string>1:681986405885:ios:3708edefd8a1355dd49594</string>
 	<key>DATABASE_URL</key>
 	<string>https://punchline-f9af3.firebaseio.com</string>
 </dict>
