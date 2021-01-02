@@ -12,9 +12,9 @@ const useGetUserCategories = () => {
       .doc(`users/${auth().currentUser?.uid}`)
       .onSnapshot((docSnapshot) => {
         if (docSnapshot !== null) {
-          const data = docSnapshot.data() as User;
+          const data = docSnapshot?.data() as User;
           setUserCategories(
-            (data.categories.filter((category) => category.isActive) ??
+            (data?.categories.filter((category) => category.isActive) ??
               []) as CategorySettings[],
           );
         }
