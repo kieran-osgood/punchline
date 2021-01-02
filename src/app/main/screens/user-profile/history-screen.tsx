@@ -78,8 +78,9 @@ const ListItem = ({ joke }: { joke: JokeHistory }) => {
           />
         </View>
       </View>
-      <Collapsible collapsed={collapsed}>
+      <Collapsible collapsed={collapsed} style={COLLAPSIBLE}>
         <View style={EXPANDED_VIEW}>
+          <Text text="" />
           <Text text={joke.body} />
         </View>
       </Collapsible>
@@ -105,10 +106,16 @@ const LIST_ITEM: ViewStyle = {
   borderBottomWidth: 0.5,
   display: 'flex',
 };
+const COLLAPSIBLE = {
+  width: '100%',
+};
 const EXPANDED_VIEW: ViewStyle = {
   width: '100%',
   padding: spacing[3],
   backgroundColor: color.primary,
+  flex: 1,
+  justifyContent: 'space-between',
+  flexDirection: 'row',
 };
 const EXPANSION_HEADER: ViewStyle = {
   width: '100%',
