@@ -41,8 +41,7 @@ const BookmarksScreen = () => {
 
   return (
     <CenterView style={CONTAINER}>
-      <Text text="Bookmarked jokes will appear here." />
-      {typeof bookmarks !== 'undefined' && bookmarks.length > 0 && (
+      {typeof bookmarks !== 'undefined' && bookmarks.length > 0 ? (
         <FlatList
           style={FLAT_LIST}
           data={bookmarks}
@@ -51,6 +50,8 @@ const BookmarksScreen = () => {
           )}
           keyExtractor={(joke) => String(joke.random)}
         />
+      ) : (
+        <Text text="Bookmarked jokes will appear here." />
       )}
     </CenterView>
   );

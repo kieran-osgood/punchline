@@ -37,14 +37,15 @@ const HistoryScreen = () => {
 
   return (
     <CenterView style={CONTAINER}>
-      <Text text="Your history will show here." />
-      {typeof history !== 'undefined' && history.length > 0 && (
+      {typeof history !== 'undefined' && history.length > 0 ? (
         <FlatList
           style={FLAT_LIST}
           data={history}
           renderItem={({ index, item }) => <ListItem key={index} joke={item} />}
           keyExtractor={(joke, index) => String(index) + String(joke.id)}
         />
+      ) : (
+        <Text text="Your history will show here." />
       )}
     </CenterView>
   );
