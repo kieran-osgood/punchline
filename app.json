@@ -4,16 +4,16 @@
   "expo": {
     "name": "punchline",
     "slug": "punchline",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "icon": "./icon.svg",
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "bundleIdentifier": "com.ko.punchline",
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.3"
     },
     "android": {
       "package": "com.ko.punchline",
-      "versionCode": 1
+      "versionCode": 3
     },
     "packagerOpts": {
       "config": "metro.config.js",

@@ -139,8 +139,8 @@ android {
         applicationId "com.ko.punchline"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.0.2"
     }
     splits {
         abi {
@@ -155,18 +155,18 @@ android {
             // Only one of the blocks below should be active at a time
             // ---- CODE PUSH SIGNING ---- //
             if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
-                storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                storePassword MYAPP_UPLOAD_STORE_PASSWORD
-                keyAlias MYAPP_UPLOAD_KEY_ALIAS
-                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+                // storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                // storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                // keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                // keyPassword MYAPP_UPLOAD_KEY_PASSWORD
             }
             // ---- CODE PUSH SIGNING ---- //
 
             // ---- LOCAL KEYSTORE SIGNING ---- //
-            // storeFile file('punchline.keystore')
-            // storePassword 'letmein'
-            // keyAlias 'punchline'
-            // keyPassword 'letmein'
+            storeFile file('punchline.keystore')
+            storePassword 'letmein'
+            keyAlias 'punchline'
+            keyPassword 'letmein'
             // ---- LOCAL KEYSTORE SIGNING ---- //
         }
         debug {
@@ -197,7 +197,7 @@ android {
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
 
             // signingConfig removed, read https://docs.microsoft.com/en-us/appcenter/build/android/code-signing
-            // signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
             
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"

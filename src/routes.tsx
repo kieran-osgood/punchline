@@ -51,7 +51,7 @@ const Routes = () => {
 const codePushOptions = {
   // Options - https://docs.microsoft.com/en-us/appcenter/distribution/codepush/rn-api-ref
   checkFrequency: codePush.CheckFrequency.ON_APP_START,
-  updateDialog: true,
+  updateDialog: false,
 };
 
 // Prevents 404 errors in DEBUG configuration due to no valid keys provided

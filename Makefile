@@ -1,6 +1,6 @@
-build-android:
+build-android-release:
 	cd android && ./gradlew assembleRelease && cd ..
-debug-android:
+build-android-debug:
 	cd android && ./gradlew assembleDebug && cd ..
 
 codepush-android-production:
