@@ -107,6 +107,7 @@ const JokeLengthSetting = () => {
               size={35}
               onPress={() => setJokeLength(length)}
               checkedColor={color.success}
+              uncheckedColor={color.primaryDarker}
             />
           </View>
         ))}
@@ -176,9 +177,7 @@ const LogoutButton = () => {
         titleStyle={{
           fontSize: 18,
           fontWeight: 'bold',
-          width: '100%',
           color: color.text,
-          marginLeft: '40%',
         }}
         containerStyle={BUTTON_CONTAINER}
         onPress={() => auth().signOut()}
@@ -206,7 +205,7 @@ const BugReport = () => {
         ...PILL_BUTTON,
         backgroundColor: color.error,
       }}
-      titleStyle={{ color: 'white' }}
+      titleStyle={{ color: 'white', fontSize: 18, fontWeight: 'bold' }}
       containerStyle={BUTTON_CONTAINER}
       title="Bug Report"
       onPress={() =>
