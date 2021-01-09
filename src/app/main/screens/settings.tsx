@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, ViewStyle } from 'react-native';
+import { ScrollView, View, ViewStyle, Linking } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { Button, CheckBox } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -7,7 +7,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { useAsyncStorage } from '@react-native-community/async-storage';
 
 import { color, spacing } from 'theme';
 
@@ -24,6 +23,7 @@ import SelectPills, { CategorySettings } from 'components/select-pills';
 import { getCurrentUser } from 'src/app/api';
 import { useCategoriesContext } from 'components/categories-context';
 import { LocalStorageKeys } from 'src/types';
+import useSetting from 'src/hooks/use-setting';
 
 const SETTING_ROW: ViewStyle = {
   width: '100%',
@@ -36,6 +36,7 @@ const SETTING_ROW: ViewStyle = {
 };
 
 export default function Settings() {
+  console.log(auth().currentUser?.providerData);
   return (
     <CenterView>
       <ScrollView>
@@ -48,10 +49,11 @@ export default function Settings() {
               width: wp('90%'),
               paddingVertical: hp('2.5%'),
             }}>
+            {auth().currentUser?.isAnonymous && <LoginConversion />}
             <SoundSetting />
             <JokeLengthSetting />
             <CategorySetting />
-            {auth().currentUser?.isAnonymous && <LoginConversion />}
+            <BugReport />
             <LogoutButton />
           </CenterView>
         </View>
@@ -64,94 +66,62 @@ const jokeLengths = ['short', 'medium', 'long'] as const;
 export type JokeLengthSetting = typeof jokeLengths[number];
 
 const JokeLengthSetting = () => {
-  const [jokeLength, setJokeLength] = React.useState<JokeLengthSetting>(
+  const [jokeLength, setJokeLength] = useSetting<JokeLengthSetting>(
+    LocalStorageKeys.jokeLength,
     'short',
   );
-  const { getItem, setItem } = useAsyncStorage(LocalStorageKeys.jokeLength);
-
-  const storeData = async (value: JokeLengthSetting) => {
-    await setItem(String(value));
-  };
-
-  React.useEffect(() => {
-    getItem().then((res) => {
-      setJokeLength(res as JokeLengthSetting);
-    });
-  }, [getItem]);
 
   const checked = (
     thisLength: JokeLengthSetting,
-    selectedLength: JokeLengthSetting,
+    selectedLength: JokeLengthSetting | undefined,
   ): boolean => {
     return (
-      jokeLengths.indexOf(thisLength) <= jokeLengths.indexOf(selectedLength)
+      jokeLengths.indexOf(thisLength) <=
+      jokeLengths.indexOf(selectedLength ?? 'short')
     );
   };
 
   return (
-    <>
-      <CenterView
+    <CenterView
+      style={{
+        ...SETTING_ROW,
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+      }}>
+      <Text h4>Joke Length</Text>
+      <View
         style={{
-          ...SETTING_ROW,
-          flexDirection: 'column',
-          alignItems: 'flex-start',
+          flexDirection: 'row',
+          paddingTop: spacing[2],
         }}>
-        <Text h4>Joke Length</Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingTop: spacing[2],
-          }}>
-          {jokeLengths.map((length) => (
-            <View
-              key={length}
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '33%',
-              }}>
-              <Text text={length.toLocaleUpperCase()} />
-              <CheckBox
-                checked={checked(length, jokeLength)}
-                size={35}
-                onPress={() => {
-                  setJokeLength(length);
-                  storeData(length);
-                }}
-              />
-            </View>
-          ))}
-        </View>
-      </CenterView>
-    </>
+        {jokeLengths.map((length) => (
+          <View
+            key={length}
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '33%',
+            }}>
+            <Text text={length.toLocaleUpperCase()} />
+            <CheckBox
+              checked={checked(length, jokeLength)}
+              size={35}
+              onPress={() => setJokeLength(length)}
+              checkedColor={color.success}
+            />
+          </View>
+        ))}
+      </View>
+    </CenterView>
   );
 };
 
 export type SoundSetting = 'muted' | 'unmuted';
 
-function useSetting<T extends string>(
-  key: LocalStorageKeys,
-): [T | undefined, (t: T) => Promise<void>] {
-  const [setting, setSetting] = React.useState<T | undefined>();
-  const { getItem, setItem } = useAsyncStorage(key);
-
-  const storeData = async (value: T) => {
-    setSetting(value);
-    await setItem(String(value));
-  };
-
-  React.useEffect(() => {
-    getItem().then((res) => {
-      setSetting(res as T);
-    });
-  }, [getItem]);
-
-  return [setting, storeData];
-}
-
 const SoundSetting = () => {
   const [sound, setSound] = useSetting<SoundSetting>(
     LocalStorageKeys.soundIsMuted,
+    'unmuted',
   );
 
   return (
@@ -187,34 +157,30 @@ const CategorySetting = () => {
   };
 
   return (
-    <>
-      <CenterView style={{ marginBottom: hp('2.5%') }}>
-        <Text h4 style={{ alignSelf: 'flex-start' }}>
-          Categories
-        </Text>
-        <SelectPills
-          data={categories ?? []}
-          onValueChange={(value) => handleValueChanged(value)}
-        />
-      </CenterView>
-    </>
+    <CenterView style={{ marginBottom: hp('2.5%') }}>
+      <Text h4 style={{ alignSelf: 'flex-start' }}>
+        Categories
+      </Text>
+      <SelectPills
+        data={categories ?? []}
+        onValueChange={(value) => handleValueChanged(value)}
+      />
+    </CenterView>
   );
 };
 
 const LogoutButton = () => {
   return (
-    <>
-      <View>
-        <Button
-          buttonStyle={PILL_BUTTON}
-          titleStyle={{ color: color.text }}
-          containerStyle={BUTTON_CONTAINER}
-          onPress={() => auth().signOut()}
-          title="Logout"
-          raised
-        />
-      </View>
-    </>
+    <View>
+      <Button
+        buttonStyle={PILL_BUTTON}
+        titleStyle={{ color: color.text }}
+        containerStyle={BUTTON_CONTAINER}
+        onPress={() => auth().signOut()}
+        title="Logout"
+        raised
+      />
+    </View>
   );
 };
 
@@ -225,5 +191,24 @@ const LoginConversion = () => {
       <GoogleSignIn isAnonymousConversion={true} />
       <FacebookSignIn isAnonymousConversion={true} />
     </CenterView>
+  );
+};
+
+const BugReport = () => {
+  return (
+    <Button
+      buttonStyle={{
+        ...PILL_BUTTON,
+        backgroundColor: color.error,
+      }}
+      titleStyle={{ color: 'white' }}
+      containerStyle={BUTTON_CONTAINER}
+      title="Bug Report"
+      onPress={() =>
+        Linking.openURL(
+          'mailto:ko.dev.issues@gmail.com?subject=Punchline Bug Report&body=Explain the issue you had.',
+        )
+      }
+    />
   );
 };
