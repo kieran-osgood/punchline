@@ -32,7 +32,7 @@ export type User = {
 
 export function getCurrentUser(dataOnly: true): Promise<User>;
 export function getCurrentUser(
-  dataOnly: false,
+  dataOnly?: false,
 ): Promise<
   FirebaseFirestoreTypes.DocumentReference<FirebaseFirestoreTypes.DocumentData>
 >;
