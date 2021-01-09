@@ -36,7 +36,6 @@ const SETTING_ROW: ViewStyle = {
 };
 
 export default function Settings() {
-  console.log(auth().currentUser?.providerData);
   return (
     <CenterView>
       <ScrollView>

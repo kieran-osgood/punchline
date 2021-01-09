@@ -30,7 +30,6 @@ const BookmarksScreen = () => {
       .where('bookmarked', '==', true)
       .orderBy('dateBookmarked', 'desc')
       .onSnapshot((docSnapshot) => {
-        // console.log('docSnapshot: ', docSnapshot);
         if (docSnapshot !== null) {
           const data = docSnapshot.docs.map((doc) => doc.data()) ?? [];
           setBookmarks(data as JokeHistory[]);
