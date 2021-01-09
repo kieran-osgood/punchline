@@ -1,7 +1,7 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, ViewStyle } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import { Button } from 'react-native-elements';
+import { Button, CheckBox } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {
   widthPercentageToDP as wp,
@@ -25,7 +25,15 @@ import { getCurrentUser } from 'src/app/api';
 import { useCategoriesContext } from 'components/categories-context';
 import { LocalStorageKeys } from 'src/types';
 
-export type SoundSetting = 'muted' | 'unmuted';
+const SETTING_ROW: ViewStyle = {
+  width: '100%',
+  paddingRight: spacing[3],
+  marginBottom: hp('2.5%'),
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  borderBottomColor: '#fff',
+  borderBottomWidth: 10,
+};
 
 export default function Settings() {
   return (
@@ -41,6 +49,7 @@ export default function Settings() {
               paddingVertical: hp('2.5%'),
             }}>
             <SoundSetting />
+            <JokeLengthSetting />
             <CategorySetting />
             {auth().currentUser?.isAnonymous && <LoginConversion />}
             <LogoutButton />
@@ -51,44 +60,109 @@ export default function Settings() {
   );
 }
 
-const SoundSetting = () => {
-  const [soundSetting, setSoundSetting] = React.useState<SoundSetting>();
-  const { getItem, setItem } = useAsyncStorage(LocalStorageKeys.soundIsMuted);
+const jokeLengths = ['short', 'medium', 'long'] as const;
+export type JokeLengthSetting = typeof jokeLengths[number];
 
-  const storeData = async (value: SoundSetting) => {
+const JokeLengthSetting = () => {
+  const [jokeLength, setJokeLength] = React.useState<JokeLengthSetting>(
+    'short',
+  );
+  const { getItem, setItem } = useAsyncStorage(LocalStorageKeys.jokeLength);
+
+  const storeData = async (value: JokeLengthSetting) => {
     await setItem(String(value));
   };
+
   React.useEffect(() => {
     getItem().then((res) => {
-      setSoundSetting(res as SoundSetting);
+      setJokeLength(res as JokeLengthSetting);
     });
   }, [getItem]);
+
+  const checked = (
+    thisLength: JokeLengthSetting,
+    selectedLength: JokeLengthSetting,
+  ): boolean => {
+    return (
+      jokeLengths.indexOf(thisLength) <= jokeLengths.indexOf(selectedLength)
+    );
+  };
 
   return (
     <>
       <CenterView
         style={{
-          width: '100%',
-          paddingRight: spacing[3],
-          marginBottom: hp('2.5%'),
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          borderBottomColor: '#fff',
-          borderBottomWidth: 10,
+          ...SETTING_ROW,
+          flexDirection: 'column',
+          alignItems: 'flex-start',
         }}>
-        <Text h4>Sound</Text>
-        <Icon
-          name={soundSetting === 'muted' ? 'volume-mute' : 'volume-up'}
-          size={35}
-          onPress={() => {
-            setSoundSetting((current) =>
-              current === 'muted' ? 'unmuted' : 'muted',
-            );
-            storeData(soundSetting === 'muted' ? 'unmuted' : 'muted');
-          }}
-        />
+        <Text h4>Joke Length</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            paddingTop: spacing[2],
+          }}>
+          {jokeLengths.map((length) => (
+            <View
+              key={length}
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '33%',
+              }}>
+              <Text text={length.toLocaleUpperCase()} />
+              <CheckBox
+                checked={checked(length, jokeLength)}
+                size={35}
+                onPress={() => {
+                  setJokeLength(length);
+                  storeData(length);
+                }}
+              />
+            </View>
+          ))}
+        </View>
       </CenterView>
     </>
+  );
+};
+
+export type SoundSetting = 'muted' | 'unmuted';
+
+function useSetting<T extends string>(
+  key: LocalStorageKeys,
+): [T | undefined, (t: T) => Promise<void>] {
+  const [setting, setSetting] = React.useState<T | undefined>();
+  const { getItem, setItem } = useAsyncStorage(key);
+
+  const storeData = async (value: T) => {
+    setSetting(value);
+    await setItem(String(value));
+  };
+
+  React.useEffect(() => {
+    getItem().then((res) => {
+      setSetting(res as T);
+    });
+  }, [getItem]);
+
+  return [setting, storeData];
+}
+
+const SoundSetting = () => {
+  const [sound, setSound] = useSetting<SoundSetting>(
+    LocalStorageKeys.soundIsMuted,
+  );
+
+  return (
+    <CenterView style={SETTING_ROW}>
+      <Text h4>Sound</Text>
+      <Icon
+        name={sound === 'muted' ? 'volume-mute' : 'volume-up'}
+        size={35}
+        onPress={() => setSound(sound === 'muted' ? 'unmuted' : 'muted')}
+      />
+    </CenterView>
   );
 };
 
@@ -107,7 +181,7 @@ const CategorySetting = () => {
   );
 
   const handleValueChanged = async (value: CategorySettings[]) => {
-    const user = await getCurrentUser(false);
+    const user = await getCurrentUser();
     user.set({ categories: value });
     setCategories(value);
   };

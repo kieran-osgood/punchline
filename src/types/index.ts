@@ -8,4 +8,5 @@ export interface SVGProps {
 
 export enum LocalStorageKeys {
   soundIsMuted = 'sound_is_muted',
+  jokeLength = 'joke_length',
 }

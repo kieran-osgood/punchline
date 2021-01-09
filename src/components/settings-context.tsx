@@ -5,7 +5,10 @@ const SettingsContext = React.createContext<{
   settings: Record<LocalStorageKeys, string>;
   setSettings: Dispatch<SetStateAction<Record<LocalStorageKeys, string>>>;
 }>({
-  settings: { [LocalStorageKeys.soundIsMuted]: '' },
+  settings: {
+    [LocalStorageKeys.soundIsMuted]: '',
+    [LocalStorageKeys.jokeLength]: '',
+  },
   setSettings: () => {},
 });
 
@@ -16,6 +19,7 @@ export const CategoriesProvider = ({
 }) => {
   const [settings, setSettings] = useState({
     [LocalStorageKeys.soundIsMuted]: '',
+    [LocalStorageKeys.jokeLength]: '',
   });
   const value = {
     settings: settings,
