@@ -173,7 +173,13 @@ const LogoutButton = () => {
     <View>
       <Button
         buttonStyle={PILL_BUTTON}
-        titleStyle={{ color: color.text }}
+        titleStyle={{
+          fontSize: 18,
+          fontWeight: 'bold',
+          width: '100%',
+          color: color.text,
+          marginLeft: '40%',
+        }}
         containerStyle={BUTTON_CONTAINER}
         onPress={() => auth().signOut()}
         title="Logout"
