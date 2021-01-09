@@ -29,7 +29,7 @@ AuthNavigationProps<'LoginChoices'>) {
       <Text h1 text="Login" />
       <Text
         style={COPY}
-        text="Login to save your history and create bookmarks for your favourite jokes!"
+        text="Login to bookmark your favourite jokes for later, and view your history!"
       />
       <CenterView style={BUTTONS_CONTAINER}>
         <GoogleSignIn />
