@@ -1,7 +1,8 @@
-build-android-release:
+android-release-aab:
+	cd android && ./gradlew bundleRelease && cd ..
+
+android-release-apk:
 	cd android && ./gradlew assembleRelease && cd ..
-build-android-debug:
-	cd android && ./gradlew assembleDebug && cd ..
 
 codepush-android-production:
 	appcenter codepush release-react -a KieranO/punchline -d Production
