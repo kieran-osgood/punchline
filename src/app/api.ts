@@ -7,6 +7,7 @@ import crashlytics from '@react-native-firebase/crashlytics';
 import { Joke } from 'components/joke-section';
 import { CategorySettings } from 'components/select-pills';
 import { logErrorToCrashlytics, getRandomArrayItem } from 'src/utils';
+import { JokeLengthSetting } from 'screens/settings';
 
 export const getCategories = async () => {
   const snapshot = await firestore().collection('categories').get();
@@ -59,6 +60,7 @@ export const getInitialJokes = async (
 export const getRandomJoke = async (
   categories: CategorySettings[],
   previousCount: number = 0,
+  jokeSetting: JokeLengthSetting = 'medium',
 ): Promise<Joke> => {
   let count = previousCount;
   const category = getRandomArrayItem(categories);
@@ -66,11 +68,13 @@ export const getRandomJoke = async (
   const randomFirestoreDocId = jokesRef.doc().id;
 
   let jokesQuery = jokesRef.where('random', '>', randomFirestoreDocId).limit(1);
-
+  const jokeLength =
+    jokeSetting === 'long' ? 5000 : jokeSetting === 'medium' ? 400 : 175;
   if (category !== undefined) {
     jokesQuery = jokesRef
       .where('category', '==', category.name)
       .where('random', '>', randomFirestoreDocId)
+      .where('jokeLength', '<', jokeLength)
       .limit(1);
   }
 

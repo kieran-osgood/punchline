@@ -20,7 +20,8 @@ import Controls from 'components/controls';
 import useSound from 'src/hooks/use-sound';
 import { useAsyncStorage } from '@react-native-community/async-storage';
 import { LocalStorageKeys } from 'src/types';
-import { SoundSetting } from 'screens/settings';
+import { JokeLengthSetting, SoundSetting } from 'screens/settings';
+import useSetting from 'src/hooks/use-setting';
 
 const JokeSection = () => {
   const [bookmarked, setBookmarked] = React.useState(false);
@@ -29,17 +30,17 @@ const JokeSection = () => {
   const firstRender = React.useRef(true);
   const swiper = React.useRef<Swiper<Joke>>(null);
   const [currentJoke, setCurrentJoke] = React.useState<Joke>(defaultJokeState);
-  const [soundSetting, setSoundSetting] = React.useState<SoundSetting>();
+  const [soundSetting] = useSetting<SoundSetting>(
+    LocalStorageKeys.soundIsMuted,
+    'unmuted',
+  );
+  const [jokeLength, setJokeLength] = useSetting<JokeLengthSetting>(
+    LocalStorageKeys.jokeLength,
+    'short',
+  );
 
-  const { getItem } = useAsyncStorage(LocalStorageKeys.soundIsMuted);
   const laugh = useSound(require('assets/sounds/laugh.mp3'));
   const boo = useSound(require('assets/sounds/boo.mp3'));
-
-  React.useEffect(() => {
-    getItem().then((res) => {
-      setSoundSetting(res as SoundSetting);
-    });
-  }, [getItem]);
 
   React.useEffect(() => {
     if (firstRender.current) {
@@ -61,7 +62,7 @@ const JokeSection = () => {
           .finally(() => {
             setTimeout(() => {
               SplashScreen.hideAsync();
-            }, 100);
+            }, 500);
           });
       };
 
@@ -90,7 +91,7 @@ const JokeSection = () => {
       addToHistory({ joke: currentJoke, rating, bookmark: bookmarked });
     }
     if (userCategories !== undefined) {
-      getRandomJoke(userCategories).then((newJoke) => {
+      getRandomJoke(userCategories, 0, jokeLength).then((newJoke) => {
         setJokes((currentJokes) => [...currentJokes, newJoke]);
         swiper.current?.setState((prevState) => ({
           ...prevState,

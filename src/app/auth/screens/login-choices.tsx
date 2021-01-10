@@ -1,5 +1,11 @@
 import React from 'react';
-import { Alert, TextStyle, ViewStyle } from 'react-native';
+import {
+  Alert,
+  TextStyle,
+  ViewStyle,
+  ActivityIndicator,
+  BackHandler,
+} from 'react-native';
 import '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
@@ -20,11 +26,47 @@ import GoogleIcon from 'assets/images/google';
 import AppLogo from 'components/app-logo';
 import { widthPercentageToDP } from 'react-native-responsive-screen';
 
+const INDICATOR_SIZE = 150;
+
 export default function LoginChoices({}: // navigation,
 AuthNavigationProps<'LoginChoices'>) {
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        setIsLoading(false);
+        return false;
+      },
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   return (
     <CenterView style={CONTAINER}>
       <AppLogo />
+      {isLoading && (
+        <CenterView
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            zIndex: 100,
+            backgroundColor: 'rgba(0,0,0,.6)',
+          }}>
+          <CenterView
+            style={{
+              width: INDICATOR_SIZE + 50,
+              maxHeight: INDICATOR_SIZE + 50,
+              backgroundColor: 'rgba(0,0,0,.2)',
+              borderRadius: INDICATOR_SIZE * 2,
+            }}>
+            <ActivityIndicator size={INDICATOR_SIZE} color={color.success} />
+          </CenterView>
+        </CenterView>
+      )}
 
       <Text h1 text="Login" />
       <Text
@@ -32,8 +74,8 @@ AuthNavigationProps<'LoginChoices'>) {
         text="Login to bookmark your favourite jokes for later, and view your history!"
       />
       <CenterView style={BUTTONS_CONTAINER}>
-        <GoogleSignIn />
-        <FacebookSignIn />
+        <GoogleSignIn setIsLoading={(val) => setIsLoading(val)} />
+        <FacebookSignIn setIsLoading={(val) => setIsLoading(val)} />
         {/* <EmailSignIn
           onPressEvent={() => navigation.navigate('EmailPassword')}
         /> */}
@@ -95,10 +137,13 @@ const COPYRIGHT_TEXT: TextStyle = {
 const BUTTONS_CONTAINER: ViewStyle = {
   flex: 0,
 };
+
 export const GoogleSignIn = ({
   isAnonymousConversion = false,
   title = 'Log in with Google',
+  setIsLoading,
 }: {
+  setIsLoading?: (val: boolean) => void;
   isAnonymousConversion?: boolean;
   title?: string;
 }) => {
@@ -112,8 +157,13 @@ export const GoogleSignIn = ({
   };
 
   const signInWithGoogle = async (idToken: string | null) => {
+    if (setIsLoading) setIsLoading(true);
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    const userCredential = await auth().signInWithCredential(googleCredential);
+    const userCredential = await auth()
+      .signInWithCredential(googleCredential)
+      .finally(() => {
+        if (setIsLoading) setIsLoading(false);
+      });
     createUserSettings(userCredential);
   };
 
@@ -149,17 +199,21 @@ export const GoogleSignIn = ({
 export const FacebookSignIn = ({
   isAnonymousConversion = false,
   title = 'Log in with Facebook',
+  setIsLoading,
 }: {
   isAnonymousConversion?: boolean;
+  setIsLoading?: (val: boolean) => void;
   title?: string;
 }) => {
   async function onFacebookButtonPress() {
+    if (setIsLoading) setIsLoading(true);
     // Attempt login with permissions
     await LoginManager.logInWithPermissions(['public_profile', 'email']);
     // Once signed in, get the users AccesToken
     const data = await AccessToken.getCurrentAccessToken();
 
     if (!data) {
+      if (setIsLoading) setIsLoading(false);
       crashlytics().log('Something went wrong obtaining access token');
       return;
     }
@@ -181,7 +235,10 @@ export const FacebookSignIn = ({
   ) => {
     auth()
       .signInWithCredential(facebookCredential)
-      .catch(() => crashlytics().log('Error signin in with facebook'));
+      .catch(() => crashlytics().log('Error signin in with facebook'))
+      .finally(() => {
+        if (setIsLoading) setIsLoading(false);
+      });
   };
 
   const convertFacebook = (accessToken: string | null) => {
@@ -192,6 +249,7 @@ export const FacebookSignIn = ({
         successPopup();
       })
       .catch(function (error) {
+        if (setIsLoading) setIsLoading(false);
         errorPopup();
         crashlytics().log(`Error upgrading anonymous account ${error}`);
       });
