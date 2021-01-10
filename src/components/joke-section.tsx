@@ -48,7 +48,7 @@ const JokeSection = () => {
     }
     if (userCategories !== undefined) {
       const loadFirstJoke = async () => {
-        getInitialJokes(userCategories)
+        getInitialJokes(userCategories, jokeLength)
           .then((newJokes) => {
             setJokes(newJokes);
             // @ts-ignore
@@ -67,7 +67,7 @@ const JokeSection = () => {
 
       loadFirstJoke();
     }
-  }, [userCategories]);
+  }, [userCategories, jokeLength]);
 
   const resetAudio = async () => {
     laugh.pauseAsync();
@@ -77,9 +77,9 @@ const JokeSection = () => {
   };
 
   const fetchNewJoke = async (rating?: boolean) => {
-    await resetAudio();
     if (typeof rating === 'boolean') {
       if (soundSetting === 'unmuted') {
+        await resetAudio();
         if (rating) {
           laugh.playAsync();
         } else {
@@ -91,7 +91,8 @@ const JokeSection = () => {
     }
     if (userCategories !== undefined) {
       getRandomJoke(userCategories, 0, jokeLength).then((newJoke) => {
-        setJokes((currentJokes) => [...currentJokes, newJoke]);
+        if (newJoke.length === 0) fetchNewJoke();
+        setJokes((currentJokes) => [...currentJokes, ...newJoke]);
         swiper.current?.setState((prevState) => ({
           ...prevState,
           cards: [...jokes, newJoke],
@@ -125,9 +126,9 @@ const JokeSection = () => {
             horizontalSwipe={false}
             disablePanresponder={false}
             showSecondCard
-            keyExtractor={(jokeCard) => jokeCard.random}
+            keyExtractor={(jokeCard) => jokeCard?.random}
             renderCard={(jokeCard) => (
-              <JokeCard key={jokeCard.random} joke={jokeCard} />
+              <JokeCard key={jokeCard?.random} joke={jokeCard} />
             )}
             backgroundColor={color.background}
             stackSize={3}
@@ -176,7 +177,7 @@ const JokeCard = ({ joke }: { joke: Joke }) => {
         <Text h3 text={joke.title} style={JOKE_TITLE} />
         <Text
           style={JOKE_TEXT}
-          text={joke.body
+          text={joke?.body
             .split(/\n/g)
             .map((x) => x.charAt(0).toUpperCase() + x.substr(1))
             .join('\n')}
@@ -246,6 +247,7 @@ export type Joke = {
     count: number;
     score: number;
   };
+  jokeLength: number;
 };
 const defaultJokeState = {
   body: '',
@@ -258,4 +260,5 @@ const defaultJokeState = {
     count: 0,
     score: 0,
   },
+  jokeLength: 0,
 };

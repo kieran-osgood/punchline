@@ -48,39 +48,38 @@ export async function getCurrentUser(dataOnly: boolean = false) {
 
 export const getInitialJokes = async (
   categories: CategorySettings[],
+  jokeLength: JokeLengthSetting = 'short',
 ): Promise<Joke[]> => {
-  const jokes: Joke[] = [];
-  for (let idx = 0; idx < 5; idx++) {
-    const joke = await getRandomJoke(categories);
-    jokes.push(joke);
-  }
-  return jokes;
+  return getRandomJoke(categories, 0, jokeLength, 50);
 };
 
 export const getRandomJoke = async (
   categories: CategorySettings[],
   previousCount: number = 0,
-  jokeSetting: JokeLengthSetting = 'medium',
-): Promise<Joke> => {
+  jokeSetting: JokeLengthSetting = 'short',
+  limit: number = 5,
+): Promise<Joke[]> => {
   let count = previousCount;
   const category = getRandomArrayItem(categories);
   const jokesRef = firestore().collection('jokes');
   const randomFirestoreDocId = jokesRef.doc().id;
-
-  let jokesQuery = jokesRef.where('random', '>', randomFirestoreDocId).limit(1);
   const jokeLength =
     jokeSetting === 'long' ? 5000 : jokeSetting === 'medium' ? 400 : 175;
+
+  let jokesQuery = jokesRef
+    .where('random', '>', randomFirestoreDocId)
+    .limit(limit);
   if (category !== undefined) {
     jokesQuery = jokesRef
       .where('category', '==', category.name)
       .where('random', '>', randomFirestoreDocId)
       .where('jokeLength', '<', jokeLength)
-      .limit(1);
+      .limit(limit);
   }
 
   const jokesSnapshot = await jokesQuery.get();
   if (jokesSnapshot.docs.length === 0) {
-    if (count > 10) {
+    if (count > 5) {
       const errorMessage = `Can't find a new joke for user: ${
         auth().currentUser?.uid
       } with categories: ${categories.map((x) => x.name).join(', ')}`;
@@ -89,14 +88,21 @@ export const getRandomJoke = async (
     }
     return getRandomJoke(categories, ++count);
   }
-  const joke = jokesSnapshot.docs[0].data() as Joke;
-  if (!joke.hasOwnProperty('reviews')) {
-    joke.reviews = {
-      count: 0,
-      score: 0,
-    };
-  }
-  return joke;
+  const jokes = jokesSnapshot.docs
+    .map((doc) => {
+      const joke = doc.data() as Joke;
+      if (!joke.hasOwnProperty('reviews')) {
+        joke.reviews = {
+          count: 0,
+          score: 0,
+        };
+      }
+      if (joke.jokeLength > jokeLength) return undefined;
+      return joke;
+    })
+    .filter(Boolean) as Joke[];
+
+  return jokes;
 };
 
 export const addToHistory = async ({
