@@ -1,7 +1,5 @@
-/* eslint-disable curly */
 import React from 'react';
 import { Text as TextEl, StyleSheet, TextStyle } from 'react-native';
-import { useFonts, Montserrat_400Regular } from '@expo-google-fonts/montserrat';
 
 import { color } from 'theme';
 
@@ -24,13 +22,6 @@ const Text = ({
   h3 = false,
   h4 = false,
 }: Props) => {
-  const [loaded] = useFonts({
-    Montserrat_400Regular,
-  });
-
-  if (!loaded) {
-    return null;
-  }
   const headingStyles = () => {
     let headingStyle: TextStyle = styles.base;
     if (h1) headingStyle = styles.h1;
