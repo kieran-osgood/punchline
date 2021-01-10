@@ -18,7 +18,6 @@ import {
 } from 'app/api';
 import Controls from 'components/controls';
 import useSound from 'src/hooks/use-sound';
-import { useAsyncStorage } from '@react-native-community/async-storage';
 import { LocalStorageKeys } from 'src/types';
 import { JokeLengthSetting, SoundSetting } from 'screens/settings';
 import useSetting from 'src/hooks/use-setting';
@@ -34,7 +33,7 @@ const JokeSection = () => {
     LocalStorageKeys.soundIsMuted,
     'unmuted',
   );
-  const [jokeLength, setJokeLength] = useSetting<JokeLengthSetting>(
+  const [jokeLength] = useSetting<JokeLengthSetting>(
     LocalStorageKeys.jokeLength,
     'short',
   );
