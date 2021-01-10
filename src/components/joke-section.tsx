@@ -37,9 +37,16 @@ const JokeSection = () => {
     LocalStorageKeys.jokeLength,
     'short',
   );
+  const [isReady, setIsReady] = React.useState(false);
 
   const laugh = useSound(require('assets/sounds/laugh.mp3'));
   const boo = useSound(require('assets/sounds/boo.mp3'));
+
+  React.useEffect(() => {
+    if (isReady) {
+      SplashScreen.hideAsync();
+    }
+  }, [isReady]);
 
   React.useEffect(() => {
     if (firstRender.current) {
@@ -59,9 +66,7 @@ const JokeSection = () => {
             }));
           })
           .finally(() => {
-            setTimeout(() => {
-              SplashScreen.hideAsync();
-            }, 500);
+            setIsReady(true);
           });
       };
 
@@ -111,7 +116,9 @@ const JokeSection = () => {
   //   }
   //   return '50';
   // };
-
+  if (!isReady) {
+    return null;
+  }
   return (
     <>
       <CenterView style={{ width: '100%' }}>
