@@ -1,10 +1,11 @@
 import React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import {
-  createMaterialBottomTabNavigator,
+  // createMaterialBottomTabNavigator,
   MaterialBottomTabNavigationProp,
 } from '@react-navigation/material-bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { AnimatedTabBarNavigator } from 'react-native-animated-nav-tab-bar';
 
 import { color } from 'theme/index';
 
@@ -24,7 +25,7 @@ export type NavigationProps<T extends keyof RouteParamList> = {
   navigation: MaterialBottomTabNavigationProp<RouteParamList, T>;
 };
 
-const Tab = createMaterialBottomTabNavigator<RouteParamList>();
+const Tab = AnimatedTabBarNavigator<RouteParamList>();
 
 export default function MainTabs() {
   return (
@@ -34,8 +35,14 @@ export default function MainTabs() {
       sceneAnimationEnabled
       labeled={false}
       barStyle={{ backgroundColor: color.background }}
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color: tabColor = 'red' }) => {
+      screenOptions={({ route }: { route: { name: string } }) => ({
+        tabBarIcon: ({
+          focused,
+          color: tabColor = 'red',
+        }: {
+          focused: boolean;
+          color: string;
+        }) => {
           let iconName = '';
 
           if (route.name === 'Home') {
