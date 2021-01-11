@@ -116,9 +116,6 @@ const JokeSection = () => {
   //   }
   //   return '50';
   // };
-  if (!isReady) {
-    return null;
-  }
   return (
     <>
       <CenterView style={{ width: '100%' }}>
@@ -140,7 +137,9 @@ const JokeSection = () => {
             backgroundColor={color.background}
             stackSize={3}
           />
-        ) : null}
+        ) : (
+          <View style={{ ...JOKE_CARD, width: '100%', height: '100%' }} />
+        )}
       </CenterView>
 
       <Controls
