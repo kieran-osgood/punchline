@@ -23,7 +23,7 @@ const Text = ({
   h3 = false,
   h4 = false,
 }: Props) => {
-  useFonts({
+  const [loaded] = useFonts({
     Montserrat_400Regular,
   });
 
@@ -35,7 +35,7 @@ const Text = ({
     if (h4) headingStyle = styles.h4;
     return headingStyle;
   };
-
+  if (!loaded) return null;
   return (
     <TextEl
       style={{
