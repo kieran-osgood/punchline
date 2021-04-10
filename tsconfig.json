@@ -15,6 +15,7 @@
     "lib": ["esnext"],
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "baseUrl": "./",
     "paths": {
       "theme": ["app/theme"], // import {padding} from 'theme'
       "assets/*": ["assets/*"],
@@ -23,5 +24,5 @@
     }
   },
   "exclude": ["node_modules"],
-  "include": ["index.js", "app", "test", "storybook"]
+  "include": ["index.js", "app", "test", "storybook", "assets"]
 }
