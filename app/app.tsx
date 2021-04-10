@@ -26,6 +26,10 @@ import {
 import { RootStore, RootStoreProvider, setupRootStore } from "./models"
 import { ToggleStorybook } from "../storybook/toggle-storybook"
 
+import admob, { MaxAdContentRating } from "@react-native-firebase/admob"
+import { GoogleSignin } from "@react-native-community/google-signin"
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
+
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
 // https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
@@ -34,12 +38,35 @@ enableScreens()
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
+admob()
+  .setRequestConfiguration({
+    // Update all future requests suitable for parental guidance
+    maxAdContentRating: MaxAdContentRating.T,
+
+    // Indicates that you want your content treated as child-directed for purposes of COPPA.
+    tagForChildDirectedTreatment: false,
+
+    // Indicates that you want the ad request to be handled in a
+    // manner suitable for users under the age of consent.
+    tagForUnderAgeOfConsent: true,
+  })
+  .then(() => {
+    // Request config successfully set!
+  })
+
+GoogleSignin.configure({
+  webClientId: "681986405885-dhai19n3c3kai1ad2i5l6u57ot14uorq.apps.googleusercontent.com",
+  iosClientId: "681986405885-oms8c4edds7s1cjlm550ss1sa8rqui7d.apps.googleusercontent.com",
+  offlineAccess: true,
+})
+
 /**
  * This is the root component of our app.
  */
 function App() {
   const navigationRef = useRef<NavigationContainerRef>()
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
+  const [user, setUser] = React.useState<FirebaseAuthTypes.User | null>(null)
 
   setRootNavigation(navigationRef)
   useBackButtonHandler(navigationRef, canExit)
@@ -50,11 +77,18 @@ function App() {
 
   // Kick off initial async loading actions, like loading fonts and RootStore
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       await initFonts() // expo
       setupRootStore().then(setRootStore)
     })()
   }, [])
+
+  React.useEffect(() => {
+    const unsubscribe = auth().onAuthStateChanged((userState) => {
+      setUser(userState)
+    })
+    return () => unsubscribe()
+  })
 
   // Before we show the app, we have to wait for our state to be ready.
   // In the meantime, don't render anything. This will be the background
