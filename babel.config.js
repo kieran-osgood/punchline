@@ -11,5 +11,14 @@ module.exports = {
       },
     ],
     ["@babel/plugin-proposal-optional-catch-binding"],
+    ["module-resolver", {
+      "root": ["."],
+      "alias": {
+        "theme":"./app/theme",
+        "app":"./app",
+        "images": "./assets/images",
+        
+      }
+    }]
   ],
 }

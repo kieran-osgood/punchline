@@ -14,7 +14,13 @@
     "target": "esnext",
     "lib": ["esnext"],
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "theme": ["app/theme"], // import {padding} from 'theme'
+      "assets/*": ["assets/*"],
+      "app/*": ["app/*"],
+      "*": ["*"]
+    }
   },
   "exclude": ["node_modules"],
   "include": ["index.js", "app", "test", "storybook"]
