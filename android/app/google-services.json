@@ -1,0 +1,115 @@
+{
+  "project_info": {
+    "project_number": "681986405885",
+    "firebase_url": "https://punchline-f9af3.firebaseio.com",
+    "project_id": "punchline-f9af3",
+    "storage_bucket": "punchline-f9af3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681986405885:android:93e563e30e92b714d49594",
+        "android_client_info": {
+          "package_name": "com.ko.punchline"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "681986405885-eo2qfeqgps14ha197rionb2jqa48r8cn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ko.punchline",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "681986405885-srb0prucbe5telsmufkb1ff88md155bp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ko.punchline",
+            "certificate_hash": "293026fa4807818c0682cc0b28e76a57d56cd19f"
+          }
+        },
+        {
+          "client_id": "681986405885-dhai19n3c3kai1ad2i5l6u57ot14uorq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqdmu6Ls1j9rU4OUjWlyFHmp6jd8Tc4Ek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "681986405885-dhai19n3c3kai1ad2i5l6u57ot14uorq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "681986405885-gfppj7edi8rbb3h1t1gms2el14gr2c1l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ko.punchline"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:681986405885:android:e17f4cecb37d3c4ed49594",
+        "android_client_info": {
+          "package_name": "com.punchline"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "681986405885-h18bi681l38qddk9g95fr8plhs9cihii.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.punchline",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "681986405885-qme53q4bs2n54pagfmm0jktfgide2dd5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.punchline",
+            "certificate_hash": "293026fa4807818c0682cc0b28e76a57d56cd19f"
+          }
+        },
+        {
+          "client_id": "681986405885-dhai19n3c3kai1ad2i5l6u57ot14uorq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqdmu6Ls1j9rU4OUjWlyFHmp6jd8Tc4Ek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "681986405885-dhai19n3c3kai1ad2i5l6u57ot14uorq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "681986405885-gfppj7edi8rbb3h1t1gms2el14gr2c1l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ko.punchline"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

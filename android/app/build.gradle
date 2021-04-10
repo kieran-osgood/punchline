@@ -1,4 +1,9 @@
 apply plugin: "com.android.application"
+
+// MANUAL INSTALL
+apply plugin: 'com.google.gms.google-services' 
+// MANUAL INSTALL
+
 // Unimodules: https://docs.expo.io/bare/installing-unimodules/#configuration-for-android
 apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 
