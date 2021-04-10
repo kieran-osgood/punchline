@@ -1,11 +1,3 @@
 <resources>
-<!--    <string name="app_name">punchline</string>-->
-    <string name="app_name_release">Punchline</string>
-    <string name="app_name_staging">STAGING - Punchline</string>
-    <string name="app_name_debug">DEBUG - Punchline</string>
-    <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
-    <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
-    <string name="facebook_app_id">360796595283083</string>
-    <string name="fb_login_protocol_scheme">fb360796595283083</string>
-
+    <string name="app_name">punchline</string>
 </resources>

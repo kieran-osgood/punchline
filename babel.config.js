@@ -1,34 +1,15 @@
-module.exports = function (api) {
-  api.cache(true);
-  return {
-    presets: ['babel-preset-expo'],
-    plugins: [
-      [
-        'module-resolver',
-        {
-          extensions: [
-            '.js',
-            '.jsx',
-            '.ts',
-            '.tsx',
-            '.android.js',
-            '.android.tsx',
-            '.ios.js',
-            '.ios.tsx',
-          ],
-          root: ['.'],
-          alias: {
-            src: './src/',
-            app: './src/app/',
-            main: './src/app/main/',
-            auth: './src/app/auth/',
-            components: './src/components/',
-            images: './src/images/',
-            utils: './src/utils/',
-            theme: './src/theme/',
-          },
-        },
-      ],
+module.exports = {
+  presets: ["module:metro-react-native-babel-preset"],
+  env: {
+    production: {},
+  },
+  plugins: [
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        legacy: true,
+      },
     ],
-  };
-};
+    ["@babel/plugin-proposal-optional-catch-binding"],
+  ],
+}

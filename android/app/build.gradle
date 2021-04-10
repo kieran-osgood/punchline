@@ -1,7 +1,5 @@
 apply plugin: "com.android.application"
-apply plugin: 'com.google.gms.google-services' 
-apply plugin: 'com.google.firebase.crashlytics'
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+// Unimodules: https://docs.expo.io/bare/installing-unimodules/#configuration-for-android
 apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 
 import com.android.build.OutputFile
@@ -24,7 +22,7 @@ import com.android.build.OutputFile
  *   // default. Can be overridden with ENTRY_FILE environment variable.
  *   entryFile: "index.android.js",
  *
- *   // https://facebook.github.io/react-native/docs/performance#enable-the-ram-format
+ *   // https://reactnative.dev/docs/performance#enable-the-ram-format
  *   bundleCommand: "ram-bundle",
  *
  *   // whether to bundle JS and assets in debug mode
@@ -82,14 +80,11 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    enableHermes: false
+    enableHermes: false,  // clean and rebuild if changing
 ]
 
-apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 apply from: "../../node_modules/react-native/react.gradle"
-apply from: "../../node_modules/expo-updates/scripts/create-manifest-android.gradle"
-//apply from: "../../node_modules/react-native/react.gradle"
-apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
+
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -139,8 +134,8 @@ android {
         applicationId "com.ko.punchline"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 4
-        versionName "1.1.0"
+        versionCode 1
+        versionName "1.0"
     }
     splits {
         abi {
@@ -151,24 +146,6 @@ android {
         }
     }
     signingConfigs {
-        release {
-            // Only one of the blocks below should be active at a time
-            // ---- CODE PUSH SIGNING ---- //
-            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
-                // storeFile file(MYAPP_UPLOAD_STORE_FILE)
-                // storePassword MYAPP_UPLOAD_STORE_PASSWORD
-                // keyAlias MYAPP_UPLOAD_KEY_ALIAS
-                // keyPassword MYAPP_UPLOAD_KEY_PASSWORD
-            }
-            // ---- CODE PUSH SIGNING ---- //
-
-            // ---- LOCAL KEYSTORE SIGNING ---- //
-            storeFile file('punchline.keystore')
-            storePassword 'letmein'
-            keyAlias 'punchline'
-            keyPassword 'letmein'
-            // ---- LOCAL KEYSTORE SIGNING ---- //
-        }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
@@ -178,47 +155,15 @@ android {
     }
     buildTypes {
         debug {
-            // Note: CodePush updates should not be tested in Debug mode as they are overriden by the RN packager. However, because CodePush checks for updates in all modes, we must supply a key.
-            resValue "string", "CodePushDeploymentKey", ""
-            resValue "string", "app_name", "@string/app_name_debug"
             signingConfig signingConfigs.debug
-            matchingFallbacks = ['debug']
-        }
-        releaseStaging {
-            resValue "string", "app_name", "@string/app_name_staging"
-            resValue "string", "CodePushDeploymentKey", "lbCJ2uYM_9JSe9zSdjTtRmEh1vMNzFPLwb5sl"
-
-            // Note: It is a good idea to provide matchingFallbacks for the new buildType you create to prevent build issues
-            // Add the following line if not already there
-            matchingFallbacks = ['release']
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
-            // see https://facebook.github.io/react-native/docs/signed-apk-android.
-
-            // signingConfig removed, read https://docs.microsoft.com/en-us/appcenter/build/android/code-signing
-            signingConfig signingConfigs.release
-            
+            // see https://reactnative.dev/docs/signed-apk-android.
+            signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-
-            resValue "string", "app_name", "@string/app_name_release"
-            resValue "string", "CodePushDeploymentKey", "g9SK1mCnj6_Ukx3JUQb8CF6zCmES-TiM6PVTu"
-            matchingFallbacks = ['release', 'debug']
-
-            // firebaseCrashlytics {
-            //     nativeSymbolUploadEnabled true
-            //     // strippedNativeLibsDir ‘path/to/stripped/parent/dir’
-            //     // unstrippedNativeLibsDir ‘path/to/unstripped/parent/dir’
-            // }
         }
-    }
-
-    packagingOptions {
-        pickFirst "lib/armeabi-v7a/libc++_shared.so"
-        pickFirst "lib/arm64-v8a/libc++_shared.so"
-        pickFirst "lib/x86/libc++_shared.so"
-        pickFirst "lib/x86_64/libc++_shared.so"
     }
 
     // applicationVariants are e.g. debug, release
@@ -241,21 +186,23 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
+
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
-    implementation 'com.google.firebase:firebase-analytics:17.5.0'
-    implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
-    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+    
+    addUnimodulesDependencies()
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }
+
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.flipper'
+        exclude group:'com.squareup.okhttp3', module:'okhttp'
     }
+
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.flipper'
     }
-    addUnimodulesDependencies()
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
@@ -274,4 +221,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-apply plugin: 'com.google.gms.google-services' // <--- this should be the last line

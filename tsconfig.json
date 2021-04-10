@@ -1,25 +1,21 @@
 {
   "compilerOptions": {
+    "allowJs": false,
     "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
     "jsx": "react-native",
-    "lib": ["dom", "esnext"],
+    "module": "es2015",
     "moduleResolution": "node",
-    "noEmit": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "sourceMap": true,
+    "target": "esnext",
+    "lib": ["esnext"],
     "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "strict": true,
-    "baseUrl": ".",
-    "paths": {
-      // "*": ["src/*"],
-      "theme": ["src/theme"], // import {padding} from 'theme'
-      "theme/*": ["src/theme/*"], // import padding from 'theme/padding'
-      "components/*": ["src/components/*"],
-      "images/*": ["src/images/"],
-      "screens/*": ["src/app/main/screens/*"],
-      "app/*": ["src/app/*"],
-      "auth/*": ["src/app/auth/*"],
-      "main/*": ["src/app/main/*"],
-      "src/*": ["src/*"]
-    }
-  }
+    "resolveJsonModule": true
+  },
+  "exclude": ["node_modules"],
+  "include": ["index.js", "app", "test", "storybook"]
 }
