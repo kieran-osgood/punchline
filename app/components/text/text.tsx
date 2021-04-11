@@ -39,16 +39,16 @@ export const Text = observer(function Text(props: TextProps) {
   // if (!loaded) return null
   const STYLE = mergeAll(
     flatten([{
-      fontFamily: "Montserrat_400Regular",
       ...styles.base,
       ...headingStyles(),
       ...(style as Record<string, unknown>),
+      fontFamily: "Montserrat-Regular",
     }]),
   )
 
   return (
     <TextEl style={STYLE}>
-      {children || text}
+    {children || text}
     </TextEl>
   )
 })
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
   base: {
     color: color.text,
     fontSize: 16,
+    width: '100%',
   },
   h1: { fontSize: 40 },
   h2: { fontSize: 34 },
