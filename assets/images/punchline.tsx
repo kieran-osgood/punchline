@@ -1,6 +1,6 @@
-import * as React from 'react';
-import Svg, { Path, G, Circle, Defs } from 'react-native-svg';
-import { SVGProps } from 'src/types';
+import * as React from 'react'
+import Svg, { Path, G, Circle, Defs } from 'react-native-svg'
+import { SVGProps } from 'app/types'
 
 function Punchline(props: SVGProps) {
   return (
@@ -41,7 +41,7 @@ function Punchline(props: SVGProps) {
       </G>
       <Defs />
     </Svg>
-  );
+  )
 }
 
-export default Punchline;
+export default Punchline

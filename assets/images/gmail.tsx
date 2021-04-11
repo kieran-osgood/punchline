@@ -1,6 +1,6 @@
-import * as React from 'react';
-import Svg, { Path, LinearGradient, Stop } from 'react-native-svg';
-import { SVGProps } from 'src/types';
+import * as React from 'react'
+import Svg, { Path, LinearGradient, Stop } from 'react-native-svg'
+import { SVGProps } from 'app/types'
 
 function Gmail(props: SVGProps) {
   return (
@@ -155,7 +155,7 @@ function Gmail(props: SVGProps) {
       />
       <Path fill="#f7f5ed" d="M111.713 7.087l532.12 394.525L1179.439 7.087z" />
     </Svg>
-  );
+  )
 }
 
-export default Gmail;
+export default Gmail

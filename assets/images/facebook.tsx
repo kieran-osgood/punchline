@@ -1,6 +1,6 @@
-import * as React from 'react';
-import Svg, { Path } from 'react-native-svg';
-import { SVGProps } from 'src/types';
+import * as React from 'react'
+import Svg, { Path } from 'react-native-svg'
+import { SVGProps } from 'app/types'
 
 function Facebook(props: SVGProps) {
   return (
@@ -14,7 +14,7 @@ function Facebook(props: SVGProps) {
         fill="#3c5a9a"
       />
     </Svg>
-  );
+  )
 }
 
-export default Facebook;
+export default Facebook

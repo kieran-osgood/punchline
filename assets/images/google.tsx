@@ -1,6 +1,6 @@
-import * as React from 'react';
-import Svg, { Path } from 'react-native-svg';
-import { SVGProps } from 'src/types';
+import * as React from 'react'
+import Svg, { Path } from 'react-native-svg'
+import { SVGProps } from 'app/types'
 
 function Google(props: SVGProps) {
   return (
@@ -27,7 +27,7 @@ function Google(props: SVGProps) {
         fill="#EB4335"
       />
     </Svg>
-  );
+  )
 }
 
-export default Google;
+export default Google

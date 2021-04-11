@@ -1,6 +1,6 @@
-import * as React from 'react';
-import Svg, { Path } from 'react-native-svg';
-import { SVGProps } from 'src/types';
+import * as React from 'react'
+import Svg, { Path } from 'react-native-svg'
+import { SVGProps } from 'app/types'
 
 function SvgComponent(props: SVGProps) {
   return (
@@ -56,7 +56,7 @@ function SvgComponent(props: SVGProps) {
         strokeLinecap="round"
       />
     </Svg>
-  );
+  )
 }
 
-export default SvgComponent;
+export default SvgComponent
