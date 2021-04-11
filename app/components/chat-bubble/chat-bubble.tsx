@@ -2,7 +2,7 @@ import * as React from "react"
 import { ScrollView, View, ViewStyle } from "react-native"
 import { observer } from "mobx-react-lite"
 import { spacing } from "theme"
-import ChatBubbleSVG from "assets/images/chat-bubble"
+import { ChatBubbleSVG } from "images"
 
 export interface ChatBubbleProps {
   /**

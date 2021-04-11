@@ -5,8 +5,7 @@ import { observer } from "mobx-react-lite"
 import Icon from "react-native-vector-icons/Feather"
 import { color, spacing } from "theme"
 import { BookmarkButton } from "components"
-import CryingEmoji from "assets/images/crying-emoji"
-import LaughingEmoji from "assets/images/laughing-emoji"
+import { CryingEmoji, LaughingEmoji } from "images"
 
 export interface ControlsProps {
   bookmarked: boolean
