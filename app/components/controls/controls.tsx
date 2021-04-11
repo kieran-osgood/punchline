@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native-gesture-handler"
 import { observer } from "mobx-react-lite"
 import Icon from "react-native-vector-icons/Feather"
 import { color, spacing } from "theme"
-import { BookmarkButton } from "components"
+import { BookmarkButton } from "../bookmark-button/bookmark-button"
 import { CryingEmoji, LaughingEmoji } from "images"
 
 export interface ControlsProps {

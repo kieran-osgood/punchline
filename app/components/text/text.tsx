@@ -4,7 +4,7 @@ import { mergeAll, flatten } from "ramda"
 import { color } from "../../theme"
 import { Text as TextEl, StyleSheet, TextStyle } from "react-native"
 // eslint-disable-next-line camelcase
-import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat"
+// import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat"
 
 export interface TextProps {
   /**
@@ -24,9 +24,9 @@ export interface TextProps {
  */
 export const Text = observer(function Text(props: TextProps) {
   const { style, children = "", text = "", h1 = false, h2 = false, h3 = false, h4 = false } = props
-  const [loaded] = useFonts({
-    Montserrat_400Regular,
-  })
+  // const [loaded] = useFonts({
+  // Montserrat_400Regular,
+  // })
 
   const headingStyles = () => {
     let headingStyle: TextStyle = styles.base
@@ -36,7 +36,7 @@ export const Text = observer(function Text(props: TextProps) {
     if (h4) headingStyle = styles.h4
     return headingStyle
   }
-  if (!loaded) return null
+  // if (!loaded) return null
   const STYLE = mergeAll(
     flatten([{
       fontFamily: "Montserrat_400Regular",

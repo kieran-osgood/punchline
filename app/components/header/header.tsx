@@ -1,6 +1,6 @@
 import { BannerAd, TestIds, BannerAdSize } from '@react-native-firebase/admob'
 import { observer } from "mobx-react-lite"
-import { AppLogo } from 'components'
+import { AppLogo } from '../app-logo/app-logo'
 import React from 'react'
 import { View, ViewStyle } from 'react-native'
 import { spacing } from 'theme'
