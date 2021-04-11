@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react'
-import { ScrollView, TextStyle, View, ViewStyle } from 'react-native'
-// import * as SplashScreen from 'expo-splash-screen'
+import { TextStyle, View, ViewStyle } from 'react-native'
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { observer } from "mobx-react-lite"
 
@@ -11,16 +10,10 @@ import { color, spacing } from 'theme'
 import { Text, CenterView, Controls, } from 'components'
 
 import Swiper from 'react-native-deck-swiper'
-import {
-  getRandomJoke,
-  updateRating,
-  addToHistory,
-  getInitialJokes,
-} from 'app/api'
-import useSound from 'src/hooks/use-sound'
-import { LocalStorageKeys } from 'src/types'
-import { JokeLengthSetting, SoundSetting } from 'screens/settings'
-import useSetting from 'src/hooks/use-setting'
+// import useSound from 'src/hooks/use-sound'
+// import { LocalStorageKeys } from 'src/types'
+// import { JokeLengthSetting, SoundSetting } from 'screens/settings'
+// import useSetting from 'src/hooks/use-setting'
 
 export interface JokeSectionProps {
   /**
@@ -36,89 +29,89 @@ export const JokeSection = observer(function JokeSection(props: JokeSectionProps
   const { style } = props
   const [bookmarked, setBookmarked] = React.useState(false)
   const [jokes, setJokes] = React.useState<Joke[]>([])
-  const { userCategories } = useCategoriesContext()
+  // const { userCategories } = useCategoriesContext()
   const firstRender = React.useRef(true)
   const swiper = React.useRef<Swiper<Joke>>(null)
   const [currentJoke, setCurrentJoke] = React.useState<Joke>(defaultJokeState)
-  const [soundSetting] = useSetting<SoundSetting>(
-    LocalStorageKeys.soundIsMuted,
-    'unmuted',
-  )
-  const [jokeLength] = useSetting<JokeLengthSetting>(
-    LocalStorageKeys.jokeLength,
-    'short',
-  )
+  // const [soundSetting] = useSetting<SoundSetting>(
+  //   LocalStorageKeys.soundIsMuted,
+  //   'unmuted',
+  // )
+  // const [jokeLength] = useSetting<JokeLengthSetting>(
+  //   LocalStorageKeys.jokeLength,
+  //   'short',
+  // )
   const [isReady, setIsReady] = React.useState(false)
 
-  const laugh = useSound(require('assets/sounds/laugh.mp3'))
-  const boo = useSound(require('assets/sounds/boo.mp3'))
+  // const laugh = useSound(require('assets/sounds/laugh.mp3'))
+  // const boo = useSound(require('assets/sounds/boo.mp3'))
 
-  React.useEffect(() => {
-    if (isReady) {
-      SplashScreen.hideAsync()
-    }
-  }, [isReady])
+  // React.useEffect(() => {
+  //   if (isReady) {
+  //     SplashScreen.hideAsync()
+  //   }
+  // }, [isReady])
 
-  React.useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false
-      return
-    }
-    if (userCategories !== undefined) {
-      const loadFirstJoke = async () => {
-        getInitialJokes(userCategories, jokeLength)
-          .then((newJokes) => {
-            setJokes(newJokes)
-            // @ts-ignore
-            setCurrentJoke(newJokes[swiper.current?.state.firstCardIndex])
-            swiper.current?.setState((prevState) => ({
-              ...prevState,
-              cards: newJokes,
-            }))
-          })
-          .finally(() => {
-            setIsReady(true)
-          })
-      }
+  // React.useEffect(() => {
+  //   if (firstRender.current) {
+  //     firstRender.current = false
+  //     return
+  //   }
+  //   if (userCategories !== undefined) {
+  //     const loadFirstJoke = async () => {
+  //       getInitialJokes(userCategories, jokeLength)
+  //         .then((newJokes) => {
+  //           setJokes(newJokes)
+  //           // @ts-ignore
+  //           setCurrentJoke(newJokes[swiper.current?.state.firstCardIndex])
+  //           swiper.current?.setState((prevState) => ({
+  //             ...prevState,
+  //             cards: newJokes,
+  //           }))
+  //         })
+  //         .finally(() => {
+  //           setIsReady(true)
+  //         })
+  //     }
 
-      loadFirstJoke()
-    }
-  }, [userCategories, jokeLength])
+  //     loadFirstJoke()
+  //   }
+  // }, [userCategories, jokeLength])
 
-  const resetAudio = async () => {
-    laugh.pauseAsync()
-    boo.pauseAsync()
-    laugh.setPositionAsync(0)
-    boo.setPositionAsync(0)
-  }
+  // const resetAudio = async () => {
+  //   laugh.pauseAsync()
+  //   boo.pauseAsync()
+  //   laugh.setPositionAsync(0)
+  //   boo.setPositionAsync(0)
+  // }
 
-  const fetchNewJoke = async (rating?: boolean) => {
-    if (typeof rating === 'boolean') {
-      if (soundSetting === 'unmuted') {
-        await resetAudio()
-        if (rating) {
-          laugh.playAsync()
-        } else {
-          boo.playAsync()
-        }
-      }
-      updateRating({ rating, joke: currentJoke })
-      addToHistory({ joke: currentJoke, rating, bookmark: bookmarked })
-    }
-    if (userCategories !== undefined) {
-      getRandomJoke(userCategories, 0, jokeLength).then((newJoke) => {
-        if (newJoke.length === 0) fetchNewJoke()
-        setJokes((currentJokes) => [...currentJokes, ...newJoke])
-        swiper.current?.setState((prevState) => ({
-          ...prevState,
-          cards: [...jokes, newJoke],
-        }))
-        // @ts-ignore
-        setCurrentJoke(jokes[swiper.current?.state.firstCardIndex + 1])
-        setBookmarked(false)
-      })
-    }
-  }
+  // const fetchNewJoke = async (rating?: boolean) => {
+  //   if (typeof rating === 'boolean') {
+  //     if (soundSetting === 'unmuted') {
+  //       await resetAudio()
+  //       if (rating) {
+  //         laugh.playAsync()
+  //       } else {
+  //         boo.playAsync()
+  //       }
+  //     }
+  //     updateRating({ rating, joke: currentJoke })
+  //     addToHistory({ joke: currentJoke, rating, bookmark: bookmarked })
+  //   }
+  //   if (userCategories !== undefined) {
+  //     getRandomJoke(userCategories, 0, jokeLength).then((newJoke) => {
+  //       if (newJoke.length === 0) fetchNewJoke()
+  //       setJokes((currentJokes) => [...currentJokes, ...newJoke])
+  //       swiper.current?.setState((prevState) => ({
+  //         ...prevState,
+  //         cards: [...jokes, newJoke],
+  //       }))
+  //       // @ts-ignore
+  //       setCurrentJoke(jokes[swiper.current?.state.firstCardIndex + 1])
+  //       setBookmarked(false)
+  //     })
+  //   }
+  // }
 
   // const calculateScore = () => {
   //   if (joke?.reviews?.count > 0) {
