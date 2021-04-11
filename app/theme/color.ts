@@ -48,6 +48,10 @@ export const color = {
    * Error messages and icons.
    */
   error: palette.angry,
+  /**
+   * Success color state.
+   */
+  success: palette.green,
 
   /**
    * Storybook background for Text stories, or any stories where

@@ -1,61 +1,43 @@
-import React from "react"
-import { View, ViewStyle, TextStyle } from "react-native"
-import { HeaderProps } from "./header.props"
-import { Button } from "../button/button"
-import { Text } from "../text/text"
-import { Icon } from "../icon/icon"
-import { spacing } from "../../theme"
-import { translate } from "../../i18n/"
+import { BannerAd, TestIds, BannerAdSize } from '@react-native-firebase/admob'
+import { observer } from "mobx-react-lite"
+import { AppLogo } from 'components'
+import React from 'react'
+import { View, ViewStyle } from 'react-native'
+import { spacing } from 'theme'
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen'
 
-// static styles
-const ROOT: ViewStyle = {
-  flexDirection: "row",
-  paddingHorizontal: spacing[4],
-  alignItems: "center",
-  paddingTop: spacing[5],
-  paddingBottom: spacing[5],
-  justifyContent: "flex-start",
-}
-const TITLE: TextStyle = { textAlign: "center" }
-const TITLE_MIDDLE: ViewStyle = { flex: 1, justifyContent: "center" }
-const LEFT: ViewStyle = { width: 32 }
-const RIGHT: ViewStyle = { width: 32 }
+export interface HeaderProps {}
 
 /**
- * Header that appears on many screens. Will hold navigation buttons and screen title.
+ * Describe your component here
  */
-export function Header(props: HeaderProps) {
-  const {
-    onLeftPress,
-    onRightPress,
-    rightIcon,
-    leftIcon,
-    headerText,
-    headerTx,
-    style,
-    titleStyle,
-  } = props
-  const header = headerText || (headerTx && translate(headerTx)) || ""
-
+export const Header = observer(function Header(props: HeaderProps) {
   return (
-    <View style={{ ...ROOT, ...style }}>
-      {leftIcon ? (
-        <Button preset="link" onPress={onLeftPress}>
-          <Icon icon={leftIcon} />
-        </Button>
-      ) : (
-        <View style={LEFT} />
-      )}
-      <View style={TITLE_MIDDLE}>
-        <Text style={{ ...TITLE, ...titleStyle }} text={header} />
-      </View>
-      {rightIcon ? (
-        <Button preset="link" onPress={onRightPress}>
-          <Icon icon={rightIcon} />
-        </Button>
-      ) : (
-        <View style={RIGHT} />
-      )}
+    <>
+    <View style={LOGO_CONTAINER}>
+      <AppLogo style={LOGO} height={hp('5%')} width={wp('35%')} />
     </View>
+    <BannerAd
+      unitId={
+        process.env.NODE_ENV === 'production'
+          ? 'ca-app-pub-3681973098458031/3206308809'
+          : TestIds.BANNER
+      }
+      size={BannerAdSize.SMART_BANNER}
+    />
+  </>
   )
+})
+
+const LOGO_CONTAINER: ViewStyle = {
+  width: '100%',
+}
+
+const LOGO: ViewStyle = {
+  padding: spacing[1],
+  alignSelf: 'auto',
+  justifyContent: 'flex-start',
 }

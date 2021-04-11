@@ -2,14 +2,14 @@ import * as React from "react"
 import { storiesOf } from "@storybook/react-native"
 import { StoryScreen, Story, UseCase } from "../../../storybook/views"
 import { color } from "../../theme"
-import { Text } from "./text"
+import { SelectPills } from "./select-pills"
 
-storiesOf("Text", module)
+storiesOf("SelectPills", module)
   .addDecorator((fn) => <StoryScreen>{fn()}</StoryScreen>)
   .add("Style Presets", () => (
     <Story>
       <UseCase text="Primary" usage="The primary.">
-        <Text style={{ backgroundColor: color.error }} />
+        <SelectPills style={{ backgroundColor: color.error }} />
       </UseCase>
     </Story>
   ))

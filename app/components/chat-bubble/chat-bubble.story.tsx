@@ -2,14 +2,14 @@ import * as React from "react"
 import { storiesOf } from "@storybook/react-native"
 import { StoryScreen, Story, UseCase } from "../../../storybook/views"
 import { color } from "../../theme"
-import { Text } from "./text"
+import { ChatBubble } from "./chat-bubble"
 
-storiesOf("Text", module)
+storiesOf("ChatBubble", module)
   .addDecorator((fn) => <StoryScreen>{fn()}</StoryScreen>)
   .add("Style Presets", () => (
     <Story>
       <UseCase text="Primary" usage="The primary.">
-        <Text style={{ backgroundColor: color.error }} />
+        <ChatBubble style={{ backgroundColor: color.error }} />
       </UseCase>
     </Story>
   ))
