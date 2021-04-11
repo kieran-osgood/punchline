@@ -1,4 +1,4 @@
-export * from "./chat-bubble"
+export * from "./chat-bubble-svg"
 export * from "./crying-emoji"
 export * from "./facebook"
 export * from "./gmail"

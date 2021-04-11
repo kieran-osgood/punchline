@@ -2,7 +2,7 @@ import * as React from 'react'
 import Svg, { Path, G, Circle, Defs } from 'react-native-svg'
 import { SVGProps } from 'app/types'
 
-function Punchline(props: SVGProps) {
+export function Punchline(props: SVGProps) {
   return (
     <Svg width={458} height={124} viewBox="0 0 458 124" fill="none" {...props}>
       <Path
@@ -43,5 +43,3 @@ function Punchline(props: SVGProps) {
     </Svg>
   )
 }
-
-export default Punchline

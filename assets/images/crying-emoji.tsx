@@ -2,7 +2,7 @@ import * as React from 'react'
 import Svg, { G, Path, Circle } from 'react-native-svg'
 import { SVGProps } from 'app/types'
 
-function CryingEmoji({ width = 84, height = 84, ...rest }: SVGProps) {
+export function CryingEmoji({ width = 84, height = 84, ...rest }: SVGProps) {
   return (
     <Svg width={width} height={height} viewBox="12 12 48 48" {...rest}>
       <G
@@ -48,5 +48,3 @@ function CryingEmoji({ width = 84, height = 84, ...rest }: SVGProps) {
     </Svg>
   )
 }
-
-export default CryingEmoji

@@ -2,7 +2,7 @@ import * as React from 'react'
 import Svg, { Path } from 'react-native-svg'
 import { SVGProps } from 'app/types'
 
-function Google(props: SVGProps) {
+export function Google(props: SVGProps) {
   return (
     <Svg
       style={props.style}
@@ -29,5 +29,3 @@ function Google(props: SVGProps) {
     </Svg>
   )
 }
-
-export default Google

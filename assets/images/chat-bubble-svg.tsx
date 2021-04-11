@@ -2,7 +2,7 @@ import * as React from 'react'
 import Svg, { Path, Rect } from 'react-native-svg'
 import { SVGProps } from 'app/types'
 
-function SvgComponent(props: SVGProps) {
+export function ChatBubbleSvg(props: SVGProps) {
   return (
     <Svg
       width={100}
@@ -22,5 +22,3 @@ function SvgComponent(props: SVGProps) {
     </Svg>
   )
 }
-
-export default SvgComponent

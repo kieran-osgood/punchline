@@ -18,7 +18,7 @@
     "baseUrl": "./",
     "paths": {
       "theme": ["app/theme"], // import {padding} from 'theme'
-      "images": ["assets/images/*"],
+      "images": ["assets/images"],
       "assets/*": ["assets/*"],
       "components": ["app/components"],
       "app/*": ["app/*"],

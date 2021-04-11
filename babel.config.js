@@ -13,12 +13,13 @@ module.exports = {
     ["@babel/plugin-proposal-optional-catch-binding"],
     ["module-resolver", {
       "root": ["."],
+      "extensions": [".ios.js", ".android.js", ".js", ".json"],
       "alias": {
-        "theme":"./app/theme",
         "components":"./app/components",
+        "images": "./assets/images",
+        "assets": "./assets",
+        "theme":"./app/theme",
         "app":"./app",
-        "images": "./assets/images/*",
-        
       }
     }]
   ],

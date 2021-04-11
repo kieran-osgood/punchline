@@ -2,7 +2,7 @@ import * as React from 'react'
 import Svg, { Path, LinearGradient, Stop } from 'react-native-svg'
 import { SVGProps } from 'app/types'
 
-function Gmail(props: SVGProps) {
+export function Gmail(props: SVGProps) {
   return (
     <Svg
       style={props.style}
@@ -157,5 +157,3 @@ function Gmail(props: SVGProps) {
     </Svg>
   )
 }
-
-export default Gmail

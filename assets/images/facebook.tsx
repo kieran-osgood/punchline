@@ -2,7 +2,7 @@ import * as React from 'react'
 import Svg, { Path } from 'react-native-svg'
 import { SVGProps } from 'app/types'
 
-function Facebook(props: SVGProps) {
+export function Facebook(props: SVGProps) {
   return (
     <Svg
       style={props.style}
@@ -16,5 +16,3 @@ function Facebook(props: SVGProps) {
     </Svg>
   )
 }
-
-export default Facebook

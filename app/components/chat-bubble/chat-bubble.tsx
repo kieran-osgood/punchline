@@ -2,7 +2,7 @@ import * as React from "react"
 import { ScrollView, View, ViewStyle } from "react-native"
 import { observer } from "mobx-react-lite"
 import { spacing } from "theme"
-import { ChatBubbleSVG } from "images"
+import { ChatBubbleSvg } from "images"
 
 export interface ChatBubbleProps {
   /**
@@ -31,7 +31,7 @@ export const ChatBubble = observer(function ChatBubble(props: ChatBubbleProps) {
       }}
     >
       <View style={CHAT_BUBBLE_WRAPPER}>
-        <ChatBubbleSVG style={CHAT_BUBBLE} width={size.width} height={size.height} />
+        <ChatBubbleSvg style={CHAT_BUBBLE} width={size.width} height={size.height} />
       </View>
       <ScrollView
         contentContainerStyle={SCROLL_VIEW(size.width)}

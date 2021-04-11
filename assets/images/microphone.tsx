@@ -2,7 +2,7 @@ import * as React from 'react'
 import Svg, { G, Path, Ellipse, Defs } from 'react-native-svg'
 import { SVGProps } from 'app/types'
 
-function Microphone(props: SVGProps) {
+export function Microphone(props: SVGProps) {
   return (
     <Svg viewBox="0 0 612 815" fill="none" {...props}>
       <G>
@@ -40,5 +40,3 @@ function Microphone(props: SVGProps) {
     </Svg>
   )
 }
-
-export default Microphone

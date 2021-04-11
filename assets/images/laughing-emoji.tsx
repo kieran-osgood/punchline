@@ -2,7 +2,7 @@ import * as React from 'react'
 import Svg, { Path } from 'react-native-svg'
 import { SVGProps } from 'app/types'
 
-function SvgComponent(props: SVGProps) {
+export function LaughingEmoji(props: SVGProps) {
   return (
     <Svg width={112} height={84} viewBox="3 10 55 44" fill="none" {...props}>
       <Path
@@ -58,5 +58,3 @@ function SvgComponent(props: SVGProps) {
     </Svg>
   )
 }
-
-export default SvgComponent
