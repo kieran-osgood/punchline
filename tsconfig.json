@@ -19,6 +19,7 @@
     "paths": {
       "theme": ["app/theme"], // import {padding} from 'theme'
       "assets/*": ["assets/*"],
+      "components": ["app/components"],
       "app/*": ["app/*"],
       "*": ["*"]
     }

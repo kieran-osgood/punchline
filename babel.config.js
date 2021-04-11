@@ -15,6 +15,7 @@ module.exports = {
       "root": ["."],
       "alias": {
         "theme":"./app/theme",
+        "components":"./app/components",
         "app":"./app",
         "images": "./assets/images",
         
