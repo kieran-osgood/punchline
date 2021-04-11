@@ -1,7 +1,12 @@
 apply plugin: "com.android.application"
 
 // MANUAL INSTALL
-apply plugin: 'com.google.gms.google-services' 
+apply plugin: 'com.google.gms.google-services' // RN Firebase
+
+project.ext.vectoricons = [
+    iconFontNames: [ 'Feather.ttf', 'AntDesign.ttf' ] // Name of the font files you want to copy
+]
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 // MANUAL INSTALL
 
 // Unimodules: https://docs.expo.io/bare/installing-unimodules/#configuration-for-android

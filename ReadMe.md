@@ -1,3 +1,13 @@
+# Get Started
+
+## Third-Party Package Information
+### react-native-vector-icons
+Only the following font-groups have been installed:
+- Feather
+- AntDesign
+### react-native-swiper
+There is a patch (created with `patch-package`) that has disabled the touch controls to make it controllable only by buttons.
+
 # Welcome to your new ignited app!
 
 [![CircleCI](https://circleci.com/gh/infinitered/ignite.svg?style=svg)](https://circleci.com/gh/infinitered/ignite)
