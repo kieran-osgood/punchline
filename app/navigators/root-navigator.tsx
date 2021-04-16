@@ -7,7 +7,8 @@
 import React from "react"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { MainNavigator } from "./main-navigator"
+// import { MainNavigator } from "app/navigators/main-navigator"
+import { AuthNavigator } from 'app/navigators/auth-navigator'
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -20,7 +21,7 @@ import { MainNavigator } from "./main-navigator"
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
 export type RootParamList = {
-  mainStack: undefined
+  AuthNavigator: undefined
 }
 
 const Stack = createStackNavigator<RootParamList>()
@@ -33,12 +34,19 @@ const RootStack = () => {
       }}
     >
       <Stack.Screen
+        name="AuthNavigator"
+        component={AuthNavigator}
+        options={{
+          headerShown: false,
+        }}
+      />
+      {/* <Stack.Screen
         name="mainStack"
         component={MainNavigator}
         options={{
           headerShown: false,
         }}
-      />
+      /> */}
     </Stack.Navigator>
   )
 }
