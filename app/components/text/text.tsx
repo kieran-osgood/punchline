@@ -48,7 +48,7 @@ export const Text = observer(function Text(props: TextProps) {
 
   return (
     <TextEl style={STYLE}>
-    {children || text}
+      {children || text}
     </TextEl>
   )
 })
