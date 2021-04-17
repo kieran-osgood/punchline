@@ -10,6 +10,7 @@ import { createStackNavigator } from "@react-navigation/stack"
 import { mainExitRoutes, MainNavigator, MainRouteNames } from "app/navigators/main-navigator"
 import { authExitRoutes, AuthNavigator, AuthRouteNames } from "app/navigators/auth-navigator"
 import { useStores } from "app/models"
+import { observer } from 'mobx-react-lite'
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -28,7 +29,7 @@ export type RootParamList = {
 
 const Stack = createStackNavigator<RootParamList>()
 
-const RootStack = () => {
+const RootStack = observer(() => {
   const { userStore } = useStores()
   // React.useEffect(() => {
   //   if (user) {
@@ -61,7 +62,7 @@ const RootStack = () => {
       )}
     </Stack.Navigator>
   )
-}
+})
 
 export const RootNavigator = React.forwardRef<
 NavigationContainerRef,
