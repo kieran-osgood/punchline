@@ -2,6 +2,8 @@
 #
 .DS_Store
 
+# VS Code
+.vscode/.react/*[.map, .bundle]
 # Xcode
 #
 build/

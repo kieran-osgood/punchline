@@ -1,5 +1,14 @@
 # Get Started
 
+## Debugging
+If using VS Code there is a .vscode/launch.json already included in the repository.
+1. In order to run debugging, install the [react native tools](https://marketplace.visualstudio.com/items?itemName=msjsdiag.vscode-react-native) extension.
+2. *This must be done prior to step 3* Go to the debugging menu and select "Attach to Packager" configuration.
+3. If your project is not already running then start it with `npm run _TARGET-OS_`
+ a. If running the android emulator go to the terminal with the metro packager and press `D` to open the 
+ b. If running the iOS simulator press `cmd + d`
+4. Select to turn on Debugging from the menu that displays - this should now connect the debugger to the running emulator/simulator instance.
+
 ## Third-Party Package Information
 ### react-native-vector-icons
 Only the following font-groups have been installed:
