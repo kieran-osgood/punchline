@@ -1,21 +1,17 @@
-/* eslint-disable react-native/no-color-literals */
-/* eslint-disable react-native/no-inline-styles */
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { ActivityIndicator, Alert, BackHandler, TextStyle, ViewStyle } from "react-native"
-import { AppLogo, CenterView, Screen, Text } from "../../components"
+import { Alert, BackHandler, TextStyle, ViewStyle } from "react-native"
+import { GoogleSignin } from "@react-native-community/google-signin"
+import { Button } from "react-native-elements"
+import { widthPercentageToDP } from "react-native-responsive-screen"
+// import { LoginManager, AccessToken } from 'react-native-fbsdk'
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
-import { color, spacing } from "../../theme"
-import { GoogleSignin } from "@react-native-community/google-signin"
-import { widthPercentageToDP } from "react-native-responsive-screen"
+import { color, spacing } from "theme"
 import auth from "@react-native-firebase/auth"
-// import { LoginManager, AccessToken } from 'react-native-fbsdk'
-import { Button } from "react-native-elements"
 import { Google as GoogleIcon } from "assets/images"
 import { useStores } from "app/models"
-
-const INDICATOR_SIZE = 150
+import { LoadingModal, AppLogo, CenterView, Screen, Text } from "components"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.palette.black,
@@ -28,6 +24,7 @@ const CONTAINER: ViewStyle = {
   alignItems: "center",
   width: "100%",
 }
+
 const COPY: TextStyle = {
   width: widthPercentageToDP("70"),
   textAlign: "center",
@@ -75,7 +72,7 @@ export const LoginScreen = observer(function LoginScreen() {
   const [isLoading, setIsLoading] = React.useState(false)
 
   React.useEffect(() => {
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       setIsLoading(false)
       return false
     })
@@ -83,32 +80,14 @@ export const LoginScreen = observer(function LoginScreen() {
     return () => backHandler.remove()
   }, [])
 
+  if (isLoading) {
+    return <LoadingModal />
+  }
+
   return (
     <Screen style={ROOT} preset="scroll">
       <CenterView style={CONTAINER}>
         <AppLogo />
-        {isLoading && (
-          <CenterView
-            style={{
-              position: "absolute",
-              width: "100%",
-              height: "100%",
-              zIndex: 100,
-              backgroundColor: "rgba(0,0,0,.6)",
-            }}
-          >
-            <CenterView
-              style={{
-                width: INDICATOR_SIZE + 50,
-                maxHeight: INDICATOR_SIZE + 50,
-                backgroundColor: "rgba(0,0,0,.2)",
-                borderRadius: INDICATOR_SIZE * 2,
-              }}
-            >
-              <ActivityIndicator size={INDICATOR_SIZE} color={color.success} />
-            </CenterView>
-          </CenterView>
-        )}
 
         <Text h1 text="Login" />
         <Text
