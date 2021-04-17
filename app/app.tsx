@@ -23,7 +23,7 @@ import {
   setRootNavigation,
   useNavigationPersistence,
 } from "./navigators"
-import { RootStore, RootStoreProvider, setupRootStore } from "./models"
+import { RootStore, RootStoreProvider, setupRootStore, useStores } from "./models"
 import { ToggleStorybook } from "../storybook/toggle-storybook"
 
 import admob, { MaxAdContentRating } from "@react-native-firebase/admob"
@@ -66,7 +66,8 @@ GoogleSignin.configure({
 function App() {
   const navigationRef = useRef<NavigationContainerRef>()
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
-  const [user, setUser] = React.useState<FirebaseAuthTypes.User | null>(null)
+  const ref = React.useRef(false)
+  const { userStore } = useStores()
 
   setRootNavigation(navigationRef)
   useBackButtonHandler(navigationRef, canExit)
@@ -79,16 +80,21 @@ function App() {
   useEffect(() => {
     (async () => {
       await initFonts() // expo
-      setupRootStore().then(setRootStore)
+      setupRootStore().then(setRootStore).finally(() => {
+        ref.current = true
+      })
     })()
   }, [])
 
   React.useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged((userState) => {
-      setUser(userState)
-    })
-    return () => unsubscribe()
-  })
+    if (ref.current) {
+      const unsubscribe = auth().onAuthStateChanged((userState) => {
+        console.log('userState: ', userState)
+        userStore.updateUser(userState)
+      })
+      return () => unsubscribe()
+    }
+  }, [ref.current])
 
   // Before we show the app, we have to wait for our state to be ready.
   // In the meantime, don't render anything. This will be the background

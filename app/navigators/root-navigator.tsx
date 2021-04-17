@@ -8,7 +8,8 @@ import React from "react"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 // import { MainNavigator } from "app/navigators/main-navigator"
-import { AuthNavigator } from 'app/navigators/auth-navigator'
+import { AuthNavigator } from "app/navigators/auth-navigator"
+import { useStores } from 'app/models'
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -27,26 +28,40 @@ export type RootParamList = {
 const Stack = createStackNavigator<RootParamList>()
 
 const RootStack = () => {
+  const { userStore } = useStores()
+  // React.useEffect(() => {
+  //   if (user) {
+  //     SplashScreen.preventAutoHideAsync()
+  //   }
+  // }, [user])
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen
-        name="AuthNavigator"
-        component={AuthNavigator}
-        options={{
-          headerShown: false,
-        }}
-      />
-      {/* <Stack.Screen
+      {!userStore.user ? (
+        <Stack.Screen
+          name="AuthNavigator"
+          component={AuthNavigator}
+          options={{
+            headerShown: false,
+          }}
+        />
+      ) : (
+        <>
+        {
+          /* <Stack.Screen
         name="mainStack"
         component={MainNavigator}
         options={{
           headerShown: false,
         }}
-      /> */}
+      /> */
+        }
+        </>
+      )}
     </Stack.Navigator>
   )
 }

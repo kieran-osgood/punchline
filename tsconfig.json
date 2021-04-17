@@ -6,6 +6,7 @@
     "jsx": "react-native",
     "module": "es2015",
     "moduleResolution": "node",
+    "strict": true,
     "noImplicitAny": false,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -26,5 +27,5 @@
     }
   },
   "exclude": ["node_modules"],
-  "include": ["index.js", "app", "test", "storybook", "assets"]
+  "include": ["index.js", "app", "test", "storybook", "assets", "types.ts"]
 }
