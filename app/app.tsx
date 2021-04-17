@@ -79,18 +79,14 @@ function App() {
   useEffect(() => {
     (async () => {
       await initFonts() // expo
-      setupRootStore().then(setRootStore).finally(() => {
-        ref.current = true
-      })
+      await setupRootStore().then(setRootStore)
+      ref.current = true
     })()
   }, [])
 
   React.useEffect(() => {
-    console.log('rerunning')
     if (ref.current) {
-      console.log('current')
       const unsubscribe = auth().onAuthStateChanged((userState) => {
-        console.log('userState: ', userState)
         if (userState) userStore.updateUser(userState)
       })
       return () => unsubscribe()
