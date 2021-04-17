@@ -13,6 +13,7 @@ import auth from "@react-native-firebase/auth"
 // import { LoginManager, AccessToken } from 'react-native-fbsdk'
 import { Button } from "react-native-elements"
 import { Google as GoogleIcon } from "assets/images"
+import { useStores } from "app/models"
 
 const INDICATOR_SIZE = 150
 
@@ -20,70 +21,6 @@ const ROOT: ViewStyle = {
   backgroundColor: color.palette.black,
   flex: 1,
 }
-
-export const LoginScreen = observer(function LoginScreen() {
-  const [isLoading, setIsLoading] = React.useState(false)
-
-  React.useEffect(() => {
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
-      setIsLoading(false)
-      return false
-    })
-
-    return () => backHandler.remove()
-  }, [])
-
-  // Pull in one of our MST stores
-  // const { someStore, anotherStore } = useStores()
-
-  // Pull in navigation via hook
-  // const navigation = useNavigation()
-  return (
-    <Screen style={ROOT} preset="scroll">
-      <CenterView style={CONTAINER}>
-        <AppLogo />
-        {isLoading && (
-          <CenterView
-            style={{
-              position: "absolute",
-              width: "100%",
-              height: "100%",
-              zIndex: 100,
-              backgroundColor: "rgba(0,0,0,.6)",
-            }}
-          >
-            <CenterView
-              style={{
-                width: INDICATOR_SIZE + 50,
-                maxHeight: INDICATOR_SIZE + 50,
-                backgroundColor: "rgba(0,0,0,.2)",
-                borderRadius: INDICATOR_SIZE * 2,
-              }}
-            >
-              <ActivityIndicator size={INDICATOR_SIZE} color={color.success} />
-            </CenterView>
-          </CenterView>
-        )}
-
-        <Text h1 text="Login" />
-        <Text
-          style={COPY}
-          text="Login to bookmark your favourite jokes for later, and view your history!"
-        />
-        <CenterView style={BUTTONS_CONTAINER}>
-          <GoogleSignIn setIsLoading={(val) => setIsLoading(val)} />
-          {/* <FacebookSignIn setIsLoading={(val) => setIsLoading(val)} /> */}
-          {/* <EmailSignIn
-          onPressEvent={() => navigation.navigate('EmailPassword')}
-        /> */}
-          <Text style={TEXT_SEPERATOR} text="Or" />
-          <GuestSignIn />
-        </CenterView>
-        <Text text={`COPYRIGHT \u00A9 ${new Date().getFullYear()} KO.DEV`} style={COPYRIGHT_TEXT} />
-      </CenterView>
-    </Screen>
-  )
-})
 
 const CONTAINER: ViewStyle = {
   display: "flex",
@@ -133,6 +70,65 @@ const COPYRIGHT_TEXT: TextStyle = {
 const BUTTONS_CONTAINER: ViewStyle = {
   flex: 0,
 }
+
+export const LoginScreen = observer(function LoginScreen() {
+  const [isLoading, setIsLoading] = React.useState(false)
+
+  React.useEffect(() => {
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+      setIsLoading(false)
+      return false
+    })
+
+    return () => backHandler.remove()
+  }, [])
+
+  return (
+    <Screen style={ROOT} preset="scroll">
+      <CenterView style={CONTAINER}>
+        <AppLogo />
+        {isLoading && (
+          <CenterView
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              zIndex: 100,
+              backgroundColor: "rgba(0,0,0,.6)",
+            }}
+          >
+            <CenterView
+              style={{
+                width: INDICATOR_SIZE + 50,
+                maxHeight: INDICATOR_SIZE + 50,
+                backgroundColor: "rgba(0,0,0,.2)",
+                borderRadius: INDICATOR_SIZE * 2,
+              }}
+            >
+              <ActivityIndicator size={INDICATOR_SIZE} color={color.success} />
+            </CenterView>
+          </CenterView>
+        )}
+
+        <Text h1 text="Login" />
+        <Text
+          style={COPY}
+          text="Login to bookmark your favourite jokes for later, and view your history!"
+        />
+        <CenterView style={BUTTONS_CONTAINER}>
+          <GoogleSignIn setIsLoading={(val) => setIsLoading(val)} />
+          {/* <FacebookSignIn setIsLoading={(val) => setIsLoading(val)} /> */}
+          {/* <EmailSignIn
+          onPressEvent={() => navigation.navigate('EmailPassword')}
+        /> */}
+          <Text style={TEXT_SEPERATOR} text="Or" />
+          <GuestSignIn />
+        </CenterView>
+        <Text text={`COPYRIGHT \u00A9 ${new Date().getFullYear()} KO.DEV`} style={COPYRIGHT_TEXT} />
+      </CenterView>
+    </Screen>
+  )
+})
 
 export const GoogleSignIn = ({
   isAnonymousConversion = false,
@@ -276,27 +272,32 @@ export const GoogleSignIn = ({
 //   />
 // );
 
-const GuestSignIn = () => (
-  <>
-    <Button
-      title="Continue as guest"
-      type="clear"
-      onPress={() => {
-        auth()
-          .signInAnonymously()
-          .then((userCredential) => {
-            // createUserSettings(userCredential)
-          })
-          .catch((error) => {
-            if (error.code === "auth/operation-not-allowed") {
-              // crashlytics().log('Enable anonymous in your firebase console.')
-            }
-            console.error(error)
-          })
-      }}
-    />
-  </>
-)
+const GuestSignIn = observer(() => {
+  const { userStore } = useStores()
+  return (
+    <>
+      <Button
+        title="Continue as guest"
+        type="clear"
+        onPress={() => {
+          auth()
+            .signInAnonymously()
+            .then((userCredential) => {
+              userStore.updateUser(userCredential.user)
+              // createUserSettings(userCredential)
+            })
+            .catch((error) => {
+              console.log("auth error: ", error)
+              if (error.code === "auth/operation-not-allowed") {
+                // crashlytics().log('Enable anonymous in your firebase console.')
+              }
+              console.error(error)
+            })
+        }}
+      />
+    </>
+  )
+})
 
 const successPopup = () => {
   Alert.alert(
