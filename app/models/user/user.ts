@@ -2,7 +2,8 @@ import { FirebaseAuthTypes } from '@react-native-firebase/auth'
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
 import { NonArrayProperties, NonFunctionProperties } from 'types'
 
-export const UserData: NonArrayProperties<NonFunctionProperties<FirebaseAuthTypes.User>> = {
+type UserDataType = NonArrayProperties<NonFunctionProperties<FirebaseAuthTypes.User>>;
+export const UserData: UserDataType = {
   displayName: '',
   email: '',
   emailVerified: false,
@@ -16,6 +17,8 @@ export const UserData: NonArrayProperties<NonFunctionProperties<FirebaseAuthType
   providerId: '',
   uid: '',
 }
+// Used for R.pick to extract properties from the FirebaseAuthTypes.UserCredential
+export const UserDataKeys = Object.keys(UserData)
 
 /**
  * Currently Authenticated Users Firebase Information .

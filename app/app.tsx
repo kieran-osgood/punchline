@@ -87,7 +87,7 @@ function App() {
   React.useEffect(() => {
     if (ref.current) {
       const unsubscribe = auth().onAuthStateChanged((userState) => {
-        if (userState) userStore.updateUser(userState)
+        userStore.updateUser(userState)
       })
       return () => unsubscribe()
     }
