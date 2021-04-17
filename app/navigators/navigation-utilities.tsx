@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import { BackHandler } from "react-native"
 import { PartialState, NavigationState, NavigationContainerRef } from "@react-navigation/native"
+import { AllRouteNames } from 'app/navigators'
 
 export const RootNavigation = {
   navigate(name: string) {
@@ -42,7 +43,7 @@ export function getActiveRouteName(state: NavigationState | PartialState<Navigat
  */
 export function useBackButtonHandler(
   ref: React.RefObject<NavigationContainerRef>,
-  canExit: (routeName: string) => boolean,
+  canExit: (routeName: AllRouteNames) => boolean,
 ) {
   const canExitRef = useRef(canExit)
 

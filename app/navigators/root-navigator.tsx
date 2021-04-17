@@ -7,9 +7,9 @@
 import React from "react"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-// import { MainNavigator } from "app/navigators/main-navigator"
-import { AuthNavigator } from "app/navigators/auth-navigator"
-import { useStores } from 'app/models'
+import { mainExitRoutes, MainNavigator, MainRouteNames } from "app/navigators/main-navigator"
+import { authExitRoutes, AuthNavigator, AuthRouteNames } from "app/navigators/auth-navigator"
+import { useStores } from "app/models"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -23,6 +23,7 @@ import { useStores } from 'app/models'
  */
 export type RootParamList = {
   AuthNavigator: undefined
+  MainNavigator: undefined
 }
 
 const Stack = createStackNavigator<RootParamList>()
@@ -41,7 +42,7 @@ const RootStack = () => {
         headerShown: false,
       }}
     >
-      {!userStore.user ? (
+      {userStore.user ? (
         <Stack.Screen
           name="AuthNavigator"
           component={AuthNavigator}
@@ -50,25 +51,21 @@ const RootStack = () => {
           }}
         />
       ) : (
-        <>
-        {
-          /* <Stack.Screen
-        name="mainStack"
-        component={MainNavigator}
-        options={{
-          headerShown: false,
-        }}
-      /> */
-        }
-        </>
+        <Stack.Screen
+          name="MainNavigator"
+          component={MainNavigator}
+          options={{
+            headerShown: false,
+          }}
+        />
       )}
     </Stack.Navigator>
   )
 }
 
 export const RootNavigator = React.forwardRef<
-  NavigationContainerRef,
-  Partial<React.ComponentProps<typeof NavigationContainer>>
+NavigationContainerRef,
+Partial<React.ComponentProps<typeof NavigationContainer>>
 >((props, ref) => {
   return (
     <NavigationContainer {...props} ref={ref}>
@@ -79,6 +76,6 @@ export const RootNavigator = React.forwardRef<
 
 RootNavigator.displayName = "RootNavigator"
 
-type AllRouteNames = MainRouteNames | AuthRouteNames
+export type AllRouteNames = MainRouteNames | AuthRouteNames
 const exitRoutes = [...authExitRoutes, ...mainExitRoutes]
 export const canExit = (routeName: AllRouteNames) => exitRoutes.includes(routeName)
