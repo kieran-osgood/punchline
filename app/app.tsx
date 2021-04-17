@@ -64,11 +64,10 @@ GoogleSignin.configure({
  * This is the root component of our app.
  */
 function App() {
-  const navigationRef = useRef<NavigationContainerRef>()
+  const navigationRef = useRef<NavigationContainerRef | null>(null)
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
   const ref = React.useRef(false)
   const { userStore } = useStores()
-
   setRootNavigation(navigationRef)
   useBackButtonHandler(navigationRef, canExit)
   const { initialNavigationState, onNavigationStateChange } = useNavigationPersistence(
@@ -87,10 +86,12 @@ function App() {
   }, [])
 
   React.useEffect(() => {
+    console.log('rerunning')
     if (ref.current) {
+      console.log('current')
       const unsubscribe = auth().onAuthStateChanged((userState) => {
         console.log('userState: ', userState)
-        userStore.updateUser(userState)
+        if (userState) userStore.updateUser(userState)
       })
       return () => unsubscribe()
     }

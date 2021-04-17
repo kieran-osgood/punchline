@@ -7,12 +7,12 @@ import { AppLogo, CenterView, Screen, Text } from "../../components"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color, spacing } from "../../theme"
-import { GoogleSignin } from '@react-native-community/google-signin'
-import { widthPercentageToDP } from 'react-native-responsive-screen'
-import auth from '@react-native-firebase/auth'
+import { GoogleSignin } from "@react-native-community/google-signin"
+import { widthPercentageToDP } from "react-native-responsive-screen"
+import auth from "@react-native-firebase/auth"
 // import { LoginManager, AccessToken } from 'react-native-fbsdk'
-import { Button } from 'react-native-elements'
-import { Google as GoogleIcon } from 'assets/images'
+import { Button } from "react-native-elements"
+import { Google as GoogleIcon } from "assets/images"
 
 const INDICATOR_SIZE = 150
 
@@ -25,13 +25,10 @@ export const LoginScreen = observer(function LoginScreen() {
   const [isLoading, setIsLoading] = React.useState(false)
 
   React.useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      () => {
-        setIsLoading(false)
-        return false
-      },
-    )
+    const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+      setIsLoading(false)
+      return false
+    })
 
     return () => backHandler.remove()
   }, [])
@@ -43,61 +40,60 @@ export const LoginScreen = observer(function LoginScreen() {
   // const navigation = useNavigation()
   return (
     <Screen style={ROOT} preset="scroll">
-    <CenterView style={CONTAINER}>
-      <AppLogo />
-      {isLoading && (
-        <CenterView
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            zIndex: 100,
-            backgroundColor: 'rgba(0,0,0,.6)',
-          }}>
+      <CenterView style={CONTAINER}>
+        <AppLogo />
+        {isLoading && (
           <CenterView
             style={{
-              width: INDICATOR_SIZE + 50,
-              maxHeight: INDICATOR_SIZE + 50,
-              backgroundColor: 'rgba(0,0,0,.2)',
-              borderRadius: INDICATOR_SIZE * 2,
-            }}>
-            <ActivityIndicator size={INDICATOR_SIZE} color={color.success} />
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              zIndex: 100,
+              backgroundColor: "rgba(0,0,0,.6)",
+            }}
+          >
+            <CenterView
+              style={{
+                width: INDICATOR_SIZE + 50,
+                maxHeight: INDICATOR_SIZE + 50,
+                backgroundColor: "rgba(0,0,0,.2)",
+                borderRadius: INDICATOR_SIZE * 2,
+              }}
+            >
+              <ActivityIndicator size={INDICATOR_SIZE} color={color.success} />
+            </CenterView>
           </CenterView>
-        </CenterView>
-      )}
+        )}
 
-      <Text h1 text="Login" />
-      <Text
-        style={COPY}
-        text="Login to bookmark your favourite jokes for later, and view your history!"
-      />
-      <CenterView style={BUTTONS_CONTAINER}>
-        <GoogleSignIn setIsLoading={(val) => setIsLoading(val)} />
-        {/* <FacebookSignIn setIsLoading={(val) => setIsLoading(val)} /> */}
-        {/* <EmailSignIn
+        <Text h1 text="Login" />
+        <Text
+          style={COPY}
+          text="Login to bookmark your favourite jokes for later, and view your history!"
+        />
+        <CenterView style={BUTTONS_CONTAINER}>
+          <GoogleSignIn setIsLoading={(val) => setIsLoading(val)} />
+          {/* <FacebookSignIn setIsLoading={(val) => setIsLoading(val)} /> */}
+          {/* <EmailSignIn
           onPressEvent={() => navigation.navigate('EmailPassword')}
         /> */}
-        <Text style={TEXT_SEPERATOR} text="Or" />
-        <GuestSignIn />
+          <Text style={TEXT_SEPERATOR} text="Or" />
+          <GuestSignIn />
+        </CenterView>
+        <Text text={`COPYRIGHT \u00A9 ${new Date().getFullYear()} KO.DEV`} style={COPYRIGHT_TEXT} />
       </CenterView>
-      <Text
-        text={`COPYRIGHT \u00A9 ${new Date().getFullYear()} KO.DEV`}
-        style={COPYRIGHT_TEXT}
-      />
-    </CenterView>
     </Screen>
   )
 })
 
 const CONTAINER: ViewStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  width: '100%',
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  width: "100%",
 }
 const COPY: TextStyle = {
-  width: widthPercentageToDP('70'),
-  textAlign: 'center',
+  width: widthPercentageToDP("70"),
+  textAlign: "center",
 }
 export const PILL_BUTTON: ViewStyle = {
   borderRadius: 100,
@@ -107,17 +103,17 @@ export const PILL_BUTTON: ViewStyle = {
 }
 
 const BUTTON_ICON: ViewStyle = {
-  position: 'absolute',
+  position: "absolute",
   left: spacing[6],
 }
 
 const BUTTON_TITLE: TextStyle = {
   fontSize: 18,
-  fontWeight: 'bold',
-  width: '100%',
+  fontWeight: "bold",
+  width: "100%",
   color: color.text,
-  marginLeft: '40%',
-  textAlign: 'left',
+  marginLeft: "40%",
+  textAlign: "left",
 }
 
 export const BUTTON_CONTAINER: ViewStyle = {
@@ -140,12 +136,12 @@ const BUTTONS_CONTAINER: ViewStyle = {
 
 export const GoogleSignIn = ({
   isAnonymousConversion = false,
-  title = 'Log in with Google',
+  title = "Log in with Google",
   setIsLoading,
 }: {
-  setIsLoading?: (val: boolean) => void;
-  isAnonymousConversion?: boolean;
-  title?: string;
+  setIsLoading?: (val: boolean) => void
+  isAnonymousConversion?: boolean
+  title?: string
 }) => {
   const handlePress = async () => {
     const { idToken } = await GoogleSignin.signIn()
@@ -292,7 +288,7 @@ const GuestSignIn = () => (
             // createUserSettings(userCredential)
           })
           .catch((error) => {
-            if (error.code === 'auth/operation-not-allowed') {
+            if (error.code === "auth/operation-not-allowed") {
               // crashlytics().log('Enable anonymous in your firebase console.')
             }
             console.error(error)
@@ -304,11 +300,11 @@ const GuestSignIn = () => (
 
 const successPopup = () => {
   Alert.alert(
-    'Success',
-    'Successfully linked your account, your bookmarks and history has been transferred to this account.',
+    "Success",
+    "Successfully linked your account, your bookmarks and history has been transferred to this account.",
     [
       {
-        text: 'Ok',
+        text: "Ok",
       },
     ],
   )
@@ -316,11 +312,11 @@ const successPopup = () => {
 
 const errorPopup = () => {
   Alert.alert(
-    'Error',
-    'Unable to link acccounts, please reload the app and try again or contact support.',
+    "Error",
+    "Unable to link acccounts, please reload the app and try again or contact support.",
     [
       {
-        text: 'Ok',
+        text: "Ok",
       },
     ],
   )
