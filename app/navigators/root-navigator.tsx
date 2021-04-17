@@ -78,3 +78,7 @@ export const RootNavigator = React.forwardRef<
 })
 
 RootNavigator.displayName = "RootNavigator"
+
+type AllRouteNames = MainRouteNames | AuthRouteNames
+const exitRoutes = [...authExitRoutes, ...mainExitRoutes]
+export const canExit = (routeName: AllRouteNames) => exitRoutes.includes(routeName)

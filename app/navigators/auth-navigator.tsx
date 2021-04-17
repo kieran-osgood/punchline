@@ -82,6 +82,5 @@ export function AuthNavigator() {
  *
  * `canExit` is used in ./app/app.tsx in the `useBackButtonHandler` hook.
  */
-type RouteNames = keyof RouteParamList;
-const exitRoutes: [RouteNames] = ['LoginChoices']
-export const canExit = (routeName: RouteNames) => exitRoutes.includes(routeName)
+export type AuthRouteNames = keyof RouteParamList;
+export const authExitRoutes: [AuthRouteNames] = ['LoginChoices']
