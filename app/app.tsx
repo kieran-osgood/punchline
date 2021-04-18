@@ -23,17 +23,18 @@ import {
   setRootNavigation,
   useNavigationPersistence,
 } from "./navigators"
-import { RootStore, RootStoreProvider, setupRootStore, useStores } from "./models"
+import { RootStore, RootStoreProvider, setupRootStore } from "./models"
 import { ToggleStorybook } from "../storybook/toggle-storybook"
 
 import admob, { MaxAdContentRating } from "@react-native-firebase/admob"
 import { GoogleSignin } from "@react-native-community/google-signin"
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import auth from "@react-native-firebase/auth"
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
 // https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
 import { enableScreens } from "react-native-screens"
+import { observer } from 'mobx-react-lite'
 enableScreens()
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
@@ -56,18 +57,15 @@ admob()
 
 GoogleSignin.configure({
   webClientId: "681986405885-dhai19n3c3kai1ad2i5l6u57ot14uorq.apps.googleusercontent.com",
-  iosClientId: "681986405885-oms8c4edds7s1cjlm550ss1sa8rqui7d.apps.googleusercontent.com",
   offlineAccess: true,
 })
 
 /**
  * This is the root component of our app.
  */
-function App() {
+const App = observer(function App() {
   const navigationRef = useRef<NavigationContainerRef | null>(null)
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
-  const ref = React.useRef(false)
-  const { userStore } = useStores()
   setRootNavigation(navigationRef)
   useBackButtonHandler(navigationRef, canExit)
   const { initialNavigationState, onNavigationStateChange } = useNavigationPersistence(
@@ -79,20 +77,20 @@ function App() {
   useEffect(() => {
     (async () => {
       await initFonts() // expo
-      await setupRootStore().then(setRootStore)
-      ref.current = true
+      setupRootStore().then((newRootStore) => {
+        newRootStore.userStore?.updateUser(auth().currentUser)
+        setRootStore(newRootStore)
+      })
     })()
   }, [])
 
   React.useEffect(() => {
-    if (ref.current) {
-      const unsubscribe = auth().onAuthStateChanged((userState) => {
-        userStore.updateUser(userState)
-      })
-      return () => unsubscribe()
-    }
-  }, [ref.current])
+    const unsubscribe = auth().onAuthStateChanged((userState) => {
+      rootStore?.userStore?.updateUser(userState) // Need to synchronise this with async setupRootStore
+    })
 
+    return () => unsubscribe()
+  }, [])
   // Before we show the app, we have to wait for our state to be ready.
   // In the meantime, don't render anything. This will be the background
   // color set in native by rootView's background color. You can replace
@@ -113,6 +111,6 @@ function App() {
       </RootStoreProvider>
     </ToggleStorybook>
   )
-}
+})
 
 export default App

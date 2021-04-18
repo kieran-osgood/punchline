@@ -10,8 +10,8 @@ import { createStackNavigator } from "@react-navigation/stack"
 import { mainExitRoutes, MainNavigator, MainRouteNames } from "app/navigators/main-navigator"
 import { authExitRoutes, AuthNavigator, AuthRouteNames } from "app/navigators/auth-navigator"
 import { useStores } from "app/models"
-import { observer } from 'mobx-react-lite'
-
+import { observer } from "mobx-react-lite"
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
  * as well as what properties (if any) they might take when navigating to them.
@@ -29,13 +29,16 @@ export type RootParamList = {
 
 const Stack = createStackNavigator<RootParamList>()
 
-const RootStack = observer(() => {
+const RootStack = observer(function RootStack() {
   const { userStore } = useStores()
-  // React.useEffect(() => {
-  //   if (user) {
-  //     SplashScreen.preventAutoHideAsync()
-  //   }
-  // }, [user])
+
+  React.useEffect(() => {
+    const unsubscribe = auth().onAuthStateChanged((userState) => {
+      userStore.updateUser(userState)
+    })
+
+    return () => unsubscribe()
+  }, [])
 
   return (
     <Stack.Navigator
@@ -43,7 +46,7 @@ const RootStack = observer(() => {
         headerShown: false,
       }}
     >
-      {userStore.user ? (
+      {!userStore.user ? (
         <Stack.Screen
           name="AuthNavigator"
           component={AuthNavigator}

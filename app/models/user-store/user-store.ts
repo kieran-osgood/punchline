@@ -6,12 +6,12 @@ import R from 'ramda'
 
 export const UserStoreModel = types
   .model("UserStore", {
-    user: types.maybe(UserModel),
+    user: types.maybeNull(UserModel),
   })
   .extend(withEnvironment)
   .actions((self) => ({
     updateUser: (user: FirebaseAuthTypes.User | null) => {
-      if (user === null) { self.user = undefined; return }
+      if (user === null) { self.user = null; return }
       self.user = cast(R.pick(UserDataKeys, user))
     },
   }))

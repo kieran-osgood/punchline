@@ -72,9 +72,7 @@ export const GoogleSigninButton = observer(function GoogleSigninButton(props: Go
     setIsLoading?.(true)
     const googleCredential = auth.GoogleAuthProvider.credential(idToken)
     await auth().signInWithCredential(googleCredential)
-      .finally(() => {
-        setIsLoading?.(false)
-      })
+    setIsLoading?.(false)
   }
 
   const convertGoogle = (idToken: string | null) => {

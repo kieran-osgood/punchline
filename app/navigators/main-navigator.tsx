@@ -11,6 +11,7 @@ import { color } from "theme"
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar"
 import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs"
 import { JokeScreen, SettingsScreen, UserProfileScreen } from "../screens"
+import { observer } from 'mobx-react-lite'
 // import Icon from 'react-native-vector-icons/FontAwesome5'
 
 /**
@@ -39,7 +40,7 @@ export type NavigationProps<T extends keyof RouteParamList> = {
 
 const Tab = AnimatedTabBarNavigator<RouteParamList>()
 
-export function MainNavigator() {
+export const MainNavigator = observer(function MainNavigator() {
   return (
     <Tab.Navigator
       appearance={{
@@ -61,7 +62,7 @@ export function MainNavigator() {
       <Tab.Screen name="SettingsScreen" component={SettingsScreen} />
     </Tab.Navigator>
   )
-}
+})
 
 /**
  * A list of routes from which we're allowed to leave the app when
