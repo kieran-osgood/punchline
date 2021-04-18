@@ -15,13 +15,13 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* punchlineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* punchlineTests.m */; };
+		5E9826D41C0A45A5A47B9BC7 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 584E0E3281554FDCB7D264FE /* Montserrat-Regular.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9F35C4F574E710F3E22269DC /* libPods-punchline-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3982FFE6B0255867763A9EDF /* libPods-punchline-tvOS.a */; };
 		A4B148D367B119F99EC2C2E5 /* libPods-punchline.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EADEA568884090C1B008E181 /* libPods-punchline.a */; };
 		B9BE70BEF87ABACA22A7BCB6 /* libPods-punchline-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 60796641CDFE67F015A69D88 /* libPods-punchline-tvOSTests.a */; };
 		E0E402AF856107EC82190244 /* libPods-punchline-punchlineTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 301BE758935A381A571F5B21 /* libPods-punchline-punchlineTests.a */; };
 		E41867E52621B302004EC29E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E41867E42621B302004EC29E /* GoogleService-Info.plist */; };
-		5E9826D41C0A45A5A47B9BC7 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 584E0E3281554FDCB7D264FE /* Montserrat-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +59,7 @@
 		3982FFE6B0255867763A9EDF /* libPods-punchline-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-punchline-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ECD546F3378FD459F4E82B0 /* Pods-punchline.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline.debug.xcconfig"; path = "Target Support Files/Pods-punchline/Pods-punchline.debug.xcconfig"; sourceTree = "<group>"; };
 		4D40708BE521DBE7DC6E68C8 /* Pods-punchline.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline.release.xcconfig"; path = "Target Support Files/Pods-punchline/Pods-punchline.release.xcconfig"; sourceTree = "<group>"; };
+		584E0E3281554FDCB7D264FE /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		60796641CDFE67F015A69D88 /* libPods-punchline-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-punchline-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		733F2AB28EB81C13C7E74C7E /* Pods-punchline-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline-tvOS.release.xcconfig"; path = "Target Support Files/Pods-punchline-tvOS/Pods-punchline-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = punchline/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -72,7 +73,6 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F802D5001BCA818988E3DC60 /* Pods-punchline-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-punchline-tvOS/Pods-punchline-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		584E0E3281554FDCB7D264FE /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +156,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		54F52B37EBDC43109EFFE617 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				584E0E3281554FDCB7D264FE /* Montserrat-Regular.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		71ED362ACEA45F9F60DCD285 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,15 +222,6 @@
 			);
 			name = Fonts;
 			sourceTree = "<group>";
-		};
-		54F52B37EBDC43109EFFE617 /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				584E0E3281554FDCB7D264FE /* Montserrat-Regular.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
