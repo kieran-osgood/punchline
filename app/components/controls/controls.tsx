@@ -45,12 +45,15 @@ const CENTER_BUTTONS: ViewStyle = {
   flexDirection: "column",
   alignContent: "center",
 }
+
 const BUTTONS_CONTAINER: ViewStyle = {
   position: "relative",
   flexDirection: "row",
   justifyContent: "space-between",
   alignItems: "flex-end",
+  paddingBottom: spacing[3]
 }
+
 const LAUGHING_EMOJI: ViewStyle = {
   marginLeft: 0,
 }
