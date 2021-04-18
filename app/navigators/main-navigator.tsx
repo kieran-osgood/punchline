@@ -11,8 +11,8 @@ import { color } from "theme"
 import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar"
 import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs"
 import { JokeScreen, SettingsScreen, UserProfileScreen } from "../screens"
-import { observer } from 'mobx-react-lite'
-// import Icon from 'react-native-vector-icons/FontAwesome5'
+import { observer } from "mobx-react-lite"
+import Icon from "react-native-vector-icons/Feather"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -43,23 +43,44 @@ const Tab = AnimatedTabBarNavigator<RouteParamList>()
 export const MainNavigator = observer(function MainNavigator() {
   return (
     <Tab.Navigator
-      appearance={{
-        activeColors: color.palette.black,
-        tabBarBackground: color.background,
-      }}
-      tabBarOptions={{
-        activeTintColors: color.background,
-        inactiveTintColors: color.palette.lightGrey,
-      }}
       initialRouteName="JokeScreen"
+      tabBarOptions={{
+        activeTintColor: '#000'
+      }}
+      appearance={{
+        tabBarBackground: color.palette.white,
+      }}
     >
       <Tab.Screen
         name="UserProfileScreen"
         component={UserProfileScreen}
-        options={{ tabBarLabel: "Profile" }}
+        options={{
+          tabBarLabel: "Profile",
+          tabBarIcon: ({ size }) => (
+            <Icon name="user" {...{ size }}/>
+          ),
+        }}
       />
-      <Tab.Screen name="JokeScreen" component={JokeScreen} />
-      <Tab.Screen name="SettingsScreen" component={SettingsScreen} />
+      <Tab.Screen
+        name="JokeScreen"
+        component={JokeScreen}
+        options={{
+          tabBarLabel: "Home",
+          tabBarIcon: ({ size }) => (
+            <Icon name="home" {...{ size }}/>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="SettingsScreen"
+        component={SettingsScreen}
+        options={{
+          tabBarLabel: "Settings",
+          tabBarIcon: ({ size }) => (
+            <Icon name="settings" {...{ size }} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   )
 })
@@ -73,5 +94,5 @@ export const MainNavigator = observer(function MainNavigator() {
  *
  * `canExit` is used in ./app/app.tsx in the `useBackButtonHandler` hook.
  */
-export type MainRouteNames = keyof RouteParamList;
-export const mainExitRoutes: [MainRouteNames] = ['JokeScreen']
+export type MainRouteNames = keyof RouteParamList
+export const mainExitRoutes: [MainRouteNames] = ["JokeScreen"]
