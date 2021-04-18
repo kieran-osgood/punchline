@@ -8,15 +8,14 @@ import { color, spacing } from "theme"
 import { LoadingModal, AppLogo, CenterView, Screen, Text, GoogleSigninButton, GuestSigninButton } from "components"
 
 const ROOT: ViewStyle = {
-  backgroundColor: color.palette.black,
-  flex: 1,
-}
-
-const CONTAINER: ViewStyle = {
-  display: "flex",
+  backgroundColor: color.background,
   justifyContent: "space-between",
   alignItems: "center",
-  width: "100%",
+  paddingBottom: spacing[3]
+}
+
+const APP_LOGO: ViewStyle = {
+  paddingTop: spacing[3],
 }
 
 const COPY: TextStyle = {
@@ -42,20 +41,15 @@ const TEXT_SEPERATOR: TextStyle = {
 
 const COPYRIGHT_TEXT: TextStyle = {
   paddingBottom: spacing[3],
-  textAlign: 'center'
+  textAlign: 'center',
 }
 
 const TEXT_CENTER: TextStyle = {
-  textAlign: 'center'
-
+  textAlign: 'center',
 }
 
 const BUTTONS_CONTAINER: ViewStyle = {
   flex: 0,
-}
-
-const COPYRIGHT_CONTAINER: ViewStyle = {
-  flex: 0
 }
 
 export const LoginScreen = observer(function LoginScreen() {
@@ -75,32 +69,28 @@ export const LoginScreen = observer(function LoginScreen() {
   }
 
   return (
-    <Screen style={ROOT} preset="scroll">
-      <CenterView style={CONTAINER}>
-        <AppLogo />
+    <Screen style={ROOT} preset='fixed'>
+      <AppLogo style={APP_LOGO} />
 
-        <Text h1 text="Login" style={TEXT_CENTER} />
-        <Text
-          style={COPY}
-          text="Login to bookmark your favourite jokes for later, and view your history!"
+      <Text h1 text="Login" style={TEXT_CENTER} />
+      <Text
+        style={COPY}
+        text="Login to bookmark your favourite jokes for later, and view your history!"
+      />
+      <CenterView style={BUTTONS_CONTAINER}>
+        <GoogleSigninButton
+          setIsLoading={(val) => setIsLoading(val)}
+          onSuccess={successPopup}
+          onError={errorPopup}
         />
-        <CenterView style={BUTTONS_CONTAINER}>
-          <GoogleSigninButton
-            setIsLoading={(val) => setIsLoading(val)}
-            onSuccess={successPopup}
-            onError={errorPopup}
-          />
-          {/* <FacebookSignIn setIsLoading={(val) => setIsLoading(val)}
+        {/* <FacebookSignIn setIsLoading={(val) => setIsLoading(val)}
             onSuccess={successPopup}
             onError={errorPopup}
           /> */}
-          <Text style={TEXT_SEPERATOR} text="Or" />
-          <GuestSigninButton />
-        </CenterView>
+        <Text style={TEXT_SEPERATOR} text="Or" />
+        <GuestSigninButton />
       </CenterView>
-      <CenterView style={COPYRIGHT_CONTAINER}>
-        <Text text={`COPYRIGHT \u00A9 ${new Date().getFullYear()} KO.DEV`} style={COPYRIGHT_TEXT} />
-      </CenterView>
+      <Text text={`COPYRIGHT \u00A9 ${new Date().getFullYear()} KO.DEV`} style={COPYRIGHT_TEXT} />
     </Screen>
   )
 })
