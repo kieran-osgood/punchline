@@ -29,15 +29,19 @@ import { ToggleStorybook } from "../storybook/toggle-storybook"
 import admob, { MaxAdContentRating } from "@react-native-firebase/admob"
 import { GoogleSignin } from "@react-native-community/google-signin"
 import auth from "@react-native-firebase/auth"
+import { RootStore as RootGraphqlStore } from "./graphql/RootStore"
+import { StoreContext } from "./graphql/reactUtils"
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
 // https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
 import { enableScreens } from "react-native-screens"
-import { observer } from 'mobx-react-lite'
-enableScreens()
+import { observer } from "mobx-react-lite"
+import { createHttpClient } from 'mst-gql'
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
+
+enableScreens()
 
 admob()
   .setRequestConfiguration({
@@ -51,13 +55,14 @@ admob()
     // manner suitable for users under the age of consent.
     tagForUnderAgeOfConsent: true,
   })
-  .then(() => {
-    // Request config successfully set!
-  })
 
 GoogleSignin.configure({
   webClientId: "681986405885-dhai19n3c3kai1ad2i5l6u57ot14uorq.apps.googleusercontent.com",
   offlineAccess: true,
+})
+
+const rootGraphqlStore = RootGraphqlStore.create(undefined, {
+  gqlHttpClient: createHttpClient("http://localhost:5000/graphql")
 })
 
 /**
@@ -101,13 +106,15 @@ const App = observer(function App() {
   return (
     <ToggleStorybook>
       <RootStoreProvider value={rootStore}>
-        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-          <RootNavigator
-            ref={navigationRef}
-            initialState={initialNavigationState}
-            onStateChange={onNavigationStateChange}
-          />
-        </SafeAreaProvider>
+        <StoreContext.Provider value={rootGraphqlStore}>
+          <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+            <RootNavigator
+              ref={navigationRef}
+              initialState={initialNavigationState}
+              onStateChange={onNavigationStateChange}
+            />
+          </SafeAreaProvider>
+        </StoreContext.Provider>
       </RootStoreProvider>
     </ToggleStorybook>
   )

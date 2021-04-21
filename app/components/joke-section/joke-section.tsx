@@ -1,20 +1,17 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react'
-import { TextStyle, View, ViewStyle } from 'react-native'
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen'
+import React from "react"
+import { ScrollView, TextStyle, View, ViewStyle } from "react-native"
+import { heightPercentageToDP as hp } from "react-native-responsive-screen"
 import { observer } from "mobx-react-lite"
 
-import { color, spacing } from 'theme'
+import { color, spacing } from "theme"
 
-import { Text, CenterView, Controls, } from 'components'
+import { Text } from "../text/text"
+import { CenterView } from "../center-view/center-view"
+import { Controls } from "../controls/controls"
 
-import Swiper from 'react-native-deck-swiper'
-// import useSound from 'src/hooks/use-sound'
-// import { LocalStorageKeys } from 'src/types'
-// import { JokeLengthSetting, SoundSetting } from 'screens/settings'
-// import useSetting from 'src/hooks/use-setting'
-
+import Swiper from "react-native-deck-swiper"
 export interface JokeSectionProps {
   /**
    * An optional style override useful for padding & margin.
@@ -26,161 +23,105 @@ export interface JokeSectionProps {
  * Describe your component here
  */
 export const JokeSection = observer(function JokeSection(props: JokeSectionProps) {
-  const { style } = props
   const [bookmarked, setBookmarked] = React.useState(false)
-  const [jokes, setJokes] = React.useState<Joke[]>([])
-  // const { userCategories } = useCategoriesContext()
-  const firstRender = React.useRef(true)
+  const [jokes] = React.useState<Joke[]>([])
   const swiper = React.useRef<Swiper<Joke>>(null)
-  const [currentJoke, setCurrentJoke] = React.useState<Joke>(defaultJokeState)
-  // const [soundSetting] = useSetting<SoundSetting>(
-  //   LocalStorageKeys.soundIsMuted,
-  //   'unmuted',
-  // )
-  // const [jokeLength] = useSetting<JokeLengthSetting>(
-  //   LocalStorageKeys.jokeLength,
-  //   'short',
-  // )
-  const [isReady, setIsReady] = React.useState(false)
 
-  // const laugh = useSound(require('assets/sounds/laugh.mp3'))
-  // const boo = useSound(require('assets/sounds/boo.mp3'))
-
-  // React.useEffect(() => {
-  //   if (isReady) {
-  //     SplashScreen.hideAsync()
-  //   }
-  // }, [isReady])
-
-  // React.useEffect(() => {
-  //   if (firstRender.current) {
-  //     firstRender.current = false
-  //     return
-  //   }
-  //   if (userCategories !== undefined) {
-  //     const loadFirstJoke = async () => {
-  //       getInitialJokes(userCategories, jokeLength)
-  //         .then((newJokes) => {
-  //           setJokes(newJokes)
-  //           // @ts-ignore
-  //           setCurrentJoke(newJokes[swiper.current?.state.firstCardIndex])
-  //           swiper.current?.setState((prevState) => ({
-  //             ...prevState,
-  //             cards: newJokes,
-  //           }))
-  //         })
-  //         .finally(() => {
-  //           setIsReady(true)
-  //         })
-  //     }
-
-  //     loadFirstJoke()
-  //   }
-  // }, [userCategories, jokeLength])
-
-  // const resetAudio = async () => {
-  //   laugh.pauseAsync()
-  //   boo.pauseAsync()
-  //   laugh.setPositionAsync(0)
-  //   boo.setPositionAsync(0)
-  // }
-
-  // const fetchNewJoke = async (rating?: boolean) => {
-  //   if (typeof rating === 'boolean') {
-  //     if (soundSetting === 'unmuted') {
-  //       await resetAudio()
-  //       if (rating) {
-  //         laugh.playAsync()
-  //       } else {
-  //         boo.playAsync()
-  //       }
-  //     }
-  //     updateRating({ rating, joke: currentJoke })
-  //     addToHistory({ joke: currentJoke, rating, bookmark: bookmarked })
-  //   }
-  //   if (userCategories !== undefined) {
-  //     getRandomJoke(userCategories, 0, jokeLength).then((newJoke) => {
-  //       if (newJoke.length === 0) fetchNewJoke()
-  //       setJokes((currentJokes) => [...currentJokes, ...newJoke])
-  //       swiper.current?.setState((prevState) => ({
-  //         ...prevState,
-  //         cards: [...jokes, newJoke],
-  //       }))
-  //       // @ts-ignore
-  //       setCurrentJoke(jokes[swiper.current?.state.firstCardIndex + 1])
-  //       setBookmarked(false)
-  //     })
-  //   }
-  // }
-
-  // const calculateScore = () => {
-  //   if (joke?.reviews?.count > 0) {
-  //     const score = joke?.reviews?.score / joke?.reviews?.count;
-  //     return score;
-  //   }
-  //   return '50';
-  // };
   return (
     <>
-    <CenterView style={{ width: '100%' }}>
-      {jokes.length > 0 ? (
-        <Swiper
-          ref={swiper}
-          cards={jokes}
-          cardHorizontalMargin={0}
-          cardVerticalMargin={0}
-          containerStyle={{ marginTop: 20 }}
-          verticalSwipe={false}
-          horizontalSwipe={false}
-          disablePanresponder={false}
-          showSecondCard
-          keyExtractor={(jokeCard) => jokeCard?.random}
-          renderCard={(jokeCard) => (
-            <JokeCard key={jokeCard?.random} joke={jokeCard} />
-          )}
-          backgroundColor={color.background}
-          stackSize={3}
-        />
-      ) : (
-        <View style={{ ...JOKE_CARD, width: '100%', height: '100%' }} />
-      )}
-    </CenterView>
+      <CenterView style={{ width: "95%" }}>
+        {jokes.length > 0 ? (
+          <Swiper
+            ref={swiper}
+            cards={jokes}
+            cardHorizontalMargin={0}
+            cardVerticalMargin={0}
+            containerStyle={{ marginTop: 20 }}
+            verticalSwipe={false}
+            horizontalSwipe={false}
+            // @ts-ignore
+            disablePanresponder={false}
+            showSecondCard
+            keyExtractor={(jokeCard) => jokeCard?.random}
+            renderCard={(jokeCard) => <JokeCard key={jokeCard?.random} joke={jokeCard} />}
+            backgroundColor={color.background}
+            stackSize={3}
+          />
+        ) : (
+          <View style={{ ...JOKE_CARD, width: "100%", height: "100%" }} />
+        )}
+      </CenterView>
 
-    <Controls
-      bookmarked={bookmarked}
-      onUpVotePress={() => {
-        swiper.current?.swipeRight()
-        fetchNewJoke(true)
-      }}
-      onDownVotePress={() => {
-        swiper.current?.swipeLeft()
-        fetchNewJoke(false)
-      }}
-      onBookmarkPress={() => setBookmarked(!bookmarked)}
-      onSkipPress={() => {
-        swiper.current?.swipeTop()
-        fetchNewJoke()
-      }}
-    />
-  </>
+      <Controls
+        bookmarked={bookmarked}
+        onUpVotePress={() => {
+          swiper.current?.swipeRight()
+          // fetchNewJoke(true)
+        }}
+        onDownVotePress={() => {
+          swiper.current?.swipeLeft()
+          // fetchNewJoke(false)
+        }}
+        onBookmarkPress={() => setBookmarked(!bookmarked)}
+        onSkipPress={() => {
+          swiper.current?.swipeTop()
+          // fetchNewJoke()
+        }}
+      />
+    </>
   )
 })
 
+const JokeCard = ({ joke }: { joke: Joke }) => {
+  const ref = React.useRef<ScrollView>(null)
+  if (joke === undefined) return null
+
+  return (
+    <View style={JOKE_CARD}>
+      <ScrollView
+        ref={ref}
+        // @ts-ignore
+        onContentSizeChange={() => ref?.current?.flashScrollIndicators()}
+        contentContainerStyle={SCROLL_VIEW_STYLE}
+        scrollIndicatorInsets={{
+          top: spacing[4],
+          bottom: spacing[4],
+          left: spacing[5],
+        }}
+      >
+        <Text h3 text={joke.title} style={JOKE_TITLE} />
+        <Text
+          style={JOKE_TEXT}
+          text={joke?.body
+            .split(/\n/g)
+            .map((x) => x.charAt(0).toUpperCase() + x.substr(1))
+            .join("\n")}
+        />
+        {joke.category ? (
+          <View style={CATEGORY_SECTION}>
+            <Text text="Category: " />
+            <Text style={CATEGORY_PILL} text={joke.category} />
+          </View>
+        ) : null}
+      </ScrollView>
+    </View>
+  )
+}
 const SCROLL_VIEW_STYLE: ViewStyle = {
-  alignItems: 'center',
+  alignItems: "center",
   marginTop: spacing[2],
-  justifyContent: 'space-between',
-  minHeight: '84%',
-  paddingBottom: hp('5%'),
+  justifyContent: "space-between",
+  minHeight: "84%",
+  paddingBottom: hp("5%"),
 }
 const JOKE_CARD: ViewStyle = {
   borderRadius: 50,
   marginHorizontal: spacing[2],
-  backgroundColor: 'white',
+  backgroundColor: "white",
   padding: spacing[4],
   borderColor: color.line,
   borderWidth: 1,
-  position: 'relative',
+  position: "relative",
   flex: 0.5,
 }
 const JOKE_TITLE: TextStyle = {
@@ -191,15 +132,15 @@ const JOKE_TEXT: TextStyle = {
   marginTop: spacing[3],
   fontSize: 18,
   padding: spacing[2],
-  paddingBottom: '5%',
-  textAlign: 'center',
+  paddingBottom: "5%",
+  textAlign: "center",
 }
 const CATEGORY_SECTION: ViewStyle = {
-  width: '100%',
-  flexDirection: 'row',
+  width: "100%",
+  flexDirection: "row",
   paddingHorizontal: spacing[3],
-  alignItems: 'center',
-  justifyContent: 'center',
+  alignItems: "center",
+  justifyContent: "center",
 }
 const CATEGORY_PILL: TextStyle = {
   color: color.text,
@@ -211,24 +152,24 @@ const CATEGORY_PILL: TextStyle = {
 }
 
 export type Joke = {
-  body: string;
-  id: string;
-  category: string;
-  random: string;
-  title: string;
-  bookmarked: boolean;
+  body: string
+  id: string
+  category: string
+  random: string
+  title: string
+  bookmarked: boolean
   reviews: {
-    count: number;
-    score: number;
-  };
-  jokeLength: number;
-};
+    count: number
+    score: number
+  }
+  jokeLength: number
+}
 const defaultJokeState = {
-  body: '',
-  id: '',
-  category: '',
-  random: '',
-  title: '',
+  body: "",
+  id: "",
+  category: "",
+  random: "",
+  title: "",
   bookmarked: false,
   reviews: {
     count: 0,
