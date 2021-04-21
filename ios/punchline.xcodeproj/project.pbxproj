@@ -17,9 +17,7 @@
 		2DCD954D1E0B4F2C00145EB5 /* punchlineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* punchlineTests.m */; };
 		5E9826D41C0A45A5A47B9BC7 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 584E0E3281554FDCB7D264FE /* Montserrat-Regular.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		9F35C4F574E710F3E22269DC /* libPods-punchline-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3982FFE6B0255867763A9EDF /* libPods-punchline-tvOS.a */; };
 		A4B148D367B119F99EC2C2E5 /* libPods-punchline.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EADEA568884090C1B008E181 /* libPods-punchline.a */; };
-		B9BE70BEF87ABACA22A7BCB6 /* libPods-punchline-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 60796641CDFE67F015A69D88 /* libPods-punchline-tvOSTests.a */; };
 		E0E402AF856107EC82190244 /* libPods-punchline-punchlineTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 301BE758935A381A571F5B21 /* libPods-punchline-punchlineTests.a */; };
 		E41867E52621B302004EC29E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E41867E42621B302004EC29E /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
@@ -56,23 +54,17 @@
 		2D02E4901E0B4A5D006451C7 /* punchline-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "punchline-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		301BE758935A381A571F5B21 /* libPods-punchline-punchlineTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-punchline-punchlineTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		32B04630CC446F19212E357A /* Pods-punchline-punchlineTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline-punchlineTests.release.xcconfig"; path = "Target Support Files/Pods-punchline-punchlineTests/Pods-punchline-punchlineTests.release.xcconfig"; sourceTree = "<group>"; };
-		3982FFE6B0255867763A9EDF /* libPods-punchline-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-punchline-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ECD546F3378FD459F4E82B0 /* Pods-punchline.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline.debug.xcconfig"; path = "Target Support Files/Pods-punchline/Pods-punchline.debug.xcconfig"; sourceTree = "<group>"; };
 		4D40708BE521DBE7DC6E68C8 /* Pods-punchline.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline.release.xcconfig"; path = "Target Support Files/Pods-punchline/Pods-punchline.release.xcconfig"; sourceTree = "<group>"; };
 		584E0E3281554FDCB7D264FE /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
-		60796641CDFE67F015A69D88 /* libPods-punchline-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-punchline-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		733F2AB28EB81C13C7E74C7E /* Pods-punchline-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline-tvOS.release.xcconfig"; path = "Target Support Files/Pods-punchline-tvOS/Pods-punchline-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = punchline/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8D3D2E99D3814D73E5353ACB /* Pods-punchline-punchlineTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline-punchlineTests.debug.xcconfig"; path = "Target Support Files/Pods-punchline-punchlineTests/Pods-punchline-punchlineTests.debug.xcconfig"; sourceTree = "<group>"; };
-		A12CCB16C7D8CECEE169FA2F /* Pods-punchline-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-punchline-tvOSTests/Pods-punchline-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		D7E787E39BC1C66D83758CC7 /* Pods-punchline-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-punchline-tvOSTests/Pods-punchline-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E41867E42621B302004EC29E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E4CC6CE82623186A0035557C /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		E4CC6CE92623187F0035557C /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		EADEA568884090C1B008E181 /* libPods-punchline.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-punchline.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		F802D5001BCA818988E3DC60 /* Pods-punchline-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-punchline-tvOS/Pods-punchline-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +88,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F35C4F574E710F3E22269DC /* libPods-punchline-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,7 +95,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9BE70BEF87ABACA22A7BCB6 /* libPods-punchline-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,8 +140,6 @@
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				EADEA568884090C1B008E181 /* libPods-punchline.a */,
 				301BE758935A381A571F5B21 /* libPods-punchline-punchlineTests.a */,
-				3982FFE6B0255867763A9EDF /* libPods-punchline-tvOS.a */,
-				60796641CDFE67F015A69D88 /* libPods-punchline-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -171,10 +159,6 @@
 				4D40708BE521DBE7DC6E68C8 /* Pods-punchline.release.xcconfig */,
 				8D3D2E99D3814D73E5353ACB /* Pods-punchline-punchlineTests.debug.xcconfig */,
 				32B04630CC446F19212E357A /* Pods-punchline-punchlineTests.release.xcconfig */,
-				F802D5001BCA818988E3DC60 /* Pods-punchline-tvOS.debug.xcconfig */,
-				733F2AB28EB81C13C7E74C7E /* Pods-punchline-tvOS.release.xcconfig */,
-				D7E787E39BC1C66D83758CC7 /* Pods-punchline-tvOSTests.debug.xcconfig */,
-				A12CCB16C7D8CECEE169FA2F /* Pods-punchline-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -235,6 +219,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				821B8C042C64835F8AA180E7 /* [CP] Copy Pods Resources */,
+				350069201D36355FF9357961 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -258,6 +243,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				105C9A386D6F7A14EE348052 /* [CP] Copy Pods Resources */,
 				133B73F16A677E912F16572B /* [CP-User] [RNFB] Core Configuration */,
+				A516FA5083578EE8E32CB510 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -272,7 +258,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "punchline-tvOS" */;
 			buildPhases = (
-				73BA548363266DFE16E83368 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -292,7 +277,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "punchline-tvOSTests" */;
 			buildPhases = (
-				D70EA4931AAC0E669A2EC293 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -483,6 +467,24 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
+		350069201D36355FF9357961 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-punchline-punchlineTests/Pods-punchline-punchlineTests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-punchline-punchlineTests/Pods-punchline-punchlineTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3D9C6EB91031CB0FB90EA6D7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -499,28 +501,6 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-punchline-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		73BA548363266DFE16E83368 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-punchline-tvOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -603,26 +583,22 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-punchline-punchlineTests/Pods-punchline-punchlineTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D70EA4931AAC0E669A2EC293 /* [CP] Check Pods Manifest.lock */ = {
+		A516FA5083578EE8E32CB510 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
+				"${PODS_ROOT}/Target Support Files/Pods-punchline/Pods-punchline-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-punchline-tvOSTests-checkManifestLockResult.txt",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-punchline/Pods-punchline-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -805,7 +781,6 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F802D5001BCA818988E3DC60 /* Pods-punchline-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -833,7 +808,6 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 733F2AB28EB81C13C7E74C7E /* Pods-punchline-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -861,7 +835,6 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D7E787E39BC1C66D83758CC7 /* Pods-punchline-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -888,7 +861,6 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A12CCB16C7D8CECEE169FA2F /* Pods-punchline-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -945,6 +917,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1005,6 +978,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
