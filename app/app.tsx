@@ -23,27 +23,27 @@ import {
   setRootNavigation,
   useNavigationPersistence,
 } from "./navigators"
-import { RootStore, RootStoreProvider, setupRootStore } from "./models"
+import { RootStore, RootStoreProvider, setupRootStore, useStores } from "./models"
 import { ToggleStorybook } from "../storybook/toggle-storybook"
 
 import admob, { MaxAdContentRating } from "@react-native-firebase/admob"
 import { GoogleSignin } from "@react-native-community/google-signin"
 import auth from "@react-native-firebase/auth"
 import { RootStore as RootGraphqlStore } from "./graphql/RootStore"
-import { StoreContext } from "./graphql/reactUtils"
+import { StoreContext, useQuery } from "./graphql/reactUtils"
 
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
 // https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
 import { enableScreens } from "react-native-screens"
 import { observer } from "mobx-react-lite"
-import { createHttpClient } from 'mst-gql'
+import { createHttpClient } from "mst-gql"
 import * as Sentry from "@sentry/react-native"
 
-const packageJson = require('../package.json')
+const packageJson = require("../package.json")
 Sentry.init({
   dsn: "https://14d48ec94bab4f1fa583a3b6ab7f7a3b@o577022.ingest.sentry.io/5731300",
-  release: 'com.ko.punchline@' + packageJson.version,
+  release: "com.ko.punchline@" + packageJson.version,
   environment: process.env.NODE_ENV,
   attachStacktrace: true,
   autoSessionTracking: true,
@@ -54,18 +54,17 @@ export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
 enableScreens()
 
-admob()
-  .setRequestConfiguration({
-    // Update all future requests suitable for parental guidance
-    maxAdContentRating: MaxAdContentRating.T,
+admob().setRequestConfiguration({
+  // Update all future requests suitable for parental guidance
+  maxAdContentRating: MaxAdContentRating.T,
 
-    // Indicates that you want your content treated as child-directed for purposes of COPPA.
-    tagForChildDirectedTreatment: false,
+  // Indicates that you want your content treated as child-directed for purposes of COPPA.
+  tagForChildDirectedTreatment: false,
 
-    // Indicates that you want the ad request to be handled in a
-    // manner suitable for users under the age of consent.
-    tagForUnderAgeOfConsent: true,
-  })
+  // Indicates that you want the ad request to be handled in a
+  // manner suitable for users under the age of consent.
+  tagForUnderAgeOfConsent: true,
+})
 
 GoogleSignin.configure({
   webClientId: "681986405885-dhai19n3c3kai1ad2i5l6u57ot14uorq.apps.googleusercontent.com",
@@ -73,7 +72,7 @@ GoogleSignin.configure({
 })
 
 const rootGraphqlStore = RootGraphqlStore.create(undefined, {
-  gqlHttpClient: createHttpClient("http://localhost:5000/graphql")
+  gqlHttpClient: createHttpClient("http://localhost:5000/graphql"),
 })
 
 /**
@@ -88,7 +87,6 @@ const App = observer(function App() {
     storage,
     NAVIGATION_PERSISTENCE_KEY,
   )
-
   // Kick off initial async loading actions, like loading fonts and RootStore
   useEffect(() => {
     (async () => {
@@ -100,13 +98,6 @@ const App = observer(function App() {
     })()
   }, [])
 
-  React.useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged((userState) => {
-      rootStore?.userStore?.updateUser(userState) // Need to synchronise this with async setupRootStore
-    })
-
-    return () => unsubscribe()
-  }, [])
   // Before we show the app, we have to wait for our state to be ready.
   // In the meantime, don't render anything. This will be the background
   // color set in native by rootView's background color. You can replace
@@ -118,13 +109,15 @@ const App = observer(function App() {
     <ToggleStorybook>
       <RootStoreProvider value={rootStore}>
         <StoreContext.Provider value={rootGraphqlStore}>
-          <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-            <RootNavigator
-              ref={navigationRef}
-              initialState={initialNavigationState}
-              onStateChange={onNavigationStateChange}
-            />
-          </SafeAreaProvider>
+          <Authorization>
+            <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+              <RootNavigator
+                ref={navigationRef}
+                initialState={initialNavigationState}
+                onStateChange={onNavigationStateChange}
+              />
+            </SafeAreaProvider>
+          </Authorization>
         </StoreContext.Provider>
       </RootStoreProvider>
     </ToggleStorybook>
@@ -132,3 +125,30 @@ const App = observer(function App() {
 })
 
 export default App
+
+const Authorization = ({ children }) => {
+  const { userStore } = useStores()
+  const { store, setQuery } = useQuery()
+
+  React.useEffect(() => {
+    const unsubscribe = auth().onAuthStateChanged((user) => {
+      userStore.updateUser(user)
+      user?.getIdToken().then((idToken) => {
+        store.setBearerToken(idToken)
+
+        setQuery((store) =>
+          store.mutateLogin({
+            input: {
+              firebaseUid: user.uid,
+              username: user.displayName ?? "",
+            },
+          }),
+        )
+      })
+    })
+
+    return () => unsubscribe()
+  }, [])
+
+  return <>{children}</>
+}

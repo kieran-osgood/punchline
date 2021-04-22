@@ -31,6 +31,8 @@ import { RateJokePayloadModel, RateJokePayloadModelType } from "./RateJokePayloa
 import { rateJokePayloadModelPrimitives, RateJokePayloadModelSelector } from "./RateJokePayloadModel.base"
 import { UserErrorModel, UserErrorModelType } from "./UserErrorModel"
 import { userErrorModelPrimitives, UserErrorModelSelector } from "./UserErrorModel.base"
+import { UserPayloadModel, UserPayloadModelType } from "./UserPayloadModel"
+import { userPayloadModelPrimitives, UserPayloadModelSelector } from "./UserPayloadModel.base"
 
 import { nodeModelPrimitives, NodeModelSelector , NodeUnion } from "./"
 
@@ -187,6 +189,10 @@ export type RateJokeInput = {
   rating: RatingValue
   bookmarked: boolean
 }
+export type UserLoginInput = {
+  firebaseUid: string
+  username: string
+}
 /* The TypeScript type that explicits the refs to other models in order to prevent a circular refs issue */
 type Refs = {
   jokes: ObservableMap<string, JokeModelType>,
@@ -206,7 +212,8 @@ queryUserJokeHistories="queryUserJokeHistories",
 queryUserJokeHistoryByUserId="queryUserJokeHistoryByUserId"
 }
 export enum RootStoreBaseMutations {
-mutateRateJoke="mutateRateJoke"
+mutateRateJoke="mutateRateJoke",
+mutateLogin="mutateLogin"
 }
 
 /**
@@ -214,7 +221,7 @@ mutateRateJoke="mutateRateJoke"
 */
 export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
   .named("RootStore")
-  .extend(configureStoreMixin([['JokeConnection', () => JokeConnectionModel], ['PageInfo', () => PageInfoModel], ['JokeEdge', () => JokeEdgeModel], ['Joke', () => JokeModel], ['UserJokeHistory', () => UserJokeHistoryModel], ['User', () => UserModel], ['Category', () => CategoryModel], ['CategoryConnection', () => CategoryConnectionModel], ['CategoryEdge', () => CategoryEdgeModel], ['UserJokeHistoryConnection', () => UserJokeHistoryConnectionModel], ['UserJokeHistoryEdge', () => UserJokeHistoryEdgeModel], ['RateJokePayload', () => RateJokePayloadModel], ['UserError', () => UserErrorModel]], ['Joke', 'UserJokeHistory', 'Category'], "js"))
+  .extend(configureStoreMixin([['JokeConnection', () => JokeConnectionModel], ['PageInfo', () => PageInfoModel], ['JokeEdge', () => JokeEdgeModel], ['Joke', () => JokeModel], ['UserJokeHistory', () => UserJokeHistoryModel], ['User', () => UserModel], ['Category', () => CategoryModel], ['CategoryConnection', () => CategoryConnectionModel], ['CategoryEdge', () => CategoryEdgeModel], ['UserJokeHistoryConnection', () => UserJokeHistoryConnectionModel], ['UserJokeHistoryEdge', () => UserJokeHistoryEdgeModel], ['RateJokePayload', () => RateJokePayloadModel], ['UserError', () => UserErrorModel], ['UserPayload', () => UserPayloadModel]], ['Joke', 'UserJokeHistory', 'Category'], "js"))
   .props({
     jokes: types.optional(types.map(types.late((): any => JokeModel)), {}),
     userJokeHistories: types.optional(types.map(types.late((): any => UserJokeHistoryModel)), {}),
@@ -249,6 +256,11 @@ export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
     mutateRateJoke(variables: { input: RateJokeInput }, resultSelector: string | ((qb: RateJokePayloadModelSelector) => RateJokePayloadModelSelector) = rateJokePayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {
       return self.mutate<{ rateJoke: RateJokePayloadModelType}>(`mutation rateJoke($input: RateJokeInput!) { rateJoke(input: $input) {
         ${typeof resultSelector === "function" ? resultSelector(new RateJokePayloadModelSelector()).toString() : resultSelector}
+      } }`, variables, optimisticUpdate)
+    },
+    mutateLogin(variables: { input: UserLoginInput }, resultSelector: string | ((qb: UserPayloadModelSelector) => UserPayloadModelSelector) = userPayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {
+      return self.mutate<{ login: UserPayloadModelType}>(`mutation login($input: UserLoginInput!) { login(input: $input) {
+        ${typeof resultSelector === "function" ? resultSelector(new UserPayloadModelSelector()).toString() : resultSelector}
       } }`, variables, optimisticUpdate)
     },
   })))

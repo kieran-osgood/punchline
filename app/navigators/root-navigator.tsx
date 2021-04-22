@@ -12,6 +12,7 @@ import { authExitRoutes, AuthNavigator, AuthRouteNames } from "app/navigators/au
 import { useStores } from "app/models"
 import { observer } from "mobx-react-lite"
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import { useQuery } from 'app/graphql/reactUtils'
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
  * as well as what properties (if any) they might take when navigating to them.
@@ -31,15 +32,6 @@ const Stack = createStackNavigator<RootParamList>()
 
 const RootStack = observer(function RootStack() {
   const { userStore } = useStores()
-
-  React.useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged((userState) => {
-      userStore.updateUser(userState)
-    })
-
-    return () => unsubscribe()
-  }, [])
-
   return (
     <Stack.Navigator
       screenOptions={{
