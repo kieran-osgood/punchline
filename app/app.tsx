@@ -72,9 +72,9 @@ GoogleSignin.configure({
   offlineAccess: true,
 })
 
-// const rootGraphqlStore = RootGraphqlStore.create(undefined, {
-//   gqlHttpClient: createHttpClient("http://localhost:5000/graphql")
-// })
+const rootGraphqlStore = RootGraphqlStore.create(undefined, {
+  gqlHttpClient: createHttpClient("http://localhost:5000/graphql")
+})
 
 /**
  * This is the root component of our app.
@@ -117,15 +117,15 @@ const App = observer(function App() {
   return (
     <ToggleStorybook>
       <RootStoreProvider value={rootStore}>
-        {/* <StoreContext.Provider value={rootGraphqlStore}> */}
-        <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-          <RootNavigator
-            ref={navigationRef}
-            initialState={initialNavigationState}
-            onStateChange={onNavigationStateChange}
-          />
-        </SafeAreaProvider>
-        {/* </StoreContext.Provider> */}
+        <StoreContext.Provider value={rootGraphqlStore}>
+          <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+            <RootNavigator
+              ref={navigationRef}
+              initialState={initialNavigationState}
+              onStateChange={onNavigationStateChange}
+            />
+          </SafeAreaProvider>
+        </StoreContext.Provider>
       </RootStoreProvider>
     </ToggleStorybook>
   )

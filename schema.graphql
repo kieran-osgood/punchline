@@ -113,9 +113,7 @@ type UserJokeHistory {
   id: ID!
   bookmarked: Boolean!
   rating: RatingValue!
-  userId: ID!
   user: User!
-  jokeId: ID!
   joke: Joke!
 }
 
@@ -279,20 +277,18 @@ input UserFilterInput {
 input UserJokeHistoryFilterInput {
   and: [UserJokeHistoryFilterInput!]
   or: [UserJokeHistoryFilterInput!]
+  id: ComparableInt32OperationFilterInput
   bookmarked: BooleanOperationFilterInput
   rating: RatingValueOperationFilterInput
-  userId: ComparableInt32OperationFilterInput
   user: UserFilterInput
-  jokeId: ComparableInt32OperationFilterInput
   joke: JokeFilterInput
 }
 
 input UserJokeHistorySortInput {
+  id: SortEnumType
   bookmarked: SortEnumType
   rating: SortEnumType
-  userId: SortEnumType
   user: UserSortInput
-  jokeId: SortEnumType
   joke: JokeSortInput
 }
 

@@ -88,11 +88,10 @@ export type ListFilterInputTypeOfUserJokeHistoryFilterInput = {
 export type UserJokeHistoryFilterInput = {
   and?: UserJokeHistoryFilterInput[]
   or?: UserJokeHistoryFilterInput[]
+  id?: ComparableInt32OperationFilterInput
   bookmarked?: BooleanOperationFilterInput
   rating?: RatingValueOperationFilterInput
-  userId?: ComparableInt32OperationFilterInput
   user?: UserFilterInput
-  jokeId?: ComparableInt32OperationFilterInput
   joke?: JokeFilterInput
 }
 export type BooleanOperationFilterInput = {
@@ -169,11 +168,10 @@ export type CategorySortInput = {
   name?: SortEnumType
 }
 export type UserJokeHistorySortInput = {
+  id?: SortEnumType
   bookmarked?: SortEnumType
   rating?: SortEnumType
-  userId?: SortEnumType
   user?: UserSortInput
-  jokeId?: SortEnumType
   joke?: JokeSortInput
 }
 export type UserSortInput = {
