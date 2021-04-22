@@ -36,6 +36,7 @@
     "@react-navigation/material-bottom-tabs": "^5.3.15",
     "@react-navigation/native": "5.8.10",
     "@react-navigation/stack": "5.12.8",
+    "@sentry/react-native": "^2.4.1",
     "@unimodules/core": "6.0.0",
     "apisauce": "2.0.0",
     "babel-plugin-module-resolver": "^4.1.0",
@@ -69,6 +70,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "7.12.1",
     "@babel/plugin-proposal-optional-catch-binding": "7.12.1",
+    "@sentry/webpack-plugin": "^1.15.0",
     "@storybook/addon-storyshots": "6.1.10",
     "@storybook/react-native": "5.3.23",
     "@storybook/react-native-server": "5.3.23",

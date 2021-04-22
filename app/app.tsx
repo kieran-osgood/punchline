@@ -38,6 +38,17 @@ import { StoreContext } from "./graphql/reactUtils"
 import { enableScreens } from "react-native-screens"
 import { observer } from "mobx-react-lite"
 import { createHttpClient } from 'mst-gql'
+import * as Sentry from "@sentry/react-native"
+
+const packageJson = require('../package.json')
+Sentry.init({
+  dsn: "https://14d48ec94bab4f1fa583a3b6ab7f7a3b@o577022.ingest.sentry.io/5731300",
+  release: 'com.ko.punchline@' + packageJson.version,
+  environment: process.env.NODE_ENV,
+  attachStacktrace: true,
+  autoSessionTracking: true,
+  enabled: !__DEV__,
+})
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
