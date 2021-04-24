@@ -1,3 +1,4 @@
+import { RootStoreType } from './../graphql/RootStore'
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
 // https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
@@ -11,7 +12,7 @@ import { createHttpClient } from "mst-gql"
 const packageJson = require("package.json")
 
 export default class ServiceProvider {
-  RootGraphqlStore: ReturnType<typeof RootGraphqlStore.create>
+  RootGraphqlStore: RootStoreType
 
   constructor() {
     this.initialiseVoidServices()
