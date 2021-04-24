@@ -11,11 +11,11 @@ import { createHttpClient } from "mst-gql"
 const packageJson = require("package.json")
 
 export default class ServiceProvider {
-  rootGraphqlStore: ReturnType<typeof RootGraphqlStore.create>
+  RootGraphqlStore: ReturnType<typeof RootGraphqlStore.create>
 
   constructor() {
     this.initialiseVoidServices()
-    this.rootGraphqlStore = RootGraphqlStore.create(undefined, {
+    this.RootGraphqlStore = RootGraphqlStore.create(undefined, {
       gqlHttpClient: createHttpClient("http://localhost:5000/graphql"),
     })
   }

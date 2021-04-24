@@ -19,7 +19,7 @@ import {
 import { RootStore, RootStoreProvider, setupRootStore, useStores } from "./models"
 import { ToggleStorybook } from "../storybook/toggle-storybook"
 import auth from "@react-native-firebase/auth"
-import { StoreContext, useQuery } from "./graphql/reactUtils"
+import { StoreContext as GraphQLStoreContext, useQuery } from "./graphql/reactUtils"
 import { observer } from "mobx-react-lite"
 import ServiceProvider from "./utils/service-provider"
 
@@ -50,17 +50,13 @@ const App = observer(function App() {
     })()
   }, [])
 
-  // Before we show the app, we have to wait for our state to be ready.
-  // In the meantime, don't render anything. This will be the background
-  // color set in native by rootView's background color. You can replace
-  // with your own loading component if you wish.
+  // Wait for state to load from AsyncStorage
   if (!rootStore) return null
 
-  // otherwise, we're ready to render the app
   return (
     <ToggleStorybook>
       <RootStoreProvider value={rootStore}>
-        <StoreContext.Provider value={Services.rootGraphqlStore}>
+        <GraphQLStoreContext.Provider value={Services.RootGraphqlStore}>
           <Authorization>
             <SafeAreaProvider initialMetrics={initialWindowMetrics}>
               <RootNavigator
@@ -70,7 +66,7 @@ const App = observer(function App() {
               />
             </SafeAreaProvider>
           </Authorization>
-        </StoreContext.Provider>
+        </GraphQLStoreContext.Provider>
       </RootStoreProvider>
     </ToggleStorybook>
   )

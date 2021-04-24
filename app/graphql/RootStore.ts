@@ -8,9 +8,6 @@ export const RootStore = RootStoreBase
     accessToken: types.maybeNull(types.string)
   })
   .actions(self => ({
-    afterCreate() {
-      console.log("Created a new todo!", self.accessToken)
-    },
     setAuthorizationHeader() {
       getEnv(self).gqlHttpClient.setHeaders({ Authorization: 'bearer ' + self.accessToken })
     },
