@@ -22,6 +22,7 @@ import auth from "@react-native-firebase/auth"
 import { StoreContext as GraphQLStoreContext, useQuery } from "./graphql/reactUtils"
 import { observer } from "mobx-react-lite"
 import ServiceProvider from "./utils/service-provider"
+import useReactiveQuery from "app/hooks/use-reactive-query"
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
@@ -41,7 +42,8 @@ const App = observer(function App() {
   )
   // Kick off initial async loading actions, like loading fonts and RootStore
   useEffect(() => {
-    (async () => {
+    // eslint-disable-next-line @typescript-eslint/no-extra-semi
+    ;(async () => {
       // await initFonts() // expo
       setupRootStore().then((newRootStore) => {
         newRootStore.userStore?.updateUser(auth().currentUser)
@@ -74,9 +76,10 @@ const App = observer(function App() {
 
 export default App
 
-const Authorization = ({ children }) => {
+const Authorization = ({ children }: { children: React.ReactNode }) => {
   const { userStore } = useStores()
   const { store, setQuery } = useQuery()
+  useReactiveQuery<"queryCategories">(useQuery().store.queryCategories({}), [])
 
   React.useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged((user) => {
