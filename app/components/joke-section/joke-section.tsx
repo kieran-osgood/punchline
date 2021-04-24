@@ -16,7 +16,7 @@ import { useQuery } from "../../graphql/reactUtils"
 import { JokeLength } from "../../graphql/JokeLengthEnum"
 import { nodes } from "../../graphql/RootStore"
 import { jokeModelPrimitives } from "../../graphql/JokeModel.base"
-import { JokeModelType } from 'app/graphql'
+import { categoryModelPrimitives, JokeModelType } from 'app/graphql'
 
 export interface JokeSectionProps {
   /**
@@ -33,8 +33,8 @@ export const JokeSection = observer(function JokeSection(props: JokeSectionProps
   const swiper = React.useRef<Swiper<JokeModelType>>(null)
   const { data } = useQuery((store) =>
     store.queryJokes({ jokeLength: JokeLength.MEDIUM },
-      // nodes(jokeModelPrimitives)
-      nodes(jokeModelPrimitives, `categories{id name}`)
+      nodes(jokeModelPrimitives)
+      // nodes(jokeModelPrimitives, `categories{${categoryModelPrimitives}}`)
     ),
   )
   if (!data?.jokes) return null
@@ -114,6 +114,7 @@ const JokeCard = ({ joke }: { joke: JokeModelType }) => {
             <Text style={CATEGORY_PILL} text={joke.category} />
           </View>
         ) : null} */}
+        <View></View>
       </ScrollView>
     </View>
   )
@@ -127,7 +128,7 @@ const SCROLL_VIEW_STYLE: ViewStyle = {
 }
 const JOKE_CARD: ViewStyle = {
   borderRadius: 50,
-  marginHorizontal: spacing[2],
+  width: '95%',
   backgroundColor: "white",
   padding: spacing[4],
   borderColor: color.line,
@@ -137,7 +138,7 @@ const JOKE_CARD: ViewStyle = {
 }
 const JOKE_TITLE: TextStyle = {
   color: color.storybookDarkBg,
-  paddingHorizontal: spacing[5],
+  textAlign: 'center'
 }
 const JOKE_TEXT: TextStyle = {
   marginTop: spacing[3],
