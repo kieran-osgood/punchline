@@ -11,8 +11,9 @@ const ROOT: ViewStyle = {
 
 export const JokeScreen = observer(function JokeScreen() {
   return (
-    <Screen style={ROOT} preset="scroll">
+    <Screen style={ROOT} preset="fixed">
       <Header />
+
       <CenterView>
         <JokeSection />
       </CenterView>
