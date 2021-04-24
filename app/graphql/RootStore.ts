@@ -18,4 +18,9 @@ export const RootStore = RootStoreBase.props({
     },
   }))
 
-export const nodes = (val: any) => `nodes {${val}}`
+export const nodes = (val: any, ...rest: string[]) =>
+  `nodes {
+    ${val}
+    ${rest.join(' ')}
+  } 
+  `

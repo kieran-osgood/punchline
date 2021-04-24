@@ -16,13 +16,12 @@ import {
   setRootNavigation,
   useNavigationPersistence,
 } from "./navigators"
-import { RootStore, RootStoreProvider, setupRootStore, useStores } from "./models"
+import { RootStore, RootStoreProvider, setupRootStore, useStores } from "app/models"
 import { ToggleStorybook } from "../storybook/toggle-storybook"
 import auth from "@react-native-firebase/auth"
-import { StoreContext as GraphQLStoreContext, useQuery } from "./graphql/reactUtils"
+import { StoreContext as GraphQLStoreContext, useQuery } from "app/graphql/reactUtils"
 import { observer } from "mobx-react-lite"
-import ServiceProvider from "./utils/service-provider"
-import useReactiveQuery from "app/hooks/use-reactive-query"
+import ServiceProvider from "app/utils/service-provider"
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
@@ -79,7 +78,7 @@ export default App
 const Authorization = ({ children }: { children: React.ReactNode }) => {
   const { userStore } = useStores()
   const { store, setQuery } = useQuery()
-  useReactiveQuery<"queryCategories">(useQuery().store.queryCategories({}), [])
+  // useReactiveQuery<"queryCategories">(useQuery().store.queryCategories({}))
 
   React.useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged((user) => {

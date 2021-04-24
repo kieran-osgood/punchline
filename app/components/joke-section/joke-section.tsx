@@ -4,6 +4,7 @@ import React from "react"
 import { ScrollView, TextStyle, View, ViewStyle } from "react-native"
 import { heightPercentageToDP as hp } from "react-native-responsive-screen"
 import { observer } from "mobx-react-lite"
+import Swiper from "react-native-deck-swiper"
 
 import { color, spacing } from "theme"
 
@@ -11,7 +12,12 @@ import { Text } from "../text/text"
 import { CenterView } from "../center-view/center-view"
 import { Controls } from "../controls/controls"
 
-import Swiper from "react-native-deck-swiper"
+import { useQuery } from "../../graphql/reactUtils"
+import { JokeLength } from "../../graphql/JokeLengthEnum"
+import { nodes } from "../../graphql/RootStore"
+import { jokeModelPrimitives } from "../../graphql/JokeModel.base"
+import { JokeModelType } from 'app/graphql'
+
 export interface JokeSectionProps {
   /**
    * An optional style override useful for padding & margin.
@@ -24,16 +30,22 @@ export interface JokeSectionProps {
  */
 export const JokeSection = observer(function JokeSection(props: JokeSectionProps) {
   const [bookmarked, setBookmarked] = React.useState(false)
-  const [jokes] = React.useState<Joke[]>([])
-  const swiper = React.useRef<Swiper<Joke>>(null)
-
+  const swiper = React.useRef<Swiper<JokeModelType>>(null)
+  const { data } = useQuery((store) =>
+    store.queryJokes({ jokeLength: JokeLength.MEDIUM },
+      // nodes(jokeModelPrimitives)
+      nodes(jokeModelPrimitives, `categories{id name}`)
+    ),
+  )
+  if (!data?.jokes) return null
+  const { jokes } = data
   return (
     <>
       <CenterView style={{ width: "95%" }}>
-        {jokes.length > 0 ? (
+        {jokes?.nodes?.length > 0 ? (
           <Swiper
             ref={swiper}
-            cards={jokes}
+            cards={jokes.nodes}
             cardHorizontalMargin={0}
             cardVerticalMargin={0}
             containerStyle={{ marginTop: 20 }}
@@ -42,8 +54,8 @@ export const JokeSection = observer(function JokeSection(props: JokeSectionProps
             // @ts-ignore
             disablePanresponder={false}
             showSecondCard
-            keyExtractor={(jokeCard) => jokeCard?.random}
-            renderCard={(jokeCard) => <JokeCard key={jokeCard?.random} joke={jokeCard} />}
+            keyExtractor={(jokeCard) => jokeCard?.id}
+            renderCard={(jokeCard) => <JokeCard key={jokeCard?.id} joke={jokeCard} />}
             backgroundColor={color.background}
             stackSize={3}
           />
@@ -72,7 +84,7 @@ export const JokeSection = observer(function JokeSection(props: JokeSectionProps
   )
 })
 
-const JokeCard = ({ joke }: { joke: Joke }) => {
+const JokeCard = ({ joke }: { joke: JokeModelType }) => {
   const ref = React.useRef<ScrollView>(null)
   if (joke === undefined) return null
 
@@ -92,17 +104,16 @@ const JokeCard = ({ joke }: { joke: Joke }) => {
         <Text h3 text={joke.title} style={JOKE_TITLE} />
         <Text
           style={JOKE_TEXT}
-          text={joke?.body
-            .split(/\n/g)
+          text={joke.body?.split(/\n/g)
             .map((x) => x.charAt(0).toUpperCase() + x.substr(1))
             .join("\n")}
         />
-        {joke.category ? (
+        {/* {joke.category ? (
           <View style={CATEGORY_SECTION}>
             <Text text="Category: " />
             <Text style={CATEGORY_PILL} text={joke.category} />
           </View>
-        ) : null}
+        ) : null} */}
       </ScrollView>
     </View>
   )
@@ -149,31 +160,4 @@ const CATEGORY_PILL: TextStyle = {
   paddingHorizontal: spacing[3],
   borderRadius: 30,
   borderColor: color.text,
-}
-
-export type Joke = {
-  body: string
-  id: string
-  category: string
-  random: string
-  title: string
-  bookmarked: boolean
-  reviews: {
-    count: number
-    score: number
-  }
-  jokeLength: number
-}
-const defaultJokeState = {
-  body: "",
-  id: "",
-  category: "",
-  random: "",
-  title: "",
-  bookmarked: false,
-  reviews: {
-    count: 0,
-    score: 0,
-  },
-  jokeLength: 0,
 }
