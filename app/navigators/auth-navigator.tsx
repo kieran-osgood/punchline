@@ -6,9 +6,8 @@
  */
 import React from "react"
 import { createStackNavigator, StackNavigationProp } from "@react-navigation/stack"
-import { WelcomeScreen, DemoScreen, DemoListScreen, LoginScreen } from "../screens"
-import { RouteProp } from '@react-navigation/native'
-import { color } from 'theme'
+import { LoginScreen } from "../screens"
+import { RouteProp } from "@react-navigation/native"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -22,29 +21,30 @@ import { color } from 'theme'
  *   https://reactnavigation.org/docs/params/
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
-export type RouteParamList = {
-  LoginChoices: undefined;
-  Login: undefined;
-  EmailPassword: undefined;
-  Register: undefined;
-};
+export type AuthRouteParamList = {
+  LoginChoices: undefined
+  Login: undefined
+  EmailPassword: undefined
+  Register: undefined
+}
 
-export type AuthNavigationProps<T extends keyof RouteParamList> = {
-  route: RouteProp<RouteParamList, T>;
-  navigation: StackNavigationProp<RouteParamList, T>;
-};
+export type AuthNavigationProps<T extends keyof AuthRouteParamList> = {
+  route: RouteProp<AuthRouteParamList, T>
+  navigation: StackNavigationProp<AuthRouteParamList, T>
+}
 
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
-const Stack = createStackNavigator<RouteParamList>()
+const Stack = createStackNavigator<AuthRouteParamList>()
 
 export function AuthNavigator() {
   return (
     <Stack.Navigator
-    // screenOptions={{
-    //   header: () => null,
-    // }}
-    initialRouteName="LoginChoices">
-    {/* <Stack.Screen
+      // screenOptions={{
+      //   header: () => null,
+      // }}
+      initialRouteName="LoginChoices"
+    >
+      {/* <Stack.Screen
       options={{
         headerTitle: 'Email / Password',
         headerStyle: {
@@ -54,22 +54,22 @@ export function AuthNavigator() {
       name="EmailPassword"
       component={EmailPassword}
     /> */}
-    <Stack.Screen
-      options={{
-        headerTitle: 'Login',
-        header: () => null,
-      }}
-      name="LoginChoices"
-      component={LoginScreen}
-    />
-    {/* <Stack.Screen
+      <Stack.Screen
+        options={{
+          headerTitle: "Login",
+          header: () => null,
+        }}
+        name="LoginChoices"
+        component={LoginScreen}
+      />
+      {/* <Stack.Screen
       options={{
         headerTitle: 'Sign Up',
       }}
       name="Register"
       component={Register}
     /> */}
-  </Stack.Navigator>
+    </Stack.Navigator>
   )
 }
 
@@ -82,5 +82,5 @@ export function AuthNavigator() {
  *
  * `canExit` is used in ./app/app.tsx in the `useBackButtonHandler` hook.
  */
-export type AuthRouteNames = keyof RouteParamList;
-export const authExitRoutes: [AuthRouteNames] = ['LoginChoices']
+export type AuthRouteNames = keyof AuthRouteParamList
+export const authExitRoutes: [AuthRouteNames] = ["LoginChoices"]

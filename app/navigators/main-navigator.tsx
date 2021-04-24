@@ -13,6 +13,8 @@ import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bott
 import { JokeScreen, SettingsScreen, UserProfileScreen } from "../screens"
 import { observer } from "mobx-react-lite"
 import Icon from "react-native-vector-icons/Feather"
+import { useQuery } from "app/graphql/reactUtils"
+import { JokeLength } from "app/graphql/JokeLengthEnum"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -45,7 +47,7 @@ export const MainNavigator = observer(function MainNavigator() {
     <Tab.Navigator
       initialRouteName="JokeScreen"
       tabBarOptions={{
-        activeTintColor: '#000'
+        activeTintColor: "#000",
       }}
       appearance={{
         tabBarBackground: color.palette.white,
@@ -56,9 +58,7 @@ export const MainNavigator = observer(function MainNavigator() {
         component={UserProfileScreen}
         options={{
           tabBarLabel: "Profile",
-          tabBarIcon: ({ size }) => (
-            <Icon name="user" {...{ size }}/>
-          ),
+          tabBarIcon: ({ size }) => <Icon name="user" {...{ size }} />,
         }}
       />
       <Tab.Screen
@@ -66,9 +66,7 @@ export const MainNavigator = observer(function MainNavigator() {
         component={JokeScreen}
         options={{
           tabBarLabel: "Home",
-          tabBarIcon: ({ size }) => (
-            <Icon name="home" {...{ size }}/>
-          ),
+          tabBarIcon: ({ size }) => <Icon name="home" {...{ size }} />,
         }}
       />
       <Tab.Screen
@@ -76,9 +74,7 @@ export const MainNavigator = observer(function MainNavigator() {
         component={SettingsScreen}
         options={{
           tabBarLabel: "Settings",
-          tabBarIcon: ({ size }) => (
-            <Icon name="settings" {...{ size }} />
-          ),
+          tabBarIcon: ({ size }) => <Icon name="settings" {...{ size }} />,
         }}
       />
     </Tab.Navigator>
