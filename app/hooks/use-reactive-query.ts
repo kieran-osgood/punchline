@@ -1,11 +1,9 @@
 import * as React from "react"
 import { useQuery } from "app/graphql/reactUtils"
 import { RootStoreType } from "app/graphql/RootStore"
-import { QueryLike, UseQueryHookResult } from "mst-gql"
 import { RootStoreBaseMutations, RootStoreBaseQueries } from 'app/graphql/RootStore.base'
 
-type ActionNames = (keyof typeof RootStoreBaseQueries | keyof typeof RootStoreBaseMutations)
-
+type ActionNames = keyof typeof RootStoreBaseQueries | keyof typeof RootStoreBaseMutations
 type ActionReturnType <T extends ActionNames> = ReturnType<RootStoreType[T]>
 
 const useReactiveQuery = <ActionName extends ActionNames>(
@@ -19,8 +17,7 @@ const useReactiveQuery = <ActionName extends ActionNames>(
     setQuery(queryRequest)
   }, dependencies)
 
-  // return query as ActionReturnType<ActionName>
-  return query
+  return query as ActionReturnType<ActionName>
 }
 
 export default useReactiveQuery
