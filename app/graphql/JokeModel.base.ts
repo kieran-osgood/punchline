@@ -19,6 +19,7 @@ import { RootStoreType } from "./index"
 type Refs = {
   userJokeHistories: IObservableArray<UserJokeHistoryModelType>;
   categories: IObservableArray<CategoryModelType>;
+  users: IObservableArray<UserModelType>;
 }
 
 /**
@@ -35,7 +36,7 @@ export const JokeModelBase = withTypedRefs<Refs>()(ModelBase
     score: types.union(types.undefined, types.integer),
     userJokeHistories: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => UserJokeHistoryModel)))),
     categories: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => CategoryModel)))),
-    users: types.union(types.undefined, types.array(types.late((): any => UserModel))),
+    users: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => UserModel)))),
   })
   .views(self => ({
     get store() {

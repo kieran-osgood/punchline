@@ -15,6 +15,7 @@ import { RootStoreType } from "./index"
 
 /* The TypeScript type that explicits the refs to other models in order to prevent a circular refs issue */
 type Refs = {
+  user: UserModelType;
   joke: JokeModelType;
 }
 
@@ -29,7 +30,7 @@ export const UserJokeHistoryModelBase = withTypedRefs<Refs>()(ModelBase
     id: types.identifier,
     bookmarked: types.union(types.undefined, types.boolean),
     rating: types.union(types.undefined, RatingValueEnumType),
-    user: types.union(types.undefined, types.late((): any => UserModel)),
+    user: types.union(types.undefined, MSTGQLRef(types.late((): any => UserModel))),
     joke: types.union(types.undefined, MSTGQLRef(types.late((): any => JokeModel))),
   })
   .views(self => ({

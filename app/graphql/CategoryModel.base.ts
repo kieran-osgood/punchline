@@ -16,6 +16,7 @@ import { RootStoreType } from "./index"
 /* The TypeScript type that explicits the refs to other models in order to prevent a circular refs issue */
 type Refs = {
   jokes: IObservableArray<JokeModelType>;
+  users: IObservableArray<UserModelType>;
 }
 
 /**
@@ -29,7 +30,7 @@ export const CategoryModelBase = withTypedRefs<Refs>()(ModelBase
     id: types.identifier,
     name: types.union(types.undefined, types.string),
     jokes: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => JokeModel)))),
-    users: types.union(types.undefined, types.array(types.late((): any => UserModel))),
+    users: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => UserModel)))),
   })
   .views(self => ({
     get store() {

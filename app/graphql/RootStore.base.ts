@@ -196,8 +196,9 @@ export type UserLoginInput = {
 /* The TypeScript type that explicits the refs to other models in order to prevent a circular refs issue */
 type Refs = {
   jokes: ObservableMap<string, JokeModelType>,
-  userJokeHistories: ObservableMap<string, UserJokeHistoryModelType>,
-  categories: ObservableMap<string, CategoryModelType>
+  users: ObservableMap<string, UserModelType>,
+  categories: ObservableMap<string, CategoryModelType>,
+  userJokeHistories: ObservableMap<string, UserJokeHistoryModelType>
 }
 
 
@@ -221,11 +222,12 @@ mutateLogin="mutateLogin"
 */
 export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
   .named("RootStore")
-  .extend(configureStoreMixin([['JokeConnection', () => JokeConnectionModel], ['PageInfo', () => PageInfoModel], ['JokeEdge', () => JokeEdgeModel], ['Joke', () => JokeModel], ['UserJokeHistory', () => UserJokeHistoryModel], ['User', () => UserModel], ['Category', () => CategoryModel], ['CategoryConnection', () => CategoryConnectionModel], ['CategoryEdge', () => CategoryEdgeModel], ['UserJokeHistoryConnection', () => UserJokeHistoryConnectionModel], ['UserJokeHistoryEdge', () => UserJokeHistoryEdgeModel], ['RateJokePayload', () => RateJokePayloadModel], ['UserError', () => UserErrorModel], ['UserPayload', () => UserPayloadModel]], ['Joke', 'UserJokeHistory', 'Category'], "js"))
+  .extend(configureStoreMixin([['JokeConnection', () => JokeConnectionModel], ['PageInfo', () => PageInfoModel], ['JokeEdge', () => JokeEdgeModel], ['Joke', () => JokeModel], ['UserJokeHistory', () => UserJokeHistoryModel], ['User', () => UserModel], ['Category', () => CategoryModel], ['CategoryConnection', () => CategoryConnectionModel], ['CategoryEdge', () => CategoryEdgeModel], ['UserJokeHistoryConnection', () => UserJokeHistoryConnectionModel], ['UserJokeHistoryEdge', () => UserJokeHistoryEdgeModel], ['RateJokePayload', () => RateJokePayloadModel], ['UserError', () => UserErrorModel], ['UserPayload', () => UserPayloadModel]], ['Joke', 'User', 'Category', 'UserJokeHistory'], "js"))
   .props({
     jokes: types.optional(types.map(types.late((): any => JokeModel)), {}),
-    userJokeHistories: types.optional(types.map(types.late((): any => UserJokeHistoryModel)), {}),
-    categories: types.optional(types.map(types.late((): any => CategoryModel)), {})
+    users: types.optional(types.map(types.late((): any => UserModel)), {}),
+    categories: types.optional(types.map(types.late((): any => CategoryModel)), {}),
+    userJokeHistories: types.optional(types.map(types.late((): any => UserJokeHistoryModel)), {})
   })
   .actions(self => ({
     queryNode(variables: { id: string }, resultSelector: string | ((qb: NodeModelSelector) => NodeModelSelector) = nodeModelPrimitives.toString(), options: QueryOptions = {}) {
