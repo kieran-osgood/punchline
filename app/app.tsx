@@ -84,6 +84,7 @@ const Authorization = ({ children }) => {
       user?.getIdToken().then((idToken) => {
         store.setBearerToken(idToken)
 
+        // Creates a user on the backend and updates users LastLogin date if already exists
         setQuery((store) =>
           store.mutateLogin({
             input: {
@@ -97,6 +98,8 @@ const Authorization = ({ children }) => {
 
     return () => unsubscribe()
   }, [])
+
+  if (store.accessToken == null) return null
 
   return <>{children}</>
 }
