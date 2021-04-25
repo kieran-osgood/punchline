@@ -15,6 +15,7 @@ import {
 import { color, spacing } from "theme"
 import { heightPercentageToDP as hp } from "react-native-responsive-screen"
 import auth from "@react-native-firebase/auth"
+import { JokeLength } from "app/graphql/JokeLengthEnum"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -89,33 +90,37 @@ const CHECKBOX: ViewStyle = {
   width: "33%",
 }
 
-const jokeLengths = ["short", "medium", "long"] as const
-export type JokeLengths = typeof jokeLengths[number]
+const JokeLengths: JokeLength[] = Object.keys(JokeLength)
+  .map((k) => JokeLength[k as keyof typeof JokeLength])
+  .map((v) => v as JokeLength)
 
 const JokeLengthSetting = () => {
   // const [jokeLength, setJokeLength] = useSetting<JokeLengthSetting>(
   //   LocalStorageKeys.jokeLength,
   //   'short',
   // )
+  // console.log("create", JokeLengthEnumType.create("SMALL"))
 
-  const checked = (thisLength: JokeLengths, selectedLength: JokeLengths | undefined): boolean => {
-    return jokeLengths.indexOf(thisLength) <= jokeLengths.indexOf(selectedLength ?? "short")
+  const checked = (thisLength: JokeLength, selectedLength: JokeLength | undefined): boolean => {
+    return (
+      JokeLengths.indexOf(thisLength) <= JokeLengths.indexOf(selectedLength ?? JokeLength.SMALL)
+    )
   }
 
   return (
     <CenterView style={JOKE_LENGTH_CONTAINER}>
       <Text h4>Joke Length</Text>
       <View style={ROW}>
-        {jokeLengths.map((length) => (
+        {JokeLengths.map((length) => (
           <View key={length} style={CHECKBOX}>
             <Text text={length.toLocaleUpperCase()} />
             {/* <CheckBox
-              checked={checked(length, jokeLength)}
-              size={35}
-              onPress={() => setJokeLength(length)}
-              checkedColor={color.success}
-              uncheckedColor={color.primaryDarker}
-            /> */}
+            checked={checked(length, jokeLength)}
+            size={35}
+            onPress={() => setJokeLength(length)}
+            checkedColor={color.success}
+            uncheckedColor={color.primaryDarker}
+          /> */}
           </View>
         ))}
       </View>
