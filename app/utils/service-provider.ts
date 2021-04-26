@@ -1,4 +1,4 @@
-import { RootStoreType } from './../graphql/RootStore'
+import { RootStoreType } from "./../graphql/RootStore"
 // This puts screens in a native ViewController or Activity. If you want fully native
 // stack navigation, use `createNativeStackNavigator` in place of `createStackNavigator`:
 // https://github.com/kmagiera/react-native-screens#using-native-stack-navigator
@@ -8,17 +8,36 @@ import admob, { MaxAdContentRating } from "@react-native-firebase/admob"
 import { GoogleSignin } from "@react-native-community/google-signin"
 import { RootStore as RootGraphqlStore } from "app/graphql/RootStore"
 import { createHttpClient } from "mst-gql"
+import { onSnapshot } from "mobx-state-tree"
+import * as storage from "./storage"
 
 const packageJson = require("package.json")
-
+const ROOT_GRAPHQL_STORAGE_KEY = "graphql"
 export default class ServiceProvider {
-  RootGraphqlStore: RootStoreType
+  RootGraphqlStore!: RootStoreType
 
   constructor() {
     this.initialiseVoidServices()
-    this.RootGraphqlStore = RootGraphqlStore.create(undefined, {
-      gqlHttpClient: createHttpClient("http://localhost:5000/graphql"),
-    })
+    this.initialiseApi()
+  }
+
+  async initialiseApi() {
+    try {
+      const data = (await storage.load(ROOT_GRAPHQL_STORAGE_KEY)) || {}
+      this.RootGraphqlStore = RootGraphqlStore.create(data, {
+        gqlHttpClient: createHttpClient("http://localhost:5000/graphql"),
+      })
+    } catch (e) {
+      __DEV__ && console.tron.error!(e?.message, null)
+
+      this.RootGraphqlStore = RootGraphqlStore.create(undefined, {
+        gqlHttpClient: createHttpClient("http://localhost:5000/graphql"),
+      })
+    }
+
+    onSnapshot(this.RootGraphqlStore, (snapshot) =>
+      storage.save(ROOT_GRAPHQL_STORAGE_KEY, snapshot),
+    )
   }
 
   initialiseVoidServices() {
