@@ -5,57 +5,36 @@ import { color } from "theme"
 import { Text } from "../text/text"
 
 export type CategorySettings = {
-  id: string;
-  name: string;
-  isActive: boolean;
-};
+  id: string
+  name: string
+  isActive: boolean
+}
 
 export interface SelectPillsProps {
-  /**
-   * An optional style override useful for padding & margin.
-   */
-   data: CategorySettings[];
-   onValueChange?: (data: SelectPillsProps['data']) => void;}
+  data: CategorySettings[]
+  onValueChange: (data: CategorySettings) => void
+}
 
 /**
  * Describe your component here
  */
 export const SelectPills = observer(function SelectPills(props: SelectPillsProps) {
   const { data, onValueChange } = props
-  const [inputData, setInputData] = React.useState(data)
 
-  React.useEffect(() => {
-    setInputData(data)
-  }, [data])
-
-  const handlePress = (i: number) => {
-    const _data = [...inputData]
-    _data[i].isActive = !_data[i].isActive || false
-    handleDataChange(_data)
-  }
-
-  const handleDataChange = (eData: SelectPillsProps['data']) => {
-    setInputData(eData)
-    if (onValueChange) {
-      onValueChange(eData)
-    }
-  }
-
-  const handleStyles = (isActive: boolean) =>
-    isActive ? ACTIVE_SELECT : INACTIVE_SELECT
+  const handlePress = (item: CategorySettings) => onValueChange(item)
+  const activeStyle = (isActive: boolean) => (isActive ? ACTIVE_SELECT : INACTIVE_SELECT)
 
   return (
     <View style={CONTAINER}>
-      {inputData.map((item, i) => {
+      {data.map((item, idx) => {
+        const style = activeStyle(item.isActive)
         return (
           <TouchableOpacity
-            key={i}
-            onPress={() => handlePress(i)}
-            activeOpacity={0.9}
-            style={{ ...handleStyles(!!item.isActive), ...SELECT }}>
-            <Text style={{ ...handleStyles(!!item.isActive) }}>
-              {item.name}
-            </Text>
+            key={idx}
+            onPress={() => handlePress({ ...item, isActive: !item.isActive })}
+            style={{ ...style, ...SELECT }}
+          >
+            <Text {...{ style }}>{item.name}</Text>
           </TouchableOpacity>
         )
       })}
@@ -68,8 +47,8 @@ const ACTIVE_SELECT: ViewStyle = {
 }
 
 const CONTAINER: ViewStyle = {
-  flexDirection: 'row',
-  flexWrap: 'wrap',
+  flexDirection: "row",
+  flexWrap: "wrap",
 }
 
 const INACTIVE_SELECT: ViewStyle = {
@@ -77,9 +56,9 @@ const INACTIVE_SELECT: ViewStyle = {
 }
 
 const SELECT: ViewStyle = {
-  borderColor: 'transparent',
+  borderColor: "transparent",
   borderRadius: 15,
-  borderStyle: 'solid',
+  borderStyle: "solid",
   borderWidth: 2,
   marginBottom: 8,
   marginRight: 8,

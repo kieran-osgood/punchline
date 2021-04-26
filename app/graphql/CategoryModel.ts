@@ -1,4 +1,4 @@
-import { Instance } from "mobx-state-tree"
+import { Instance, types } from "mobx-state-tree"
 import { CategoryModelBase } from "./CategoryModel.base"
 
 /* The TypeScript type of an instance of CategoryModel */
@@ -11,9 +11,12 @@ export { selectFromCategory, categoryModelPrimitives, CategoryModelSelector } fr
  * CategoryModel
  */
 export const CategoryModel = CategoryModelBase
+  .props({
+    isActive: types.optional(types.boolean, false)
+  })
   .actions(self => ({
     // This is an auto-generated example action.
-    log() {
-      console.log(JSON.stringify(self))
+    update(val: boolean) {
+      self.isActive = val
     }
   }))

@@ -16,6 +16,8 @@ import { color, spacing } from "theme"
 import { heightPercentageToDP as hp } from "react-native-responsive-screen"
 import auth from "@react-native-firebase/auth"
 import { JokeLength } from "app/graphql/JokeLengthEnum"
+import { useQuery } from "app/graphql/reactUtils"
+import { values } from "mobx"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -128,38 +130,36 @@ const JokeLengthSetting = () => {
   )
 }
 
-const CategorySetting = () => {
-  // const { userCategories, categories: apiCategories } = useCategoriesContext()
-  // const [categories, setCategories] = React.useState<CategorySettings[] | undefined>(() =>
-  //   apiCategories?.map((category) => {
-  //     const match = userCategories?.find((x) => x.id === category.id)
-  //     if (match) {
-  //       return { ...category, ...match }
-  //     }
-  //     return { ...category, isActive: false }
-  //   }),
-  // )
-  const [categories, setCategories] = React.useState([])
+const CategorySetting = observer(() => {
+  const { store } = useQuery()
+  const categorySettings: CategorySettings[] = values(store.categories).map((category) => ({
+    id: category.id,
+    isActive: category.isActive,
+    name: category.name ?? "",
+  }))
 
-  const handleValueChanged = async (value: CategorySettings[]) => {
-    // const user = await getCurrentUser()
-    // user.set({ categories: value })
-    // setCategories(value)
+  const handleValueChanged = async (value: CategorySettings) => {
+    const changed = store.categories.get(value.id)
+    changed?.update(value.isActive)
   }
 
   return (
     <CenterView style={{ marginBottom: hp("2.5%") }}>
       <Text h4>Categories</Text>
-      <SelectPills data={categories ?? []} onValueChange={(value) => handleValueChanged(value)} />
+      <SelectPills
+        data={categorySettings ?? []}
+        onValueChange={(value) => handleValueChanged(value)}
+      />
     </CenterView>
   )
-}
+})
 
 const LOGOUT_BUTTON: TextStyle = {
   fontSize: 18,
   fontWeight: "bold",
   color: color.text,
 }
+
 const LogoutButton = () => {
   return (
     <View>
