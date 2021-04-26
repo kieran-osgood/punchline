@@ -10,14 +10,13 @@ import {
   SelectPills,
   Text,
 } from "../../components"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "../../models"
 import { color, spacing } from "theme"
 import { heightPercentageToDP as hp } from "react-native-responsive-screen"
 import auth from "@react-native-firebase/auth"
 import { JokeLength } from "app/graphql/JokeLengthEnum"
 import { useQuery } from "app/graphql/reactUtils"
 import { values } from "mobx"
+import { BUG_REPORT_EMAIL } from 'react-native-dotenv'
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -36,32 +35,28 @@ const SETTING_ROW: ViewStyle = {
 
 const TITLE: TextStyle = {
   textAlign: "center",
-  width: "100%",
 }
 
 const SCROLL: ViewStyle = {
   width: "100%",
 }
 
-export const SettingsScreen = observer(function SettingsScreen() {
-  // Pull in one of our MST stores
-  // const { someStore, anotherStore } = useStores()
+const CONTAINER: ViewStyle = {
+  paddingHorizontal: spacing[4],
+}
 
-  // Pull in navigation via hook
-  // const navigation = useNavigation()
+const ROWS_CONTAINER: ViewStyle = {
+  paddingVertical: spacing[4],
+}
+
+export const SettingsScreen = observer(function SettingsScreen() {
   return (
     <Screen style={ROOT} preset="scroll">
-      <CenterView>
+      <CenterView style={CONTAINER}>
         <ScrollView style={SCROLL}>
           <View>
-            <Text h3 style={TITLE}>
-              Settings
-            </Text>
-            <CenterView
-              style={{
-                paddingVertical: hp("2.5%"),
-              }}
-            >
+            <Text h3 style={TITLE} text="Settings" />
+            <CenterView style={ROWS_CONTAINER}>
               {auth().currentUser?.isAnonymous && <LoginConversion />}
               <JokeLengthSetting />
               <CategorySetting />
@@ -101,7 +96,6 @@ const JokeLengthSetting = () => {
   //   LocalStorageKeys.jokeLength,
   //   'short',
   // )
-  // console.log("create", JokeLengthEnumType.create("SMALL"))
 
   const checked = (thisLength: JokeLength, selectedLength: JokeLength | undefined): boolean => {
     return (
@@ -111,7 +105,7 @@ const JokeLengthSetting = () => {
 
   return (
     <CenterView style={JOKE_LENGTH_CONTAINER}>
-      <Text h4>Joke Length</Text>
+      <Text h4 text="Joke Length" />
       <View style={ROW}>
         {JokeLengths.map((length) => (
           <View key={length} style={CHECKBOX}>
@@ -139,13 +133,12 @@ const CategorySetting = observer(() => {
   }))
 
   const handleValueChanged = async (value: CategorySettings) => {
-    const changed = store.categories.get(value.id)
-    changed?.update(value.isActive)
+    store.categories.get(value.id)?.update(value.isActive)
   }
 
   return (
     <CenterView style={{ marginBottom: hp("2.5%") }}>
-      <Text h4>Categories</Text>
+      <Text h4 text="Categories" />
       <SelectPills
         data={categorySettings ?? []}
         onValueChange={(value) => handleValueChanged(value)}
@@ -162,29 +155,29 @@ const LOGOUT_BUTTON: TextStyle = {
 
 const LogoutButton = () => {
   return (
-    <View>
-      <Button
-        style={PILL_BUTTON}
-        textStyle={LOGOUT_BUTTON}
-        // containerStyle={BUTTON_CONTAINER}
-        onPress={() => auth().signOut()}
-        text="Logout"
-      />
-    </View>
+    <Button
+      text="Logout"
+      style={PILL_BUTTON}
+      textStyle={LOGOUT_BUTTON}
+      onPress={() => auth().signOut()}
+    />
   )
 }
 
-const LoginConversion = () => {
-  return (
-    <CenterView style={{ paddingBottom: spacing[4] }}>
-      <Text text="Link via your social media account in order to save your bookmarks and preferences." />
-      {/* <GoogleSignIn isAnonymousConversion={true} /> */}
-      {/* <FacebookSignIn isAnonymousConversion={true} /> */}
-    </CenterView>
-  )
+const LOGIN_CONVERSION: ViewStyle = {
+  paddingBottom: spacing[4],
+  width: "100%",
 }
 
-const BUG_BUTTON: ViewStyle = {
+const LoginConversion = () => (
+  <CenterView style={LOGIN_CONVERSION}>
+    <Text text="Link via your social media account in order to save your bookmarks and preferences." />
+    {/* <GoogleSignIn isAnonymousConversion={true} /> */}
+    {/* <FacebookSignIn isAnonymousConversion={true} /> */}
+  </CenterView>
+)
+
+const BUG_REPORT_BUTTON: ViewStyle = {
   ...PILL_BUTTON,
   backgroundColor: color.error,
 }
@@ -196,17 +189,13 @@ const BUG_BUTTON_TEXT: TextStyle = {
 }
 
 const BugReport = () => {
+  const onPress = () => Linking.openURL(BUG_REPORT_EMAIL)
   return (
     <Button
-      style={BUG_BUTTON}
-      textStyle={BUG_BUTTON_TEXT}
-      // containerStyle={BUTTON_CONTAINER}
       text="Bug Report"
-      onPress={() =>
-        Linking.openURL(
-          "mailto:ko.dev.issues@gmail.com?subject=Punchline Bug Report&body=Explain the issue you had.",
-        )
-      }
+      style={BUG_REPORT_BUTTON}
+      textStyle={BUG_BUTTON_TEXT}
+      {...{ onPress }}
     />
   )
 }

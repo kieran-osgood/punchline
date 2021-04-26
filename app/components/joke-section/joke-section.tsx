@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable react-native/no-inline-styles */
 import React from "react"
 import { ScrollView, TextStyle, View, ViewStyle } from "react-native"
 import { heightPercentageToDP as hp } from "react-native-responsive-screen"
@@ -16,7 +15,32 @@ import { useQuery } from "../../graphql/reactUtils"
 import { JokeLength } from "../../graphql/JokeLengthEnum"
 import { nodes } from "../../graphql/RootStore"
 import { jokeModelPrimitives } from "../../graphql/JokeModel.base"
-import { categoryModelPrimitives, JokeModelType } from 'app/graphql'
+import { JokeModelType } from 'app/graphql'
+
+const CONTAINER:ViewStyle = {
+  width: "95%"
+}
+
+const SWIPER:ViewStyle = {
+  marginTop: 20
+}
+
+const JOKE_CARD: ViewStyle = {
+  borderRadius: 50,
+  width: '95%',
+  backgroundColor: "white",
+  padding: spacing[4],
+  borderColor: color.line,
+  borderWidth: 1,
+  position: "relative",
+  flex: 0.5,
+}
+
+const EMPTY_JOKE_CARD: ViewStyle = {
+  ...JOKE_CARD,
+  width: "100%",
+  height: "100%"
+}
 
 export interface JokeSectionProps {
   /**
@@ -34,21 +58,20 @@ export const JokeSection = observer(function JokeSection(props: JokeSectionProps
   const { data } = useQuery((store) =>
     store.queryJokes({ jokeLength: JokeLength.MEDIUM },
       nodes(jokeModelPrimitives)
-      // nodes(jokeModelPrimitives, `categories{${categoryModelPrimitives}}`)
     ),
   )
   if (!data?.jokes) return null
   const { jokes } = data
   return (
     <>
-      <CenterView style={{ width: "95%" }}>
+      <CenterView style={CONTAINER}>
         {jokes?.nodes?.length > 0 ? (
           <Swiper
             ref={swiper}
             cards={jokes.nodes}
             cardHorizontalMargin={0}
             cardVerticalMargin={0}
-            containerStyle={{ marginTop: 20 }}
+            containerStyle={SWIPER}
             verticalSwipe={false}
             horizontalSwipe={false}
             // @ts-ignore
@@ -60,7 +83,7 @@ export const JokeSection = observer(function JokeSection(props: JokeSectionProps
             stackSize={3}
           />
         ) : (
-          <View style={{ ...JOKE_CARD, width: "100%", height: "100%" }} />
+          <View style={EMPTY_JOKE_CARD} />
         )}
       </CenterView>
 
@@ -92,7 +115,6 @@ const JokeCard = ({ joke }: { joke: JokeModelType }) => {
     <View style={JOKE_CARD}>
       <ScrollView
         ref={ref}
-        // @ts-ignore
         onContentSizeChange={() => ref?.current?.flashScrollIndicators()}
         contentContainerStyle={SCROLL_VIEW_STYLE}
         scrollIndicatorInsets={{
@@ -126,16 +148,7 @@ const SCROLL_VIEW_STYLE: ViewStyle = {
   minHeight: "84%",
   paddingBottom: hp("5%"),
 }
-const JOKE_CARD: ViewStyle = {
-  borderRadius: 50,
-  width: '95%',
-  backgroundColor: "white",
-  padding: spacing[4],
-  borderColor: color.line,
-  borderWidth: 1,
-  position: "relative",
-  flex: 0.5,
-}
+
 const JOKE_TITLE: TextStyle = {
   color: color.storybookDarkBg,
   textAlign: 'center'
