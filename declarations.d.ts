@@ -1,5 +1,10 @@
 declare module '*.svg' {
-  import { SvgProps } from 'react-native-svg';
-  const content: React.FC<SvgProps>;
-  export default content;
+  import { SvgProps } from 'react-native-svg'
+  const content: React.FC<SvgProps>
+  export default content
+}
+
+declare module 'react-native-dotenv' {
+  export const API_URL: string
+  export const BUG_REPORT_EMAIL: string
 }

@@ -10,6 +10,7 @@ import { RootStore as RootGraphqlStore } from "app/graphql/RootStore"
 import { createHttpClient } from "mst-gql"
 import { onSnapshot } from "mobx-state-tree"
 import * as storage from "./storage"
+import { API_URL } from 'react-native-dotenv'
 
 const packageJson = require("package.json")
 const ROOT_GRAPHQL_STORAGE_KEY = "graphql"
@@ -25,13 +26,13 @@ export default class ServiceProvider {
     try {
       const data = (await storage.load(ROOT_GRAPHQL_STORAGE_KEY)) || {}
       this.RootGraphqlStore = RootGraphqlStore.create(data, {
-        gqlHttpClient: createHttpClient("http://localhost:5000/graphql"),
+        gqlHttpClient: createHttpClient(API_URL),
       })
     } catch (e) {
       __DEV__ && console.tron.error!(e?.message, null)
 
       this.RootGraphqlStore = RootGraphqlStore.create(undefined, {
-        gqlHttpClient: createHttpClient("http://localhost:5000/graphql"),
+        gqlHttpClient: createHttpClient(API_URL),
       })
     }
 
