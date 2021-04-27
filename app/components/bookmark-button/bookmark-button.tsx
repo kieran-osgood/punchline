@@ -1,25 +1,21 @@
 import * as React from "react"
 import { observer } from "mobx-react-lite"
 import Icon from "react-native-vector-icons/AntDesign"
-import { color } from "theme"
+import { color as Color } from "theme"
 
 export interface BookmarkButtonProps {
   bookmarked: boolean
   onPress: () => void
+  size?: number
 }
-
+export const accessibilityLabel = "Bookmark Button"
 /**
- * Describe your component here
+ * A star icon component that highlights on press to indicate we wish to bookmark the joke.
  */
 export const BookmarkButton = observer(function BookmarkButton(props: BookmarkButtonProps) {
-  const { bookmarked, onPress } = props
+  const { bookmarked, onPress, size = 40 } = props
+  const name = bookmarked ? "star" : "staro"
+  const color = bookmarked ? Color.success : Color.palette.black
 
-  return (
-    <Icon
-      name={bookmarked ? "star" : "staro"}
-      size={40}
-      color={bookmarked ? color.success : color.palette.black}
-      onPress={() => onPress()}
-    />
-  )
+  return <Icon {...{ onPress, name, size, color, accessibilityLabel }} />
 })
