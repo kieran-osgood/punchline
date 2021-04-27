@@ -1,8 +1,8 @@
 import { cast, Instance, SnapshotOut, types } from "mobx-state-tree"
 import { UserDataKeys, UserModel } from "../user/user"
 import { withEnvironment } from "../extensions/with-environment"
-import { FirebaseAuthTypes } from '@react-native-firebase/auth'
-import R from 'ramda'
+import { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import R from "ramda"
 
 export const UserStoreModel = types
   .model("UserStore", {
@@ -11,7 +11,10 @@ export const UserStoreModel = types
   .extend(withEnvironment)
   .actions((self) => ({
     updateUser: (user: FirebaseAuthTypes.User | null) => {
-      if (user === null) { self.user = null; return }
+      if (user === null) {
+        self.user = null
+        return
+      }
       self.user = cast(R.pick(UserDataKeys, user))
     },
   }))

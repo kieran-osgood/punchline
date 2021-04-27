@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`can be created with user 1`] = `
+Object {
+  "user": Object {
+    "displayName": "",
+    "email": "",
+    "emailVerified": false,
+    "isAnonymous": false,
+    "metadata": Object {
+      "creationTime": "",
+      "lastSignInTime": "",
+    },
+    "phoneNumber": "",
+    "photoURL": "",
+    "providerId": "",
+    "uid": "",
+  },
+}
+`;
+
+exports[`can be created without any user 1`] = `
+Object {
+  "user": null,
+}
+`;
+
+exports[`can updateUser with FirebaseAuthTypes.User object 1`] = `
+Object {
+  "user": Object {
+    "displayName": "display me",
+    "email": "email@gmail.com",
+    "emailVerified": false,
+    "isAnonymous": true,
+    "metadata": Object {
+      "creationTime": "1619118612167",
+      "lastSignInTime": "1619118612167",
+    },
+    "phoneNumber": null,
+    "photoURL": null,
+    "providerId": "firebase",
+    "uid": "89PMk9NNPnMyv7fuoQMhKTjZRiA2",
+  },
+}
+`;
