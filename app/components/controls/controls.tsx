@@ -22,19 +22,19 @@ export const Controls = observer(function Controls(props: ControlsProps) {
   const { bookmarked, onBookmarkPress, onDownVotePress, onUpVotePress, onSkipPress } = props
 
   return (
-    <View style={BUTTONS_CONTAINER}>
-      <TouchableOpacity onPress={() => onDownVotePress()}>
+    <View style={BUTTONS_CONTAINER} accessibilityLabel="Joke rating controls">
+      <TouchableOpacity onPress={() => onDownVotePress()} accessibilityLabel="Crying emoji face">
         <CryingEmoji style={{ marginHorizontal: spacing[3] }} />
       </TouchableOpacity>
 
       <View style={CENTER_BUTTONS}>
-        <TouchableOpacity onPress={() => onSkipPress()}>
+        <TouchableOpacity onPress={() => onSkipPress()} accessibilityLabel="Skip to next joke arrow">
           <Icon name="skip-forward" size={40} color={color.palette.black} />
         </TouchableOpacity>
         <BookmarkButton bookmarked={bookmarked} onPress={() => onBookmarkPress()} />
       </View>
 
-      <TouchableOpacity onPress={() => onUpVotePress()}>
+      <TouchableOpacity onPress={() => onUpVotePress()} accessibilityLabel="Laughing emoji face">
         <LaughingEmoji style={LAUGHING_EMOJI} />
       </TouchableOpacity>
     </View>
