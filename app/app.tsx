@@ -17,6 +17,7 @@ import {
   useNavigationPersistence,
 } from "./navigators"
 import { RootStore, RootStoreProvider, setupRootStore, useStores } from "app/models"
+import { ToggleStorybook } from "../storybook/toggle-storybook"
 import auth from "@react-native-firebase/auth"
 import { StoreContext as GraphQLStoreContext, useQuery } from "app/graphql/reactUtils"
 import { observer } from "mobx-react-lite"
@@ -55,19 +56,21 @@ const App = observer(function App() {
   if (!rootStore) return null
 
   return (
-    <RootStoreProvider value={rootStore}>
-      <GraphQLStoreContext.Provider value={Services.RootGraphqlStore}>
-        <Authorization>
-          <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-            <RootNavigator
-              ref={navigationRef}
-              initialState={initialNavigationState}
-              onStateChange={onNavigationStateChange}
-            />
-          </SafeAreaProvider>
-        </Authorization>
-      </GraphQLStoreContext.Provider>
-    </RootStoreProvider>
+    <ToggleStorybook>
+      <RootStoreProvider value={rootStore}>
+        <GraphQLStoreContext.Provider value={Services.RootGraphqlStore}>
+          <Authorization>
+            <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+              <RootNavigator
+                ref={navigationRef}
+                initialState={initialNavigationState}
+                onStateChange={onNavigationStateChange}
+              />
+            </SafeAreaProvider>
+          </Authorization>
+        </GraphQLStoreContext.Provider>
+      </RootStoreProvider>
+    </ToggleStorybook>
   )
 })
 
