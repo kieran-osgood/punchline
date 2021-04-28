@@ -1,10 +1,15 @@
 import * as React from "react"
-import { View, Image, ImageStyle } from "react-native"
-import { IconProps } from "./icon.props"
-import { icons } from "./icons"
+import { ViewStyle, View, Image, ImageStyle } from "react-native"
+import { IconTypes, icons } from "./icons"
 
 const ROOT: ImageStyle = {
   resizeMode: "contain",
+}
+
+export interface IconProps {
+  style?: ImageStyle
+  containerStyle?: ViewStyle
+  icon: IconTypes
 }
 
 export function Icon(props: IconProps) {
