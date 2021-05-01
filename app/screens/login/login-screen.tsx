@@ -69,7 +69,7 @@ export const LoginScreen = observer(function LoginScreen() {
   }
 
   return (
-    <Screen style={ROOT} preset='fixed'>
+    <Screen style={ROOT} preset='fixed' testID="LoginScreen">
       <AppLogo style={APP_LOGO} />
 
       <Text h1 text="Login" style={TEXT_CENTER} />

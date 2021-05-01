@@ -12,12 +12,13 @@ function ScreenWithoutScrolling(props: ScreenProps) {
   const style = props.style || {}
   const backgroundStyle = props.backgroundColor ? { backgroundColor: props.backgroundColor } : {}
   const insetStyle = { paddingTop: props.unsafe ? 0 : insets.top }
-
+  const testID = props.testID
   return (
     <KeyboardAvoidingView
       style={[preset.outer, backgroundStyle]}
-      behavior={isIos ? "padding" : null}
+      behavior={isIos ? "padding" : undefined}
       keyboardVerticalOffset={offsets[props.keyboardOffset || "none"]}
+      {...{ testID }}
     >
       <StatusBar barStyle={props.statusBar || "light-content"} />
       <View style={[preset.inner, style, insetStyle]}>{props.children}</View>
@@ -29,14 +30,16 @@ function ScreenWithScrolling(props: ScreenProps) {
   const insets = useSafeAreaInsets()
   const preset = presets.scroll
   const style = props.style || {}
+  const testID = props.testID
   const backgroundStyle = props.backgroundColor ? { backgroundColor: props.backgroundColor } : {}
   const insetStyle = { paddingTop: props.unsafe ? 0 : insets.top }
 
   return (
     <KeyboardAvoidingView
       style={[preset.outer, backgroundStyle]}
-      behavior={isIos ? "padding" : null}
+      behavior={isIos ? "padding" : undefined}
       keyboardVerticalOffset={offsets[props.keyboardOffset || "none"]}
+      {...{ testID }}
     >
       <StatusBar barStyle={props.statusBar || "light-content"} />
       <View style={[preset.outer, backgroundStyle, insetStyle]}>
