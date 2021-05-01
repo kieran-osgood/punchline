@@ -13,19 +13,20 @@ export type CategorySettings = {
 export interface SelectPillsProps {
   data: CategorySettings[]
   onValueChange: (data: CategorySettings) => void
+  accessibilityLabel?: string
 }
 
 /**
  * Describe your component here
  */
 export const SelectPills = observer(function SelectPills(props: SelectPillsProps) {
-  const { data, onValueChange } = props
+  const { data, onValueChange, accessibilityLabel = "List of selectable items" } = props
 
   const handlePress = (item: CategorySettings) => onValueChange(item)
   const activeStyle = (isActive: boolean) => (isActive ? ACTIVE_SELECT : INACTIVE_SELECT)
 
   return (
-    <View style={CONTAINER}>
+    <View style={CONTAINER} {...{ accessibilityLabel }}>
       {data.map((item, idx) => {
         const style = activeStyle(item.isActive)
         return (
@@ -33,6 +34,7 @@ export const SelectPills = observer(function SelectPills(props: SelectPillsProps
             key={idx}
             onPress={() => handlePress({ ...item, isActive: !item.isActive })}
             style={{ ...style, ...SELECT }}
+            accessibilityLabel="category button"
           >
             <Text {...{ style }}>{item.name}</Text>
           </TouchableOpacity>
