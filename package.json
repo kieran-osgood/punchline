@@ -10,6 +10,7 @@
     "build:e2e": "detox build -c ios.sim.debug",
     "record:e2e": "detox recorder --configuration \"ios.sim.release\" --outputTestFile \"~/e2e/recorded.js\" --testName \"My Recorded Test\" --record",
     "a":"detox recorder --bundleId \"com.ko.puchline\" --simulatorId booted --outputTestFile \"~/Desktop/RecordedTest.js\" --testName \"My Recorded Test\" --record",
+    "ci:test:jest": "jest",
     "ci:test:e2e": "detox test -c ios.sim.release -l verbose --cleanup",
     "ci:build:e2e": "detox build -c ios.sim.release",
     "compile": "tsc --noEmit -p . --pretty",
