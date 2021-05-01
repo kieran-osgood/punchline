@@ -11,7 +11,7 @@ const ROOT: ViewStyle = {
 
 export const JokeScreen = observer(function JokeScreen() {
   return (
-    <Screen style={ROOT} preset="fixed" testID="LoginScreen">
+    <Screen style={ROOT} preset="fixed" testID="JokeScreen">
       <Header />
 
       <CenterView>

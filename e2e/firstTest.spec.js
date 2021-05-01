@@ -12,9 +12,11 @@ describe("Example", () => {
     await expect(element(by.id("LoginScreen"))).toBeVisible()
   })
 
-  // it("should have welcome screen", async () => {
-  //   await expect(element(by.id("JokeScreen"))).toBeVisible()
-  // })
+  it("should have welcome screen", async () => {
+    await element(by.text('Continue as guest')).tap();
+
+    await waitFor(element(by.id("JokeScreen"))).toBeVisible().withTimeout(4000)
+  })
 
   // it("should go to next screen after tap", async () => {
   //   await element(by.id("next-screen-button")).tap()
