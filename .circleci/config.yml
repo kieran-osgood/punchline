@@ -3,18 +3,18 @@ jobs:
   node:
     working_directory: ~/punchline
     docker:
-      - image: cimg/node:12.16
+      - image: cimg/node:15.1
 
     steps:
       - checkout
-
+      # Either yarn or package should exist, and one will typically fail - that is expected
       - restore_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
 
       - restore_cache:
           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
 
-      - run: yarn install
+      - run: npm install
 
       - save_cache:
           key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
@@ -30,7 +30,7 @@ jobs:
           name: jest tests
           command: |
             mkdir -p test-results/jest
-            npm run test
+            npm run ci:test:jest
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
@@ -45,13 +45,33 @@ jobs:
       - store_artifacts:
           path: test-results
 
-  macos-build-and-test:
+  macos-e2e-test:
     working_directory: ~/punchline
     macos:
       xcode: 11.3.0
-    environment:
-      FL_OUTPUT_DIR: output
-      FASTLANE_LANE: test
+    
+    steps:
+      - install
+      - run: brew tap wix/brew 
+      - run: brew install applesimutils
+      - run: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+      - run: export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+      - run: nvm install $NODE_VERSION
+      - run: nvm use $NODE_VERSION
+      - run: nvm alias default $NODE_VERSION
+
+      - run: npm install -g react-native-cli
+      - run: npm install -g detox-cli
+
+      - run:
+          command: |
+            npm run ci:build:e2e
+            npm run ci:test:e2e
+
+  macos-build:
+    working_directory: ~/punchline
+    macos:
+      xcode: 11.3.0
 
     steps:
       - checkout
@@ -99,18 +119,10 @@ jobs:
           paths:
             - ios/Pods
 
-      - run:
-          name: Fastlane
-          command: bundle exec fastlane $FASTLANE_LANE
-          working_directory: ios
-
       - store_artifacts:
           path: output
-          
-      - store_test_results:
-          path: output/scan
             
-  android-build-and-test:
+  android-build:
     working_directory: ~/punchline/android
     docker:
       - image: circleci/android:api-29-node
@@ -131,27 +143,17 @@ jobs:
           paths:
             - vendor/bundle
 
-      - run:
-          name: fastlane tests
-          command: |
-            mkdir -p test-results/fastlane
-            bundle exec fastlane test
-            mv fastlane/report.xml test-results/fastlane
-
-      - store_test_results:
-          path: test-results
-
       - store_artifacts:
-          path: test-results
-
+          path: output
+            
 workflows:
   node-android-ios:
     jobs:
       - node
-      - android-build-and-test:
+      - android-build:
           requires:
             - node
-      - macos-build-and-test:
+      - macos-build:
           requires:
             - node
             
