@@ -24,9 +24,6 @@ jobs:
           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
           paths:
             - node_modules
-      
-      - run: brew install nvm
-      - run: nvm install 8
 
       - run:
           name: jest tests
@@ -54,6 +51,7 @@ jobs:
       - persist_to_workspace:
           paths: .
           root: .
+
   fastlane_android_release:
     executor: rn/linux_js
     steps:
@@ -63,6 +61,7 @@ jobs:
       - run:
           command: echo
           name: Run Fastlane
+          
   fastlane_ios_release:
     executor: rn/linux_js
     steps:
