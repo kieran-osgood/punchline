@@ -65,7 +65,7 @@ buck-out/
 web-build/
 
 coverage/*
-.env
+# .env
 .env.development
 .env.production
 
