@@ -1,159 +1,81 @@
-version: 2.1
 jobs:
-  node:
-    working_directory: ~/punchline
-    docker:
-      - image: cimg/node:14.16.1
-
+  analyse_js:
+    executor: rn/linux_js
     steps:
-      - checkout
-      # Either yarn or package should exist, and one will typically fail - that is expected
-      - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-
-      - restore_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-
-      - run: npm install
-
-      - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-          paths:
-            - ~/.cache/yarn
-
-      - save_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-          paths:
-            - node_modules
-
-      - run:
-          name: jest tests
-          command: |
-            mkdir -p test-results/jest
-            npm run ci:test:jest
-          environment:
-            JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
-
-      - persist_to_workspace:
-          root: ~/punchline
-          paths:
-            - node_modules
-
-      - store_test_results:
-          path: test-results
-
-      - store_artifacts:
-          path: test-results
-
-  macos-e2e-test:
-    working_directory: ~/punchline
-    macos:
-      xcode: 11.3.0
-    
-    steps:
-      - install
-      - run: brew tap wix/brew 
-      - run: brew install applesimutils
-      - run: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
-      - run: export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-      - run: nvm install $NODE_VERSION
-      - run: nvm use $NODE_VERSION
-      - run: nvm alias default $NODE_VERSION
-
-      - run: npm install -g react-native-cli
-      - run: npm install -g detox-cli
-
-      - run:
-          command: |
-            npm run ci:build:e2e
-            npm run ci:test:e2e
-
-  macos-build:
-    working_directory: ~/punchline
-    macos:
-      xcode: 11.3.0
-
-    steps:
-      - checkout
-      - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-
-      - restore_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-
-      - run: yarn install
-
-      - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-          paths:
-            - ~/.cache/yarn
-
-      - save_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-          paths:
-            - node_modules
-
-      - restore_cache:
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
-
-      #Pods directory is ignored to match default RN setup, but can also check them into source control
-      #https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
-      - restore_cache:
-          key: pods-v1-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
-
-      - run: 
-          command: pod install
-          working_directory: ios
-
-      - run: 
-          command: bundle install
-          working_directory: ios
-
-      - save_cache:
-          key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}-{{ arch }}
-          paths:
-            - vendor/bundle
-
-      - save_cache:
-          key: pods-v1-{{ checksum "ios/Podfile.lock" }}-{{ arch }}
-          paths:
-            - ios/Pods
-
-      - store_artifacts:
-          path: output
-            
-  android-build:
-    working_directory: ~/punchline/android
-    docker:
-      - image: circleci/android:api-29-node
-    steps:
-      - checkout:
-          path: ~/punchline
-
       - attach_workspace:
-          at: ~/punchline
-
-      - restore_cache:
-          key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
-
-      - run: bundle install
-
-      - save_cache:
-          key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
-          paths:
-            - vendor/bundle
-
-      - store_artifacts:
-          path: output
-            
+          at: .
+      - run: npm i
+      # - run:
+          # command: yarn eslint
+          # name: Run ESLint
+      # - run:
+          # command: yarn flow
+          # name: Flow
+      - run:
+          command: npm run ci:test:jest 
+          name: Jest Tests
+  checkout_code:
+    executor: rn/linux_js
+    steps:
+      - checkout
+      - persist_to_workspace:
+          paths: .
+          root: .
+  fastlane_android_release:
+    executor: rn/linux_js
+    steps:
+      - attach_workspace:
+          at: .
+      - run: npm i
+      - run:
+          command: echo
+          name: Run Fastlane
+  fastlane_ios_release:
+    executor: rn/linux_js
+    steps:
+      - attach_workspace:
+          at: .
+      - run: npm i
+      - run:
+          command: echo 1
+          name: Run Fastlane
+orbs:
+  rn: react-native-community/react-native@1.0.0
+version: 2.1
 workflows:
-  node-android-ios:
+  test:
     jobs:
-      - node
-      - android-build:
+      - checkout_code
+      - analyse_js:
           requires:
-            - node
-      - macos-build:
+            - checkout_code
+      - rn/android_build:
+          build_type: debug
+          name: build_android_debug
+          project_path: android
           requires:
-            - node
-            
+            - analyse_js
+      - rn/android_build:
+          build_type: release
+          name: build_android_release
+          project_path: android
+          requires:
+            - analyse_js
+      - rn/android_test:
+          detox_configuration: android.emu.release
+          requires:
+            - build_android_release
+      - rn/ios_build_and_test:
+          build_configuration: Release
+          detox_configuration: ios.sim.release
+          device: iPhone X
+          project_path: ios/Example.xcodeproj
+          requires:
+            - analyse_js
+          scheme: Example
+      - fastlane_android_release:
+          requires:
+            - rn/android_test
+      - fastlane_ios_release:
+          requires:
+            - rn/ios_build_and_test
