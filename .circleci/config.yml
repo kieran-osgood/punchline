@@ -24,6 +24,9 @@ jobs:
           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
           paths:
             - node_modules
+      
+      - run: brew install nvm
+      - run: nvm install 8
 
       - run:
           name: jest tests
