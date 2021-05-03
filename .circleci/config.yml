@@ -3,7 +3,7 @@ jobs:
   node:
     working_directory: ~/punchline
     docker:
-      - image: cimg/node:15.1
+      - image: cimg/node:14.16.1
 
     steps:
       - checkout
