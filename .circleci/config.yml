@@ -101,10 +101,10 @@ workflows:
           build_configuration: Release
           detox_configuration: ios.sim.release
           device: iPhone X
-          project_path: ios/Example.xcodeproj
+          project_path: ios/Punchlne.xcodeproj
           requires:
             - analyse_js
-          scheme: Example
+          scheme: Punchline
       - fastlane_android_release:
           requires:
             - rn/android_test
