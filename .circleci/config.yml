@@ -111,6 +111,7 @@ workflows:
           project_path: ios/Punchline.xcodeproj
           requires:
             - analyse_js
+            - update_homebrew
           scheme: Punchline
 
       - fastlane_android_release:
