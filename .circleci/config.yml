@@ -1,4 +1,12 @@
 jobs:
+  checkout_code:
+    executor: rn/linux_js
+    steps:
+      - checkout
+      - persist_to_workspace:
+          paths: [.]
+          root: .
+  
   analyse_js:
     working_directory: ~/punchline
     docker:
@@ -6,19 +14,10 @@ jobs:
 
     steps:
       - checkout
-      # Either yarn or package should exist, and one will typically fail - that is expected
-      - restore_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-
       - restore_cache:
           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
 
       - run: npm install
-
-      - save_cache:
-          key: yarn-v1-{{ checksum "yarn.lock" }}-{{ arch }}
-          paths:
-            - ~/.cache/yarn
 
       - save_cache:
           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
@@ -44,14 +43,6 @@ jobs:
       - store_artifacts:
           path: test-results
  
-  checkout_code:
-    executor: rn/linux_js
-    steps:
-      - checkout
-      - persist_to_workspace:
-          paths: .
-          root: .
-
   fastlane_android_release:
     executor: rn/linux_js
     steps:
@@ -78,25 +69,30 @@ workflows:
   test:
     jobs:
       - checkout_code
+
       - analyse_js:
           requires:
             - checkout_code
+
       - rn/android_build:
           build_type: debug
           name: build_android_debug
           project_path: android
           requires:
             - analyse_js
+
       - rn/android_build:
           build_type: release
           name: build_android_release
           project_path: android
           requires:
             - analyse_js
+
       - rn/android_test:
           detox_configuration: android.emu.release
           requires:
             - build_android_release
+
       - rn/ios_build_and_test:
           build_configuration: Release
           detox_configuration: ios.sim.release
@@ -105,9 +101,11 @@ workflows:
           requires:
             - analyse_js
           scheme: Punchline
+
       - fastlane_android_release:
           requires:
             - rn/android_test
+            
       - fastlane_ios_release:
           requires:
             - rn/ios_build_and_test
