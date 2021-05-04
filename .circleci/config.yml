@@ -42,7 +42,16 @@ jobs:
 
       - store_artifacts:
           path: test-results
- 
+  update_homebrew:
+    executor: rn/macos
+    steps:
+      - run:
+          command: HOMEBREW_NO_AUTO_UPDATE=1 brew update
+          name: Update Homebrew
+      - persist_to_workspace:
+          paths: .
+          root: .
+           
   fastlane_android_release:
     executor: rn/linux_js
     steps:
@@ -73,6 +82,8 @@ workflows:
       - analyse_js:
           requires:
             - checkout_code
+
+      - update_homebrew
 
       - rn/android_build:
           build_type: debug
