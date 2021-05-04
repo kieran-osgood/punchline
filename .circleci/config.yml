@@ -1,13 +1,6 @@
 jobs:
-  checkout_code:
-    executor: rn/linux_js
-    steps:
-      - checkout
-      - persist_to_workspace:
-          paths: [.]
-          root: .
   analyse_js:
-    working_directory: .
+    working_directory: ~/punchline
     docker:
       - image: cimg/node:14.16.1
 
@@ -41,7 +34,7 @@ jobs:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
       - persist_to_workspace:
-          root: .
+          root: ~/punchline
           paths:
             - node_modules
 
@@ -50,6 +43,14 @@ jobs:
 
       - store_artifacts:
           path: test-results
+ 
+  checkout_code:
+    executor: rn/linux_js
+    steps:
+      - checkout
+      - persist_to_workspace:
+          paths: .
+          root: .
 
   fastlane_android_release:
     executor: rn/linux_js
@@ -97,13 +98,13 @@ workflows:
           requires:
             - build_android_release
       - rn/ios_build_and_test:
-          build_configuration: "Release"
+          build_configuration: Release
           detox_configuration: ios.sim.release
-          device: "iPhone X"
-          project_path: "ios/Punchlne.xcodeproj"
-          scheme: "Punchline"
+          device: iPhone X
+          project_path: ios/Punchlne.xcodeproj
           requires:
             - analyse_js
+          scheme: Punchline
       - fastlane_android_release:
           requires:
             - rn/android_test
