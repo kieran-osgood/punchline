@@ -48,6 +48,7 @@ jobs:
       - run:
           command: echo 1
           name: Run Fastlane
+
 orbs:
   rn: react-native-community/react-native@5.1.0
 version: 2.1
@@ -60,9 +61,9 @@ workflows:
 
       # Analyze the Javascript using ESLint, and Jest
       # Note: This is a job which is defined above and not part of the Orb
-      # - analyse_js:
-      #     requires:
-      #       - checkout_code
+      - analyse_js:
+          requires:
+            - checkout_code
 
       # - update_homebrew
 
@@ -100,6 +101,6 @@ workflows:
           build_configuration: "Release"
           scheme: "punchline"
           detox_configuration: "ios.sim.release"
-          # requires:
-            # - analyse_js
+          requires:
+            - analyse_js
             # - update_homebrew
