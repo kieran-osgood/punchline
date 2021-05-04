@@ -68,6 +68,7 @@ workflows:
 
       # Build the Android app in debug mode
       - rn/android_build:
+          yarn_cache: false
           name: build_android_debug
           project_path: "android"
           build_type: debug
@@ -77,18 +78,21 @@ workflows:
       # Build and test the Android app in release mode
       # Note: We split these into seperate jobs because we can build the Android app on a Linux machine and preserve the expensive MacOS executor minutes for when it's required
       - rn/android_build:
+          yarn_cache: false
           name: build_android_release
           project_path: "android"
           build_type: release
           requires:
             - analyse_js
       - rn/android_test:
+          yarn_cache: false
           detox_configuration: "android.emu.release"
           requires:
             - build_android_release
       
       # Build and test the iOS app in release mode
       - rn/ios_build_and_test:
+          yarn_cache: false
           project_path: "ios/punchline.xcodeproj"
           device: "iPhone X"
           build_configuration: "Release"
