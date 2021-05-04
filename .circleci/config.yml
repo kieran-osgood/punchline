@@ -101,7 +101,7 @@ workflows:
           build_configuration: Release
           detox_configuration: ios.sim.release
           device: iPhone X
-          project_path: ios/Punchlne.xcodeproj
+          project_path: ios/Punchline.xcodeproj
           requires:
             - analyse_js
           scheme: Punchline
