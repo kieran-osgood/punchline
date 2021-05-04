@@ -8,40 +8,17 @@ jobs:
           root: .
   
   analyse_js:
-    working_directory: ~/punchline
-    docker:
-      - image: cimg/node:14.16.1
-
+    executor: rn/linux_js
     steps:
-      - checkout
-      - restore_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-
-      - run: npm install
-
-      - save_cache:
-          key: node-v1-{{ checksum "package.json" }}-{{ arch }}
-          paths:
-            - node_modules
-
+      - attach_workspace:
+          at: .
+      - rn/yarn_install
       - run:
-          name: jest tests
+          name: Jest
           command: |
             mkdir -p test-results/jest
             npm run ci:test:jest
-          environment:
-            JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
-      - persist_to_workspace:
-          root: ~/punchline
-          paths:
-            - node_modules
-
-      - store_test_results:
-          path: test-results
-
-      - store_artifacts:
-          path: test-results
   update_homebrew:
     executor: rn/macos
     steps:
@@ -77,47 +54,46 @@ version: 2.1
 workflows:
   test:
     jobs:
+      # Checkout the code and persist to the Workspace
+      # Note: This is a job which is defined above and not part of the Orb
       - checkout_code
 
+      # Analyze the Javascript using ESLint, and Jest
+      # Note: This is a job which is defined above and not part of the Orb
       - analyse_js:
           requires:
             - checkout_code
 
-      - update_homebrew
+      # - update_homebrew
 
+      # Build the Android app in debug mode
       - rn/android_build:
-          build_type: debug
           name: build_android_debug
-          project_path: android
+          project_path: "android"
+          build_type: debug
           requires:
             - analyse_js
 
+      # Build and test the Android app in release mode
+      # Note: We split these into seperate jobs because we can build the Android app on a Linux machine and preserve the expensive MacOS executor minutes for when it's required
       - rn/android_build:
-          build_type: release
           name: build_android_release
-          project_path: android
+          project_path: "android"
+          build_type: release
           requires:
             - analyse_js
-
       - rn/android_test:
-          detox_configuration: android.emu.release
+          detox_configuration: "android.emu.release"
           requires:
             - build_android_release
-
+      
+      # Build and test the iOS app in release mode
       - rn/ios_build_and_test:
-          build_configuration: Release
-          detox_configuration: ios.sim.release
-          device: iPhone X
-          project_path: ios/Punchline.xcodeproj
+          project_path: "ios/punchline.xcodeproj"
+          device: "iPhone X"
+          build_configuration: "Release"
+          scheme: "punchline"
+          detox_configuration: "ios.sim.release"
           requires:
             - analyse_js
-            - update_homebrew
-          scheme: Punchline
-
-      - fastlane_android_release:
-          requires:
-            - rn/android_test
-            
-      - fastlane_ios_release:
-          requires:
-            - rn/ios_build_and_test
+            # - update_homebrew
