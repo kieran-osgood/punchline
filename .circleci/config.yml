@@ -96,7 +96,7 @@ workflows:
           yarn_cache: false
           xcodebuild_cache: false
           homebrew_cache: false
-          project_path: "ios/punchline.xcodeproj"
+          project_path: "ios/punchline.xcodeworkspace"
           device: "iPhone 11"
           build_configuration: "Release"
           scheme: "punchline"
