@@ -65,7 +65,7 @@ workflows:
           requires:
             - checkout_code
 
-      # - update_homebrew
+      - update_homebrew
 
       # Build the Android app in debug mode
       # - rn/android_build:
@@ -103,4 +103,4 @@ workflows:
           detox_configuration: "ios.sim.release"
           requires:
             - analyse_js
-            # - update_homebrew
+            - update_homebrew
