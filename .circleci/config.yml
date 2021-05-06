@@ -4,7 +4,7 @@ jobs:
     steps:
       - checkout
       - persist_to_workspace:
-          paths: [.]
+          paths: .
           root: .
   
   analyse_js:
@@ -95,7 +95,7 @@ workflows:
       - rn/ios_build_and_test:
           yarn_cache: false
           xcodebuild_cache: false
-          homebrew_cache: false
+          # homebrew_cache: false
           project_path: "ios/punchline.xcodeworkspace"
           device: "iPhone 11"
           build_configuration: "Release"
