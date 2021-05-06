@@ -102,5 +102,6 @@ workflows:
           scheme: "punchline"
           detox_configuration: "ios.sim.release"
           requires:
+            - checkout_code
             # - analyse_js
             - update_homebrew
