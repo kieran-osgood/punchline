@@ -53,12 +53,15 @@ orbs:
   rn: react-native-community/react-native@5.1.0
 version: 2.1
 workflows:
-  test:
-    jobs:
+  main:
+    jobs: 
       # Checkout the code and persist to the Workspace
       # Note: This is a job which is defined above and not part of the Orb
-      - checkout_code
-
+      - checkout_code:
+          filters:
+            branches:
+              only:
+                - master
       # Analyze the Javascript using ESLint, and Jest
       # Note: This is a job which is defined above and not part of the Orb
       # - analyse_js:
