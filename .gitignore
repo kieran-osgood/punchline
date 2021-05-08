@@ -31,7 +31,8 @@ build/
 .gradle
 local.properties
 *.iml
-android/app/src/*
+# android/app/src/*
+*.hprof
 
 # node.js
 #
@@ -44,6 +45,7 @@ buck-out/
 \.buckd/
 *.keystore
 !debug.keystore
+*.gpg
 
 # fastlane
 #
