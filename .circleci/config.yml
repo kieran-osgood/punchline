@@ -53,7 +53,7 @@ orbs:
   rn: react-native-community/react-native@5.1.0
 version: 2.1
 workflows:
-  main:
+  main:   
     jobs: 
       # Checkout the code and persist to the Workspace
       # Note: This is a job which is defined above and not part of the Orb
@@ -62,14 +62,25 @@ workflows:
             branches:
               only:
                 - master
+              ignore:
+                - develop
+            tags:
+              only: /^v.*/
       # Analyze the Javascript using ESLint, and Jest
       # Note: This is a job which is defined above and not part of the Orb
       # - analyse_js:
       #     requires:
       #       - checkout_code
 
-      - update_homebrew
-
+      - update_homebrew:
+          filters:
+            branches:
+              only:
+                - master
+              ignore:
+                - develop
+            tags:
+              only: /^v.*/                          
       # Build the Android app in debug mode
       # - rn/android_build:
       #     yarn_cache: false
