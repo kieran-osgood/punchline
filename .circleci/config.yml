@@ -62,6 +62,7 @@ workflows:
             branches:
               only:
                 - master
+                - feature/test-circle
               ignore:
                 - develop
             tags:
@@ -77,6 +78,7 @@ workflows:
             branches:
               only:
                 - master
+                - feature/test-circle
               ignore:
                 - develop
             tags:
