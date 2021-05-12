@@ -18,7 +18,7 @@ jobs:
           name: Jest
           command: | 
             TESTS=$(circleci tests glob "app/**/*.test.{ts,tsx}" | circleci tests split)
-            yarn ci:test:jest -t $TESTS
+            yarn ci:test:jest --findRelatedTests $TESTS
 
   update_homebrew:
     executor: rn/macos
