@@ -18,7 +18,7 @@ jobs:
           name: Jest
           command: |
             # Test splitting to enable job-level parallelism
-            TESTS=$(circleci tests glob app/tests/**/*.test.(ts,tsx) | circleci tests split)
+            TESTS=$(circleci tests glob "app/tests/**/*.test.(ts,tsx)" | circleci tests split)
             yarn ci:test:jest $TESTS
 
   update_homebrew:
@@ -56,11 +56,8 @@ jobs:
       xcode: 11.4.0
     steps:
       - checkout
-      - run: ls -a
-      - run: cd ios
-      - run: ls -a
-      - run: bundle install
-      - run: bundle exec fastlane testandbuild
+      - run: cd ios && bundle install
+      - run: cd ios && bundle exec fastlane testandbuild
       - store_artifacts:
           path: output
       - store_test_results:
