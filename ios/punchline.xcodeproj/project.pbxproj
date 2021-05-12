@@ -639,6 +639,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2PP5ZVY8FD;
 				INFOPLIST_FILE = punchline/Info.plist;
@@ -650,6 +652,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ko.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = punchline;
+				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.ko.punchline";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

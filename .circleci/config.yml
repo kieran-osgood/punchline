@@ -51,26 +51,36 @@ jobs:
           command: echo 1
           name: Run Fastlane
 
+  test_and_build_ios:
+    macos:
+      xcode: 11.4.0
+    steps:
+      - checkout
+      - run: bundle install
+      - run: bundle exec fastlane testandbuild
+      - store_artifacts:
+          path: output
+      - store_test_results:
+          path: output/scan
+
 orbs:
   rn: react-native-community/react-native@5.1.0
 version: 2.1
 workflows:
-  main:   
+  main:
     jobs: 
       # Checkout the code and persist to the Workspace
-      # Note: This is a job which is defined above and not part of the Orb
       - checkout_code:
           filters:
             branches:
               only:
                 - master
-                - feature/test-circle
+                - feature/circle-fastlane-init
               ignore:
                 - develop
             tags:
               only: /^v.*/
       # Analyze the Javascript using ESLint, and Jest
-      # Note: This is a job which is defined above and not part of the Orb
       # - analyse_js:
       #     requires:
       #       - checkout_code
@@ -80,11 +90,12 @@ workflows:
             branches:
               only:
                 - master
-                - feature/test-circle
+                - feature/circle-fastlane-init
               ignore:
                 - develop
             tags:
               only: /^v.*/
+
       # Build the Android app in debug mode
       # - rn/android_build:
       #     yarn_cache: false
@@ -110,17 +121,25 @@ workflows:
       #       - build_android_release
       
       # Build and test the iOS app in release mode
-      - rn/ios_build_and_test:
-          yarn_cache: false
-          xcodebuild_cache: false
-          # homebrew_cache: false
-          project_type: "workspace"
-          project_path: "ios/punchline.xcworkspace"
-          device: "iPhone 11"
-          build_configuration: "Release"
-          scheme: "punchline"
-          detox_configuration: "ios.sim.release"
-          requires:
-            - checkout_code
-            # - analyse_js
-            - update_homebrew
+      # - rn/ios_build_and_test:
+      #     yarn_cache: false
+      #     xcodebuild_cache: false
+      #     # homebrew_cache: false
+      #     project_type: "workspace"
+      #     project_path: "ios/punchline.xcworkspace"
+      #     device: "iPhone 11"
+      #     build_configuration: "Release"
+      #     scheme: "punchline"
+      #     detox_configuration: "ios.sim.release"
+      #     requires:
+      #       - checkout_code
+      #       # - analyse_js
+      #       - update_homebrew
+
+      # - fastlane_android_release:
+          # requires:
+            # - rn/android_test
+      - test_and_build_ios
+      - fastlane_ios_release
+          # requires:
+            # - rn/ios_build_and_test
