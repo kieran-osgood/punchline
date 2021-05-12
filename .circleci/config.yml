@@ -9,6 +9,7 @@ jobs:
   
   analyse_js:
     executor: rn/linux_js
+    parallelism: 5
     steps:
       - attach_workspace:
           at: .
@@ -56,8 +57,9 @@ jobs:
       xcode: 11.4.0
     steps:
       - checkout
-      - run: cd ios bundle install
-      - run: cd ios bundle exec fastlane testandbuild
+      - run: cd ios
+      - run: bundle install
+      - run: bundle exec fastlane testandbuild
       - store_artifacts:
           path: output
       - store_test_results:
