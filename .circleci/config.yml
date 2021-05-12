@@ -121,20 +121,20 @@ workflows:
       #       - build_android_release
       
       # Build and test the iOS app in release mode
-      # - rn/ios_build_and_test:
-      #     yarn_cache: false
-      #     xcodebuild_cache: false
-      #     # homebrew_cache: false
-      #     project_type: "workspace"
-      #     project_path: "ios/punchline.xcworkspace"
-      #     device: "iPhone 11"
-      #     build_configuration: "Release"
-      #     scheme: "punchline"
-      #     detox_configuration: "ios.sim.release"
-      #     requires:
-      #       - checkout_code
-      #       # - analyse_js
-      #       - update_homebrew
+      - rn/ios_build_and_test:
+          yarn_cache: false
+          xcodebuild_cache: false
+          # homebrew_cache: false
+          project_type: "workspace"
+          project_path: "ios/punchline.xcworkspace"
+          device: "iPhone 11"
+          build_configuration: "Release"
+          scheme: "punchline"
+          detox_configuration: "ios.sim.release"
+          requires:
+            - checkout_code
+            - analyse_js
+            - update_homebrew
 
       # - fastlane_android_release:
           # requires:
