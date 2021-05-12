@@ -81,9 +81,9 @@ workflows:
             tags:
               only: /^v.*/
       # Analyze the Javascript using ESLint, and Jest
-      # - analyse_js:
-      #     requires:
-      #       - checkout_code
+      - analyse_js:
+          requires:
+            - checkout_code
 
       - update_homebrew:
           filters:
