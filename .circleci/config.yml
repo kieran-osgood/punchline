@@ -19,7 +19,8 @@ jobs:
           command: |
             # Test splitting to enable job-level parallelism
             TESTS=$(circleci tests glob "app/tests/**/*.test.(ts,tsx)" | circleci tests split)
-            yarn ci:test:jest $TESTS
+            echo $TESTS
+            yarn ci:test:jest -- -t $TESTS
 
   update_homebrew:
     executor: rn/macos
