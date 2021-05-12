@@ -56,8 +56,8 @@ jobs:
       xcode: 11.4.0
     steps:
       - checkout
-      - run: bundle install
-      - run: bundle exec fastlane testandbuild
+      - run: ./ios/bundle install
+      - run: ./ios/bundle exec fastlane testandbuild
       - store_artifacts:
           path: output
       - store_test_results:
@@ -140,6 +140,6 @@ workflows:
           # requires:
             # - rn/android_test
       - test_and_build_ios
-      - fastlane_ios_release
-          # requires:
-            # - rn/ios_build_and_test
+      - fastlane_ios_release:
+          requires:
+            - rn/ios_build_and_test
