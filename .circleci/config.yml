@@ -43,7 +43,7 @@ jobs:
 
   fastlane_build_release_ios:
     macos:
-      xcode: 12.5.0
+      xcode: 12.4.0
     steps:
       - checkout
       - run: 
