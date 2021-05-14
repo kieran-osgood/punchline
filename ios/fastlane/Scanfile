@@ -1,6 +1,0 @@
-scheme("punchline")
-devices(["iPhone 12"])
-
-clean(true)
-
-output_types("html")

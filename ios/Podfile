@@ -25,3 +25,5 @@ target 'punchline' do
   end
 
 end
+
+[20:22:42]: $ /usr/bin/xcrun /Users/distiller/.gem/ruby/2.7.2/gems/fastlane-2.183.0/gym/lib/assets/wrap_xcodebuild/xcbuild-safe.sh -exportArchive -exportOptionsPlist '/var/folders/6y/gy9gggt14379c_k39vwb50lc0000gn/T/gym_config20210514-7165-b4vhpb.plist' -archivePath /Users/distiller/Library/Developer/Xcode/Archives/2021-05-14/*********\ 2021-05-14\ 19.52.07.xcarchive -exportPath '/var/folders/6y/gy9gggt14379c_k39vwb50lc0000gn/T/gym_output20210514-7165-1x2wmj9' 

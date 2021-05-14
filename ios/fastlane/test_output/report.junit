@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<testsuites name='punchlineTests.xctest' tests='1' failures='1'>
-  <testsuite name='punchlineTests' tests='1' failures='1'>
-    <testcase classname='punchlineTests' name='testRendersWelcomeScreen'>
-      <failure message='((foundElement) is true) failed - Couldn&apos;t find element with text &apos;Welcome to React&apos; in 600 seconds'>punchlineTests/punchlineTests.m:61</failure>
-    </testcase>
-  </testsuite>
-</testsuites>

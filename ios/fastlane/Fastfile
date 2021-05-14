@@ -21,7 +21,7 @@ platform :ios do
   end
 
   desc "Run tests and build the app"
-  lane :testandbuild do
+  lane :buildios do
 
     # answer = UI.select("Would you like to add a Changelog?", ["Yes", "No"])
     # changelog = ask('Type Changelog message:') if answer == "Yes"
