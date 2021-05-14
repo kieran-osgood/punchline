@@ -50,7 +50,7 @@ jobs:
           working_directory: ios
           command: |
             bundle install
-            pod deintegrate
+            # pod deintegrate
             pod install
             bundle exec fastlane testandbuild
 
