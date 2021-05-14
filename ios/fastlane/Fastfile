@@ -22,8 +22,25 @@ platform :ios do
 
   desc "Run tests and build the app"
   lane :testandbuild do
-    scan
+
+    # answer = UI.select("Would you like to add a Changelog?", ["Yes", "No"])
+    # changelog = ask('Type Changelog message:') if answer == "Yes"
+    # increment_build_number(xcodeproj: "AppName.xcodeproj")
+    # build_app(scheme: "AppNameApp")
+
+    # scan(scheme: "punchline")
+    # scan
+
+
+    # if changelog
+    #   upload_to_testflight(changelog: changelog)
+    # else
+    #   upload_to_testflight
+    # end    
+ 
+    # Get latest certs appstore
     match(type: "adhoc") # Set type of code signing required
+  
     gym(export_method: "ad-hoc", output_directory: "output") # Directory where signed .ipa file will be placed
   end
 end
