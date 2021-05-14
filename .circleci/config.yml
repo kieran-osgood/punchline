@@ -49,11 +49,12 @@ jobs:
       - run: yarn
       - run: 
           working_directory: ios
+          no_output_timeout: 30m
           command: |
             bundle install
             # pod deintegrate
             pod install
-            bundle exec fastlane testandbuild
+            bundle exec fastlane buildios --verbose
 
       - store_artifacts:
           path: output
