@@ -46,6 +46,7 @@ jobs:
       xcode: 12.4.0
     steps:
       - checkout
+      - run: yarn
       - run: 
           working_directory: ios
           command: |
