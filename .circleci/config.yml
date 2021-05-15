@@ -3,8 +3,7 @@ jobs:
     executor: rn/linux_js
     steps:
       - checkout
-      - run: git submodule sync
-      - run: git submodule update --init
+      - run: git submodule update --init --recursive
       - persist_to_workspace:
           paths: .
           root: .
