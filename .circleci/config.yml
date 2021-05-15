@@ -3,10 +3,21 @@ jobs:
     executor: rn/linux_js
     steps:
       - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
       - persist_to_workspace:
           paths: .
           root: .
-  
+
+  configure_fastlane: 
+    executor: rn/linux_js
+    steps:
+      - run:
+          name: Setup Environment variables for fastlane
+          command: |
+            export LC_ALL=en_US.UTF-8
+            export LANG=en_US.UTF-8
+
   analyse_js:
     executor: rn/linux_js
     parallelism: 5
@@ -16,7 +27,7 @@ jobs:
       - rn/yarn_install
       - run:
           name: Jest
-          command: | 
+          command: |
             TESTS=$(circleci tests glob "app/**/*.test.{ts,tsx}" | circleci tests split)
             yarn ci:test:jest --findRelatedTests $TESTS
 
@@ -29,24 +40,33 @@ jobs:
       - persist_to_workspace:
           paths: .
           root: .
+
+  decrypt_keystore_and_move:
+    executor: rn/linux_js 
+    working_directory: android
+    steps:
+      - run: gpg -d --batch --passphrase="$KEYSTORE_ENCRYPTION_KEY" --decrypt app/punchlinekeys/punchline.keystore.gpg --output app/punchline.keystore
+      - run: cp app/punchline.keystore fastlane/release.keystore 
            
-  fastlane_android_release:
+  fastlane_build_release_android:
     executor: rn/linux_js
     steps:
       - attach_workspace:
           at: .
-      - run: npm i
+      - configure_fastlane
+      - rn/yarn_install
       - run:
           command: echo
-          name: Run Fastlane
-          
+          name: |
+            bundle install
+            bundle exec fastlane build_android
 
   fastlane_build_release_ios:
     macos:
       xcode: 12.4.0
     steps:
       - checkout
-      - run: yarn
+      - rn/yarn_install
       - run: 
           working_directory: ios
           no_output_timeout: 30m
@@ -54,7 +74,7 @@ jobs:
             bundle install
             # pod deintegrate
             pod install
-            bundle exec fastlane buildios --verbose
+            bundle exec fastlane build_ios
 
       - store_artifacts:
           path: ios/output
@@ -71,7 +91,7 @@ workflows:
             branches:
               only:
                 - master
-                # - feature/circle-fastlane-init
+                - feature/circle-fastlane-init
               ignore:
                 - develop
             tags:
@@ -91,7 +111,7 @@ workflows:
       #           - develop
       #       tags:
       #         only: /^v.*/
-
+      - configure_fastlane
       # Build the Android app in debug mode
       # - rn/android_build:
       #     yarn_cache: false
@@ -110,7 +130,6 @@ workflows:
       #     build_type: release
       #     requires:
       #       - analyse_js
-
       # - rn/android_test:
       #     yarn_cache: false
       #     detox_configuration: "android.emu.release"
@@ -121,7 +140,7 @@ workflows:
       # - rn/ios_build_and_test:
       #     yarn_cache: false
       #     xcodebuild_cache: false
-      #     # homebrew_cache: false
+      #     homebrew_cache: false
       #     project_type: "workspace"
       #     project_path: "ios/punchline.xcworkspace"
       #     device: "iPhone 11"
@@ -133,7 +152,13 @@ workflows:
       #       - analyse_js
       #       - update_homebrew
 
+      - decrypt_keystore_and_move
+      - fastlane_build_release_android:
+          requires:
+              - checkout_code
+              - configure_fastlane
+              - decrypt_keystore_and_move
       # - fastlane_android_release:
           # requires:
             # - rn/android_test
-      - fastlane_build_release_ios
+      # - fastlane_build_release_ios
