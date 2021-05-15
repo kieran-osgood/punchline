@@ -67,7 +67,7 @@ jobs:
             ruby --version
             gem install bundler
             bundle install
-            bundle exec fastlane build_android
+            bundle exec fastlane build_release_android
 
   fastlane_build_release_ios:
     macos:
