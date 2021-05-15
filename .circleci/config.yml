@@ -45,8 +45,8 @@ jobs:
     executor: rn/linux_js 
     steps:
       - run: 
-          command: ls -l
-      - run: gpg -d --batch --passphrase="$KEYSTORE_ENCRYPTION_KEY" --decrypt android/app/punchlinekeys/punchline.keystore.gpg --output android/app/punchline.keystore
+          command: ls -a
+      - run: gpg -d --pinentry-mode loopback --batch --yes --passphrase="$ENCRYPTION_PASSPHRASE" --output android/app/punchline.keystore --decrypt android/app/punchlinekeys/punchline.keystore.gpg
       - run: cp android/app/punchline.keystore android/fastlane/release.keystore 
            
   fastlane_build_release_android:
