@@ -61,6 +61,8 @@ jobs:
       - run:
           name: Fastlane build
           command: |
+            ruby --version
+            gem install bundler
             bundle install
             bundle exec fastlane build_android
 
