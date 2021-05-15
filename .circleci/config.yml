@@ -2,11 +2,8 @@ jobs:
   checkout_code:
     executor: rn/linux_js
     steps:
-      - attach_workspace:
-         at: .
       - checkout
-      - run: git submodule sync
-      - run: git submodule update --init
+      - run: git submodule update --init --recursive
       - persist_to_workspace:
           paths: .
           root: .
@@ -47,7 +44,7 @@ jobs:
     executor: rn/linux_js 
     steps:
       - attach_workspace:
-          at: .
+          at: ./android
       - run: 
           command: ls -a
       - run: gpg -d --pinentry-mode loopback --batch --yes --passphrase="$ENCRYPTION_PASSPHRASE" --output android/app/punchline.keystore --decrypt android/app/punchlinekeys/punchline.keystore.gpg
