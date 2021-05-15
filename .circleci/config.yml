@@ -57,11 +57,10 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      # - configure_fastlane
       - rn/yarn_install
       - run:
-          command: echo
-          name: |
+          name: Fastlane build
+          command: |
             bundle install
             bundle exec fastlane build_android
 
