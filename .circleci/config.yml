@@ -44,6 +44,8 @@ jobs:
   decrypt_keystore_and_move:
     executor: rn/linux_js 
     steps:
+      - attach_workspace:
+          at: .
       - run: 
           command: ls -a
       - run: gpg -d --pinentry-mode loopback --batch --yes --passphrase="$ENCRYPTION_PASSPHRASE" --output android/app/punchline.keystore --decrypt android/app/punchlinekeys/punchline.keystore.gpg
