@@ -152,13 +152,19 @@ workflows:
       #       - analyse_js
       #       - update_homebrew
 
-      - decrypt_keystore_and_move
-      - configure_fastlane
+      - configure_fastlane:
+          requires:
+            - checkout_code
+
+      - decrypt_keystore_and_move:
+          requires:
+            - checkout_code
+
       - fastlane_build_release_android:
           requires:
-              - checkout_code
               - configure_fastlane
               - decrypt_keystore_and_move
+
       # - fastlane_android_release:
           # requires:
             # - rn/android_test
