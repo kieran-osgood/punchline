@@ -29,8 +29,6 @@ platform :android do
   end
   
   lane :build_release_android do
-    # sh "source ./prepare_environment_variables.sh -p .env.production"
-
     gradle(
       task: 'assemble',
       build_type: 'Release'
