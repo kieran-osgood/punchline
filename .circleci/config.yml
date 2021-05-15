@@ -43,12 +43,11 @@ jobs:
 
   decrypt_keystore_and_move:
     executor: rn/linux_js 
-    working_directory: android
     steps:
       - run: 
           command: ls -l
-      - run: gpg -d --batch --passphrase="$KEYSTORE_ENCRYPTION_KEY" --decrypt app/punchlinekeys/punchline.keystore.gpg --output app/punchline.keystore
-      - run: cp app/punchline.keystore fastlane/release.keystore 
+      - run: gpg -d --batch --passphrase="$KEYSTORE_ENCRYPTION_KEY" --decrypt android/app/punchlinekeys/punchline.keystore.gpg --output android/app/punchline.keystore
+      - run: cp android/app/punchline.keystore android/fastlane/release.keystore 
            
   fastlane_build_release_android:
     executor: rn/linux_js
