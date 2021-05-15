@@ -1,0 +1,93 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Build debug android configuration"
+  lane :build_debug_android do
+    gradle(task: "clean assembleDebug")
+  end
+
+  lane :build_release_local_android do
+    gradle(
+      task: 'assemble',
+      build_type: 'Release'
+    )
+  end
+  
+  lane :build_release_android do
+    # sh "source ./prepare_environment_variables.sh -p .env.production"
+
+    gradle(
+      task: 'assemble',
+      build_type: 'Release'
+    )
+
+    # sentry_upload_file(
+    #   auth_token: '313007a1e25f4f2192b43fa227f8c4bb8843ee4e49a64126808a630601eedfdf',
+    #   org_slug: 'ko-dev',
+    #   project_slug: 'punchline',
+    #   version: '',
+    #   app_identifier: 'com.ko.punchline', # pass in the bundle_identifer of your app
+    #   file: 'main.jsbundle' # file to upload
+    # )
+  end
+  
+  desc "Build Release configuration and Google Play Store"
+  lane :playstore do
+    gradle(task: "clean assembleRelease")
+    upload_to_play_store
+  end
+
+  after_all do
+    slack(
+      slack_url: "https://hooks.slack.com/services/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",
+      message: "App successfully built!",
+      payload: { 
+        "Build Date" => Time.new.to_s,
+        "Built by" => "KO",
+      },
+      default_payloads: [:git_branch, :git_author],
+      attachment_properties: { 
+        fields: [{
+          title: "My Field",
+          value: "My Value",
+          short: true
+        }]
+      }
+    )
+  end
+
+  error do 
+    slack(
+      slack_url: "https://hooks.slack.com/services/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",
+      success: false,
+      message: "App build failed!",
+      payload: {
+        "Build Date" => Time.new.to_s,
+        "Built by" => "KO",
+      },
+      default_payloads: [:git_branch, :git_author],
+      attachment_properties: {
+        fields: [{
+          title: "My Field",
+          value: "My Value",
+          short: true
+        }]
+      }
+    )
+    end
+end
