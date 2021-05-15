@@ -3,6 +3,8 @@ jobs:
     executor: rn/linux_js
     steps:
       - checkout
+      - attach_workspace:
+          at: .
       - run: git submodule update --init --recursive
       - persist_to_workspace:
           paths: .
@@ -46,8 +48,8 @@ jobs:
       - attach_workspace:
           at: .
       - run: 
-          command: cd android/app && ls -a
-      - run: gpg -d --pinentry-mode loopback --batch --yes --passphrase="$ENCRYPTION_PASSPHRASE" --output android/app/punchline.keystore --decrypt android/app/punchlinekeys/punchline.keystore.gpg
+          command: ls android/app
+      - run: gpg -d --pinentry-mode loopback --batch --yes --passphrase="$ENCRYPTION_PASSPHRASE" --output android/app/punchline.keystore --decrypt android/app/punchline-keys/punchline.keystore.gpg
       - run: cp android/app/punchline.keystore android/fastlane/release.keystore 
            
   fastlane_build_release_android:
