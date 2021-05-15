@@ -62,6 +62,7 @@ jobs:
           version: '2.7'
       - run:
           name: Fastlane build
+          working_directory: android
           command: |
             ruby --version
             gem install bundler
