@@ -53,7 +53,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - configure_fastlane
+      # - configure_fastlane
       - rn/yarn_install
       - run:
           command: echo
@@ -111,7 +111,7 @@ workflows:
       #           - develop
       #       tags:
       #         only: /^v.*/
-      - configure_fastlane
+
       # Build the Android app in debug mode
       # - rn/android_build:
       #     yarn_cache: false
@@ -153,6 +153,7 @@ workflows:
       #       - update_homebrew
 
       - decrypt_keystore_and_move
+      - configure_fastlane
       - fastlane_build_release_android:
           requires:
               - checkout_code
