@@ -57,9 +57,7 @@ jobs:
             bundle exec fastlane buildios --verbose
 
       - store_artifacts:
-          path: output
-      - store_test_results:
-          path: output/scan
+          path: ios/output
 
 orbs:
   rn: react-native-community/react-native@5.1.0
@@ -73,7 +71,7 @@ workflows:
             branches:
               only:
                 - master
-                - feature/circle-fastlane-init
+                # - feature/circle-fastlane-init
               ignore:
                 - develop
             tags:
@@ -112,6 +110,7 @@ workflows:
       #     build_type: release
       #     requires:
       #       - analyse_js
+
       # - rn/android_test:
       #     yarn_cache: false
       #     detox_configuration: "android.emu.release"
