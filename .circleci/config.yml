@@ -2,8 +2,11 @@ jobs:
   checkout_code:
     executor: rn/linux_js
     steps:
+      - attach_workspace:
+         at: .
       - checkout
-      - run: git submodule update --init --recursive
+      - run: git submodule sync
+      - run: git submodule update --init
       - persist_to_workspace:
           paths: .
           root: .
