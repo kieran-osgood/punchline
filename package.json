@@ -176,10 +176,11 @@
         },
         "uiHierarchy": "enabled",
         "screenshot": {
+          "enabled": true,
           "shouldTakeAutomaticSnapshots": true,
           "keepOnlyFailedTestsArtifacts": true,
           "takeWhen": {
-            "testStart": false,
+            "testStart": true,
             "testDone": true
           }
         },
