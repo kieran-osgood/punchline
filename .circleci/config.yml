@@ -36,6 +36,7 @@ jobs:
 
   configure_fastlane_ios: 
     executor: rn/linux_js
+    working_directory: ios
     steps:
       - attach_workspace:
           at: .
@@ -112,6 +113,7 @@ jobs:
      
   fastlane_build_release_android:
     executor: rn/linux_android
+    working_directory: android
     steps:
       - attach_workspace:
           at: .
