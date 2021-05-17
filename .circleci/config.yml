@@ -152,7 +152,7 @@ jobs:
           at: .
       - run: echo "stuff" > test.txt
       - store_artifacts:
-          path: tmp
+          path: .
 
   my_second_test:
     executor: rn/linux_android
@@ -165,7 +165,9 @@ workflows:
   test:
       jobs:
         - my_test
-        - my_second_test
+        - my_second_test:
+            requires:
+              - my_test
   # develop:
   #   jobs: 
   #     # Checkout the code and persist to the Workspace
