@@ -160,12 +160,22 @@ jobs:
       - attach_workspace:
           at: .
       - run: ls -a
+      
+  my_third_test:
+    executor: rn/linux_js
+    steps:
+      - attach_workspace:
+          at: .
+      - run: ls -a
 
 workflows:
   test:
       jobs:
         - my_test
         - my_second_test:
+            requires:
+              - my_test
+        - my_third_test:
             requires:
               - my_test
   # develop:
