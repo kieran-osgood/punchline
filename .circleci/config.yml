@@ -99,7 +99,7 @@ jobs:
           name: Copy keystore to fastlane directory
           command: cp android/app/punchline.keystore android/fastlane/release.keystore 
       - persist_to_workspace:
-          paths: "**/*.keystore"
+          paths: .
           root: .
       
   fastlane_build_debug_android:
@@ -195,9 +195,9 @@ workflows:
       #           - develop
       #           - feature/circle-fastlane-init
                 
-      - decrypt_keystore_and_move:
-          requires:
-            - checkout_code
+      # - decrypt_keystore_and_move:
+      #     requires:
+      #       - checkout_code
       # This configures the rn/linux_js for building android
       - configure_fastlane_android:
           requires:
@@ -213,7 +213,7 @@ workflows:
       - fastlane_build_debug_android:
           requires:
               - configure_fastlane_android
-              - decrypt_keystore_and_move
+              # - decrypt_keystore_and_move
       # Runs detox tests on the apk persisted from fastlane_build_debug_android 
       - fastlane_e2e_android:
           requires:
