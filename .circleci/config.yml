@@ -41,6 +41,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run: node -v
       - ruby/install:
           version: '2.7'
       - run: ls -a
