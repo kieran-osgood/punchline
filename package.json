@@ -210,12 +210,12 @@
     },
     "apps": {
       "android.debug": {
-        "type": "android.emulator",
+        "type": "android.apk",
         "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
         "build": "cd android && ./gradlew assembleDebug app:assembleAndroidTest -DtestBuildType=debug && cd .."
       },
       "android.release": {
-        "type": "android.emulator",
+        "type": "android.apk",
         "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
         "build": "cd android && ./gradlew assembleRelease app:assembleAndroidTest -DtestBuildType=release && cd .."
       },
@@ -232,7 +232,7 @@
     },
     "configurations": {
       "android.emu.debug": {
-        "app": "android.release",
+        "app": "android.debug",
         "device": "emulator"
       },
       "android.emu.release": {
