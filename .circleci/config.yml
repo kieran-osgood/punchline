@@ -24,6 +24,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run: node -v
       - ruby/install:
           version: '2.7'
       - run: ls -a
@@ -41,10 +42,9 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run: node -v
+      - run: ls -a
       - ruby/install:
           version: '2.7'
-      - run: ls -a
       - run:
           name: Setup Environment variables and install gems for fastlane
           command: |
