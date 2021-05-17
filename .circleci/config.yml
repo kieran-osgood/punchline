@@ -99,7 +99,7 @@ jobs:
           name: Copy keystore to fastlane directory
           command: cp android/app/punchline.keystore android/fastlane/release.keystore 
       - persist_to_workspace:
-          paths: .
+          paths: "**/*.keystore"
           root: .
       
   fastlane_build_debug_android:
