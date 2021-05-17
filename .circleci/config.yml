@@ -23,10 +23,8 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run: node -v
-      - ruby/install:
-          version: '2.7'
-      - run: ls -a
+      # - ruby/install:
+          # version: '2.7'
       - run:
           name: Setup Environment variables and install gems for fastlane
           working_directory: android
