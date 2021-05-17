@@ -99,7 +99,7 @@ jobs:
           paths: .
           root: .
       
-  fastlane_build_debug_android:
+  fastlane_build_and_e2e_debug_android:
     executor: rn/linux_android
     steps:
       - attach_workspace:
@@ -115,6 +115,7 @@ jobs:
             gem install bundler
             bundle install
             bundle exec fastlane build_android_debug
+            bundle exec fastlane e2e_debug
       - store_artifacts:
           path: android/app/build/outputs/apk/debug
      
@@ -139,7 +140,7 @@ jobs:
       - store_artifacts:
           path: android/app/build/outputs/apk/release
 
-  fastlane_e2e_android:
+  fastlane_e2e_release_android:
     executor: rn/linux_android
     steps:
       - attach_workspace:
@@ -211,14 +212,11 @@ workflows:
             # - analyse_js
             # - checkout_code
       # Builds debug android and persists to workspace for e2e testing next
-      - fastlane_build_debug_android:
+      # Runs detox tests on the apk persisted from fastlane_build_and_e2e_debug_android 
+      - fastlane_build_and_e2e_debug_android:
           requires:
               - checkout_code
               # - decrypt_keystore_and_move
-      # Runs detox tests on the apk persisted from fastlane_build_debug_android 
-      - fastlane_e2e_android:
-          requires:
-            - fastlane_build_debug_android
 
       # Build and test the iOS app in release mode
       # - rn/ios_build_and_test:
