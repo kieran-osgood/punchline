@@ -21,9 +21,9 @@ jobs:
   configure_fastlane_android: 
     executor: rn/linux_android
     steps:
-      - rn/yarn_install
       - ruby/install:
           version: '2.7'
+      - run: ls -a
       - run:
           name: Setup Environment variables for fastlane
           command: |
@@ -35,9 +35,9 @@ jobs:
   configure_fastlane_e2e: 
     executor: rn/linux_android
     steps:
-      - rn/yarn_install
       - ruby/install:
           version: '2.7'
+      - run: ls -a
       - run:
           name: Setup Environment variables for fastlane
           command: |
@@ -58,10 +58,14 @@ jobs:
           command: |
             TESTS=$(circleci tests glob "app/**/*.test.{ts,tsx}" | circleci tests split)
             yarn ci:test:jest --findRelatedTests $TESTS
+      - persist_to_workspace:
+          paths: .
+          root: .
 
   update_homebrew:
     executor: rn/macos
     steps:
+      - run: ls -a
       - run:
           name: Update homebrew
           command: HOMEBREW_NO_AUTO_UPDATE=1 brew update
@@ -74,6 +78,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run: ls -a
       - run: 
           command: ls android/app
       - run: 
@@ -88,6 +93,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run: ls -a
       - run:
           name: "Fastlane Build Debug - Android"
           working_directory: android
@@ -102,6 +108,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run: ls -a
       - ruby/install:
           version: '2.7'
       - run:
@@ -121,6 +128,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run: ls -a
       - ruby/install:
           version: '2.7'
       - run:
@@ -129,7 +137,9 @@ jobs:
           no_output_timeout: 30m
           command: |
             bundle exec fastlane e2e_release
-            
+      - store_artifacts:
+          path: .artifacts
+          
   # fastlane_build_release_ios:
   #   macos:
   #     xcode: 12.4.0
@@ -145,108 +155,68 @@ jobs:
   #     - store_artifacts:
   #         path: ios/output
 
-  my_test:
-    executor: rn/linux_js
-    steps:
-      - attach_workspace:
-          at: .
-      - run: echo "stuff" > test.txt
-      - persist_to_workspace:
-          root: .
-          paths: .
-      - store_artifacts:
-          path: .
-
-  my_second_test:
-    executor: rn/linux_android
-    steps:
-      - attach_workspace:
-          at: .
-      - run: ls -a
-      
-  my_third_test:
-    executor: rn/linux_js
-    steps:
-      - attach_workspace:
-          at: .
-      - run: ls -a
-
 workflows:
-  test:
-      jobs:
-        - my_test
-        - my_second_test:
-            requires:
-              - my_test
-        - my_third_test:
-            requires:
-              - my_test
-  # develop:
-  #   jobs: 
-  #     # Checkout the code and persist to the Workspace
-  #     - checkout_code:
-  #         filters:
-  #           branches:
-  #             only:
-  #               - develop
-      
-  #     # Analyze the Javascript using ESLint, and Jest
-  #     - analyse_js:
-  #         filters:
-  #           branches:
-  #             only:
-  #               - develop
-  #         requires:
-  #           - checkout_code
+  develop:
+    jobs: 
+      # Checkout the code and persist to the Workspace
+      - checkout_code:
+          filters:
+            branches:
+              only:
+                - develop
+                - feature/circle-fastlane-init
+      # Analyze the Javascript using ESLint, and Jest
+      - analyse_js:
+          filters:
+            branches:
+              only:
+                - develop
+          requires:
+            - checkout_code
+      # Have to do this due to homebrew issues at the moment with their images
+      - update_homebrew:
+          filters:
+            branches:
+              only:
+                - develop
 
-  #     - update_homebrew:
-  #         filters:
-  #           branches:
-  #             only:
-  #               - develop
+      - decrypt_keystore_and_move:
+          requires:
+            - checkout_code
+      # This configures the rn/linux_js for building android
+      - configure_fastlane_android:
+          requires:
+            - analyse_js
+      # This configures the rn/linux_js for e2e testing
+      - configure_fastlane_e2e:
+          requires:
+            - analyse_js
+      # Builds debug android and persists to workspace for e2e testing next
+      - fastlane_build_debug_android:
+          requires:
+              - configure_fastlane_android
+              - decrypt_keystore_and_move
+              - configure_fastlane_e2e
+      # Runs detox tests on the apk persisted from fastlane_build_debug_android 
+      - fastlane_e2e_android:
+          requires:
+            - fastlane_build_debug_android
 
-  #     # Build the Android app in debug mode
-  #     - rn/android_build:
-  #         yarn_cache: false
-  #         name: build_android_debug
-  #         project_path: "android"
-  #         build_type: debug
-  #         requires:
-  #           - analyse_js
-
-  #     - decrypt_keystore_and_move:
-  #         requires:
-  #           - checkout_code
-
-  #     # Build and test the Android app in release mode
-  #     # Note: We split these into seperate jobs because we can build the Android app on a Linux machine and preserve the expensive MacOS executor minutes for when it's required
-  #     - rn/android_build:
-  #         name: build_android_release
-  #         yarn_cache: false
-  #         project_path: "android"
-  #         build_type: release
-  #         requires:
-  #           - analyse_js
-
-  #     - fastlane_e2e_android:
-  #         requires:
-  #           - build_android_release
-
-  #     # Build and test the iOS app in release mode
-  #     # - rn/ios_build_and_test:
-  #     #     yarn_cache: false
-  #     #     xcodebuild_cache: false
-  #     #     homebrew_cache: false
-  #     #     project_type: "workspace"
-  #     #     project_path: "ios/punchline.xcworkspace"
-  #     #     device: "iPhone 11"
-  #     #     build_configuration: "Release"
-  #     #     scheme: "punchline"
-  #     #     detox_configuration: "ios.sim.release"
-  #     #     requires:
-  #     #       - checkout_code
-  #     #       - analyse_js
-  #     #       - update_homebrew
+      # Build and test the iOS app in release mode
+      # - rn/ios_build_and_test:
+      #     yarn_cache: false
+      #     xcodebuild_cache: false
+      #     homebrew_cache: false
+      #     project_type: "workspace"
+      #     project_path: "ios/punchline.xcworkspace"
+      #     device: "iPhone 11"
+      #     build_configuration: "Release"
+      #     scheme: "punchline"
+      #     detox_configuration: "ios.sim.release"
+      #     requires:
+      #       - checkout_code
+      #       - analyse_js
+      #       - update_homebrew
 
   # master:
   #   jobs: 
@@ -289,8 +259,8 @@ workflows:
   #         requires:
   #             - configure_fastlane_android
   #             - decrypt_keystore_and_move
-  #             - configure_fastlane_android
   #             - configure_fastlane_e2e
+
   #     - fastlane_e2e_android:
   #         requires:
   #             - fastlane_build_release_android
@@ -312,7 +282,6 @@ workflows:
   #     #       - checkout_code
   #     #       - analyse_js
   #     #       - update_homebrew
-
 
   #     # - fastlane_build_release_ios:
   #     #     requires:
