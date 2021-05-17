@@ -198,7 +198,7 @@
       "emulator": {
         "type": "android.emulator",
         "device": {
-          "avdName": "Pixel_API_28"
+          "avdName": "Pixel_3a_API_30_x86"
         }
       },
       "simulator": {
@@ -212,7 +212,7 @@
       "android.debug": {
         "type": "android.apk",
         "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
-        "build": "cd android && ./gradlew assembleDebug app:assembleAndroidTest -DtestBuildType=debug && cd .."
+        "build": "cd android && ./gradlew assembleDebug -DtestBuildType=debug && cd .."
       },
       "android.release": {
         "type": "android.apk",

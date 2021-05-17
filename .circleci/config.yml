@@ -105,7 +105,7 @@ jobs:
       - attach_workspace:
           at: .
       - rn/yarn_install
-      - run: yarn add global detox-cli@18.13.0
+      # - run: yarn add global detox-cli@18.13.0
       - run:
           name: "Fastlane Build Debug - Android"
           working_directory: android

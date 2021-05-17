@@ -44,7 +44,10 @@ platform :android do
   end
 
   lane :e2e_debug do
+    package = load_json(json_path: "../package.json")
+
     Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed
+      sh("npm i -g detox-cli@#{package['devDependencies']['detox']}")
       sh("detox build --configuration android.emu.debug")
       sh("detox test --configuration android.emu.debug --cleanup")
     end
