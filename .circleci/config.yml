@@ -209,9 +209,9 @@ workflows:
             # - analyse_js
             # - checkout_code
       # Builds debug android and persists to workspace for e2e testing next
-      - fastlane_build_debug_android
-          # requires:
-              # - configure_fastlane_android
+      - fastlane_build_debug_android:
+          requires:
+              - checkout_code
               # - decrypt_keystore_and_move
       # Runs detox tests on the apk persisted from fastlane_build_debug_android 
       - fastlane_e2e_android:
