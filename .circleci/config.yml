@@ -171,6 +171,7 @@ workflows:
             branches:
               only:
                 - develop
+                - feature/circle-fastlane-init
           requires:
             - checkout_code
       # Have to do this due to homebrew issues at the moment with their images
@@ -179,7 +180,8 @@ workflows:
             branches:
               only:
                 - develop
-
+                - feature/circle-fastlane-init
+                
       - decrypt_keystore_and_move:
           requires:
             - checkout_code
