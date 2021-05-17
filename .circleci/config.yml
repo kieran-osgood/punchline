@@ -112,11 +112,11 @@ jobs:
           command: |
             export LC_ALL=en_US.UTF-8
             export LANG=en_US.UTF-8
-            # gem install bundler
-            # bundle install
+            gem install bundler
+            bundle install
             bundle exec fastlane build_android_debug
       - store_artifacts:
-          path: android/app/build/outputs/apk/release
+          path: android/app/build/outputs/apk/debug
      
   fastlane_build_release_android:
     executor: rn/linux_android
