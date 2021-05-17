@@ -31,11 +31,8 @@ jobs:
           command: |
             export LC_ALL=en_US.UTF-8
             export LANG=en_US.UTF-8
-            gem install bundler
-            bundle install
-      - persist_to_workspace:
-          paths: .
-          root: .
+            # gem install bundler
+            # bundle install
 
   configure_fastlane_ios: 
     executor: rn/linux_js
@@ -113,6 +110,8 @@ jobs:
           working_directory: android
           no_output_timeout: 30m
           command: |
+            gem install bundler
+            bundle install
             bundle exec fastlane build_android_debug
       - store_artifacts:
           path: android/app/build/outputs/apk/release
@@ -199,9 +198,9 @@ workflows:
       #     requires:
       #       - checkout_code
       # This configures the rn/linux_js for building android
-      - configure_fastlane_android:
-          requires:
-            - checkout_code
+      # - configure_fastlane_android:
+      #     requires:
+      #       - checkout_code
           # requires:
             # - analyse_js
       # This configures the rn/linux_js for e2e testing
@@ -210,9 +209,9 @@ workflows:
             # - analyse_js
             # - checkout_code
       # Builds debug android and persists to workspace for e2e testing next
-      - fastlane_build_debug_android:
-          requires:
-              - configure_fastlane_android
+      - fastlane_build_debug_android
+          # requires:
+              # - configure_fastlane_android
               # - decrypt_keystore_and_move
       # Runs detox tests on the apk persisted from fastlane_build_debug_android 
       - fastlane_e2e_android:
