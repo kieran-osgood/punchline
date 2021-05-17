@@ -151,6 +151,9 @@ jobs:
       - attach_workspace:
           at: .
       - run: echo "stuff" > test.txt
+      - persist_to_workspace:
+          root: .
+          paths: .
       - store_artifacts:
           path: .
 
