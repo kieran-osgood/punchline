@@ -31,8 +31,8 @@ jobs:
           command: |
             export LC_ALL=en_US.UTF-8
             export LANG=en_US.UTF-8
-            # gem install bundler
-            # bundle install
+            gem install bundler
+            bundle install
 
   configure_fastlane_ios: 
     executor: rn/linux_js
@@ -110,8 +110,10 @@ jobs:
           working_directory: android
           no_output_timeout: 30m
           command: |
-            gem install bundler
-            bundle install
+            export LC_ALL=en_US.UTF-8
+            export LANG=en_US.UTF-8
+            # gem install bundler
+            # bundle install
             bundle exec fastlane build_android_debug
       - store_artifacts:
           path: android/app/build/outputs/apk/release
