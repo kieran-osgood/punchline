@@ -19,7 +19,8 @@ jobs:
           root: .
 
   configure_fastlane_android: 
-    executor: rn/linux_js
+    executor: rn/linux_android
+    working_directory: android
     steps:
       - attach_workspace:
           at: .
