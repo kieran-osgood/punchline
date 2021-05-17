@@ -32,8 +32,8 @@ jobs:
             gem install bundler
             bundle install
 
-  configure_fastlane_e2e: 
-    executor: rn/linux_android
+  configure_fastlane_ios: 
+    executor: rn/linux_js
     steps:
       - ruby/install:
           version: '2.7'
@@ -47,8 +47,8 @@ jobs:
             bundle install
 
   analyse_js:
-    executor: rn/linux_js
-    parallelism: 5
+    executor: rn/linux_android
+    # parallelism: 5
     steps:
       - attach_workspace:
           at: .
@@ -62,19 +62,19 @@ jobs:
           paths: .
           root: .
 
-  update_homebrew:
-    executor: rn/macos
-    steps:
-      - run: ls -a
-      - run:
-          name: Update homebrew
-          command: HOMEBREW_NO_AUTO_UPDATE=1 brew update
-      - persist_to_workspace:
-          paths: .
-          root: .
+  # update_homebrew:
+  #   executor: rn/macos
+  #   steps:
+  #     - run: ls -a
+  #     - run:
+  #         name: Update homebrew
+  #         command: HOMEBREW_NO_AUTO_UPDATE=1 brew update
+  #     - persist_to_workspace:
+  #         paths: .
+  #         root: .
 
   decrypt_keystore_and_move:
-    executor: rn/linux_js 
+    executor: rn/linux_android 
     steps:
       - attach_workspace:
           at: .
@@ -87,6 +87,9 @@ jobs:
       - run: 
           name: Copy keystore to fastlane directory
           command: cp android/app/punchline.keystore android/fastlane/release.keystore 
+      - persist_to_workspace:
+          paths: .
+          root: .
       
   fastlane_build_debug_android:
     executor: rn/linux_android
@@ -124,13 +127,11 @@ jobs:
           path: android/app/build/outputs/apk/release
 
   fastlane_e2e_android:
-    executor: rn/linux_js
+    executor: rn/linux_android
     steps:
       - attach_workspace:
           at: .
       - run: ls -a
-      - ruby/install:
-          version: '2.7'
       - run:
           name: "Fastlane Build Release - Android"
           working_directory: android
@@ -166,39 +167,38 @@ workflows:
                 - develop
                 - feature/circle-fastlane-init
       # Analyze the Javascript using ESLint, and Jest
-      - analyse_js:
-          filters:
-            branches:
-              only:
-                - develop
-                - feature/circle-fastlane-init
-          requires:
-            - checkout_code
+      # - analyse_js:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - develop
+      #           - feature/circle-fastlane-init
+      #     requires:
+      #       - checkout_code
       # Have to do this due to homebrew issues at the moment with their images
-      - update_homebrew:
-          filters:
-            branches:
-              only:
-                - develop
-                - feature/circle-fastlane-init
+      # - update_homebrew:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - develop
+      #           - feature/circle-fastlane-init
                 
       - decrypt_keystore_and_move:
           requires:
             - checkout_code
       # This configures the rn/linux_js for building android
-      - configure_fastlane_android:
-          requires:
-            - analyse_js
+      - configure_fastlane_android
+          # requires:
+            # - analyse_js
       # This configures the rn/linux_js for e2e testing
-      - configure_fastlane_e2e:
-          requires:
-            - analyse_js
+      # - configure_fastlane_ios
+          # requires:
+            # - analyse_js
       # Builds debug android and persists to workspace for e2e testing next
       - fastlane_build_debug_android:
           requires:
               - configure_fastlane_android
               - decrypt_keystore_and_move
-              - configure_fastlane_e2e
       # Runs detox tests on the apk persisted from fastlane_build_debug_android 
       - fastlane_e2e_android:
           requires:
