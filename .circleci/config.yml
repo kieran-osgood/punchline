@@ -27,7 +27,7 @@ jobs:
           version: '2.7'
       - run: ls -a
       - run:
-          name: Setup Environment variables for fastlane
+          name: Setup Environment variables and install gems for fastlane
           command: |
             export LC_ALL=en_US.UTF-8
             export LANG=en_US.UTF-8
@@ -44,7 +44,7 @@ jobs:
           version: '2.7'
       - run: ls -a
       - run:
-          name: Setup Environment variables for fastlane
+          name: Setup Environment variables and install gems for fastlane
           command: |
             export LC_ALL=en_US.UTF-8
             export LANG=en_US.UTF-8
@@ -193,13 +193,16 @@ workflows:
           requires:
             - checkout_code
       # This configures the rn/linux_js for building android
-      - configure_fastlane_android
+      - configure_fastlane_android:
+          requires:
+            - checkout_code
           # requires:
             # - analyse_js
       # This configures the rn/linux_js for e2e testing
       # - configure_fastlane_ios
           # requires:
             # - analyse_js
+            # - checkout_code
       # Builds debug android and persists to workspace for e2e testing next
       - fastlane_build_debug_android:
           requires:
