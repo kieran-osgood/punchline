@@ -21,6 +21,8 @@ jobs:
   configure_fastlane_android: 
     executor: rn/linux_android
     steps:
+      - attach_workspace:
+          at: .
       - ruby/install:
           version: '2.7'
       - run: ls -a
@@ -35,6 +37,8 @@ jobs:
   configure_fastlane_ios: 
     executor: rn/linux_js
     steps:
+      - attach_workspace:
+          at: .
       - ruby/install:
           version: '2.7'
       - run: ls -a
