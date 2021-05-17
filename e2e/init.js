@@ -7,6 +7,8 @@ jasmine.getEnv().addReporter(adapter)
 
 beforeAll(async () => {
   await detox.init(config)
+  await detox.device.launchApp({ newInstance: true });
+
 })
 
 beforeEach(async () => {

@@ -79,3 +79,6 @@ Production
 android/fastlane/fastlane-service-account.json
 android/fastlane/metadata
 ios/output
+
+# Detox
+*.log
