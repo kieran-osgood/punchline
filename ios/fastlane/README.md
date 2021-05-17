@@ -16,9 +16,14 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## iOS
-### ios testandbuild
+### ios e2e
 ```
-fastlane ios testandbuild
+fastlane ios e2e
+```
+
+### ios build_adhoc_ios
+```
+fastlane ios build_adhoc_ios
 ```
 Run tests and build the app
 

@@ -16,16 +16,21 @@ or alternatively using `brew install fastlane`
 
 # Available Actions
 ## Android
+### android bump_build_number
+```
+fastlane android bump_build_number
+```
+Increments internal build number tracking (different than version)
+### android e2e
+```
+fastlane android e2e
+```
+
 ### android build_debug_android
 ```
 fastlane android build_debug_android
 ```
 Build debug android configuration
-### android build_release_local_android
-```
-fastlane android build_release_local_android
-```
-
 ### android build_release_android
 ```
 fastlane android build_release_android
