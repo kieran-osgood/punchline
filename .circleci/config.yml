@@ -19,42 +19,6 @@ jobs:
           paths: .
           root: .
 
-  # configure_fastlane_android: 
-  #   executor: rn/linux_android
-  #   steps:
-  #     - attach_workspace:
-  #         at: .
-  #     # - ruby/install:
-  #         # version: '2.7'
-  #     - run:
-  #         name: Setup Environment variables and install gems for fastlane
-  #         working_directory: android
-  #         command: |
-  #           export LC_ALL=en_US.UTF-8
-  #           export LANG=en_US.UTF-8
-  #           gem install bundler
-  #           bundle install
-
-  configure_fastlane_ios: 
-    executor: rn/linux_js
-    working_directory: ios
-    steps:
-      - attach_workspace:
-          at: .
-      - run: ls -a
-      - ruby/install:
-          version: '2.7'
-      - run:
-          name: Setup Environment variables and install gems for fastlane
-          command: |
-            export LC_ALL=en_US.UTF-8
-            export LANG=en_US.UTF-8
-            gem install bundler
-            bundle install
-      - persist_to_workspace:
-          paths: .
-          root: .
-
   analyse_js:
     executor: rn/linux_android
     # parallelism: 5
@@ -70,17 +34,6 @@ jobs:
       - persist_to_workspace:
           paths: .
           root: .
-
-  # update_homebrew:
-  #   executor: rn/macos
-  #   steps:
-  #     - run: ls -a
-  #     - run:
-  #         name: Update homebrew
-  #         command: HOMEBREW_NO_AUTO_UPDATE=1 brew update
-  #     - persist_to_workspace:
-  #         paths: .
-  #         root: .
 
   decrypt_keystore_and_move:
     executor: rn/linux_android 
@@ -100,17 +53,17 @@ jobs:
           paths: .
           root: .
       
-  fastlane_build_and_e2e_debug_android:
+  fastlane_build_debug_android:
     executor: rn/linux_android
     steps:
       - attach_workspace:
           at: .
       - rn/yarn_install
       # - run: yarn add global detox-cli@18.13.0
-      - android/create-avd:
-          avd-name: myavd
-          install: true
-          system-image: system-images;android-29;default;x86
+      # - android/create-avd:
+      #     avd-name: Android30Avd
+      #     install: true
+      #     system-image: system-images;android-29;default;x86
       - run:
           name: "Fastlane Build Debug - Android"
           working_directory: android
@@ -120,8 +73,8 @@ jobs:
             export LANG=en_US.UTF-8
             gem install bundler
             bundle install
-            # bundle exec fastlane build_android_debug
-            bundle exec fastlane e2e_debug
+            bundle exec fastlane build_android_debug
+            # # bundle exec fastlane e2e_debug
       - store_artifacts:
           path: android/app/build/outputs/apk/debug
      
@@ -140,35 +93,27 @@ jobs:
           no_output_timeout: 30m
           command: |
             bundle exec fastlane build_android_release
-      - persist_to_workspace:
-          root: .
-          paths: .
+      # - persist_to_workspace:
+      #     root: .
+      #     paths: .
       - store_artifacts:
           path: android/app/build/outputs/apk/release
 
-  fastlane_e2e_release_android:
-    executor: rn/linux_android
-    steps:
-      - attach_workspace:
-          at: .
-      - run: ls -a
-      - run:
-          name: "Fastlane Build Release - Android"
-          working_directory: android
-          no_output_timeout: 30m
-          command: |
-            bundle exec fastlane e2e_release
-      - store_artifacts:
-          path: .artifacts
-  my_test_of_avd:
-    executor: rn/linux_android
-    steps:
-    - run: avdmanager list
-    - android/create-avd:
-        avd-name: myavd
-        install: true
-        system-image: system-images;android-29;default;x86
-    - run: avdmanager list
+  # fastlane_e2e_release_android:
+  #   executor: rn/linux_android
+  #   steps:
+  #     - attach_workspace:
+  #         at: .
+  #     - run: ls -a
+  #     - run:
+  #         name: "Fastlane Build Release - Android"
+  #         working_directory: android
+  #         no_output_timeout: 30m
+  #         command: |
+  #           bundle exec fastlane e2e_release
+  #     - store_artifacts:
+  #         path: .artifacts
+
   # fastlane_build_release_ios:
   #   macos:
   #     xcode: 12.4.0
@@ -179,7 +124,6 @@ jobs:
   #         working_directory: ios
   #         no_output_timeout: 30m
   #         command: |
-  #           # pod install
   #           bundle exec fastlane build_ios
   #     - store_artifacts:
   #         path: ios/output
@@ -194,62 +138,43 @@ workflows:
               only:
                 - develop
                 - feature/circle-fastlane-init
-      - my_test_of_avd:
+      # Analyze the Javascript using ESLint, and Jest
+      - analyse_js:
+          filters:
+            branches:
+              only:
+                - develop
+                - feature/circle-fastlane-init
           requires:
             - checkout_code
-      # Analyze the Javascript using ESLint, and Jest
-      # - analyse_js:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - develop
-      #           - feature/circle-fastlane-init
-      #     requires:
-      #       - checkout_code
-      # Have to do this due to homebrew issues at the moment with their images
-      # - update_homebrew:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - develop
-      #           - feature/circle-fastlane-init
-                
-      # - decrypt_keystore_and_move:
-      #     requires:
-      #       - checkout_code
-      # This configures the rn/linux_js for building android
-      # - configure_fastlane_android:
-      #     requires:
-      #       - checkout_code
-          # requires:
-            # - analyse_js
-      # This configures the rn/linux_js for e2e testing
-      # - configure_fastlane_ios
-          # requires:
-            # - analyse_js
-            # - checkout_code
+      - decrypt_keystore_and_move:
+          requires:
+            - analyse_js
+      # # Commenting this out till we can figure out how to connect detox to android emulator
       # Builds debug android and persists to workspace for e2e testing next
-      # Runs detox tests on the apk persisted from fastlane_build_and_e2e_debug_android 
-      # - fastlane_build_and_e2e_debug_android:
-      #     requires:
-      #         - checkout_code
-      #         # - decrypt_keystore_and_move
+      # Runs detox tests on the apk persisted from fastlane_build_debug_android 
+      - fastlane_build_debug_android:
+          requires:
+              - checkout_code
+
+      - fastlane_build_release_android:
+          requires:
+              - decrypt_keystore_and_move
 
       # Build and test the iOS app in release mode
-      # - rn/ios_build_and_test:
-      #     yarn_cache: false
-      #     xcodebuild_cache: false
-      #     homebrew_cache: false
-      #     project_type: "workspace"
-      #     project_path: "ios/punchline.xcworkspace"
-      #     device: "iPhone 11"
-      #     build_configuration: "Release"
-      #     scheme: "punchline"
-      #     detox_configuration: "ios.sim.release"
-      #     requires:
-      #       - checkout_code
-      #       - analyse_js
-      #       - update_homebrew
+      - rn/ios_build_and_test:
+          yarn_cache: false
+          xcodebuild_cache: false
+          homebrew_cache: false
+          project_type: "workspace"
+          project_path: "ios/punchline.xcworkspace"
+          device: "iPhone 11"
+          build_configuration: "Release"
+          scheme: "punchline"
+          detox_configuration: "ios.sim.release"
+          requires:
+            - checkout_code
+            - analyse_js
 
   # master:
   #   jobs: 
