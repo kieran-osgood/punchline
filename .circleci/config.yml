@@ -151,30 +151,30 @@ workflows:
       # # Commenting this out till we can figure out how to connect detox to android emulator
       # Builds debug android and persists to workspace for e2e testing next
       # Runs detox tests on the apk persisted from fastlane_build_debug_android 
-      - fastlane_build_debug_android:
-          requires:
-              - checkout_code
-              - analyse_js
+      # - fastlane_build_debug_android:
+      #     requires:
+      #         - checkout_code
+      #         - analyse_js
 
       - fastlane_build_release_android:
           requires:
               - decrypt_keystore_and_move
-              - fastlane_build_debug_android
+              # - fastlane_build_debug_android
 
       # Build and test the iOS app in release mode
-      - rn/ios_build_and_test:
-          yarn_cache: false
-          xcodebuild_cache: false
-          homebrew_cache: false
-          project_type: "workspace"
-          project_path: "ios/punchline.xcworkspace"
-          device: "iPhone 11"
-          build_configuration: "Release"
-          scheme: "punchline"
-          detox_configuration: "ios.sim.release"
-          requires:
-            - checkout_code
-            - analyse_js
+      # - rn/ios_build_and_test:
+      #     yarn_cache: false
+      #     xcodebuild_cache: false
+      #     homebrew_cache: false
+      #     project_type: "workspace"
+      #     project_path: "ios/punchline.xcworkspace"
+      #     device: "iPhone 11"
+      #     build_configuration: "Release"
+      #     scheme: "punchline"
+      #     detox_configuration: "ios.sim.release"
+      #     requires:
+      #       - checkout_code
+      #       - analyse_js
 
   # master:
   #   jobs: 
