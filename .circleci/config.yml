@@ -58,7 +58,6 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - rn/yarn_install
       # - run: yarn add global detox-cli@18.13.0
       # - android/create-avd:
       #     avd-name: Android30Avd
@@ -84,6 +83,7 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - rn/yarn_install
       - run:
           name: "Fastlane Build Release - Android"
           working_directory: android
