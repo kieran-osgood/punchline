@@ -36,9 +36,7 @@ jobs:
           root: .
 
   decrypt_keystore_and_move:
-    executor: 
-      name: rn/linux_android 
-      resource_class: medium+
+    executor: rn/linux_android 
     steps:
       - attach_workspace:
           at: .
@@ -139,17 +137,17 @@ workflows:
                 - develop
                 - feature/circle-fastlane-init
       # Analyze the Javascript using ESLint, and Jest
-      - analyse_js:
-          filters:
-            branches:
-              only:
-                - develop
-                - feature/circle-fastlane-init
-          requires:
-            - checkout_code
+      # - analyse_js:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - develop
+      #           - feature/circle-fastlane-init
+      #     requires:
+      #       - checkout_code
       - decrypt_keystore_and_move:
           requires:
-            - analyse_js
+            - checkout_code
       # # Commenting this out till we can figure out how to connect detox to android emulator
       # Builds debug android and persists to workspace for e2e testing next
       # Runs detox tests on the apk persisted from fastlane_build_debug_android 
