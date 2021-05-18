@@ -20,13 +20,6 @@ platform :ios do
     setup_circle_ci
   end
 
-  lane :e2e do
-    Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed.
-      sh("detox build --configuration ios.sim.release")
-      sh("detox test --configuration ios.sim.release --cleanup")
-    end
-  end
-
   desc "Run tests and build the app"
   lane :build_adhoc_ios do
     increment_build_number(xcodeproj: "punchline.xcodeproj")
@@ -34,8 +27,6 @@ platform :ios do
       message: "Version Bump",# create a commit with a custom message
       xcodeproj: "./path/to/MyProject.xcodeproj"  # optional, if you have multiple Xcode project files, you must specify your main project here
     )
-    # scan(scheme: "punchline")
-    # scan
 
     # if changelog
     #   upload_to_testflight(changelog: changelog)
@@ -49,6 +40,12 @@ platform :ios do
     gym(export_method: "ad-hoc", output_directory: "output") # Directory where signed .ipa file will be placed
   end
 
+  lane :e2e_release do
+    Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed.
+      sh("detox build --configuration ios.sim.release")
+      sh("detox test --configuration ios.sim.release --cleanup")
+    end
+  end
 
   # after_all do
   #   slack(

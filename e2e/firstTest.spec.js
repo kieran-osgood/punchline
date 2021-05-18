@@ -8,15 +8,20 @@ describe("Example", () => {
     await reloadApp()
   })
 
+
   it("should have login screen", async () => {
-    await expect(element(by.id("LoginScreen"))).toBeVisible()
+    await expect(element(by.id("Logo"))).toBeVisible()
   })
 
-  it("should have welcome screen", async () => {
-    await element(by.text('Continue as guest')).tap();
+  // it("should have login screen", async () => {
+  //   await expect(element(by.id("LoginScreen"))).toBeVisible()
+  // })
 
-    await waitFor(element(by.id("JokeScreen"))).toBeVisible().withTimeout(4000)
-  })
+  // it("should have welcome screen", async () => {
+  //   await element(by.text('Continue as guest')).tap();
+
+  //   await waitFor(element(by.id("JokeScreen"))).toBeVisible().withTimeout(4000)
+  // })
 
   // it("should go to next screen after tap", async () => {
   //   await element(by.id("next-screen-button")).tap()
