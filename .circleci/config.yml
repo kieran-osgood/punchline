@@ -84,18 +84,16 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run: ls -a
-      - ruby/install:
-          version: '2.7'
       - run:
           name: "Fastlane Build Release - Android"
           working_directory: android
           no_output_timeout: 30m
           command: |
+            export LC_ALL=en_US.UTF-8
+            export LANG=en_US.UTF-8
+            gem install bundler
+            bundle install
             bundle exec fastlane build_android_release
-      # - persist_to_workspace:
-      #     root: .
-      #     paths: .
       - store_artifacts:
           path: android/app/build/outputs/apk/release
 
