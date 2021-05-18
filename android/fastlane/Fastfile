@@ -57,7 +57,8 @@ platform :android do
   lane :build_android_release do
     gradle(
       task: 'assemble',
-      build_type: 'Release'
+      build_type: 'Release',
+      flags: '--no-daemon'
     )
 
     # sentry_upload_file(
