@@ -2,6 +2,7 @@
 orbs:
   rn: react-native-community/react-native@5.1.0
   ruby: circleci/ruby@1.1.2
+  android: circleci/android@1.0.3
 version: 2.1
 
 jobs:
@@ -106,6 +107,10 @@ jobs:
           at: .
       - rn/yarn_install
       # - run: yarn add global detox-cli@18.13.0
+      - android/create-avd:
+          avd-name: myavd
+          install: true
+          system-image: system-images;android-29;default;x86
       - run:
           name: "Fastlane Build Debug - Android"
           working_directory: android
@@ -155,7 +160,15 @@ jobs:
             bundle exec fastlane e2e_release
       - store_artifacts:
           path: .artifacts
-          
+  my_test_of_avd:
+    executor: rn/linux_android
+    steps:
+    - run: avdmanager list
+    - android/create-avd:
+        avd-name: myavd
+        install: true
+        system-image: system-images;android-29;default;x86
+    - run: avdmanager list
   # fastlane_build_release_ios:
   #   macos:
   #     xcode: 12.4.0
@@ -181,6 +194,9 @@ workflows:
               only:
                 - develop
                 - feature/circle-fastlane-init
+      - my_test_of_avd:
+          requires:
+            - checkout_code
       # Analyze the Javascript using ESLint, and Jest
       # - analyse_js:
       #     filters:
@@ -214,10 +230,10 @@ workflows:
             # - checkout_code
       # Builds debug android and persists to workspace for e2e testing next
       # Runs detox tests on the apk persisted from fastlane_build_and_e2e_debug_android 
-      - fastlane_build_and_e2e_debug_android:
-          requires:
-              - checkout_code
-              # - decrypt_keystore_and_move
+      # - fastlane_build_and_e2e_debug_android:
+      #     requires:
+      #         - checkout_code
+      #         # - decrypt_keystore_and_move
 
       # Build and test the iOS app in release mode
       # - rn/ios_build_and_test:
