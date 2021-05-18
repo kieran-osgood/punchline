@@ -36,7 +36,9 @@ jobs:
           root: .
 
   decrypt_keystore_and_move:
-    executor: rn/linux_android 
+    executor: 
+      name: rn/linux_android 
+      resource_class: medium+
     steps:
       - attach_workspace:
           at: .
