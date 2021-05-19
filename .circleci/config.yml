@@ -40,9 +40,6 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run: ls -a
-      - run: 
-          command: ls android/app
       - run: 
           name: Decrypt keystore file
           command: gpg -d --pinentry-mode loopback --batch --yes --passphrase="$ENCRYPTION_PASSPHRASE" --output android/app/punchline.keystore --decrypt android/app/punchline-keys/punchline.keystore.gpg
@@ -55,6 +52,7 @@ jobs:
       
   fastlane_build_debug_android:
     executor: rn/linux_android
+    resource_class: medium+
     steps:
       - attach_workspace:
           at: .
@@ -79,7 +77,6 @@ jobs:
      
   fastlane_build_release_android:
     executor: rn/linux_android
-    working_directory: android
     resource_class: medium+
     steps:
       - attach_workspace:
@@ -96,36 +93,21 @@ jobs:
             bundle install
             bundle exec fastlane build_android_release_bundle
       - store_artifacts:
-          path: android/app/build/outputs/apk/release
+          path: android/app/build/outputs/bundle/release
 
-  # fastlane_e2e_release_android:
-  #   executor: rn/linux_android
-  #   steps:
-  #     - attach_workspace:
-  #         at: .
-  #     - run: ls -a
-  #     - run:
-  #         name: "Fastlane Build Release - Android"
-  #         working_directory: android
-  #         no_output_timeout: 30m
-  #         command: |
-  #           bundle exec fastlane e2e_release
-  #     - store_artifacts:
-  #         path: .artifacts
-
-  # fastlane_build_release_ios:
-  #   macos:
-  #     xcode: 12.4.0
-  #   steps:
-  #     - checkout
-  #     - run: 
-  #         name: "Fastlane Build Release - iOS"
-  #         working_directory: ios
-  #         no_output_timeout: 30m
-  #         command: |
-  #           bundle exec fastlane build_ios
-  #     - store_artifacts:
-  #         path: ios/output
+  fastlane_build_release_ios:
+    macos:
+      xcode: 12.4.0
+    steps:
+      - checkout
+      - run: 
+          name: "Fastlane Build Release - iOS"
+          working_directory: ios
+          no_output_timeout: 30m
+          command: |
+            bundle exec fastlane build_ios
+      - store_artifacts:
+          path: ios/output
 
 workflows:
   develop:
@@ -136,46 +118,37 @@ workflows:
             branches:
               only:
                 - develop
-                - feature/circle-fastlane-init
       # Analyze the Javascript using ESLint, and Jest
-      # - analyse_js:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - develop
-      #           - feature/circle-fastlane-init
-      #     requires:
-      #       - checkout_code
+      - analyse_js:
+          requires:
+            - checkout_code
       - decrypt_keystore_and_move:
           requires:
             - checkout_code
-      # # Commenting this out till we can figure out how to connect detox to android emulator
-      # Builds debug android and persists to workspace for e2e testing next
-      # Runs detox tests on the apk persisted from fastlane_build_debug_android 
-      # - fastlane_build_debug_android:
-      #     requires:
-      #         - checkout_code
-      #         - analyse_js
-
+      # Builds debug android apk
+      - fastlane_build_debug_android:
+          requires:
+              - checkout_code
+              - analyse_js
+      # Builds android aab
       - fastlane_build_release_android:
           requires:
               - decrypt_keystore_and_move
-              # - fastlane_build_debug_android
-
+              - fastlane_build_debug_android
       # Build and test the iOS app in release mode
-      # - rn/ios_build_and_test:
-      #     yarn_cache: false
-      #     xcodebuild_cache: false
-      #     homebrew_cache: false
-      #     project_type: "workspace"
-      #     project_path: "ios/punchline.xcworkspace"
-      #     device: "iPhone 11"
-      #     build_configuration: "Release"
-      #     scheme: "punchline"
-      #     detox_configuration: "ios.sim.release"
-      #     requires:
-      #       - checkout_code
-      #       - analyse_js
+      - rn/ios_build_and_test:
+          yarn_cache: false
+          xcodebuild_cache: false
+          homebrew_cache: false
+          project_type: "workspace"
+          project_path: "ios/punchline.xcworkspace"
+          device: "iPhone 11"
+          build_configuration: "Release"
+          scheme: "punchline"
+          detox_configuration: "ios.sim.release"
+          requires:
+            - checkout_code
+            - analyse_js
 
   # master:
   #   jobs: 
