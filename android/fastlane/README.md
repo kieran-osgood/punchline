@@ -41,6 +41,11 @@ Build release android configuration
 fastlane android e2e_release
 ```
 
+### android build_android_release_bundle
+```
+fastlane android build_android_release_bundle
+```
+Build release android configuration
 ### android playstore
 ```
 fastlane android playstore

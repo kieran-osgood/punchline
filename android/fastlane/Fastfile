@@ -58,17 +58,8 @@ platform :android do
     gradle(
       task: 'assemble',
       build_type: 'Release',
-      flags: '--no-daemon'
+      flags: '--no-daemon --max-workers=2'
     )
-
-    # sentry_upload_file(
-    #   auth_token: ENV['SENTRY_API_KEY'],
-    #   org_slug: 'ko-dev',
-    #   project_slug: 'punchline',
-    #   version: '',
-    #   app_identifier: 'com.ko.punchline', # pass in the bundle_identifer of your app
-    #   file: 'main.jsbundle' # file to upload
-    # )
   end
   
   lane :e2e_release do
@@ -78,6 +69,15 @@ platform :android do
     end
   end
 
+  desc "Build release android configuration"
+  lane :build_android_release_bundle do
+    gradle(
+      task: 'bundle',
+      build_type: 'Release',
+      flags: '--no-daemon --max-workers=2'
+    )
+  end
+  
   desc "Build Release configuration and Google Play Store"
   lane :playstore do
     # Retrieve version of my app in package.json (React Native case)
