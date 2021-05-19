@@ -31,6 +31,8 @@ def getVersionCode
   versionCode.floor()
 end
 
+$gradle_flags = '--no-daemon --max-workers=2 -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-XX:+UnlockExperimentalVMOptions -XX:+HeapDumpOnOutOfMemoryError"'
+
 platform :android do
 
   desc "Increments internal build number tracking (different than version)" 
@@ -58,7 +60,7 @@ platform :android do
     gradle(
       task: 'assemble',
       build_type: 'Release',
-      flags: '--no-daemon --max-workers=2 -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-XX:+UnlockExperimentalVMOptions -XX:+HeapDumpOnOutOfMemoryError"'
+      flags: $gradle_flags
     )
   end
   
@@ -74,7 +76,7 @@ platform :android do
     gradle(
       task: 'bundle',
       build_type: 'Release',
-      flags: '--no-daemon --max-workers=2'
+      flags: $gradle_flags
     )
   end
   
