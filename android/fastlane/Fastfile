@@ -58,7 +58,7 @@ platform :android do
     gradle(
       task: 'assemble',
       build_type: 'Release',
-      flags: '--no-daemon --max-workers=2'
+      flags: '--no-daemon --max-workers 2 -Xmx2014m -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-XX:+UnlockExperimentalVMOptions -XX:+HeapDumpOnOutOfMemoryError'
     )
   end
   
