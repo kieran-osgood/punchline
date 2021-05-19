@@ -80,6 +80,7 @@ jobs:
   fastlane_build_release_android:
     executor: rn/linux_android
     working_directory: android
+    resource_class: medium+
     steps:
       - attach_workspace:
           at: .
