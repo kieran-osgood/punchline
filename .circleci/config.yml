@@ -118,6 +118,7 @@ workflows:
             branches:
               only:
                 - develop
+                - feature/circle-fastlane-init
       # Analyze the Javascript using ESLint, and Jest
       - analyse_js:
           requires:
