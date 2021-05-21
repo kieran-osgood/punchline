@@ -54,7 +54,7 @@ platform :android do
       sh("detox test --configuration android.emu.debug --cleanup")
     end
   end
-  
+ 
   desc "Build release android configuration"
   lane :build_android_release do
     gradle(
@@ -63,7 +63,7 @@ platform :android do
       flags: $gradle_flags
     )
   end
-  
+ 
   lane :e2e_release do
     Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed
       sh("detox build --configuration android.emu.release")

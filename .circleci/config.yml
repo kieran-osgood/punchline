@@ -108,6 +108,28 @@ jobs:
             bundle exec fastlane build_ios
       - store_artifacts:
           path: ios/output
+  test:
+    executor:
+      name: android/android-machine
+      resource-class: large
+    steps:
+      - checkout
+      - android/create-avd:
+          avd-name: myavd
+          install: true
+          system-image: system-images;android-29;default;x86
+      - android/start-emulator:
+          avd-name: android_29_avd
+          no-window: true
+          restore-gradle-cache-prefix: v1a
+      - run: 
+          name: "Fastlane Build Release - Android"
+          working_directory: android
+          no_output_timeout: 30m
+          command: |
+            bundle exec fastlane e2e_debug
+      - android/save-gradle-cache:
+          cache-prefix: v1a
 
 workflows:
   develop:
@@ -119,37 +141,46 @@ workflows:
               only:
                 - develop
                 - feature/circle-fastlane-init
-      # Analyze the Javascript using ESLint, and Jest
-      - analyse_js:
-          requires:
-            - checkout_code
-      - decrypt_keystore_and_move:
-          requires:
-            - checkout_code
-      # Builds debug android apk
-      - fastlane_build_debug_android:
-          requires:
+      # TESTING
+      # - fastlane_build_debug_android:
+          # requires:
+      #         - checkout_code
+      - test:
+          requires: 
               - checkout_code
-              - analyse_js
-      # Builds android aab
-      - fastlane_build_release_android:
-          requires:
-              - decrypt_keystore_and_move
-              - fastlane_build_debug_android
-      # Build and test the iOS app in release mode
-      - rn/ios_build_and_test:
-          yarn_cache: false
-          xcodebuild_cache: false
-          homebrew_cache: false
-          project_type: "workspace"
-          project_path: "ios/punchline.xcworkspace"
-          device: "iPhone 11"
-          build_configuration: "Release"
-          scheme: "punchline"
-          detox_configuration: "ios.sim.release"
-          requires:
-            - checkout_code
-            - analyse_js
+      # TESTING
+
+      # # Analyze the Javascript using ESLint, and Jest
+      # - analyse_js:
+      #     requires:
+      #       - checkout_code
+      # - decrypt_keystore_and_move:
+      #     requires:
+      #       - checkout_code
+      # # Builds debug android apk
+      # - fastlane_build_debug_android:
+      #     requires:
+      #         - checkout_code
+      #         - analyse_js
+      # # Builds android aab
+      # - fastlane_build_release_android:
+      #     requires:
+      #         - decrypt_keystore_and_move
+      #         - fastlane_build_debug_android
+      # # Build and test the iOS app in release mode
+      # - rn/ios_build_and_test:
+      #     yarn_cache: false
+      #     xcodebuild_cache: false
+      #     homebrew_cache: false
+      #     project_type: "workspace"
+      #     project_path: "ios/punchline.xcworkspace"
+      #     device: "iPhone 11"
+      #     build_configuration: "Release"
+      #     scheme: "punchline"
+      #     detox_configuration: "ios.sim.release"
+      #     requires:
+      #       - checkout_code
+      #       - analyse_js
 
   # master:
   #   jobs: 

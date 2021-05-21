@@ -198,7 +198,7 @@
       "emulator": {
         "type": "android.emulator",
         "device": {
-          "avdName": "android_30_pixel_xl"
+          "avdName": "android_29_avd"
         }
       },
       "simulator": {
