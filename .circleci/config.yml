@@ -115,7 +115,7 @@ jobs:
     steps:
       - checkout
       - android/create-avd:
-          avd-name: myavd
+          avd-name: android_29_avd
           install: true
           system-image: system-images;android-29;default;x86
       - android/start-emulator:
