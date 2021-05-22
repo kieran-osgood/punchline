@@ -124,6 +124,7 @@ jobs:
           avd-name: android_29_avd
           no-window: true
           restore-gradle-cache-prefix: v1a
+          post-emulator-launch-assemble-command: ''
       - run: 
           name: "Fastlane Build Release - Android"
           working_directory: android
