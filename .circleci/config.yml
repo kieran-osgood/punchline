@@ -113,6 +113,8 @@ jobs:
       name: android/android-machine
       resource-class: large
     steps:
+      - attach_workspace:
+          at: .
       - checkout
       - android/create-avd:
           avd-name: android_29_avd
