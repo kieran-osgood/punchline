@@ -116,6 +116,7 @@ jobs:
       - attach_workspace:
           at: .
       - checkout
+      - rn/yarn_install
       - android/create-avd:
           avd-name: android_29_avd
           install: true
