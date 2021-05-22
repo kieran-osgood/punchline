@@ -116,6 +116,7 @@ jobs:
       - attach_workspace:
           at: .
       - checkout
+      - run: npm i -g yarn
       - rn/yarn_install
       - android/create-avd:
           avd-name: android_29_avd
