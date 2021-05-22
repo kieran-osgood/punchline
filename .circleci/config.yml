@@ -130,6 +130,10 @@ jobs:
           working_directory: android
           no_output_timeout: 30m
           command: |
+            export LC_ALL=en_US.UTF-8
+            export LANG=en_US.UTF-8
+            gem install bundler
+            bundle install
             bundle exec fastlane e2e_debug
       - android/save-gradle-cache:
           cache-prefix: v1a
