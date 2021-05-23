@@ -80,6 +80,7 @@ Production
 android/fastlane/fastlane-service-account.json
 android/fastlane/metadata
 ios/output
+android/fastlane/.env
 
 # Detox
 .artifacts
