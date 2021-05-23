@@ -24,3 +24,5 @@ ios_debug:
 ios_release: 
 	cd ios && bundle exec fastlane build_release_ios --env production
 	
+create_avd:
+	echo "no" | avdmanager --verbose create avd -n "android_29_avd" -k "system-images;android-29;default;x86" 
