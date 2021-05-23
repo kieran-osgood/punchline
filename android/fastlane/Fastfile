@@ -111,42 +111,42 @@ platform :android do
     )
   end
 
-  # after_all do
-  #   slack(
-  #     slack_url: "https://hooks.slack.com/services/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",
-  #     message: "App successfully built!",
-  #     payload: { 
-  #       "Build Date" => Time.new.to_s,
-  #       "Built by" => "KO",
-  #     },
-  #     default_payloads: [:git_branch, :git_author],
-  #     attachment_properties: { 
-  #       fields: [{
-  #         title: "My Field",
-  #         value: "My Value",
-  #         short: true
-  #       }]
-  #     }
-  #   )
-  # end
+  after_all do
+    slack(
+      slack_url: "https://hooks.slack.com/services/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",
+      message: "App successfully built!",
+      payload: { 
+        "Build Date" => Time.new.to_s,
+        "Built by" => "KO",
+      },
+      default_payloads: [:git_branch, :git_author],
+      attachment_properties: { 
+        fields: [{
+          # title: "My Field",
+          # value: "My Value",
+          # short: true
+        }]
+      }
+    )
+  end
 
-  # error do 
-  #   slack(
-  #     slack_url: "https://hooks.slack.com/services/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",
-  #     success: false,
-  #     message: "App build failed!",
-  #     payload: {
-  #       "Build Date" => Time.new.to_s,
-  #       "Built by" => "KO",
-  #     },
-  #     default_payloads: [:git_branch, :git_author],
-  #     attachment_properties: {
-  #       fields: [{
-  #         title: "My Field",
-  #         value: "My Value",
-  #         short: true
-  #       }]
-  #     }
-  #   )
-  #   end
+  error do 
+    slack(
+      slack_url: "https://hooks.slack.com/services/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",
+      success: false,
+      message: "App build failed!",
+      payload: {
+        "Build Date" => Time.new.to_s,
+        "Built by" => "KO",
+      },
+      default_payloads: [:git_branch, :git_author],
+      attachment_properties: {
+        fields: [{
+          # title: "My Field",
+          # value: "My Value",
+          # short: true
+        }]
+      }
+    )
+    end
 end
