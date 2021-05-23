@@ -33,6 +33,10 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-3681973098458031~6045236896</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -63,12 +67,9 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-3681973098458031~6045236896</string>
 </dict>
 </plist>

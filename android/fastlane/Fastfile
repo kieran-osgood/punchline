@@ -1,0 +1,152 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+update_fastlane
+
+default_platform(:android)
+
+def getVersionCode
+  # Instead of managing the version code manually it is based on a timestamp in seconds
+  # Any build done more recently is considered to be a higher version
+  # versionCode increase every minute (so max 1 build per minute)
+  # versionCode cannot be smaller than legacyVersionCode
+  thirtySeptemberTwentyTwenty = 1601480940 / 60
+  legacyVersionCode = 10902
+  versionCode = legacyVersionCode + (Time.now.to_i / 60) - thirtySeptemberTwentyTwenty
+
+  if versionCode > 2100000000
+    raise "versionCode cannot be higher than 2100000000"
+  end
+
+  versionCode.floor()
+end
+
+$gradle_flags = '--no-daemon --max-workers=2 -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-XX:+UnlockExperimentalVMOptions -XX:+HeapDumpOnOutOfMemoryError"'
+
+platform :android do
+
+  desc "Increments internal build number tracking (different than version)" 
+  lane :bump_build_number do 
+    android_set_version_code(version_code: getVersionCode()) 
+  end 
+
+  desc "Build debug android configuration"
+  lane :build_android_debug do
+    gradle(task: "clean assembleDebug")
+  end
+
+  lane :e2e_debug do
+    package = load_json(json_path: "../package.json")
+
+    Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed
+      sh("npm i -g detox-cli@#{package['devDependencies']['detox']}")
+      sh("detox build --configuration android.emu.debug")
+      sh("detox test --configuration android.emu.debug --cleanup")
+    end
+  end
+ 
+  desc "Build release android configuration"
+  lane :build_android_release do
+    gradle(
+      task: 'assemble',
+      build_type: 'Release',
+      flags: $gradle_flags
+    )
+  end
+ 
+  lane :e2e_release do
+    Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed
+      sh("detox build --configuration android.emu.release")
+      sh("detox test --configuration android.emu.release --cleanup")
+    end
+  end
+
+  desc "Build release android configuration"
+  lane :build_android_release_bundle do
+    gradle(
+      task: 'bundle',
+      build_type: 'Release',
+      flags: $gradle_flags
+    )
+  end
+  
+  desc "Build Release configuration and Google Play Store"
+  lane :playstore do
+    # Retrieve version of my app in package.json (React Native case)
+    package = load_json(json_path: "../package.json")
+
+    # Clean build folder
+    gradle(
+      task: "clean"
+    )
+
+    # Bump android.defaultConfig.versionCode
+    bump_build_number
+
+    # Do the bundle of the application
+    gradle(
+      task: 'bundle',
+      build_type: 'Release',
+      properties: {
+        "vname" => package["version"]
+      }
+    )
+
+    # Upload Android App Bundle to PlayStore like Internal testing Release
+    upload_to_play_store(
+      track: 'internal',
+      release_status: 'draft', # <http://docs.fastlane.tools/actions/upload_to_play_store/#parameters>
+      skip_upload_apk: true,
+      version_name: package["version"]
+    )
+  end
+
+  after_all do
+    slack(
+      slack_url: "https://hooks.slack.com/services/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",
+      message: "App successfully built!",
+      payload: { 
+        "Build Date" => Time.new.to_s,
+        "Built by" => "KO",
+      },
+      default_payloads: [:git_branch, :git_author],
+      attachment_properties: { 
+        fields: [{
+          # title: "My Field",
+          # value: "My Value",
+          # short: true
+        }]
+      }
+    )
+  end
+
+  error do 
+    slack(
+      slack_url: "https://hooks.slack.com/services/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",
+      success: false,
+      message: "App build failed!",
+      payload: {
+        "Build Date" => Time.new.to_s,
+        "Built by" => "KO",
+      },
+      default_payloads: [:git_branch, :git_author],
+      attachment_properties: {
+        fields: [{
+          # title: "My Field",
+          # value: "My Value",
+          # short: true
+        }]
+      }
+    )
+    end
+end

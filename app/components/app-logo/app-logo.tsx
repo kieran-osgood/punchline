@@ -16,7 +16,7 @@ export const AppLogo = observer(function AppLogo(props: AppLogoProps) {
   const { style = {}, width = 200, height = 40 } = props
 
   return (
-    <View style={{ ...CONTAINER, ...style }}>
+    <View style={{ ...CONTAINER, ...style }} testID="Logo">
       <Punchline width={width} height={height} />
     </View>
   )

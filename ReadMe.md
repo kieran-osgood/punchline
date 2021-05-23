@@ -1,5 +1,13 @@
 # Get Started
 
+## Secret management
+Secret variables go in the .env.template, files should be included in the punchline-keys private repository, encrypted with openssl.
+
+Encrypt:
+``
+Decrypt:
+`gpg -d --pinentry-mode loopback --batch --yes --passphrase="$(passphrase)" --output android/app/punchline.keystore --decrypt android/app/punchlinekeys/punchline.keystore.gpg`
+
 ## Debugging
 If using VS Code there is a .vscode/launch.json already included in the repository.
 1. In order to run debugging, install the [react native tools](https://marketplace.visualstudio.com/items?itemName=msjsdiag.vscode-react-native) extension.

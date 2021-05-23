@@ -1,0 +1,87 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  before_all do
+    setup_circle_ci
+  end
+
+  desc "Run tests and build the app"
+  lane :build_adhoc_ios do
+    increment_build_number(xcodeproj: "punchline.xcodeproj")
+    commit_version_bump(
+      message: "Version Bump", # create a commit with a custom message
+    )
+
+    # if changelog
+    #   upload_to_testflight(changelog: changelog)
+    # else
+    #   upload_to_testflight
+    # end    
+ 
+    # Get latest certs appstore
+    match(type: "adhoc") # Set type of code signing required
+    # Gym aliases build_app
+    gym(export_method: "ad-hoc", output_directory: "output") # Directory where signed .ipa file will be placed
+  end
+
+  lane :e2e_release do
+    Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed.
+      sh("detox build --configuration ios.sim.release")
+      sh("detox test --configuration ios.sim.release --cleanup")
+    end
+  end
+
+  after_all do
+    slack(
+      slack_url: "https://hooks.slack.com/services/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",
+      message: "App successfully built!",
+      payload: { 
+        "Build Date" => Time.new.to_s,
+        "Built by" => "KO",
+      },
+      default_payloads: [:git_branch, :git_author],
+      attachment_properties: { 
+        fields: [{
+          # title: "My Field",
+          # value: "My Value",
+          # short: true
+        }]
+      }
+    )
+  end
+
+  error do 
+    slack(
+      slack_url: "https://hooks.slack.com/services/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",
+      success: false,
+      message: "App build failed!",
+      payload: {
+        "Build Date" => Time.new.to_s,
+        "Built by" => "KO",
+      },
+      default_payloads: [:git_branch, :git_author],
+      attachment_properties: {
+        fields: [{
+          # title: "My Field",
+          # value: "My Value",
+          # short: true
+        }]
+      }
+    )
+    end
+end

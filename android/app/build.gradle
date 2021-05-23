@@ -91,6 +91,9 @@ import com.android.build.OutputFile
 
 project.ext.react = [
     enableHermes: true,  // clean and rebuild if changing
+    hermesFlagsRelease: ["-w", "-O", "-output-source-map"], // add this,
+    hermesFlagsDebug: ["-w", "-O", "-output-source-map"], // add this,
+    entryFile: "index.js",
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -150,6 +153,9 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
+
+        testBuildType System.getProperty('testBuildType', 'debug')  // This will later be used to control the test apk build type
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     splits {
         abi {
@@ -166,17 +172,24 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('punchline.keystore')
+            storePassword System.getenv('STORE_PASSWORD')
+            keyAlias System.getenv('KEY_ALIAS')
+            keyPassword System.getenv('KEY_PASSWORD')
+        }
     }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
         }
         release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            // Detox-specific additions to pro-guard
+            proguardFile "${rootProject.projectDir}/../node_modules/detox/android/detox/proguard-rules-app.pro"
+
         }
     }
 
@@ -203,7 +216,8 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
-    
+    androidTestImplementation('com.wix:detox:+')
+
     addUnimodulesDependencies()
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {

@@ -9,10 +9,12 @@
     "test:e2e": "detox test -c ios.sim.debug",
     "build:e2e": "detox build -c ios.sim.debug",
     "record:e2e": "detox recorder --configuration \"ios.sim.release\" --outputTestFile \"~/e2e/recorded.js\" --testName \"My Recorded Test\" --record",
-    "a":"detox recorder --bundleId \"com.ko.puchline\" --simulatorId booted --outputTestFile \"~/Desktop/RecordedTest.js\" --testName \"My Recorded Test\" --record",
+    "a": "detox recorder --bundleId \"com.ko.puchline\" --simulatorId booted --outputTestFile \"~/Desktop/RecordedTest.js\" --testName \"My Recorded Test\" --record",
     "ci:test:jest": "jest",
-    "ci:test:e2e": "detox test -c ios.sim.release -l verbose --cleanup",
     "ci:build:e2e": "detox build -c ios.sim.release",
+    "ci:test:e2e": "detox test -c ios.sim.release -l verbose --cleanup",
+    "ci:build:e2e:android": "detox build -c android.emu.debug",
+    "ci:test:e2e:android": "detox test -c android.emu.debug -l verbose --cleanup",
     "compile": "tsc --noEmit -p . --pretty",
     "format": "npm-run-all format:*",
     "format:js": "prettier --write \"**/*.js\"",
@@ -49,6 +51,7 @@
     "expo-localization": "9.1.0",
     "graphql-request": "^3.4.0",
     "i18n-js": "3.8.0",
+    "jest-cli": "^26.6.3",
     "mobx": "6.0.4",
     "mobx-react-lite": "3.1.6",
     "mobx-state-tree": "4.0.2",
@@ -99,7 +102,7 @@
     "babel-loader": "8.2.2",
     "bufferutil": "4.0.2",
     "canvas": "2.6.1",
-    "detox": "17.14.5",
+    "detox": "^18.13.0",
     "eslint": "7.15.0",
     "eslint-config-prettier": "7.0.0",
     "eslint-config-standard": "16.0.2",
@@ -164,18 +167,87 @@
   },
   "detox": {
     "test-runner": "jest",
-    "configurations": {
-      "ios.sim.debug": {
-        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/punchline.app",
-        "build": "xcodebuild -workspace ios/punchline.xcworkspace -scheme punchline -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -destination 'name=iPhone 11'",
+    "artifacts": {
+      "rootDir": ".artifacts",
+      "plugins": {
+        "instruments": {
+          "enabled": false
+        },
+        "log": {
+          "enabled": true
+        },
+        "uiHierarchy": "enabled",
+        "screenshot": {
+          "enabled": true,
+          "shouldTakeAutomaticSnapshots": true,
+          "keepOnlyFailedTestsArtifacts": true,
+          "takeWhen": {
+            "testStart": true,
+            "testDone": true
+          }
+        },
+        "video": {
+          "android": {
+            "bitRate": 4000000
+          },
+          "simulator": {
+            "codec": "hevc"
+          }
+        }
+      }
+    },
+    "devices": {
+      "emulator": {
+        "type": "android.emulator",
+        "device": {
+          "avdName": "android_29_avd"
+        }
+      },
+      "simulator": {
         "type": "ios.simulator",
-        "name": "iPhone 11"
+        "device": {
+          "type": "iPhone 12 Pro Max"
+        }
+      }
+    },
+    "apps": {
+      "android.debug": {
+        "type": "android.apk",
+        "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
+        "build": "cd android && ./gradlew assembleDebug app:assembleAndroidTest -DtestBuildType=debug && cd .."
+      },
+      "android.release": {
+        "type": "android.apk",
+        "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
+        "build": "cd android && ./gradlew assembleRelease app:assembleAndroidTest -DtestBuildType=release && cd .."
+      },
+      "ios.debug": {
+        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/punchline.app",
+        "type": "ios.app",
+        "build": "xcodebuild -workspace ios/punchline.xcworkspace -scheme punchline -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build -destination 'name=iPhone 12'"
+      },
+      "ios.release": {
+        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/punchline.app",
+        "type": "ios.app",
+        "build": "xcodebuild -workspace ios/punchline.xcworkspace -scheme punchline -configuration Release -sdk iphonesimulator -derivedDataPath ios/build -destination 'name=iPhone 12'"
+      }
+    },
+    "configurations": {
+      "android.emu.debug": {
+        "app": "android.debug",
+        "device": "emulator"
+      },
+      "android.emu.release": {
+        "app": "android.release",
+        "device": "emulator"
+      },
+      "ios.sim.debug": {
+        "device": "simulator",
+        "app": "ios.debug"
       },
       "ios.sim.release": {
-        "binaryPath": "ios/build/Build/Products/Release-iphonesimulator/punchline.app",
-        "build": "xcodebuild -workspace ios/punchline.xcworkspace -scheme punchline -configuration Release -sdk iphonesimulator -derivedDataPath ios/build -destination 'name=iPhone 11'",
-        "type": "ios.simulator",
-        "name": "iPhone 11"
+        "device": "simulator",
+        "app": "ios.release"
       }
     }
   },

@@ -42,6 +42,7 @@ yarn-error.log
 buck-out/
 \.buckd/
 *.keystore
+!debug.keystore
 
 # fastlane
 #
@@ -74,3 +75,12 @@ coverage/*
 android/app/debug/*
 android/app/release/*
 Production
+
+# Fastlane
+android/fastlane/fastlane-service-account.json
+android/fastlane/metadata
+ios/output
+android/fastlane/.env
+
+# Detox
+.artifacts
