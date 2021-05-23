@@ -12,6 +12,8 @@ buildscript {
         google()
         jcenter()
     }
+        ext.kotlinVersion = '1.5.0' // (check what the latest version is!)
+
     dependencies {
         classpath('com.android.tools.build:gradle:4.1.3')
         // NOTE: Do not place your application dependencies here; they belong
@@ -19,6 +21,7 @@ buildscript {
         
         // MANUAL INSTALLED 
         classpath 'com.google.gms:google-services:4.3.4'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         // MANUAL INSTALLED 
     }
 }
@@ -33,6 +36,7 @@ allprojects {
         maven {
             // Android JSC is installed from npm
             url("$rootDir/../node_modules/jsc-android/dist")
+            url "$rootDir/../node_modules/detox/Detox-android"
         }
 
         google()
