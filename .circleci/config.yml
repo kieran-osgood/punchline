@@ -152,9 +152,6 @@ workflows:
       - analyse_js:
           requires:
             - checkout_code
-      - decrypt_keystore:
-          requires:
-            - checkout_code
       # Builds debug android apk
       - build_android_debug:
           requires:
@@ -163,25 +160,28 @@ workflows:
       - e2e_android_debug:
           requires: 
               - build_android_debug
+      - decrypt_keystore:
+          requires:
+            - e2e_android_debug
       # Builds android aab
       - build_android_release:
           requires:
               - decrypt_keystore
               - e2e_android_debug
       # Build and test the iOS app in release mode
-      - rn/ios_build_and_test:
-          # yarn_cache: false
-          # xcodebuild_cache: false
-          homebrew_cache: false
-          project_type: "workspace"
-          project_path: "ios/punchline.xcworkspace"
-          device: "iPhone 11"
-          build_configuration: "Release"
-          scheme: "punchline"
-          detox_configuration: "ios.sim.release"
-          requires:
-            - checkout_code
-            - analyse_js
+      # - rn/ios_build_and_test:
+      #     # yarn_cache: false
+      #     # xcodebuild_cache: false
+      #     homebrew_cache: false
+      #     project_type: "workspace"
+      #     project_path: "ios/punchline.xcworkspace"
+      #     device: "iPhone 11"
+      #     build_configuration: "Release"
+      #     scheme: "punchline"
+      #     detox_configuration: "ios.sim.release"
+      #     requires:
+      #       - checkout_code
+      #       - analyse_js
 
   # master:
   #   jobs: 
