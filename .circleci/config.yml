@@ -170,8 +170,8 @@ workflows:
               - e2e_android_debug
       # Build and test the iOS app in release mode
       - rn/ios_build_and_test:
-          # yarn_cache: false
-          # xcodebuild_cache: false
+          yarn_cache: false
+          xcodebuild_cache: false
           homebrew_cache: false
           project_type: "workspace"
           project_path: "ios/punchline.xcworkspace"
