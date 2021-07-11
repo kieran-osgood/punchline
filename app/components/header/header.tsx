@@ -1,43 +1,50 @@
-import { BannerAd, TestIds, BannerAdSize } from "@react-native-firebase/admob"
 import { observer } from "mobx-react-lite"
 import { AppLogo } from "../app-logo/app-logo"
 import React from "react"
-import { View, ViewStyle } from "react-native"
-import { spacing } from "theme"
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen"
+import { TouchableOpacity, View, ViewStyle } from "react-native"
+import { heightPercentageToDP as hp } from "react-native-responsive-screen"
+import { AccountIcon, BackArrowIcon, SettingsIcon } from "images"
+import { useNavigation } from "@react-navigation/native"
+import { NavigationProps } from "app/navigators/main-navigator"
 
 export interface HeaderProps {}
 
 /**
- * Describe your component here
+ * Header component
  */
 export const Header = observer(function Header(props: HeaderProps) {
+  const navigation = useNavigation<NavigationProps<"JokeScreen">["navigation"]>()
+  const canGoBack = navigation.canGoBack()
   return (
-    <>
-      <View style={LOGO_CONTAINER}>
-        <AppLogo style={LOGO} height={hp("5%")} width={wp("35%")} />
-      </View>
-      <BannerAd
-        unitId={
-          process.env.NODE_ENV === "production"
-            ? "ca-app-pub-3681973098458031/3206308809"
-            : TestIds.BANNER
-        }
-        size={BannerAdSize.SMART_BANNER}
-      />
-    </>
+    <View style={CONTAINER}>
+      <TouchableOpacity style={COL}>
+        {canGoBack ? <BackArrowIcon /> : <AccountIcon />}
+      </TouchableOpacity>
+
+      <AppLogo style={{ ...COL, ...LOGO }} height={hp("3%")} />
+
+      <TouchableOpacity style={{ ...COL, ...SETTINGS }}>
+        {!canGoBack && <SettingsIcon />}
+      </TouchableOpacity>
+    </View>
   )
 })
 
-const LOGO_CONTAINER: ViewStyle = {
-  width: "100%",
+const CONTAINER: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  paddingVertical: 5,
+  paddingHorizontal: 25,
 }
-
 const LOGO: ViewStyle = {
-  padding: spacing[1],
-  alignSelf: "auto",
-  justifyContent: "flex-start",
+  justifyContent: "center",
+  flexDirection: "row",
+}
+const COL: ViewStyle = {
+  alignSelf: "center",
+  width: "33%",
+}
+const SETTINGS: ViewStyle = {
+  justifyContent: "flex-end",
+  flexDirection: "row",
 }

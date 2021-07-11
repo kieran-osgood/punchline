@@ -6,3 +6,6 @@ export * from "./google"
 export * from "./laughing-emoji"
 export * from "./microphone"
 export * from "./punchline"
+export * from './account'
+export * from './settings'
+export * from './back-arrow'
