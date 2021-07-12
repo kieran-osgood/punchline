@@ -15,16 +15,19 @@ export const JokeScreen = observer(function JokeScreen() {
 
   return (
     <Screen style={ROOT} preset="fixed" testID="JokeScreen">
-      <CenterView style={{ justifyContent: "flex-end" }}>
+      <CenterView style={CONTAINER}>
         <View style={HEADER}>
           <Text text="Dad Jokes" />
           <Text h1 text="The Car Joke" />
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <Text
-            style={{ flexWrap: "wrap", flex: 1 }}
-            text={`"Crime in multi-storey car parks. That is wrong on so many different levels.`}
-          />
+
+        <View>
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              style={{ flexWrap: "wrap" }}
+              text={`"Crime in multi-storey car parks. That is wrong on so many different levels.`}
+            />
+          </View>
         </View>
 
         <View style={JOKE_INFO}>
@@ -44,7 +47,9 @@ const ROOT: ViewStyle = {
   backgroundColor: color.background,
   flex: 1,
 }
-
+const CONTAINER: ViewStyle = {
+  justifyContent: "space-between",
+}
 const JOKE_INFO: ViewStyle = {
   flexDirection: "row",
   width: "100%",
@@ -55,7 +60,6 @@ const JOKE_INFO: ViewStyle = {
 
 const HEADER: ViewStyle = {
   alignItems: "center",
-  flex: 0.3,
   justifyContent: "center",
 }
 

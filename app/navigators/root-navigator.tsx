@@ -45,17 +45,11 @@ const RootStack = observer(function RootStack() {
         <Stack.Screen
           name="AuthNavigator"
           component={AuthNavigator}
-          options={{
-            headerShown: false,
-          }}
         />
       ) : (
         <Stack.Screen
           name="MainNavigator"
           component={MainNavigator}
-          options={{
-            headerShown: false,
-          }}
         />
       )}
     </Stack.Navigator>
