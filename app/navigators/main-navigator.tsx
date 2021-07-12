@@ -26,7 +26,9 @@ import { Header } from "components"
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
 export type RouteParamList = {
-  JokeScreen: undefined
+  JokeScreen?: {
+    jokeId?: string
+  } 
   SettingsScreen: undefined
   LoginScreen: undefined
   UserProfileScreen: undefined

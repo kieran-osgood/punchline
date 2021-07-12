@@ -33,7 +33,6 @@ export const Header = observer(function Header(props: HeaderProps) {
 const CONTAINER: ViewStyle = {
   flexDirection: "row",
   justifyContent: "space-between",
-  paddingVertical: 5,
   paddingHorizontal: 25,
 }
 const LOGO: ViewStyle = {

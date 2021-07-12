@@ -9,6 +9,6 @@ export const palette = {
   lighterGrey: '#CDD4DA',
   angry: '#dd3333',
   yellow: '#e3bc46',
-  background: '#F2C94C',
+  background: 'hsl(0, 0%, 100%)',
   green: '#06c258',
 }
