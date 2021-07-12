@@ -1,18 +1,13 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
 import { View, ViewStyle } from "react-native"
-import { Screen, CenterView, Text, AdBanner, CircularButton } from "components"
+import { Screen, CenterView, Text, AdBanner, CircularButton, ShareIcons, Ratings } from "components"
 import { color } from "theme"
-import { CryingEmoji, Facebook, LaughingEmoji, Share, Twitter } from "images"
+import { CryingEmoji, LaughingEmoji } from "images"
 import { useRoute } from "@react-navigation/native"
 import { NavigationProps } from "app/navigators/main-navigator"
 
 const PAGE_GUTTERS = 15
-
-const ROOT: ViewStyle = {
-  backgroundColor: color.background,
-  flex: 1,
-}
 
 export const JokeScreen = observer(function JokeScreen() {
   const route = useRoute<NavigationProps<"JokeScreen">["route"]>()
@@ -32,27 +27,31 @@ export const JokeScreen = observer(function JokeScreen() {
           />
         </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-            width: "100%",
-            justifyContent: "space-between",
-            paddingHorizontal: PAGE_GUTTERS,
-            maxHeight: 25,
-          }}
-        >
-          <Ratings />
-          <ShareIcons />
+        <View style={JOKE_INFO}>
+          <Ratings likes={0} dislikes={0} />
+          {/* TODO: replace with actual id */}
+          <ShareIcons jokeId={route.params?.jokeId ?? ""} />
         </View>
 
         <Controls />
-
-        {/* <JokeSection /> */}
         <AdBanner />
       </CenterView>
     </Screen>
   )
 })
+
+const ROOT: ViewStyle = {
+  backgroundColor: color.background,
+  flex: 1,
+}
+
+const JOKE_INFO: ViewStyle = {
+  flexDirection: "row",
+  width: "100%",
+  justifyContent: "space-between",
+  paddingHorizontal: PAGE_GUTTERS,
+  maxHeight: 25,
+}
 
 const HEADER: ViewStyle = {
   alignItems: "center",
@@ -61,7 +60,6 @@ const HEADER: ViewStyle = {
 }
 
 type ButtonsProps = {}
-
 export const Controls = (props: ButtonsProps) => {
   const rate = () => {}
   const bookmark = () => {}
@@ -69,7 +67,7 @@ export const Controls = (props: ButtonsProps) => {
 
   return (
     <View style={BUTTONS}>
-      <CircularButton style={{ padding: 15 }} onPress={rate}>
+      <CircularButton style={DISLIKE} onPress={rate}>
         <CryingEmoji />
       </CircularButton>
 
@@ -103,47 +101,6 @@ const SECONDARY_ACTION_BUTTONS: ViewStyle = {
   justifyContent: "space-between",
   alignItems: "center",
 }
-
-type RatingsProps = {}
-
-export const Ratings = (props: RatingsProps) => {
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        alignItems: 'center'
-      }}
-    >
-      <View>
-        <Text>123</Text>
-      </View>
-      <View style={{ width: 25 }}>
-        <LaughingEmoji />
-      </View>
-      <View>
-        <Text>10</Text>
-      </View>
-      <View style={{ width: 25 }}>
-        <CryingEmoji />
-      </View>
-    </View>
-  )
-}
-
-type ShareProps = {}
-
-export const ShareIcons = (props: ShareProps) => {
-  return (
-    <View style={SHARE_ICONS}>
-      <Facebook />
-      <Twitter />
-      <Share />
-    </View>
-  )
-}
-
-const SHARE_ICONS: ViewStyle = {
-  flexDirection: "row",
-  justifyContent: "center",
-  alignItems: "center",
+const DISLIKE: ViewStyle = {
+  padding: 15,
 }
