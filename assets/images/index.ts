@@ -9,3 +9,5 @@ export * from "./punchline"
 export * from './account'
 export * from './settings'
 export * from './back-arrow'
+export * from './share'
+export * from './twitter'

@@ -1,10 +1,11 @@
-import * as React from 'react'
-import Svg, { Path } from 'react-native-svg'
-import { SVGProps } from 'app/types'
+import * as React from "react"
+import Svg, { Path } from "react-native-svg"
+import { SVGProps } from "app/types"
 
-export function LaughingEmoji(props: SVGProps) {
+type LaughingEmojiProps = {} & SVGProps
+export function LaughingEmoji(props: LaughingEmojiProps) {
   return (
-    <Svg width={112} height={84} viewBox="3 10 55 44" fill="none" {...props}>
+    <Svg viewBox="4.1 7.4 55 44" fill="none" {...props}>
       <Path
         d="M31.5 52.369c11.414 0 20.667-9.253 20.667-20.667 0-11.414-9.253-20.666-20.667-20.666-11.414 0-20.667 9.252-20.667 20.666S20.086 52.37 31.5 52.37z"
         fill="#FCEA2B"
