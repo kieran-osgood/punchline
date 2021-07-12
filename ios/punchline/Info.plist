@@ -28,6 +28,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.681986405885-gfppj7edi8rbb3h1t1gms2el14gr2c1l</string>
+				<string>punchline</string>
 			</array>
 		</dict>
 	</array>

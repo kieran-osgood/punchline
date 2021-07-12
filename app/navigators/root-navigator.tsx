@@ -5,14 +5,17 @@
  * will use once logged in.
  */
 import React from "react"
-import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
+import {
+  LinkingOptions,
+  NavigationContainer,
+  NavigationContainerRef,
+} from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { mainExitRoutes, MainNavigator, MainRouteNames } from "app/navigators/main-navigator"
 import { authExitRoutes, AuthNavigator, AuthRouteNames } from "app/navigators/auth-navigator"
 import { useStores } from "app/models"
 import { observer } from "mobx-react-lite"
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
-import { useQuery } from 'app/graphql/reactUtils'
+
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
  * as well as what properties (if any) they might take when navigating to them.
@@ -60,11 +63,11 @@ const RootStack = observer(function RootStack() {
 })
 
 export const RootNavigator = React.forwardRef<
-NavigationContainerRef,
-Partial<React.ComponentProps<typeof NavigationContainer>>
+  NavigationContainerRef,
+  Partial<React.ComponentProps<typeof NavigationContainer>>
 >((props, ref) => {
   return (
-    <NavigationContainer {...props} ref={ref}>
+    <NavigationContainer {...props} {...{ ref, linking }}>
       <RootStack />
     </NavigationContainer>
   )
@@ -75,3 +78,20 @@ RootNavigator.displayName = "RootNavigator"
 export type AllRouteNames = MainRouteNames | AuthRouteNames
 const exitRoutes = [...authExitRoutes, ...mainExitRoutes]
 export const canExit = (routeName: AllRouteNames) => exitRoutes.includes(routeName)
+
+const linking: LinkingOptions = {
+  prefixes: ["https://punch-line.co.uk", "punchline://"],
+  config: {
+    screens: {
+      MainNavigator: {
+        initialRouteName: "JokeScreen",
+        screens: {
+          JokeScreen: {
+            path: "jokes/:jokeId",
+            parse: { jokeId: String },
+          },
+        },
+      },
+    },
+  },
+}
