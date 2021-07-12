@@ -1,11 +1,34 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { View, ViewStyle } from "react-native"
-import { Screen, CenterView, Text, AdBanner, CircularButton, ShareIcons, Ratings } from "components"
-import { color } from "theme"
+import { StyleSheet, TextStyle, View, ViewStyle } from "react-native"
+import {
+  Screen,
+  CenterView,
+  Text,
+  AdBanner,
+  CircularButton,
+  ShareIcons,
+  Ratings,
+  Card,
+} from "components"
+import { color, spacing } from "theme"
 import { CryingEmoji, LaughingEmoji } from "images"
 import { useRoute } from "@react-navigation/native"
 import { NavigationProps } from "app/navigators/main-navigator"
+
+const jokes = [
+  {
+    id: "1",
+    title: "The Car Joke",
+    body: `"Crime in multi-storey car parks. That is wrong on so many different levels"`,
+  },
+
+  {
+    id: "2",
+    title: "The Other Car Joke",
+    body: `" That is wrong on so many different levels"`,
+  },
+]
 
 const PAGE_GUTTERS = 15
 
@@ -17,17 +40,16 @@ export const JokeScreen = observer(function JokeScreen() {
     <Screen style={ROOT} preset="fixed" testID="JokeScreen">
       <CenterView style={CONTAINER}>
         <View style={HEADER}>
-          <Text text="Dad Jokes" />
-          <Text h1 text="The Car Joke" />
+          <Text text="Dad Jokes" style={CATEGORY_NAME} bold />
+          <Text h2 text="The Car Joke" bold />
         </View>
 
-        <View>
-          <View style={{ flexDirection: "row" }}>
-            <Text
-              style={{ flexWrap: "wrap" }}
-              text={`"Crime in multi-storey car parks. That is wrong on so many different levels.`}
-            />
-          </View>
+        <View style={{ position: "relative", flex: 1, width: "100%" }}>
+          {jokes.map(({ body }, index) => (
+            <View style={[StyleSheet.absoluteFillObject]}>
+              <Card key={index} style={CARD} {...{ index, body }} />
+            </View>
+          ))}
         </View>
 
         <View style={JOKE_INFO}>
@@ -47,20 +69,33 @@ const ROOT: ViewStyle = {
   backgroundColor: color.background,
   flex: 1,
 }
+
 const CONTAINER: ViewStyle = {
   justifyContent: "space-between",
-}
-const JOKE_INFO: ViewStyle = {
-  flexDirection: "row",
-  width: "100%",
-  justifyContent: "space-between",
-  paddingHorizontal: PAGE_GUTTERS,
-  maxHeight: 25,
 }
 
 const HEADER: ViewStyle = {
   alignItems: "center",
   justifyContent: "center",
+}
+
+const CARD: ViewStyle = {
+  marginHorizontal: PAGE_GUTTERS,
+  height: "100%",
+  position: "relative",
+}
+
+const CATEGORY_NAME: TextStyle = {
+  fontSize: 12,
+  color: color.dim,
+}
+
+const JOKE_INFO: ViewStyle = {
+  flexDirection: "row",
+  width: "100%",
+  justifyContent: "space-between",
+  paddingHorizontal: PAGE_GUTTERS * 1.35,
+  maxHeight: 25,
 }
 
 type ButtonsProps = {}
@@ -100,11 +135,10 @@ const BUTTONS: ViewStyle = {
 }
 
 const SECONDARY_ACTION_BUTTONS: ViewStyle = {
-  width: 50,
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
 }
 const DISLIKE: ViewStyle = {
-  padding: 15,
+  padding: spacing[4],
 }

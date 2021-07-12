@@ -23,7 +23,7 @@ export const Ratings = observer(function Ratings(props: RatingsProps) {
     <View style={[CONTAINER, style]}>
       <View style={SECTION}>
         <View>
-          <Text>{String(likes)}</Text>
+          <Text bold>{String(likes)}</Text>
         </View>
         <View style={LIKE}>
           <LaughingEmoji />
@@ -32,7 +32,7 @@ export const Ratings = observer(function Ratings(props: RatingsProps) {
 
       <View style={SECTION}>
         <View>
-          <Text>{String(dislikes)}</Text>
+          <Text bold>{String(dislikes)}</Text>
         </View>
         <View style={DISLIKE}>
           <CryingEmoji />
