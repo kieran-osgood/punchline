@@ -59,7 +59,6 @@
     "ramda": "0.27.1",
     "react": "17.0.1",
     "react-native": "0.64.1",
-    "react-native-animated-nav-tab-bar": "^3.1.4",
     "react-native-collapsible": "^1.5.3",
     "react-native-deck-swiper": "^2.0.5",
     "react-native-dotenv": "^2.5.5",

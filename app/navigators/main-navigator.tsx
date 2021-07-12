@@ -7,14 +7,11 @@
  */
 import React from "react"
 import { RouteProp } from "@react-navigation/native"
-import { color } from "theme"
-import { AnimatedTabBarNavigator } from "react-native-animated-nav-tab-bar"
 import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs"
 import { JokeScreen, SettingsScreen, UserProfileScreen } from "../screens"
 import { observer } from "mobx-react-lite"
-import Icon from "react-native-vector-icons/Feather"
-import { useQuery } from "app/graphql/reactUtils"
-import { JokeLength } from "app/graphql/JokeLengthEnum"
+import { createStackNavigator } from "@react-navigation/stack"
+import { Header } from "components"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -40,44 +37,18 @@ export type NavigationProps<T extends keyof RouteParamList> = {
   navigation: MaterialBottomTabNavigationProp<RouteParamList, T>
 }
 
-const Tab = AnimatedTabBarNavigator<RouteParamList>()
+const Stack = createStackNavigator<RouteParamList>()
 
 export const MainNavigator = observer(function MainNavigator() {
   return (
-    <Tab.Navigator
+    <Stack.Navigator
       initialRouteName="JokeScreen"
-      tabBarOptions={{
-        activeTintColor: "#000",
-      }}
-      appearance={{
-        tabBarBackground: color.palette.white,
-      }}
+      screenOptions={{ headerTitle: () => <Header /> }}
     >
-      <Tab.Screen
-        name="UserProfileScreen"
-        component={UserProfileScreen}
-        options={{
-          tabBarLabel: "Profile",
-          tabBarIcon: ({ size }) => <Icon name="user" {...{ size }} />,
-        }}
-      />
-      <Tab.Screen
-        name="JokeScreen"
-        component={JokeScreen}
-        options={{
-          tabBarLabel: "Home",
-          tabBarIcon: ({ size }) => <Icon name="home" {...{ size }} />,
-        }}
-      />
-      <Tab.Screen
-        name="SettingsScreen"
-        component={SettingsScreen}
-        options={{
-          tabBarLabel: "Settings",
-          tabBarIcon: ({ size }) => <Icon name="settings" {...{ size }} />,
-        }}
-      />
-    </Tab.Navigator>
+      <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
+      <Stack.Screen name="JokeScreen" component={JokeScreen} />
+      <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+    </Stack.Navigator>
   )
 })
 
