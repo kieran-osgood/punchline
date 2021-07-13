@@ -33,6 +33,8 @@ module.exports = {
         theme: "./app/theme",
         app: "./app",
       }
-    }]
+    }],
+    // NOTE: REANIMATED HAS TO BE LAST
+    'react-native-reanimated/plugin',
   ],
 }
