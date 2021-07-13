@@ -45,10 +45,10 @@ export const MainNavigator = observer(function MainNavigator() {
   return (
     <Stack.Navigator
       initialRouteName="JokeScreen"
-      screenOptions={{ headerTitle: () => <Header /> }}
+      screenOptions={{ header: () => <Header /> }}
     >
-      <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
       <Stack.Screen name="JokeScreen" component={JokeScreen} />
+      <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
       <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
     </Stack.Navigator>
   )
