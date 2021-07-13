@@ -171,6 +171,7 @@ workflows:
       # Build and test the iOS app in release mode
       - rn/ios_build_and_test:
           yarn_cache: true
+          yarn_cache_folder: "yarn"
           xcodebuild_cache: false
           homebrew_cache: false
           project_type: "workspace"
