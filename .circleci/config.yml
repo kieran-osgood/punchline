@@ -1,6 +1,6 @@
 
 orbs:
-  rn: react-native-community/react-native@5.1.0
+  rn: react-native-community/react-native@5.4.0
   ruby: circleci/ruby@1.1.2
   android: circleci/android@1.0.3
 version: 2.1
@@ -170,7 +170,7 @@ workflows:
               - e2e_android_debug
       # Build and test the iOS app in release mode
       - rn/ios_build_and_test:
-          yarn_cache: false
+          yarn_cache: true
           xcodebuild_cache: false
           homebrew_cache: false
           project_type: "workspace"
