@@ -9,7 +9,6 @@ import { color, spacing } from "theme"
 
 import { Text } from "../text/text"
 import { CenterView } from "../center-view/center-view"
-import { Controls } from "../controls/controls"
 
 import { useQuery } from "../../graphql/reactUtils"
 import { JokeLength } from "../../graphql/JokeLengthEnum"
