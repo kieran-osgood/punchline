@@ -140,6 +140,7 @@ jobs:
           cache-prefix: v1a
 
 workflows:
+  # Only runs on the develop branch 
   develop:
     jobs: 
       # Checkout the code and persist to the Workspace
@@ -149,29 +150,29 @@ workflows:
               only:
                 - develop
       # Analyze the Javascript using ESLint, and Jest
-      - analyse_js:
-          requires:
-            - checkout_code
+      # - analyse_js:
+      #     requires:
+      #       - checkout_code
       # Builds debug android apk
-      - build_android_debug:
-          requires:
-              - checkout_code
-              - analyse_js
-      - e2e_android_debug:
-          requires: 
-              - build_android_debug
-      - decrypt_keystore:
-          requires:
-            - e2e_android_debug
+      # - build_android_debug:
+      #     requires:
+      #         - checkout_code
+      #         - analyse_js
+      # - e2e_android_debug:
+      #     requires: 
+      #         - build_android_debug
+      # - decrypt_keystore:
+      #     requires:
+      #       - e2e_android_debug
       # Builds android aab
-      - build_android_release:
-          requires:
-              - decrypt_keystore
-              - e2e_android_debug
+      # - build_android_release:
+      #     requires:
+      #         - decrypt_keystore
+      #         - e2e_android_debug
       # Build and test the iOS app in release mode
       - rn/ios_build_and_test:
           yarn_cache: true
-          yarn_cache_folder: "./yarncache"
+          yarn_cache_folder: "~/.cache/yarn"          
           xcodebuild_cache: false
           homebrew_cache: false
           project_type: "workspace"
@@ -182,8 +183,9 @@ workflows:
           detox_configuration: "ios.sim.release"
           requires:
             - checkout_code
-            - analyse_js
+            # - analyse_js
 
+  # Only runs on the master branch 
   # master:
   #   jobs: 
   #     # Checkout the code and persist to the Workspace
