@@ -2,6 +2,7 @@ import * as React from "react"
 import { Share, Linking, TouchableOpacity, View, ViewStyle } from "react-native"
 import { observer } from "mobx-react-lite"
 import { Facebook, Twitter, Share as ShareIcon } from "images"
+import { spacing } from 'theme'
 
 export interface ShareIconsProps {
   /**
@@ -19,14 +20,14 @@ export const ShareIcons = observer(function ShareIcons(props: ShareIconsProps) {
 
   return (
     <View style={[CONTAINER, style]}>
-      <Link {...{ jokeId }}>
+      {/* <Link {...{ jokeId }}>
         <Facebook />
       </Link>
       <Link {...{ jokeId }}>
         <Twitter />
-      </Link>
+      </Link> */}
       <Link {...{ jokeId }}>
-        <ShareIcon />
+        <ShareIcon scale={1.1}/>
       </Link>
     </View>
   )
@@ -64,7 +65,11 @@ export const Link = ({ jokeId, children }: LinkProps) => {
     }
   }
 
-  return <TouchableOpacity {...{ onPress }}>{children}</TouchableOpacity>
+  return <TouchableOpacity {...{ onPress }} style={LINK}>{children}</TouchableOpacity>
 }
 
 export default Link
+
+const LINK:ViewStyle = {
+  padding: spacing[1]
+}
