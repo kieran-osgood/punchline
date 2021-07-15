@@ -18,7 +18,7 @@ export const BookmarksScreen = observer(function BookmarksScreen() {
   // Pull in navigation via hook
   // const navigation = useNavigation()
   return (
-    <Screen style={ROOT} preset="scroll">
+    <Screen style={ROOT} preset="fixed" unsafe>
     </Screen>
   )
 })

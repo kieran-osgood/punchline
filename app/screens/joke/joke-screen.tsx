@@ -75,7 +75,6 @@ export const JokeScreen = observer(function JokeScreen() {
   }
 
   return (
-    <Screen style={ROOT} preset="fixed" testID="JokeScreen">
       <CenterView style={CONTAINER}>
         <View style={HEADER}>
           <Text text="Dad Jokes" style={CATEGORY_NAME} bold />
@@ -99,6 +98,7 @@ export const JokeScreen = observer(function JokeScreen() {
         <Controls onBad={handleBad} />
         <AdBanner />
       </CenterView>
+    <Screen style={ROOT} preset="fixed" testID="JokeScreen" unsafe>
     </Screen>
   )
 })

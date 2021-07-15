@@ -10,10 +10,8 @@ function ScreenWithoutScrolling(props: ScreenProps) {
   const preset = presets.fixed
   const style = props.style || {}
   const backgroundStyle = props.backgroundColor ? { backgroundColor: props.backgroundColor } : {}
-  /** TODO: why was this giving weird padding above screens? */
-  // const insets = useSafeAreaInsets()
-  // const insetStyle = { paddingTop: props.unsafe ? 0 : insets.top }
-  const insetStyle = { paddingTop: props.unsafe ? 0 : 0 }
+  const insets = useSafeAreaInsets()
+  const insetStyle = { paddingTop: props.unsafe ? 0 : insets.top }
   const testID = props.testID
   return (
     <KeyboardAvoidingView
