@@ -22,7 +22,7 @@ export const Ratings = observer(function Ratings(props: RatingsProps) {
   return (
     <View style={[CONTAINER, style]}>
       <Rating rating={likes}>
-        <LaughingEmoji style={LIKE} />
+        <LaughingEmoji style={LIKE} scale={0.45} />
       </Rating>
       <Rating rating={dislikes}>
         <CryingEmoji style={DISLIKE} scale={0.35} />
@@ -43,7 +43,7 @@ const SECTION: ViewStyle = {
 }
 const LIKE: ViewStyle = {
   width: 20,
-  paddingLeft: EMOJI_PADDING,
+  marginLeft: EMOJI_PADDING,
   height: "100%",
 }
 const DISLIKE: ViewStyle = {

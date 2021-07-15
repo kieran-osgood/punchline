@@ -2,14 +2,14 @@ import * as React from "react"
 import Svg, { G, Path, Circle } from "react-native-svg"
 import { SVGProps } from "app/types"
 
-export function CryingEmoji({ ...rest }: { scale?: number } & SVGProps) {
-  const { scale = 0 } = rest
+export function CryingEmoji(props: { scale?: number } & SVGProps) {
+  const { scale = 0 } = props
 
   const width = scale <= 0 ? undefined : scale * 48
   const height = scale <= 0 ? undefined : scale * 48
 
   return (
-    <Svg viewBox="12 12 48 48" {...rest} {...{ width, height }}>
+    <Svg viewBox="12 12 48 48" {...props} {...{ width, height }}>
       <G
         fill="none"
         stroke="#000"

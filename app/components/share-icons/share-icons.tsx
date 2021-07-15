@@ -1,8 +1,8 @@
 import * as React from "react"
-import { Share, Linking, TouchableOpacity, View, ViewStyle } from "react-native"
+import { Share, Linking, TouchableOpacity, View, ViewStyle, StyleProp } from "react-native"
 import { observer } from "mobx-react-lite"
 import { Facebook, Twitter, Share as ShareIcon } from "images"
-import { spacing } from 'theme'
+import { spacing } from "theme"
 
 export interface ShareIconsProps {
   /**
@@ -27,7 +27,7 @@ export const ShareIcons = observer(function ShareIcons(props: ShareIconsProps) {
         <Twitter />
       </Link> */}
       <Link {...{ jokeId }}>
-        <ShareIcon scale={1.1}/>
+        <ShareIcon scale={1.1} />
       </Link>
     </View>
   )
@@ -42,13 +42,14 @@ const CONTAINER: ViewStyle = {
 type LinkProps = {
   jokeId: string
   children: React.ReactNode
+  style?: StyleProp<ViewStyle>
 }
 
-export const Link = ({ jokeId, children }: LinkProps) => {
+export const Link = ({ jokeId, children, style = {} }: LinkProps) => {
   const onPress = async () => {
     try {
       const result = await Share.share({
-        title: 'Take a look at this joke!',
+        title: "Take a look at this joke!",
         message: `https://punch-line.co.uk/jokes/${jokeId}`,
       })
       if (result.action === Share.sharedAction) {
@@ -65,11 +66,15 @@ export const Link = ({ jokeId, children }: LinkProps) => {
     }
   }
 
-  return <TouchableOpacity {...{ onPress }} style={LINK}>{children}</TouchableOpacity>
+  return (
+    <TouchableOpacity {...{ onPress }} style={[LINK, style]}>
+      {children}
+    </TouchableOpacity>
+  )
 }
 
 export default Link
 
-const LINK:ViewStyle = {
-  padding: spacing[1]
+const LINK: ViewStyle = {
+  padding: spacing[1],
 }
