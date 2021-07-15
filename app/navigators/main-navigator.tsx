@@ -28,7 +28,7 @@ import { Header } from "components"
 export type RouteParamList = {
   JokeScreen?: {
     jokeId?: string
-  } 
+  }
   SettingsScreen: undefined
   LoginScreen: undefined
   UserProfileScreen: undefined
@@ -43,13 +43,30 @@ const Stack = createStackNavigator<RouteParamList>()
 
 export const MainNavigator = observer(function MainNavigator() {
   return (
-    <Stack.Navigator
-      initialRouteName="JokeScreen"
-      screenOptions={{ header: () => <Header /> }}
-    >
-      <Stack.Screen name="JokeScreen" component={JokeScreen} />
-      <Stack.Screen name="UserProfileScreen" component={UserProfileScreen} />
-      <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+    <Stack.Navigator initialRouteName="JokeScreen">
+      <Stack.Screen
+        name="JokeScreen"
+        component={JokeScreen}
+        options={{
+          header: ({ navigation }) => (
+            <Header {...{ navigation }} left="account" right="settings" />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="UserProfileScreen"
+        component={UserProfileScreen}
+        options={{
+          header: ({ navigation }) => <Header {...{ navigation }} left="back" />,
+        }}
+      />
+      <Stack.Screen
+        name="SettingsScreen"
+        component={SettingsScreen}
+        options={{
+          header: ({ navigation }) => <Header {...{ navigation }} left="back" />,
+        }}
+      />
     </Stack.Navigator>
   )
 })

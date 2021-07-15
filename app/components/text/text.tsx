@@ -2,11 +2,17 @@ import * as React from "react"
 import { observer } from "mobx-react-lite"
 import { mergeAll, flatten } from "ramda"
 import { color } from "../../theme"
-import { Text as TextEl, StyleSheet, TextStyle, Platform } from "react-native"
+import {
+  TextProps as TextElProps,
+  Text as TextEl,
+  StyleSheet,
+  TextStyle,
+  Platform,
+} from "react-native"
 // eslint-disable-next-line camelcase
 // import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat"
 
-export interface TextProps {
+export interface TextProps extends TextElProps {
   /**
    * An optional style override useful for padding & margin.
    */
@@ -33,6 +39,7 @@ export const Text = observer(function Text(props: TextProps) {
     h3 = false,
     h4 = false,
     bold = false,
+    ...rest
   } = props
   // const [loaded] = useFonts({
   // Montserrat_400Regular,
@@ -58,7 +65,11 @@ export const Text = observer(function Text(props: TextProps) {
     ]),
   )
 
-  return <TextEl style={[STYLE, fontFamily(bold)]}>{children || text}</TextEl>
+  return (
+    <TextEl {...rest} style={[STYLE, fontFamily(bold)]}>
+      {children || text}
+    </TextEl>
+  )
 })
 
 const styles = StyleSheet.create({

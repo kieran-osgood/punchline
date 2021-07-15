@@ -1,8 +1,15 @@
 import * as React from "react"
-import { TextStyle, View, ViewStyle } from "react-native"
+import { Dimensions, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 import { observer } from "mobx-react-lite"
 import { Text } from "../"
 import { color, spacing } from "theme"
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from "react-native-reanimated"
+
 
 export interface CardProps {
   /**
@@ -11,22 +18,28 @@ export interface CardProps {
   style?: ViewStyle
   body: string
   index: number
+  animatedStyles: Animated.AnimatedStyleProp<ViewStyle>
 }
 
 /**
  * Describe your component here
  */
-export const Card = observer(function Card(props: CardProps) {
-  const { index, style, body } = props
+export const Card = observer(
+  (props: CardProps, ref: React.LegacyRef<Animated.View>) => {
+    const { index, style, body, animatedStyles } = props
 
-  return (
-    <View style={[CONTAINER(index), style]}>
-      <View style={{ flexDirection: "row" }}>
-        <Text style={TEXT(index)} text={body} bold />
-      </View>
-    </View>
-  )
-})
+    return (
+      <Animated.View style={[StyleSheet.absoluteFillObject, animatedStyles]} ref={ref}>
+        <View style={[CONTAINER(index), style]}>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={TEXT(index)} text={body} bold />
+          </View>
+        </View>
+      </Animated.View>
+    )
+  },
+  { forwardRef: true },
+)
 
 const colors = [
   { background: "hsl(43, 100%, 54%)", text: color.palette.black },
@@ -50,7 +63,6 @@ const CONTAINER = (index: number): ViewStyle => ({
   shadowOpacity: 0.25,
   shadowRadius: spacing[1],
   flex: 1,
-  marginTop: spacing[5],
   marginBottom: spacing[2],
 })
 
