@@ -6,7 +6,6 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import Icon from "react-native-vector-icons/AntDesign"
 import { BookmarksScreen } from "../bookmarks/bookmarks-screen"
 import { HistoryScreen } from "../history/history-screen"
-import { Screen } from "components"
 
 export type UserProfileRouteParamList = {
   Bookmarks: undefined
@@ -14,11 +13,6 @@ export type UserProfileRouteParamList = {
 }
 
 const Tab = createMaterialTopTabNavigator<UserProfileRouteParamList>()
-
-const ROOT: ViewStyle = {
-  backgroundColor: color.background,
-  flex: 1,
-}
 
 const TAB_BAR: ViewStyle = {
   backgroundColor: color.background,
@@ -33,33 +27,31 @@ const size = 25
 
 export const UserProfileScreen = observer(function UserProfileScreen() {
   return (
-    <Screen style={ROOT} preset="scroll">
-      <Tab.Navigator
-        tabBarOptions={{
-          style: TAB_BAR,
-          showIcon: true,
-          indicatorStyle: INDICATOR,
+    <Tab.Navigator
+      tabBarOptions={{
+        style: TAB_BAR,
+        showIcon: true,
+        indicatorStyle: INDICATOR,
+      }}
+    >
+      <Tab.Screen
+        name="Bookmarks"
+        component={BookmarksScreen}
+        options={{
+          tabBarIcon: function TabIcon({ color }) {
+            return <Icon name="staro" {...{ color, size }} />
+          },
         }}
-      >
-        <Tab.Screen
-          name="Bookmarks"
-          component={BookmarksScreen}
-          options={{
-            tabBarIcon: function TabIcon({ color }) {
-              return <Icon name="staro" {...{ color, size }} />
-            },
-          }}
-        />
-        <Tab.Screen
-          name="History"
-          component={HistoryScreen}
-          options={{
-            tabBarIcon: function TabIcon({ color }) {
-              return <Icon name="book" {...{ color, size }} />
-            },
-          }}
-        />
-      </Tab.Navigator>
-    </Screen>
+      />
+      <Tab.Screen
+        name="History"
+        component={HistoryScreen}
+        options={{
+          tabBarIcon: function TabIcon({ color }) {
+            return <Icon name="book" {...{ color, size }} />
+          },
+        }}
+      />
+    </Tab.Navigator>
   )
 })
