@@ -1,5 +1,5 @@
 import * as React from "react"
-import { View, ViewStyle } from "react-native"
+import { TextStyle, View, ViewStyle } from "react-native"
 import { observer } from "mobx-react-lite"
 import { Text } from "../"
 import { LaughingEmoji, CryingEmoji } from "images"
@@ -21,23 +21,12 @@ export const Ratings = observer(function Ratings(props: RatingsProps) {
 
   return (
     <View style={[CONTAINER, style]}>
-      <View style={SECTION}>
-        <View>
-          <Text bold>{String(likes)}</Text>
-        </View>
-        <View style={LIKE}>
-          <LaughingEmoji />
-        </View>
-      </View>
-
-      <View style={SECTION}>
-        <View>
-          <Text bold>{String(dislikes)}</Text>
-        </View>
-        <View style={DISLIKE}>
-          <CryingEmoji />
-        </View>
-      </View>
+      <Rating rating={likes}>
+        <LaughingEmoji style={LIKE} />
+      </Rating>
+      <Rating rating={dislikes}>
+        <CryingEmoji style={DISLIKE} scale={0.35} />
+      </Rating>
     </View>
   )
 })
@@ -53,11 +42,31 @@ const SECTION: ViewStyle = {
   marginRight: 8,
 }
 const LIKE: ViewStyle = {
-  width: 25,
+  width: 20,
   paddingLeft: EMOJI_PADDING,
+  height: "100%",
 }
 const DISLIKE: ViewStyle = {
-  width: 19,
-  paddingTop: 2,
-  paddingLeft: EMOJI_PADDING,
+  marginLeft: EMOJI_PADDING,
+}
+const TEXT: TextStyle = {
+  fontSize: 18,
+}
+
+const Rating = ({ rating, children }: { rating: number; children: React.ReactNode }) => {
+  return (
+    <View style={SECTION}>
+      <View>
+        <Text bold style={TEXT}>
+          {String(rating)}
+        </Text>
+      </View>
+      <View style={RATING}>{children}</View>
+    </View>
+  )
+}
+
+const RATING: ViewStyle = {
+  justifyContent: "center",
+  alignItems: "center",
 }
