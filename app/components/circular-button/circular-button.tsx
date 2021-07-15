@@ -1,5 +1,5 @@
 import * as React from "react"
-import { TouchableOpacity, ViewStyle } from "react-native"
+import { TouchableOpacity, TouchableOpacityProps, ViewStyle } from "react-native"
 import { observer } from "mobx-react-lite"
 
 const CONTAINER: ViewStyle = {
@@ -14,7 +14,7 @@ const CONTAINER: ViewStyle = {
   alignItems: 'center',
   padding: 5
 }
-export interface CircularButtonProps {
+export interface CircularButtonProps extends TouchableOpacityProps {
   /**
    * An optional style override useful for padding & margin.
    */
@@ -28,10 +28,10 @@ export interface CircularButtonProps {
  * Describe your component here
  */
 export const CircularButton = observer(function CircularButton(props: CircularButtonProps) {
-  const { children, style, onPress, size = "default" } = props
+  const { children, style, size = "default", ...rest } = props
 
   return (
-    <TouchableOpacity style={[CONTAINER, style, {width: sizes[size], height: sizes[size]}]} {...{ onPress }}>
+    <TouchableOpacity style={[CONTAINER, style, {width: sizes[size], height: sizes[size]}]} {...rest}>
       {children}
     </TouchableOpacity>
   )
