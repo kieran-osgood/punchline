@@ -10,7 +10,7 @@ import { RouteProp } from "@react-navigation/native"
 import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs"
 import { JokeScreen, SettingsScreen, UserProfileScreen } from "../screens"
 import { observer } from "mobx-react-lite"
-import { createStackNavigator } from "@react-navigation/stack"
+import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack"
 import { Header } from "components"
 
 /**
@@ -43,7 +43,7 @@ const Stack = createStackNavigator<RouteParamList>()
 
 export const MainNavigator = observer(function MainNavigator() {
   return (
-    <Stack.Navigator initialRouteName="JokeScreen">
+    <Stack.Navigator initialRouteName="JokeScreen" headerMode="screen">
       <Stack.Screen
         name="JokeScreen"
         component={JokeScreen}
@@ -58,6 +58,8 @@ export const MainNavigator = observer(function MainNavigator() {
         component={UserProfileScreen}
         options={{
           header: ({ navigation }) => <Header {...{ navigation }} left="back" />,
+          gestureDirection: "horizontal-inverted",
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
       />
       <Stack.Screen
