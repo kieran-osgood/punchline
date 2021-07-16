@@ -56,16 +56,18 @@ const CONTAINER = (index: number): ViewStyle => ({
   padding: spacing[3],
   borderRadius: spacing[3],
   shadowColor: "#000000",
+  flex: 1,
+  ...CARD_SHADOW
+})
+export const CARD_SHADOW = {
   shadowOffset: {
     width: spacing[1],
     height: spacing[1],
   },
   shadowOpacity: 0.25,
   shadowRadius: spacing[1],
-  flex: 1,
   marginBottom: spacing[2],
-})
-
+}
 const TEXT = (index: number): TextStyle => ({
   color: colors[index].text,
   fontSize: 18,

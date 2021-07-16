@@ -2,7 +2,7 @@ import * as React from "react"
 import { StyleSheet, TextStyle, View, ViewStyle } from "react-native"
 import { observer } from "mobx-react-lite"
 import { color, spacing } from "../../theme"
-import { Text, VerticalCheckboxes, VerticalCheckboxesProps } from "../"
+import { CARD_SHADOW, Text, VerticalCheckboxes, VerticalCheckboxesProps } from "../"
 import { JokeLength } from "app/graphql/JokeLengthEnum"
 import { Skeleton } from "@motify/skeleton"
 import { MotiTransitionProp, MotiView } from "moti"
@@ -39,7 +39,7 @@ export const JokeLengthSetting = observer(function JokeLengthSetting(
       <Text h2 bold text="Joke Length" style={TITLE} />
       <View style={ROW}>
         <JokePreview selected={3} />
-        <VerticalCheckboxes data={CheckboxMap} style={{ width: "50%" }} />
+        <VerticalCheckboxes data={CheckboxMap} style={{ width: "50%" }} onPress={() => {}} />
       </View>
     </View>
   )
@@ -63,11 +63,17 @@ export const JokePreview = (props: JokePreviewProps) => {
 
   return (
     <MotiView
-      transition={{ type: 'spring' }}
-      style={[styles.container, styles.padded, PREVIEW]}
-      animate={{ backgroundColor: dark ? "#000000" : 'lightgrey'}}
+      transition={{ type: "spring" }}
+      style={[styles.container, styles.padded, PREVIEW, CARD_SHADOW]}
+      animate={{ backgroundColor: dark ? "#000000" : "#fff" }}
     >
-      <Skeleton transition={transition} colors={['yellow', "pink", 'red']} colorMode={colorMode} height={25} width={"70%"} />
+      <Skeleton
+        transition={transition}
+        // colors={['yellow', "pink", 'red']}
+        colorMode={colorMode}
+        height={25}
+        width={"70%"}
+      />
       <Spacer />
       {[...Array(selected).keys()].map((select) => (
         <React.Fragment key={select}>
@@ -80,6 +86,7 @@ export const JokePreview = (props: JokePreviewProps) => {
     </MotiView>
   )
 }
+
 const TITLE: TextStyle = {
   marginBottom: spacing[2],
 }

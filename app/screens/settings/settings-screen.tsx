@@ -1,24 +1,28 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
 import { Linking, TextStyle, View, ViewStyle } from "react-native"
-import { Button, CenterView, JokeLengthSetting, PILL_BUTTON, Screen, Text } from "../../components"
+import {
+  Button,
+  CategorySetting,
+  CenterView,
+  JokeLengthSetting,
+  PILL_BUTTON,
+  Screen,
+  Text,
+} from "../../components"
 import { color, spacing } from "theme"
 import auth from "@react-native-firebase/auth"
 import { BUG_REPORT_EMAIL } from "react-native-dotenv"
 
 export const SettingsScreen = observer(function SettingsScreen() {
   return (
-    <Screen style={ROOT} preset="scroll">
+    <Screen style={ROOT} preset="scroll" unsafe>
       <View style={CONTAINER}>
         <JokeLengthSetting />
-        {/* <View style={ROWS_CONTAINER}> */}
-          {/* <Text h1 bold text="Categories" /> */}
-          {/* {auth().currentUser?.isAnonymous && <LoginConversion />} */}
-          {/* <JokeLengthSetting /> */}
-          {/* <CategorySetting /> */}
-          {/* <BugReport /> */}
-          {/* <LogoutButton /> */}
-        {/* </View> */}
+        <CategorySetting />
+        {auth().currentUser?.isAnonymous && <LoginConversion />}
+        <BugReport />
+        <LogoutButton />
       </View>
     </Screen>
   )
@@ -31,10 +35,6 @@ const ROOT: ViewStyle = {
 
 const CONTAINER: ViewStyle = {
   paddingHorizontal: spacing[4],
-}
-
-const ROWS_CONTAINER: ViewStyle = {
-  paddingVertical: spacing[4],
 }
 
 // const CategorySetting = observer(() => {
