@@ -17,6 +17,8 @@ PODS:
     - React-Core
     - UMCore
     - UMImageLoaderInterface
+  - EXLinearGradient (9.2.0):
+    - UMCore
   - EXLocalization (9.1.0):
     - UMCore
   - EXPermissions (9.3.0):
@@ -522,6 +524,7 @@ DEPENDENCIES:
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
+  - EXLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
   - EXLocalization (from `../node_modules/expo-localization/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -646,6 +649,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-file-system/ios"
   EXImageLoader:
     :path: "../node_modules/expo-image-loader/ios"
+  EXLinearGradient:
+    :path: "../node_modules/expo-linear-gradient/ios"
   EXLocalization:
     :path: "../node_modules/expo-localization/ios"
   EXPermissions:
@@ -769,6 +774,7 @@ SPEC CHECKSUMS:
   EXConstants: f486f6b4a36b86e47ab258d4d2b7b2699786fdce
   EXFileSystem: afe9b1fd937d30270bf5108ba44e2f4a1d1ad694
   EXImageLoader: 7153fb1307ac643299a9072b71da0d276f4c7789
+  EXLinearGradient: f9ea3259f096b27008860ca50764184225dc71c9
   EXLocalization: 8b9463c81843da214476b541a27811dd885c9a76
   EXPermissions: 30cbe5b72bd209b65c00884180ad058a60bb413d
   FBLazyVector: 7b423f9e248eae65987838148c36eec1dbfe0b53
@@ -854,6 +860,6 @@ SPEC CHECKSUMS:
   Yoga: a7de31c64fe738607e7a3803e3f591a4b1df7393
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 85a8fdefbbbfa29e93487a304383a4bd864524da
+PODFILE CHECKSUM: 278f66449ba2fcd68e270b95282627fa63923ccb
 
 COCOAPODS: 1.10.1
