@@ -5,18 +5,20 @@ import { CategoryModelBase } from "./CategoryModel.base"
 export interface CategoryModelType extends Instance<typeof CategoryModel.Type> {}
 
 /* A graphql query fragment builders for CategoryModel */
-export { selectFromCategory, categoryModelPrimitives, CategoryModelSelector } from "./CategoryModel.base"
+export {
+  selectFromCategory,
+  categoryModelPrimitives,
+  CategoryModelSelector,
+} from "./CategoryModel.base"
 
 /**
  * CategoryModel
  */
-export const CategoryModel = CategoryModelBase
-  .props({
-    isActive: types.optional(types.boolean, false)
-  })
-  .actions(self => ({
-    // This is an auto-generated example action.
-    update(val: boolean) {
-      self.isActive = val
-    }
-  }))
+export const CategoryModel = CategoryModelBase.props({
+  isActive: types.optional(types.boolean, false),
+}).actions((self) => ({
+  // This is an auto-generated example action.
+  update(val: boolean) {
+    self.isActive = val
+  },
+}))

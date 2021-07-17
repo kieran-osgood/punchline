@@ -15,8 +15,8 @@ import { RootStoreType } from "./index"
 
 /* The TypeScript type that explicits the refs to other models in order to prevent a circular refs issue */
 type Refs = {
-  user: UserModelType;
   joke: JokeModelType;
+  user: UserModelType;
 }
 
 /**
@@ -28,10 +28,10 @@ export const UserJokeHistoryModelBase = withTypedRefs<Refs>()(ModelBase
   .props({
     __typename: types.optional(types.literal("UserJokeHistory"), "UserJokeHistory"),
     id: types.identifier,
+    joke: types.union(types.undefined, types.null, MSTGQLRef(types.late((): any => JokeModel))),
     bookmarked: types.union(types.undefined, types.boolean),
     rating: types.union(types.undefined, RatingValueEnumType),
     user: types.union(types.undefined, MSTGQLRef(types.late((): any => UserModel))),
-    joke: types.union(types.undefined, MSTGQLRef(types.late((): any => JokeModel))),
   })
   .views(self => ({
     get store() {
@@ -43,8 +43,8 @@ export class UserJokeHistoryModelSelector extends QueryBuilder {
   get id() { return this.__attr(`id`) }
   get bookmarked() { return this.__attr(`bookmarked`) }
   get rating() { return this.__attr(`rating`) }
-  user(builder?: string | UserModelSelector | ((selector: UserModelSelector) => UserModelSelector)) { return this.__child(`user`, UserModelSelector, builder) }
   joke(builder?: string | JokeModelSelector | ((selector: JokeModelSelector) => JokeModelSelector)) { return this.__child(`joke`, JokeModelSelector, builder) }
+  user(builder?: string | UserModelSelector | ((selector: UserModelSelector) => UserModelSelector)) { return this.__child(`user`, UserModelSelector, builder) }
 }
 export function selectFromUserJokeHistory() {
   return new UserJokeHistoryModelSelector()

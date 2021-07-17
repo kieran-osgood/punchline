@@ -1,6 +1,6 @@
 import React from "react"
 import { observer } from "mobx-react-lite"
-import { Linking, TextStyle, View, ViewStyle } from "react-native"
+import { Linking, TextStyle, ViewStyle } from "react-native"
 import {
   Button,
   CategorySetting,
@@ -17,98 +17,68 @@ import { BUG_REPORT_EMAIL } from "react-native-dotenv"
 export const SettingsScreen = observer(function SettingsScreen() {
   return (
     <Screen style={ROOT} preset="scroll" unsafe>
-      <View style={CONTAINER}>
-        <JokeLengthSetting />
-        <CategorySetting />
-        {auth().currentUser?.isAnonymous && <LoginConversion />}
-        <BugReport />
-        <LogoutButton />
-      </View>
+      <JokeLengthSetting />
+      <CategorySetting />
+      {auth().currentUser?.isAnonymous && <LoginConversion />}
+      <BugReport />
+      <LogoutButton />
     </Screen>
   )
 })
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
-  flex: 1,
-}
-
-const CONTAINER: ViewStyle = {
   paddingHorizontal: spacing[4],
+  paddingBottom: spacing[5],
 }
 
-// const CategorySetting = observer(() => {
-//   const { store } = useQuery()
-//   const categorySettings: CategorySettings[] = values(store.categories).map((category) => ({
-//     id: category.id,
-//     isActive: category.isActive,
-//     name: category.name ?? "",
-//   }))
-
-//   const handleValueChanged = async (value: CategorySettings) => {
-//     store.categories.get(value.id)?.update(value.isActive)
-//   }
-
-//   return (
-//     <CenterView style={{ marginBottom: hp("2.5%") }}>
-//       <Text h4 text="Categories" />
-//       <SelectPills
-//         data={categorySettings ?? []}
-//         onValueChange={(value) => handleValueChanged(value)}
-//       />
-//     </CenterView>
-//   )
-// })
+const LogoutButton = () => (
+  <Button
+    text="Logout"
+    style={PILL_BUTTON}
+    textStyle={LOGOUT_BUTTON}
+    onPress={() => auth().signOut()}
+  />
+)
 
 const LOGOUT_BUTTON: TextStyle = {
   fontSize: 18,
   fontWeight: "bold",
   color: color.text,
+  textAlign: "center",
 }
 
-const LogoutButton = () => {
-  return (
-    <Button
-      text="Logout"
-      style={PILL_BUTTON}
-      textStyle={LOGOUT_BUTTON}
-      onPress={() => auth().signOut()}
+const LoginConversion = () => (
+  <CenterView style={LOGIN_CONVERSION}>
+    <Text
+      style={{ textAlign: "center" }}
+      text="Link via your social media account in order to save your bookmarks and preferences."
     />
-  )
-}
+    {/* <GoogleSignIn isAnonymousConversion={true} /> */}
+    {/* <FacebookSignIn isAnonymousConversion={true} /> */}
+  </CenterView>
+)
 
 const LOGIN_CONVERSION: ViewStyle = {
   paddingBottom: spacing[4],
   width: "100%",
 }
 
-const LoginConversion = () => (
-  <CenterView style={LOGIN_CONVERSION}>
-    <Text text="Link via your social media account in order to save your bookmarks and preferences." />
-    {/* <GoogleSignIn isAnonymousConversion={true} /> */}
-    {/* <FacebookSignIn isAnonymousConversion={true} /> */}
-  </CenterView>
+const BugReport = () => (
+  <Button
+    text="Bug Report"
+    style={BUG_REPORT_BUTTON}
+    textStyle={BUG_BUTTON_TEXT}
+    onPress={() => Linking.openURL(BUG_REPORT_EMAIL)}
+  />
 )
 
 const BUG_REPORT_BUTTON: ViewStyle = {
-  ...PILL_BUTTON,
-  backgroundColor: color.error,
+  backgroundColor: "transparent",
 }
 
 const BUG_BUTTON_TEXT: TextStyle = {
-  fontSize: 18,
-  fontWeight: "bold",
-  color: color.text,
-}
-
-const BugReport = () => {
-  const onPress = () => Linking.openURL(BUG_REPORT_EMAIL)
-  return (
-    <Button
-      text="Bug Report"
-      style={BUG_REPORT_BUTTON}
-      textStyle={BUG_BUTTON_TEXT}
-      {...{ onPress }}
-    />
-  )
+  fontSize: 14,
+  color: color.error,
+  textAlign: "center",
 }

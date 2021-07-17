@@ -36,6 +36,7 @@ export const UserModelBase = withTypedRefs<Refs>()(ModelBase
     name: types.union(types.undefined, types.string),
     createdOn: types.union(types.undefined, types.frozen()),
     lastLogin: types.union(types.undefined, types.frozen()),
+    onboardingComplete: types.union(types.undefined, types.boolean),
     userJokeHistories: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => UserJokeHistoryModel)))),
     categories: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => CategoryModel)))),
     jokes: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => JokeModel)))),
@@ -53,6 +54,7 @@ export class UserModelSelector extends QueryBuilder {
   get name() { return this.__attr(`name`) }
   get createdOn() { return this.__attr(`createdOn`) }
   get lastLogin() { return this.__attr(`lastLogin`) }
+  get onboardingComplete() { return this.__attr(`onboardingComplete`) }
   userJokeHistories(builder?: string | UserJokeHistoryModelSelector | ((selector: UserJokeHistoryModelSelector) => UserJokeHistoryModelSelector)) { return this.__child(`userJokeHistories`, UserJokeHistoryModelSelector, builder) }
   categories(builder?: string | CategoryModelSelector | ((selector: CategoryModelSelector) => CategoryModelSelector)) { return this.__child(`categories`, CategoryModelSelector, builder) }
   jokes(builder?: string | JokeModelSelector | ((selector: JokeModelSelector) => JokeModelSelector)) { return this.__child(`jokes`, JokeModelSelector, builder) }
@@ -61,4 +63,4 @@ export function selectFromUser() {
   return new UserModelSelector()
 }
 
-export const userModelPrimitives = selectFromUser().firebaseUid.jokeCount.name.createdOn.lastLogin
+export const userModelPrimitives = selectFromUser().firebaseUid.jokeCount.name.createdOn.lastLogin.onboardingComplete

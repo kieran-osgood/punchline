@@ -29,6 +29,7 @@ export const CategoryModelBase = withTypedRefs<Refs>()(ModelBase
     __typename: types.optional(types.literal("Category"), "Category"),
     id: types.identifier,
     name: types.union(types.undefined, types.string),
+    image: types.union(types.undefined, types.null, types.string),
     jokes: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => JokeModel)))),
     users: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => UserModel)))),
   })
@@ -41,6 +42,7 @@ export const CategoryModelBase = withTypedRefs<Refs>()(ModelBase
 export class CategoryModelSelector extends QueryBuilder {
   get id() { return this.__attr(`id`) }
   get name() { return this.__attr(`name`) }
+  get image() { return this.__attr(`image`) }
   jokes(builder?: string | JokeModelSelector | ((selector: JokeModelSelector) => JokeModelSelector)) { return this.__child(`jokes`, JokeModelSelector, builder) }
   users(builder?: string | UserModelSelector | ((selector: UserModelSelector) => UserModelSelector)) { return this.__child(`users`, UserModelSelector, builder) }
 }
@@ -48,4 +50,4 @@ export function selectFromCategory() {
   return new CategoryModelSelector()
 }
 
-export const categoryModelPrimitives = selectFromCategory().name
+export const categoryModelPrimitives = selectFromCategory().name.image

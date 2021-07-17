@@ -20,8 +20,8 @@ import Animated, {
   useSharedValue,
   withSpring,
   withTiming,
-  Transition, 
-  Transitioning
+  Transition,
+  Transitioning,
 } from "react-native-reanimated"
 import Skip from "assets/images/skip"
 
@@ -29,7 +29,6 @@ import { useQuery } from "../../graphql/reactUtils"
 import { JokeLength } from "../../graphql/JokeLengthEnum"
 import { nodes } from "../../graphql/RootStore"
 import { jokeModelPrimitives } from "../../graphql/JokeModel.base"
-import { JokeModelType } from "app/graphql"
 
 const { width } = Dimensions.get("screen")
 
@@ -51,14 +50,13 @@ const PAGE_GUTTERS = 15
 
 export const JokeScreen = observer(function JokeScreen() {
   const route = useRoute<NavigationProps<"JokeScreen">["route"]>()
-  __DEV__ && console.tron.log!(route.params?.jokeId)
   const [cards, setCards] = React.useState(jokes)
 
-  const ref = React.useRef<Animated.View>(null)
-  console.tron.log("ref: ", ref)
-
   const { data } = useQuery((store) =>
-    store.queryJokes({ jokeLength: JokeLength.MEDIUM }, nodes(jokeModelPrimitives)),
+    store.queryJokes(
+      { blockedCategoryIds: store.blockedCategoryIds, jokeLength: JokeLength.MEDIUM },
+      nodes(jokeModelPrimitives),
+    ),
   )
 
   const handleBad = () => {
@@ -88,19 +86,12 @@ export const JokeScreen = observer(function JokeScreen() {
 
       <View style={{ position: "relative", flex: 1, width: "100%" }}>
         {cards.map(({ id, body }, index) => (
-          <Card
-            key={id}
-            style={CARD}
-            animatedStyles={animatedStyles}
-            {...{ index, body }}
-            // ref={ref}
-          />
+          <Card key={id} style={CARD} animatedStyles={animatedStyles} {...{ index, body }} />
         ))}
       </View>
 
       <View style={JOKE_INFO}>
         <Ratings likes={0} dislikes={0} />
-        {/* TODO: replace with actual id */}
         <ShareIcons jokeId={route.params?.jokeId ?? ""} />
       </View>
 
@@ -154,7 +145,7 @@ export const Controls = (props: ButtonsProps) => {
 
   return (
     <View style={BUTTONS}>
-      <CircularButton style={DISLIKE} onPress={rate}activeOpacity={0.8}>
+      <CircularButton style={DISLIKE} onPress={rate} activeOpacity={0.8}>
         <CryingEmoji />
       </CircularButton>
 
@@ -163,12 +154,12 @@ export const Controls = (props: ButtonsProps) => {
           <BookmarkButton />
         </CircularButton>
 
-        <CircularButton size="small" onPress={bookmark}activeOpacity={0.8}>
+        <CircularButton size="small" onPress={bookmark} activeOpacity={0.8}>
           <Skip />
         </CircularButton>
       </View>
 
-      <CircularButton onPress={rate}activeOpacity={0.8}>
+      <CircularButton onPress={rate} activeOpacity={0.8}>
         <LaughingEmoji />
       </CircularButton>
     </View>

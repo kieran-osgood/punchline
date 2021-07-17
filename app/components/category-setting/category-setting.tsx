@@ -1,8 +1,11 @@
 import * as React from "react"
-import { Image, TextStyle, View, ViewStyle } from "react-native"
+import { TextStyle, TouchableOpacity, View, ViewStyle } from "react-native"
 import { observer } from "mobx-react-lite"
 import { color, spacing, typography } from "../../theme"
 import { Text } from "../"
+import { useQuery, nodes, categoryModelPrimitives, CategoryModelType } from "app/graphql"
+import { SvgUri } from "react-native-svg"
+import { SortEnumType } from "app/graphql/SortEnumTypeEnum"
 
 export interface CategorySettingProps {
   /**
@@ -12,17 +15,31 @@ export interface CategorySettingProps {
 }
 
 /**
- * Describe your component here
+ * List of category buttons for the user to pick what type of jokes they want to see
  */
 export const CategorySetting = observer(function CategorySetting(props: CategorySettingProps) {
   const { style } = props
+  const { data } = useQuery((store) =>
+    store.queryCategories(
+      {
+        order: [{ name: SortEnumType.ASC }],
+      },
+      nodes(categoryModelPrimitives),
+    ),
+  )
 
   return (
     <View style={[CONTAINER, style]}>
-      <Text h3 bold text="Categories" />
+      <Text h3 bold text="Category Filter" />
+      <Text>
+        <Text text="Select categories you " />
+        <Text bold text="don't " />
+        <Text text="wish to see" />
+      </Text>
+
       <View style={CATEGORIES}>
-        {categories.map(({ id, image, name }) => (
-          <Category key={id} {...{ image, name }} />
+        {data?.categories.nodes.map((category) => (
+          <Category key={category.id} {...{ category }} />
         ))}
       </View>
     </View>
@@ -36,7 +53,50 @@ const CONTAINER: ViewStyle = {
 
 const CATEGORIES: ViewStyle = {
   flexDirection: "row",
-  flexWrap: 'wrap'
+  flexWrap: "wrap",
+}
+
+const SVG_SIZE = 40
+type CategoryProps = {
+  category: CategoryModelType
+}
+const Category = observer(function Category({ category }: CategoryProps) {
+  if (!category || !category.image) return null
+  const { store } = useQuery()
+  const onPress = () => {
+    store.categories.get(category.id)?.update(!category.isActive)
+  }
+  // TODO: convert this to use an animated SVG ⛔️ to show blocked categories
+  return (
+    <TouchableOpacity
+      style={[
+        CATEGORY_CONTAINER,
+        { backgroundColor: category.isActive ? "lightgrey" : "transparent" },
+      ]}
+      activeOpacity={0.6}
+      {...{ onPress }}
+    >
+      <View style={IMAGE_CONTAINER}>
+        <SvgUri
+          width={SVG_SIZE}
+          height={SVG_SIZE}
+          uri={
+            category.image.length > 0
+              ? category.image
+              : "https://reactnativecode.com/wp-content/uploads/2017/05/react_thumb_install.png"
+          }
+        />
+      </View>
+      <View>
+        <Text style={TEXT} text={category.name} />
+      </View>
+    </TouchableOpacity>
+  )
+})
+
+const IMAGE_CONTAINER: ViewStyle = {
+  minHeight: SVG_SIZE,
+  minWidth: SVG_SIZE,
 }
 
 const TEXT: TextStyle = {
@@ -46,35 +106,11 @@ const TEXT: TextStyle = {
 }
 
 const CATEGORY_CONTAINER: ViewStyle = {
+  borderRadius: 200,
   marginTop: spacing[3],
-  borderRadius: 25,
-  borderWidth: 1,
   width: "32%",
-  minHeight: 70,
   justifyContent: "space-between",
   alignItems: "center",
-  paddingVertical: spacing[3],
-  marginRight: spacing[1]
-}
-
-const categories = [
-  { id: "1", name: "Tech", image: " " },
-  { id: "2", name: "Tech", image: " " },
-  { id: "3", name: "Tech", image: " " },
-  { id: "4", name: "Tech", image: " " },
-]
-
-type CategoryProps = {
-  image: string
-  name: string
-}
-const Category = ({ image: uri, name: text }: CategoryProps) => {
-  return (
-    <View style={CATEGORY_CONTAINER}>
-      <Image source={{ uri }} />
-      <View>
-        <Text style={TEXT} {...{ text }} />
-      </View>
-    </View>
-  )
+  paddingVertical: spacing[5],
+  marginRight: spacing[1],
 }

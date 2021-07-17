@@ -5,42 +5,42 @@ import { ObservableMap } from "mobx"
 import { types } from "mobx-state-tree"
 import { MSTGQLStore, configureStoreMixin, QueryOptions, withTypedRefs } from "mst-gql"
 
-import { JokeConnectionModel, JokeConnectionModelType } from "./JokeConnectionModel"
-import { jokeConnectionModelPrimitives, JokeConnectionModelSelector } from "./JokeConnectionModel.base"
-import { PageInfoModel, PageInfoModelType } from "./PageInfoModel"
-import { pageInfoModelPrimitives, PageInfoModelSelector } from "./PageInfoModel.base"
-import { JokeEdgeModel, JokeEdgeModelType } from "./JokeEdgeModel"
-import { jokeEdgeModelPrimitives, JokeEdgeModelSelector } from "./JokeEdgeModel.base"
 import { JokeModel, JokeModelType } from "./JokeModel"
 import { jokeModelPrimitives, JokeModelSelector } from "./JokeModel.base"
+import { CategoryModel, CategoryModelType } from "./CategoryModel"
+import { categoryModelPrimitives, CategoryModelSelector } from "./CategoryModel.base"
 import { UserJokeHistoryModel, UserJokeHistoryModelType } from "./UserJokeHistoryModel"
 import { userJokeHistoryModelPrimitives, UserJokeHistoryModelSelector } from "./UserJokeHistoryModel.base"
 import { UserModel, UserModelType } from "./UserModel"
 import { userModelPrimitives, UserModelSelector } from "./UserModel.base"
-import { CategoryModel, CategoryModelType } from "./CategoryModel"
-import { categoryModelPrimitives, CategoryModelSelector } from "./CategoryModel.base"
+import { JokeConnectionModel, JokeConnectionModelType } from "./JokeConnectionModel"
+import { jokeConnectionModelPrimitives, JokeConnectionModelSelector } from "./JokeConnectionModel.base"
 import { CategoryConnectionModel, CategoryConnectionModelType } from "./CategoryConnectionModel"
 import { categoryConnectionModelPrimitives, CategoryConnectionModelSelector } from "./CategoryConnectionModel.base"
-import { CategoryEdgeModel, CategoryEdgeModelType } from "./CategoryEdgeModel"
-import { categoryEdgeModelPrimitives, CategoryEdgeModelSelector } from "./CategoryEdgeModel.base"
 import { UserJokeHistoryConnectionModel, UserJokeHistoryConnectionModelType } from "./UserJokeHistoryConnectionModel"
 import { userJokeHistoryConnectionModelPrimitives, UserJokeHistoryConnectionModelSelector } from "./UserJokeHistoryConnectionModel.base"
+import { PageInfoModel, PageInfoModelType } from "./PageInfoModel"
+import { pageInfoModelPrimitives, PageInfoModelSelector } from "./PageInfoModel.base"
+import { JokeEdgeModel, JokeEdgeModelType } from "./JokeEdgeModel"
+import { jokeEdgeModelPrimitives, JokeEdgeModelSelector } from "./JokeEdgeModel.base"
+import { CategoryEdgeModel, CategoryEdgeModelType } from "./CategoryEdgeModel"
+import { categoryEdgeModelPrimitives, CategoryEdgeModelSelector } from "./CategoryEdgeModel.base"
 import { UserJokeHistoryEdgeModel, UserJokeHistoryEdgeModelType } from "./UserJokeHistoryEdgeModel"
 import { userJokeHistoryEdgeModelPrimitives, UserJokeHistoryEdgeModelSelector } from "./UserJokeHistoryEdgeModel.base"
+import { UserPayloadModel, UserPayloadModelType } from "./UserPayloadModel"
+import { userPayloadModelPrimitives, UserPayloadModelSelector } from "./UserPayloadModel.base"
 import { RateJokePayloadModel, RateJokePayloadModelType } from "./RateJokePayloadModel"
 import { rateJokePayloadModelPrimitives, RateJokePayloadModelSelector } from "./RateJokePayloadModel.base"
 import { UserErrorModel, UserErrorModelType } from "./UserErrorModel"
 import { userErrorModelPrimitives, UserErrorModelSelector } from "./UserErrorModel.base"
-import { UserPayloadModel, UserPayloadModelType } from "./UserPayloadModel"
-import { userPayloadModelPrimitives, UserPayloadModelSelector } from "./UserPayloadModel.base"
 
 import { nodeModelPrimitives, NodeModelSelector , NodeUnion } from "./"
 
-import { JokeLength } from "./JokeLengthEnum"
+import { ApplyPolicy } from "./ApplyPolicyEnum"
 import { RatingValue } from "./RatingValueEnum"
 import { SortEnumType } from "./SortEnumTypeEnum"
+import { JokeLength } from "./JokeLengthEnum"
 import { ErrorCodes } from "./ErrorCodesEnum"
-import { ApplyPolicy } from "./ApplyPolicyEnum"
 
 export type JokeFilterInput = {
   and?: JokeFilterInput[]
@@ -48,10 +48,50 @@ export type JokeFilterInput = {
   id?: ComparableInt32OperationFilterInput
   title?: StringOperationFilterInput
   body?: StringOperationFilterInput
-  score?: ComparableInt32OperationFilterInput
+  positiveRating?: ComparableInt32OperationFilterInput
+  negativeRating?: ComparableInt32OperationFilterInput
+  skipRating?: ComparableInt32OperationFilterInput
   userJokeHistories?: ListFilterInputTypeOfUserJokeHistoryFilterInput
   categories?: ListFilterInputTypeOfCategoryFilterInput
   users?: ListFilterInputTypeOfUserFilterInput
+}
+export type JokeSortInput = {
+  id?: SortEnumType
+  title?: SortEnumType
+  body?: SortEnumType
+  positiveRating?: SortEnumType
+  negativeRating?: SortEnumType
+  skipRating?: SortEnumType
+}
+export type CategoryFilterInput = {
+  and?: CategoryFilterInput[]
+  or?: CategoryFilterInput[]
+  id?: ComparableInt32OperationFilterInput
+  name?: StringOperationFilterInput
+  image?: StringOperationFilterInput
+  jokes?: ListFilterInputTypeOfJokeFilterInput
+  users?: ListFilterInputTypeOfUserFilterInput
+}
+export type CategorySortInput = {
+  id?: SortEnumType
+  name?: SortEnumType
+  image?: SortEnumType
+}
+export type UserJokeHistoryFilterInput = {
+  and?: UserJokeHistoryFilterInput[]
+  or?: UserJokeHistoryFilterInput[]
+  id?: ComparableInt32OperationFilterInput
+  bookmarked?: BooleanOperationFilterInput
+  rating?: RatingValueOperationFilterInput
+  user?: UserFilterInput
+  joke?: JokeFilterInput
+}
+export type UserJokeHistorySortInput = {
+  id?: SortEnumType
+  bookmarked?: SortEnumType
+  rating?: SortEnumType
+  user?: UserSortInput
+  joke?: JokeSortInput
 }
 export type ComparableInt32OperationFilterInput = {
   eq?: number
@@ -87,14 +127,23 @@ export type ListFilterInputTypeOfUserJokeHistoryFilterInput = {
   some?: UserJokeHistoryFilterInput
   any?: boolean
 }
-export type UserJokeHistoryFilterInput = {
-  and?: UserJokeHistoryFilterInput[]
-  or?: UserJokeHistoryFilterInput[]
-  id?: ComparableInt32OperationFilterInput
-  bookmarked?: BooleanOperationFilterInput
-  rating?: RatingValueOperationFilterInput
-  user?: UserFilterInput
-  joke?: JokeFilterInput
+export type ListFilterInputTypeOfCategoryFilterInput = {
+  all?: CategoryFilterInput
+  none?: CategoryFilterInput
+  some?: CategoryFilterInput
+  any?: boolean
+}
+export type ListFilterInputTypeOfUserFilterInput = {
+  all?: UserFilterInput
+  none?: UserFilterInput
+  some?: UserFilterInput
+  any?: boolean
+}
+export type ListFilterInputTypeOfJokeFilterInput = {
+  all?: JokeFilterInput
+  none?: JokeFilterInput
+  some?: JokeFilterInput
+  any?: boolean
 }
 export type BooleanOperationFilterInput = {
   eq?: boolean
@@ -115,9 +164,19 @@ export type UserFilterInput = {
   name?: StringOperationFilterInput
   createdOn?: ComparableDateTimeOperationFilterInput
   lastLogin?: ComparableDateTimeOperationFilterInput
+  onboardingComplete?: BooleanOperationFilterInput
   userJokeHistories?: ListFilterInputTypeOfUserJokeHistoryFilterInput
   categories?: ListFilterInputTypeOfCategoryFilterInput
   jokes?: ListFilterInputTypeOfJokeFilterInput
+}
+export type UserSortInput = {
+  id?: SortEnumType
+  firebaseUid?: SortEnumType
+  jokeCount?: SortEnumType
+  name?: SortEnumType
+  createdOn?: SortEnumType
+  lastLogin?: SortEnumType
+  onboardingComplete?: SortEnumType
 }
 export type ComparableDateTimeOperationFilterInput = {
   eq?: any
@@ -133,65 +192,14 @@ export type ComparableDateTimeOperationFilterInput = {
   lte?: any
   nlte?: any
 }
-export type ListFilterInputTypeOfCategoryFilterInput = {
-  all?: CategoryFilterInput
-  none?: CategoryFilterInput
-  some?: CategoryFilterInput
-  any?: boolean
-}
-export type CategoryFilterInput = {
-  and?: CategoryFilterInput[]
-  or?: CategoryFilterInput[]
-  id?: ComparableInt32OperationFilterInput
-  name?: StringOperationFilterInput
-  jokes?: ListFilterInputTypeOfJokeFilterInput
-  users?: ListFilterInputTypeOfUserFilterInput
-}
-export type ListFilterInputTypeOfJokeFilterInput = {
-  all?: JokeFilterInput
-  none?: JokeFilterInput
-  some?: JokeFilterInput
-  any?: boolean
-}
-export type ListFilterInputTypeOfUserFilterInput = {
-  all?: UserFilterInput
-  none?: UserFilterInput
-  some?: UserFilterInput
-  any?: boolean
-}
-export type JokeSortInput = {
-  id?: SortEnumType
-  title?: SortEnumType
-  body?: SortEnumType
-  score?: SortEnumType
-}
-export type CategorySortInput = {
-  id?: SortEnumType
-  name?: SortEnumType
-}
-export type UserJokeHistorySortInput = {
-  id?: SortEnumType
-  bookmarked?: SortEnumType
-  rating?: SortEnumType
-  user?: UserSortInput
-  joke?: JokeSortInput
-}
-export type UserSortInput = {
-  id?: SortEnumType
-  firebaseUid?: SortEnumType
-  jokeCount?: SortEnumType
-  name?: SortEnumType
-  createdOn?: SortEnumType
-  lastLogin?: SortEnumType
+export type UserLoginInput = {
+  firebaseUid: string
+  username: string
 }
 export type RateJokeInput = {
   jokeId: string
   rating: RatingValue
   bookmarked: boolean
-}
-export type UserLoginInput = {
-  firebaseUid: string
-  username: string
 }
 /* The TypeScript type that explicits the refs to other models in order to prevent a circular refs issue */
 type Refs = {
@@ -209,12 +217,14 @@ export enum RootStoreBaseQueries {
 queryNode="queryNode",
 queryJokes="queryJokes",
 queryCategories="queryCategories",
+queryUserCategories="queryUserCategories",
 queryUserJokeHistories="queryUserJokeHistories",
 queryUserJokeHistoryByUserId="queryUserJokeHistoryByUserId"
 }
 export enum RootStoreBaseMutations {
 mutateRateJoke="mutateRateJoke",
-mutateLogin="mutateLogin"
+mutateLogin="mutateLogin",
+mutateCompleteOnboarding="mutateCompleteOnboarding"
 }
 
 /**
@@ -222,7 +232,7 @@ mutateLogin="mutateLogin"
 */
 export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
   .named("RootStore")
-  .extend(configureStoreMixin([['JokeConnection', () => JokeConnectionModel], ['PageInfo', () => PageInfoModel], ['JokeEdge', () => JokeEdgeModel], ['Joke', () => JokeModel], ['UserJokeHistory', () => UserJokeHistoryModel], ['User', () => UserModel], ['Category', () => CategoryModel], ['CategoryConnection', () => CategoryConnectionModel], ['CategoryEdge', () => CategoryEdgeModel], ['UserJokeHistoryConnection', () => UserJokeHistoryConnectionModel], ['UserJokeHistoryEdge', () => UserJokeHistoryEdgeModel], ['RateJokePayload', () => RateJokePayloadModel], ['UserError', () => UserErrorModel], ['UserPayload', () => UserPayloadModel]], ['Joke', 'User', 'Category', 'UserJokeHistory'], "js"))
+  .extend(configureStoreMixin([['Joke', () => JokeModel], ['Category', () => CategoryModel], ['UserJokeHistory', () => UserJokeHistoryModel], ['User', () => UserModel], ['JokeConnection', () => JokeConnectionModel], ['CategoryConnection', () => CategoryConnectionModel], ['UserJokeHistoryConnection', () => UserJokeHistoryConnectionModel], ['PageInfo', () => PageInfoModel], ['JokeEdge', () => JokeEdgeModel], ['CategoryEdge', () => CategoryEdgeModel], ['UserJokeHistoryEdge', () => UserJokeHistoryEdgeModel], ['UserPayload', () => UserPayloadModel], ['RateJokePayload', () => RateJokePayloadModel], ['UserError', () => UserErrorModel]], ['Joke', 'User', 'Category', 'UserJokeHistory'], "js"))
   .props({
     jokes: types.optional(types.map(types.late((): any => JokeModel)), {}),
     users: types.optional(types.map(types.late((): any => UserModel)), {}),
@@ -235,13 +245,18 @@ export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
         ${typeof resultSelector === "function" ? resultSelector(new NodeModelSelector()).toString() : resultSelector}
       } }`, variables, options)
     },
-    queryJokes(variables: { first?: number, after?: string, last?: number, before?: string, jokeLength: JokeLength, where?: JokeFilterInput, order?: JokeSortInput[] }, resultSelector: string | ((qb: JokeConnectionModelSelector) => JokeConnectionModelSelector) = jokeConnectionModelPrimitives.toString(), options: QueryOptions = {}) {
-      return self.query<{ jokes: JokeConnectionModelType}>(`query jokes($first: Int, $after: String, $last: Int, $before: String, $jokeLength: JokeLength!, $where: JokeFilterInput, $order: [JokeSortInput!]) { jokes(first: $first, after: $after, last: $last, before: $before, jokeLength: $jokeLength, where: $where, order: $order) {
+    queryJokes(variables: { first?: number, after?: string, last?: number, before?: string, jokeLength: JokeLength, blockedCategoryIds: string[], where?: JokeFilterInput, order?: JokeSortInput[] }, resultSelector: string | ((qb: JokeConnectionModelSelector) => JokeConnectionModelSelector) = jokeConnectionModelPrimitives.toString(), options: QueryOptions = {}) {
+      return self.query<{ jokes: JokeConnectionModelType}>(`query jokes($first: Int, $after: String, $last: Int, $before: String, $jokeLength: JokeLength!, $blockedCategoryIds: [ID!]!, $where: JokeFilterInput, $order: [JokeSortInput!]) { jokes(first: $first, after: $after, last: $last, before: $before, jokeLength: $jokeLength, blockedCategoryIds: $blockedCategoryIds, where: $where, order: $order) {
         ${typeof resultSelector === "function" ? resultSelector(new JokeConnectionModelSelector()).toString() : resultSelector}
       } }`, variables, options)
     },
     queryCategories(variables: { first?: number, after?: string, last?: number, before?: string, where?: CategoryFilterInput, order?: CategorySortInput[] }, resultSelector: string | ((qb: CategoryConnectionModelSelector) => CategoryConnectionModelSelector) = categoryConnectionModelPrimitives.toString(), options: QueryOptions = {}) {
       return self.query<{ categories: CategoryConnectionModelType}>(`query categories($first: Int, $after: String, $last: Int, $before: String, $where: CategoryFilterInput, $order: [CategorySortInput!]) { categories(first: $first, after: $after, last: $last, before: $before, where: $where, order: $order) {
+        ${typeof resultSelector === "function" ? resultSelector(new CategoryConnectionModelSelector()).toString() : resultSelector}
+      } }`, variables, options)
+    },
+    queryUserCategories(variables: { first?: number, after?: string, last?: number, before?: string, uid: string, where?: CategoryFilterInput, order?: CategorySortInput[] }, resultSelector: string | ((qb: CategoryConnectionModelSelector) => CategoryConnectionModelSelector) = categoryConnectionModelPrimitives.toString(), options: QueryOptions = {}) {
+      return self.query<{ userCategories: CategoryConnectionModelType}>(`query userCategories($first: Int, $after: String, $last: Int, $before: String, $uid: String!, $where: CategoryFilterInput, $order: [CategorySortInput!]) { userCategories(first: $first, after: $after, last: $last, before: $before, uid: $uid, where: $where, order: $order) {
         ${typeof resultSelector === "function" ? resultSelector(new CategoryConnectionModelSelector()).toString() : resultSelector}
       } }`, variables, options)
     },
@@ -262,6 +277,11 @@ export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
     },
     mutateLogin(variables: { input: UserLoginInput }, resultSelector: string | ((qb: UserPayloadModelSelector) => UserPayloadModelSelector) = userPayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {
       return self.mutate<{ login: UserPayloadModelType}>(`mutation login($input: UserLoginInput!) { login(input: $input) {
+        ${typeof resultSelector === "function" ? resultSelector(new UserPayloadModelSelector()).toString() : resultSelector}
+      } }`, variables, optimisticUpdate)
+    },
+    mutateCompleteOnboarding(variables: { input: UserLoginInput }, resultSelector: string | ((qb: UserPayloadModelSelector) => UserPayloadModelSelector) = userPayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {
+      return self.mutate<{ completeOnboarding: UserPayloadModelType}>(`mutation completeOnboarding($input: UserLoginInput!) { completeOnboarding(input: $input) {
         ${typeof resultSelector === "function" ? resultSelector(new UserPayloadModelSelector()).toString() : resultSelector}
       } }`, variables, optimisticUpdate)
     },

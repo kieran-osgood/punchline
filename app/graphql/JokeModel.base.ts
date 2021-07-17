@@ -17,8 +17,8 @@ import { RootStoreType } from "./index"
 
 /* The TypeScript type that explicits the refs to other models in order to prevent a circular refs issue */
 type Refs = {
-  userJokeHistories: IObservableArray<UserJokeHistoryModelType>;
   categories: IObservableArray<CategoryModelType>;
+  userJokeHistories: IObservableArray<UserJokeHistoryModelType>;
   users: IObservableArray<UserModelType>;
 }
 
@@ -31,11 +31,13 @@ export const JokeModelBase = withTypedRefs<Refs>()(ModelBase
   .props({
     __typename: types.optional(types.literal("Joke"), "Joke"),
     id: types.identifier,
+    categories: types.union(types.undefined, types.null, types.array(types.union(types.null, MSTGQLRef(types.late((): any => CategoryModel))))),
     title: types.union(types.undefined, types.string),
     body: types.union(types.undefined, types.string),
-    score: types.union(types.undefined, types.integer),
+    positiveRating: types.union(types.undefined, types.integer),
+    negativeRating: types.union(types.undefined, types.integer),
+    skipRating: types.union(types.undefined, types.integer),
     userJokeHistories: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => UserJokeHistoryModel)))),
-    categories: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => CategoryModel)))),
     users: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => UserModel)))),
   })
   .views(self => ({
@@ -48,13 +50,15 @@ export class JokeModelSelector extends QueryBuilder {
   get id() { return this.__attr(`id`) }
   get title() { return this.__attr(`title`) }
   get body() { return this.__attr(`body`) }
-  get score() { return this.__attr(`score`) }
-  userJokeHistories(builder?: string | UserJokeHistoryModelSelector | ((selector: UserJokeHistoryModelSelector) => UserJokeHistoryModelSelector)) { return this.__child(`userJokeHistories`, UserJokeHistoryModelSelector, builder) }
+  get positiveRating() { return this.__attr(`positiveRating`) }
+  get negativeRating() { return this.__attr(`negativeRating`) }
+  get skipRating() { return this.__attr(`skipRating`) }
   categories(builder?: string | CategoryModelSelector | ((selector: CategoryModelSelector) => CategoryModelSelector)) { return this.__child(`categories`, CategoryModelSelector, builder) }
+  userJokeHistories(builder?: string | UserJokeHistoryModelSelector | ((selector: UserJokeHistoryModelSelector) => UserJokeHistoryModelSelector)) { return this.__child(`userJokeHistories`, UserJokeHistoryModelSelector, builder) }
   users(builder?: string | UserModelSelector | ((selector: UserModelSelector) => UserModelSelector)) { return this.__child(`users`, UserModelSelector, builder) }
 }
 export function selectFromJoke() {
   return new JokeModelSelector()
 }
 
-export const jokeModelPrimitives = selectFromJoke().title.body.score
+export const jokeModelPrimitives = selectFromJoke().title.body.positiveRating.negativeRating.skipRating
