@@ -103,6 +103,7 @@ const TEXT: TextStyle = {
   fontFamily: typography.primary,
   fontSize: 14,
   color: color.primary,
+  paddingTop: spacing[2]
 }
 
 const CATEGORY_CONTAINER: ViewStyle = {

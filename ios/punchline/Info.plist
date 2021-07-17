@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLSchemes</key>
+	<array>
+		<string>360796595283083</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -29,8 +33,33 @@
 			<array>
 				<string>com.googleusercontent.apps.681986405885-gfppj7edi8rbb3h1t1gms2el14gr2c1l</string>
 				<string>punchline</string>
+				<string>fb360796595283083</string>
 			</array>
 		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>360796595283083</string>
+	<key>FacebookClientToken</key>
+	<string>35e33471fb9de6537ff9ec008a2391ba</string>
+	<key>FacebookDisplayName</key>
+	<string>punchline</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+	<string>fbapi</string>
+	<string>fbapi20130214</string>
+	<string>fbapi20130410</string>
+	<string>fbapi20130702</string>
+	<string>fbapi20131010</string>
+	<string>fbapi20131219</string>
+	<string>fbapi20140410</string>
+	<string>fbapi20140116</string>
+	<string>fbapi20150313</string>
+	<string>fbapi20150629</string>
+	<string>fbapi20160328</string>
+	<string>fbauth</string>
+	<string>fb-messenger-share-api</string>
+	<string>fbauth2</string>
+	<string>fbshareextension</string>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
@@ -52,7 +81,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Feather.ttf</string>

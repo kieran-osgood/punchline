@@ -8,33 +8,7 @@ import { color, spacing } from "theme"
 import { Button } from 'react-native-elements'
 import { useStores } from 'app/models'
 
-const BUTTON_ICON: ViewStyle = {
-  position: "absolute",
-  left: spacing[6],
-}
-
-const BUTTON_TITLE: TextStyle = {
-  fontSize: 18,
-  fontWeight: "bold",
-  width: "100%",
-  color: color.text,
-  marginLeft: "40%",
-  textAlign: "left",
-}
-
-export const PILL_BUTTON: ViewStyle = {
-  borderRadius: 100,
-  paddingVertical: spacing[4],
-  paddingHorizontal: spacing[4],
-  backgroundColor: color.palette.white,
-}
-
-export const BUTTON_CONTAINER: ViewStyle = {
-  width: 305,
-  marginVertical: spacing[3],
-}
-
-export interface GoogleSigninButtonProps {
+export interface GoogleSignInButtonProps {
   /**
    * An optional style override useful for padding & margin.
    */
@@ -49,7 +23,7 @@ export interface GoogleSigninButtonProps {
 /**
  * Google Sign in button
  */
-export const GoogleSigninButton = observer(function GoogleSigninButton(props: GoogleSigninButtonProps) {
+export const GoogleSignInButton = observer(function GoogleSigninButton(props: GoogleSignInButtonProps) {
   const {
     isAnonymousConversion = false,
     title = "Log in with Google",
@@ -100,3 +74,29 @@ export const GoogleSigninButton = observer(function GoogleSigninButton(props: Go
     />
   )
 })
+
+export const BUTTON_ICON: ViewStyle = {
+  position: "absolute",
+  left: spacing[6],
+}
+
+export const BUTTON_TITLE: TextStyle = {
+  fontSize: 18,
+  fontWeight: "bold",
+  width: "100%",
+  color: color.text,
+  marginLeft: "40%",
+  textAlign: "left",
+}
+
+export const PILL_BUTTON: ViewStyle = {
+  borderRadius: 100,
+  paddingVertical: spacing[4],
+  paddingHorizontal: spacing[4],
+  backgroundColor: color.palette.white,
+}
+
+export const BUTTON_CONTAINER: ViewStyle = {
+  width: 305,
+  marginVertical: spacing[3],
+}

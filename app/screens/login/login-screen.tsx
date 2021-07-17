@@ -5,13 +5,22 @@ import { widthPercentageToDP } from "react-native-responsive-screen"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color, spacing } from "theme"
-import { LoadingModal, AppLogo, CenterView, Screen, Text, GoogleSigninButton, GuestSigninButton } from "components"
+import {
+  LoadingModal,
+  AppLogo,
+  CenterView,
+  Screen,
+  Text,
+  GoogleSignInButton,
+  GuestSigninButton,
+  FacebookSignInButton,
+} from "components"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
   justifyContent: "space-between",
   alignItems: "center",
-  paddingBottom: spacing[3]
+  paddingBottom: spacing[3],
 }
 
 const APP_LOGO: ViewStyle = {
@@ -41,11 +50,11 @@ const TEXT_SEPERATOR: TextStyle = {
 
 const COPYRIGHT_TEXT: TextStyle = {
   paddingBottom: spacing[3],
-  textAlign: 'center',
+  textAlign: "center",
 }
 
 const TEXT_CENTER: TextStyle = {
-  textAlign: 'center',
+  textAlign: "center",
 }
 
 const BUTTONS_CONTAINER: ViewStyle = {
@@ -69,7 +78,7 @@ export const LoginScreen = observer(function LoginScreen() {
   }
 
   return (
-    <Screen style={ROOT} preset='fixed' testID="LoginScreen">
+    <Screen style={ROOT} preset="fixed" testID="LoginScreen">
       <AppLogo style={APP_LOGO} />
 
       <Text h1 text="Login" style={TEXT_CENTER} />
@@ -78,15 +87,16 @@ export const LoginScreen = observer(function LoginScreen() {
         text="Login to bookmark your favourite jokes for later, and view your history!"
       />
       <CenterView style={BUTTONS_CONTAINER}>
-        <GoogleSigninButton
+        <GoogleSignInButton
           setIsLoading={(val) => setIsLoading(val)}
           onSuccess={successPopup}
           onError={errorPopup}
         />
-        {/* <FacebookSignIn setIsLoading={(val) => setIsLoading(val)}
-            onSuccess={successPopup}
-            onError={errorPopup}
-          /> */}
+        <FacebookSignInButton
+          setIsLoading={(val) => setIsLoading(val)}
+          onSuccess={successPopup}
+          onError={errorPopup}
+        />
         <Text style={TEXT_SEPERATOR} text="Or" />
         <GuestSigninButton />
       </CenterView>

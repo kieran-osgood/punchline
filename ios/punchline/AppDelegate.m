@@ -12,6 +12,7 @@
 // MANUAL INSTALL
 #import <Firebase.h>
 #import <React/RCTLinkingManager.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 // MANUAL INSTALL
 
 #ifdef FB_SONARKIT_ENABLED
@@ -51,6 +52,9 @@ static void InitializeFlipper(UIApplication *application) {
     if ([FIRApp defaultApp] == nil) {
       [FIRApp configure];
     }
+  
+  [[FBSDKApplicationDelegate sharedInstance] application:application
+                           didFinishLaunchingWithOptions:launchOptions];
   // MANUAL INSTALL
   
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
@@ -71,8 +75,10 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
   return YES;
 }
+
 
 - (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge
 {
@@ -95,7 +101,15 @@ static void InitializeFlipper(UIApplication *application) {
    openURL:(NSURL *)url
    options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-  return [RCTLinkingManager application:application openURL:url options:options];
+  if ([[FBSDKApplicationDelegate sharedInstance] application:application openURL:url options:options]) {
+     return YES;
+   }
+
+   if ([RCTLinkingManager application:application openURL:url options:options]) {
+     return YES;
+   }
+
+   return NO;
 }
 
 @end

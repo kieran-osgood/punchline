@@ -5,8 +5,9 @@ import {
   Button,
   CategorySetting,
   CenterView,
+  FacebookSignInButton,
+  GoogleSignInButton,
   JokeLengthSetting,
-  PILL_BUTTON,
   Screen,
   Text,
 } from "../../components"
@@ -20,8 +21,8 @@ export const SettingsScreen = observer(function SettingsScreen() {
       <JokeLengthSetting />
       <CategorySetting />
       {auth().currentUser?.isAnonymous && <LoginConversion />}
-      <BugReport />
       <LogoutButton />
+      <BugReport />
     </Screen>
   )
 })
@@ -35,7 +36,7 @@ const ROOT: ViewStyle = {
 const LogoutButton = () => (
   <Button
     text="Logout"
-    style={PILL_BUTTON}
+    // style={PILL_BUTTON}
     textStyle={LOGOUT_BUTTON}
     onPress={() => auth().signOut()}
   />
@@ -50,12 +51,15 @@ const LOGOUT_BUTTON: TextStyle = {
 
 const LoginConversion = () => (
   <CenterView style={LOGIN_CONVERSION}>
+    <Text h3 bold>
+      Link Account
+    </Text>
     <Text
-      style={{ textAlign: "center" }}
-      text="Link via your social media account in order to save your bookmarks and preferences."
+      style={{ fontSize: 12 }}
+      text="Currently signed in as a guest. In order to save your bookmarks and history, link a social media authentication provider below"
     />
-    {/* <GoogleSignIn isAnonymousConversion={true} /> */}
-    {/* <FacebookSignIn isAnonymousConversion={true} /> */}
+    <GoogleSignInButton isAnonymousConversion={true} />
+    <FacebookSignInButton isAnonymousConversion={true} />
   </CenterView>
 )
 
@@ -78,7 +82,7 @@ const BUG_REPORT_BUTTON: ViewStyle = {
 }
 
 const BUG_BUTTON_TEXT: TextStyle = {
-  fontSize: 14,
+  fontSize: 13,
   color: color.error,
   textAlign: "center",
 }
