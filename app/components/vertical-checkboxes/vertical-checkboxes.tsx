@@ -25,9 +25,10 @@ export const VerticalCheckboxes = observer(function VerticalCheckboxes(
     <View style={[CONTAINER, style]}>
       {data.map((checkbox) => (
         <BouncyCheckbox
+          key={checkbox.value}
           size={30}
           fillColor={color.primary}
-          unfillColor='transparent'
+          unfillColor="transparent"
           text={checkbox.label}
           style={CHECKBOX}
           iconStyle={ICON}
