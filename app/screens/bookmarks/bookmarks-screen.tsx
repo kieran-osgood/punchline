@@ -1,36 +1,55 @@
-import React from "react"
-import { observer } from "mobx-react-lite"
-import { FlatList, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
-import { color, spacing } from "theme"
-import { Screen } from "../../components/screen/screen"
-import { Link, Text } from "components"
+import { useNavigation } from "@react-navigation/native"
+import { jokeModelPrimitives, nodes, useQuery, userJokeHistoryModelPrimitives } from "app/graphql"
+import { NavigationProps } from "app/navigators"
 import { Expansion } from "assets/images/expansion"
+import { EmptyState, Link, Text } from "components"
+import { observer } from "mobx-react-lite"
+import React from "react"
+import { FlatList, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
   useDerivedValue,
 } from "react-native-reanimated"
+import { color, spacing } from "theme"
+import { Screen } from "../../components/screen/screen"
 
 export const BookmarksScreen = observer(function BookmarksScreen() {
-  // Pull in one of our MST stores
-  // const { someStore, anotherStore } = useStores()
+  const navigation = useNavigation<NavigationProps<"UserProfileScreen">["navigation"]>()
   const [index, setIndex] = React.useState<number | null>(null)
-  // Pull in navigation via hook
-  // const navigation = useNavigation()
+
+  const { data } = useQuery((store) =>
+    store.queryUserJokeHistoryByUserId(
+      {},
+      nodes(userJokeHistoryModelPrimitives, `joke{${jokeModelPrimitives.toString()}}`),
+    ),
+  )
+
   return (
     <Screen style={ROOT} preset="fixed" unsafe>
       {/* <Text h1 bold text="Bookmarks" /> */}
-      <FlatList
-        data={bookmarks}
-        renderItem={({ item: bookmark, index: thisIndex }) => (
-          <Bookmark
-            key={bookmark.id}
-            {...{ bookmark }}
-            lastTouched={thisIndex === index}
-            handlePress={() => setIndex(thisIndex)}
-          />
-        )}
-      />
+      {typeof data?.userJokeHistoryByUserId !== "undefined" &&
+      data?.userJokeHistoryByUserId.nodes.length > 0 ? (
+        <FlatList
+          data={bookmarks}
+          renderItem={({ item: bookmark, index: thisIndex }) => (
+            <Bookmark
+              key={bookmark.id}
+              {...{ bookmark }}
+              lastTouched={thisIndex === index}
+              handlePress={() => setIndex(thisIndex)}
+            />
+          )}
+        />
+      ) : (
+        <EmptyState
+          title="Zero Bookmarks!"
+          body="It appears you've not bookmarked any jokes. Make sure to press the star on jokes to save them here!"
+          ctaText="Go save some jokes!"
+          image="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flat_tick_icon.svg/1200px-Flat_tick_icon.svg.png"
+          onPress={() => navigation.navigate("JokeScreen")}
+        />
+      )}
     </Screen>
   )
 })
@@ -39,6 +58,7 @@ const ROOT: ViewStyle = {
   backgroundColor: color.background,
   flex: 1,
   paddingHorizontal: spacing[3],
+  justifyContent: "center",
 }
 
 const bookmarks = [

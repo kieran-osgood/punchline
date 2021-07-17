@@ -1,34 +1,26 @@
-import React from "react"
-import { observer } from "mobx-react-lite"
-import { Dimensions, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
-import {
-  Screen,
-  Text,
-  AdBanner,
-  CircularButton,
-  ShareIcons,
-  Ratings,
-  Card,
-  BookmarkButton,
-} from "components"
-import { color, spacing } from "theme"
-import { CryingEmoji, LaughingEmoji } from "images"
 import { useRoute } from "@react-navigation/native"
 import { NavigationProps } from "app/navigators/main-navigator"
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-  withTiming,
-  Transition,
-  Transitioning,
-} from "react-native-reanimated"
 import Skip from "assets/images/skip"
-
-import { useQuery } from "../../graphql/reactUtils"
+import {
+  AdBanner,
+  BookmarkButton,
+  Card,
+  CircularButton,
+  Ratings,
+  Screen,
+  ShareIcons,
+  Text,
+} from "components"
+import { CryingEmoji, LaughingEmoji } from "images"
+import { observer } from "mobx-react-lite"
+import React from "react"
+import { Dimensions, TextStyle, View, ViewStyle } from "react-native"
+import { useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated"
+import { color, spacing } from "theme"
 import { JokeLength } from "../../graphql/JokeLengthEnum"
-import { nodes } from "../../graphql/RootStore"
 import { jokeModelPrimitives } from "../../graphql/JokeModel.base"
+import { useQuery } from "../../graphql/reactUtils"
+import { nodes } from "../../graphql/RootStore"
 
 const { width } = Dimensions.get("screen")
 

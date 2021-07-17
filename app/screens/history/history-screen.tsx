@@ -1,50 +1,53 @@
-import React from "react"
-import { observer } from "mobx-react-lite"
-import { FlatList, TextStyle, View, ViewStyle } from "react-native"
-import { color, spacing } from "theme"
-import { BookmarkButton, Button, Screen, Text } from "components"
+import { useNavigation } from "@react-navigation/native"
+import { EmptyState } from "app/components/empty-state/empty-state"
+import { jokeModelPrimitives, nodes, useQuery } from "app/graphql"
 import {
-  selectFromUserJokeHistory,
   userJokeHistoryModelPrimitives,
   UserJokeHistoryModelType as UserJokeHistoryType,
 } from "app/graphql/UserJokeHistoryModel"
+import { NavigationProps } from "app/navigators"
+import { BookmarkButton, Button, Screen, Text } from "components"
+import { observer } from "mobx-react-lite"
+import React from "react"
+import { FlatList, TextStyle, View, ViewStyle } from "react-native"
 import Collapsible from "react-native-collapsible"
-import { useQuery } from "app/graphql/reactUtils"
-import { jokeModelPrimitives, nodes, selectFromUserJokeHistoryConnection } from "app/graphql"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "../../models"
+import { color, spacing } from "theme"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
   flex: 1,
-}
-
-const NO_RESULTS: TextStyle = {
-  textAlign: "center",
+  justifyContent: "center",
 }
 
 export const HistoryScreen = observer(function HistoryScreen() {
-  const [userJokeHistories, setUserJokeHistory] = React.useState<
-  UserJokeHistoryType[] | undefined
-  >()
-  // const { userStore } = useStores()
+  const navigation = useNavigation<NavigationProps<"UserProfileScreen">["navigation"]>()
   const { data } = useQuery((store) =>
-    store.queryUserJokeHistoryByUserId({}, nodes(userJokeHistoryModelPrimitives, `joke{${jokeModelPrimitives.toString()}}`)),
+    store.queryUserJokeHistoryByUserId(
+      {},
+      nodes(userJokeHistoryModelPrimitives, `joke{${jokeModelPrimitives.toString()}}`),
+    ),
   )
 
   return (
-    <Screen style={ROOT} preset="scroll">
-      {typeof data?.userJokeHistoryByUserId !== "undefined" && data?.userJokeHistoryByUserId.nodes.length > 0 ? (
+    <Screen style={ROOT} preset="scroll" unsafe>
+      {typeof data?.userJokeHistoryByUserId !== "undefined" &&
+      data?.userJokeHistoryByUserId.nodes.length > 0 ? (
         <FlatList
           style={FLAT_LIST}
-          data={userJokeHistories}
+          data={data?.userJokeHistoryByUserId.nodes}
           renderItem={({ index: key, item: userJokeHistory }) => (
             <ListItem {...{ key, userJokeHistory }} />
           )}
           keyExtractor={(userJokeHistory) => String(userJokeHistory.id)}
         />
       ) : (
-        <Text style={NO_RESULTS} text="Your history will show here." />
+        <EmptyState
+          title="Empty History"
+          body="There doesn't seem to be any jokes in your history. Check back after you've rated some jokes!"
+          ctaText="Explore Jokes!"
+          image="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flat_tick_icon.svg/1200px-Flat_tick_icon.svg.png"
+          onPress={() => navigation.navigate("JokeScreen")}
+        />
       )}
     </Screen>
   )
