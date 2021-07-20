@@ -2,31 +2,28 @@
  * The app navigation resides in ./app/navigators, so head over there
  * if you're interested in adding screens and navigators.
  */
-import "./i18n"
-import "./utils/ignore-warnings"
-import React, { useState, useEffect, useRef } from "react"
+import auth from "@react-native-firebase/auth"
 import { NavigationContainerRef } from "@react-navigation/native"
-import { SafeAreaProvider, initialWindowMetrics } from "react-native-safe-area-context"
-// import { initFonts } from "./theme/fonts" // expo
-import * as storage from "./utils/storage"
+import { categoryModelPrimitives, nodes } from "app/graphql"
+import { StoreContext as GraphQLStoreContext, useQuery } from "app/graphql/reactUtils"
+import { RootStore, RootStoreProvider, setupRootStore, useStores } from "app/models"
+import { observer } from "mobx-react-lite"
+import React, { useEffect, useRef, useState } from "react"
+import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
+import { ToggleStorybook } from "../storybook/toggle-storybook"
+import "./i18n"
 import {
-  useBackButtonHandler,
-  RootNavigator,
   canExit,
+  RootNavigator,
   setRootNavigation,
+  useBackButtonHandler,
   useNavigationPersistence,
 } from "./navigators"
-import { RootStore, RootStoreProvider, setupRootStore, useStores } from "app/models"
-import { ToggleStorybook } from "../storybook/toggle-storybook"
-import auth from "@react-native-firebase/auth"
-import { StoreContext as GraphQLStoreContext, useQuery } from "app/graphql/reactUtils"
-import { observer } from "mobx-react-lite"
-import ServiceProvider from "app/utils/service-provider"
-import { categoryModelPrimitives, nodes } from 'app/graphql'
+import "./utils/ignore-warnings"
+// import { initFonts } from "./theme/fonts" // expo
+import * as storage from "./utils/storage"
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
-
-const Services = new ServiceProvider()
 
 /**
  * This is the root component of our app.
@@ -53,12 +50,12 @@ const App = observer(function App() {
   }, [])
 
   // Wait for state to load from AsyncStorage
-  if (!rootStore) return null
+  if (!rootStore || !rootStore.api) return null
 
   return (
     <ToggleStorybook>
       <RootStoreProvider value={rootStore}>
-        <GraphQLStoreContext.Provider value={Services.RootGraphqlStore}>
+        <GraphQLStoreContext.Provider value={rootStore.api}>
           <Authorization>
             <SafeAreaProvider initialMetrics={initialWindowMetrics}>
               <RootNavigator
@@ -79,7 +76,7 @@ export default App
 const Authorization = ({ children }: { children: React.ReactNode }) => {
   const { userStore } = useStores()
   const { store, setQuery } = useQuery()
-  useQuery(store => store.queryCategories({}, nodes(categoryModelPrimitives)))
+  useQuery((store) => store.queryCategories({}, nodes(categoryModelPrimitives)))
 
   React.useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged((user) => {

@@ -1,19 +1,16 @@
+import { Skeleton } from "@motify/skeleton"
+import { JokeLength } from "app/graphql/JokeLengthEnum"
+import { useStores } from "app/models"
+import { observer } from "mobx-react-lite"
+import { MotiTransitionProp, MotiView } from "moti"
 import * as React from "react"
 import { StyleSheet, TextStyle, View, ViewStyle } from "react-native"
-import { observer } from "mobx-react-lite"
-import { color, spacing } from "../../theme"
 import { CARD_SHADOW, Text, VerticalCheckboxes, VerticalCheckboxesProps } from "../"
-import { JokeLength } from "app/graphql/JokeLengthEnum"
-import { Skeleton } from "@motify/skeleton"
-import { MotiTransitionProp, MotiView } from "moti"
+import { color, spacing } from "../../theme"
 
 const JokeLengths: JokeLength[] = Object.keys(JokeLength)
   .map((k) => JokeLength[k as keyof typeof JokeLength])
   .map((v) => v as JokeLength)
-const CheckboxMap: VerticalCheckboxesProps["data"] = JokeLengths.map((x) => ({
-  label: x.slice(0, 1) + x.slice(1).toLowerCase(),
-  value: x,
-}))
 
 const CONTAINER: ViewStyle = {
   justifyContent: "center",
@@ -33,13 +30,24 @@ export const JokeLengthSetting = observer(function JokeLengthSetting(
   props: JokeLengthSettingProps,
 ) {
   const { style } = props
+  const { userStore } = useStores()
+
+  const checkboxMap: VerticalCheckboxesProps["data"] = JokeLengths.map((x) => ({
+    label: x.slice(0, 1) + x.slice(1).toLowerCase(),
+    value: x,
+    isChecked: userStore.jokeLengthPreferences.get(x) ?? false,
+  }))
 
   return (
     <View style={[CONTAINER, style]}>
       <Text h2 bold text="Joke Length" style={TITLE} />
       <View style={ROW}>
-        <JokePreview selected={3} />
-        <VerticalCheckboxes data={CheckboxMap} style={{ width: "50%" }} onPress={() => {}} />
+        <JokePreview selected={2} />
+        <VerticalCheckboxes
+          data={checkboxMap}
+          style={{ width: "50%" }}
+          onPress={(value, isChecked) => userStore.toggleJokeLength(value, isChecked)}
+        />
       </View>
     </View>
   )

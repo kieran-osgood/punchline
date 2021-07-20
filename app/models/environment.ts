@@ -1,3 +1,5 @@
+import { createHttpClient } from "mst-gql"
+import { API_URL } from "react-native-dotenv"
 import { Api } from "../services/api"
 
 let ReactotronDev
@@ -22,6 +24,8 @@ export class Environment {
 
   async setup() {
     // allow each service to setup
+    this.gqlHttpClient = createHttpClient(API_URL)
+
     if (__DEV__) {
       await this.reactotron.setup()
     }
@@ -32,7 +36,7 @@ export class Environment {
    * Reactotron is only available in dev.
    */
   reactotron: typeof ReactotronDev
-
+  gqlHttpClient: GraphQLClient
   /**
    * Our api.
    */

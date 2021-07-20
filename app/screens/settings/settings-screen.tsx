@@ -1,6 +1,9 @@
-import React from "react"
+import auth from "@react-native-firebase/auth"
 import { observer } from "mobx-react-lite"
+import React from "react"
 import { Linking, TextStyle, ViewStyle } from "react-native"
+import { BUG_REPORT_EMAIL } from "react-native-dotenv"
+import { color, spacing } from "theme"
 import {
   Button,
   CategorySetting,
@@ -11,9 +14,6 @@ import {
   Screen,
   Text,
 } from "../../components"
-import { color, spacing } from "theme"
-import auth from "@react-native-firebase/auth"
-import { BUG_REPORT_EMAIL } from "react-native-dotenv"
 
 export const SettingsScreen = observer(function SettingsScreen() {
   return (

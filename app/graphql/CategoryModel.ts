@@ -6,9 +6,9 @@ export interface CategoryModelType extends Instance<typeof CategoryModel.Type> {
 
 /* A graphql query fragment builders for CategoryModel */
 export {
-  selectFromCategory,
   categoryModelPrimitives,
   CategoryModelSelector,
+  selectFromCategory,
 } from "./CategoryModel.base"
 
 /**

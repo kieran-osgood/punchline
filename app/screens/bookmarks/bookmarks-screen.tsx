@@ -27,7 +27,6 @@ export const BookmarksScreen = observer(function BookmarksScreen() {
 
   return (
     <Screen style={ROOT} preset="fixed" unsafe>
-      {/* <Text h1 bold text="Bookmarks" /> */}
       {typeof data?.userJokeHistoryByUserId !== "undefined" &&
       data?.userJokeHistoryByUserId.nodes.length > 0 ? (
         <FlatList

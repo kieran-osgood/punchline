@@ -1,3 +1,4 @@
+import { RootStore } from "app/graphql"
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
 import { createUserStoreDefaultModel } from "../user-store/user-store"
 
@@ -6,7 +7,8 @@ import { createUserStoreDefaultModel } from "../user-store/user-store"
  */
 // prettier-ignore
 export const RootStoreModel = types.model("RootStore").props({
-  userStore: createUserStoreDefaultModel()
+  userStore: createUserStoreDefaultModel(),
+  api: types.optional(RootStore, {})
 })
 
 /**

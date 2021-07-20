@@ -1,4 +1,5 @@
 import { useRoute } from "@react-navigation/native"
+import { useStores } from "app/models"
 import { NavigationProps } from "app/navigators/main-navigator"
 import Skip from "assets/images/skip"
 import {
@@ -43,10 +44,11 @@ const PAGE_GUTTERS = 15
 export const JokeScreen = observer(function JokeScreen() {
   const route = useRoute<NavigationProps<"JokeScreen">["route"]>()
   const [cards, setCards] = React.useState(jokes)
+  const { userStore } = useStores()
 
   const { data } = useQuery((store) =>
     store.queryJokes(
-      { blockedCategoryIds: store.blockedCategoryIds, jokeLength: JokeLength.MEDIUM },
+      { blockedCategoryIds: userStore.blockedCategoryIds, jokeLength: JokeLength.MEDIUM },
       nodes(jokeModelPrimitives),
     ),
   )

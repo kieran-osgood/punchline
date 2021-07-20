@@ -1,7 +1,6 @@
-import * as React from "react"
 import { observer } from "mobx-react-lite"
+import * as React from "react"
 import Icon from "react-native-vector-icons/AntDesign"
-import { color as Color } from "theme"
 import { IconProps } from "react-native-vector-icons/Icon"
 
 export interface BookmarkButtonProps {
@@ -16,13 +15,13 @@ export const accessibilityLabel = "Bookmark Button"
 export const BookmarkButton = observer(function BookmarkButton(props: BookmarkButtonProps) {
   const { bookmarked = true, onPress, size = 34 } = props
   const name = bookmarked ? "star" : "staro"
-  const color = bookmarked ? Color.success : "#000000"
+  const color = bookmarked ? "rgb(255, 193, 7)" : "#000000"
 
   return <Icon {...{ onPress, name, size, color, accessibilityLabel }} style={STAR} />
 })
 
 const STAR: IconProps["style"] = {
   shadowRadius: 4,
-  shadowColor: Color.success,
+  shadowColor: "rgb(255, 193, 7)",
   shadowOpacity: 0.25,
 }

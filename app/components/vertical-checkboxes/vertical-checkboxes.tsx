@@ -1,16 +1,17 @@
+import { JokeLength } from "app/graphql"
+import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { TextStyle, View, ViewStyle } from "react-native"
-import { observer } from "mobx-react-lite"
-import { color, spacing } from "../../theme"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
+import { color, spacing } from "../../theme"
 
 export interface VerticalCheckboxesProps {
   /**
    * An optional style override useful for padding & margin.
    */
   style?: ViewStyle
-  data: Array<{ label: string; value: string }>
-  onPress: (value: string, checked?: boolean) => void
+  data: Array<{ label: string; value: JokeLength; isChecked: boolean }>
+  onPress: (value: JokeLength, checked?: boolean) => void
 }
 
 /**
@@ -34,6 +35,7 @@ export const VerticalCheckboxes = observer(function VerticalCheckboxes(
           iconStyle={ICON}
           onPress={(isChecked?: boolean) => onPress(checkbox.value, isChecked)}
           textStyle={TEXT}
+          isChecked={checkbox.isChecked}
         />
       ))}
     </View>

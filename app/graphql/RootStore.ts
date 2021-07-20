@@ -1,4 +1,3 @@
-import { values } from "mobx"
 import { getEnv, Instance, types } from "mobx-state-tree"
 import { RootStoreBase } from "./RootStore.base"
 
@@ -10,13 +9,6 @@ export const RootStore = RootStoreBase.props({
   .actions((self) => ({
     setAuthorizationHeader() {
       getEnv(self).gqlHttpClient.setHeaders({ Authorization: "bearer " + self.accessToken })
-    },
-  }))
-  .views((self) => ({
-    get blockedCategoryIds() {
-      return values(self.categories)
-        .filter((x) => x.isActive)
-        .map((x) => x.id)
     },
   }))
   .actions((self) => ({
