@@ -1,14 +1,15 @@
-import * as React from "react"
 import { observer } from "mobx-react-lite"
-import { mergeAll, flatten } from "ramda"
-import { color } from "../../theme"
+import { flatten, mergeAll } from "ramda"
+import * as React from "react"
 import {
-  TextProps as TextElProps,
-  Text as TextEl,
-  StyleSheet,
-  TextStyle,
+  Dimensions,
   Platform,
+  StyleSheet,
+  Text as TextEl,
+  TextProps as TextElProps,
+  TextStyle,
 } from "react-native"
+import { color } from "../../theme"
 // eslint-disable-next-line camelcase
 // import { useFonts, Montserrat_400Regular } from "@expo-google-fonts/montserrat"
 
@@ -71,17 +72,20 @@ export const Text = observer(function Text(props: TextProps) {
     </TextEl>
   )
 })
-
+// Use this to scale fonts
+// https://medium.com/react-native-training/scaling-react-native-apps-for-tablets-211de8399cf1
+const { width } = Dimensions.get("screen")
+const scale = (fs: number) => fs * (width * 0.0025)
 const styles = StyleSheet.create({
   base: {
     color: color.text,
-    fontSize: 16,
+    fontSize: scale(16),
     width: "100%",
   },
-  h1: { fontSize: 40 },
-  h2: { fontSize: 34 },
-  h3: { fontSize: 28 },
-  h4: { fontSize: 22 },
+  h1: { fontSize: scale(40) },
+  h2: { fontSize: scale(34) },
+  h3: { fontSize: scale(28) },
+  h4: { fontSize: scale(22) },
 })
 
 const fontFamily = (bold: boolean): TextStyle => ({
