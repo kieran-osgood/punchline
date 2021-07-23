@@ -33,9 +33,10 @@ export const VerticalCheckboxes = observer(function VerticalCheckboxes(
           text={checkbox.label}
           style={CHECKBOX}
           iconStyle={ICON}
-          onPress={(isChecked?: boolean) => onPress(checkbox.value, isChecked)}
+          onPress={() => onPress(checkbox.value, !checkbox.isChecked)}
           textStyle={TEXT}
           isChecked={checkbox.isChecked}
+          disableBuiltInState
         />
       ))}
     </View>

@@ -4,17 +4,13 @@ import { useStores } from "app/models"
 import { observer } from "mobx-react-lite"
 import { MotiTransitionProp, MotiView } from "moti"
 import * as React from "react"
-import { StyleSheet, TextStyle, View, ViewStyle } from "react-native"
-import { CARD_SHADOW, Text, VerticalCheckboxes, VerticalCheckboxesProps } from "../"
+import { TextStyle, View, ViewStyle } from "react-native"
+import { CARD_SHADOW, Text, VerticalCheckboxes } from "../"
 import { color, spacing } from "../../theme"
 
-const JokeLengths: JokeLength[] = Object.keys(JokeLength)
+export const JokeLengths: JokeLength[] = Object.keys(JokeLength)
   .map((k) => JokeLength[k as keyof typeof JokeLength])
   .map((v) => v as JokeLength)
-
-const CONTAINER: ViewStyle = {
-  justifyContent: "center",
-}
 
 export interface JokeLengthSettingProps {
   /**
@@ -24,7 +20,7 @@ export interface JokeLengthSettingProps {
 }
 
 /**
- * Describe your component here
+ * Allows the user to select from the range of the allowed joke lengths from the graphql api
  */
 export const JokeLengthSetting = observer(function JokeLengthSetting(
   props: JokeLengthSettingProps,
@@ -32,62 +28,53 @@ export const JokeLengthSetting = observer(function JokeLengthSetting(
   const { style } = props
   const { userStore } = useStores()
 
-  const checkboxMap: VerticalCheckboxesProps["data"] = JokeLengths.map((x) => ({
-    label: x.slice(0, 1) + x.slice(1).toLowerCase(),
-    value: x,
-    isChecked: userStore.jokeLengthPreferences.get(x) ?? false,
-  }))
-
   return (
     <View style={[CONTAINER, style]}>
       <Text h2 bold text="Joke Length" style={TITLE} />
       <View style={ROW}>
-        <JokePreview selected={2} />
+        <JokePreview selected={userStore.jokeLengthMax} />
         <VerticalCheckboxes
-          data={checkboxMap}
+          data={userStore.checkboxMap}
           style={{ width: "50%" }}
-          onPress={(value, isChecked) => userStore.toggleJokeLength(value, isChecked)}
+          onPress={(value, isChecked) => {
+            userStore.toggleJokeLength(value, isChecked)
+          }}
         />
       </View>
     </View>
   )
 })
+
+const CONTAINER: ViewStyle = {
+  justifyContent: "center",
+}
 const ROW: ViewStyle = {
   flexDirection: "row",
 }
+
+const transition: MotiTransitionProp = {}
+const colorMode = "light"
+
 type JokePreviewProps = {
   selected: number
 }
-
-const Spacer = ({ height = 16 }) => <MotiView style={{ height }} />
-
-const transition: MotiTransitionProp = {}
-
 export const JokePreview = (props: JokePreviewProps) => {
   const { selected } = props
-  const [dark, toggle] = React.useReducer((s) => !s, false)
 
-  const colorMode = dark ? "dark" : "light"
-
+  const colors = [color.palette.blue, color.palette.green, color.palette.angry]
   return (
     <MotiView
       transition={{ type: "spring" }}
-      style={[styles.container, styles.padded, PREVIEW, CARD_SHADOW]}
-      animate={{ backgroundColor: dark ? "#000000" : "#fff" }}
+      style={[PREVIEW, CARD_SHADOW]}
+      animate={{ backgroundColor: "#fff" }}
     >
-      <Skeleton
-        transition={transition}
-        // colors={['yellow', "pink", 'red']}
-        colorMode={colorMode}
-        height={25}
-        width={"70%"}
-      />
+      <Skeleton {...{ colors, colorMode, transition }} height={25} width={"70%"} />
       <Spacer />
       {[...Array(selected).keys()].map((select) => (
         <React.Fragment key={select}>
-          <Skeleton transition={transition} colorMode={colorMode} width={"100%"} height={10} />
+          <Skeleton {...{ colors, colorMode, transition }} width={"100%"} height={10} />
           <Spacer height={3} />
-          <Skeleton transition={transition} colorMode={colorMode} width={"100%"} height={10} />
+          <Skeleton {...{ colors, colorMode, transition }} width={"100%"} height={10} />
           <Spacer height={6} />
         </React.Fragment>
       ))}
@@ -102,75 +89,12 @@ const PREVIEW: ViewStyle = {
   borderWidth: 1,
   borderRadius: spacing[4],
   width: "50%",
-  minHeight: 150,
+  minHeight: 165,
   justifyContent: "flex-start",
   alignItems: "center",
   backgroundColor: color.dim,
+  flex: 1,
+  padding: 16,
 }
 
-const styles = StyleSheet.create({
-  shape: {
-    justifyContent: "center",
-    height: 250,
-    width: 250,
-    borderRadius: 25,
-    marginRight: 10,
-    backgroundColor: "white",
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  padded: {
-    padding: 16,
-  },
-})
-// const JokeLengthSetting = () => {
-//   const [jokeLength, setJokeLength] = useSetting<JokeLengthSetting>(
-//     LocalStorageKeys.jokeLength,
-//     'short',
-//   )
-
-//   const checked = (thisLength: JokeLength, selectedLength: JokeLength | undefined): boolean => {
-//     return (
-//       JokeLengths.indexOf(thisLength) <= JokeLengths.indexOf(selectedLength ?? JokeLength.SMALL)
-//     )
-//   }
-
-//   return (
-//     <CenterView style={JOKE_LENGTH_CONTAINER}>
-//       <Text h4 text="Joke Length" />
-//       <View style={ROW}>
-//         {JokeLengths.map((length) => (
-//           <View key={length} style={CHECKBOX}>
-//             <Text text={length.toLocaleUpperCase()} />
-//             {/* <CheckBox
-//             checked={checked(length, jokeLength)}
-//             size={35}
-//             onPress={() => setJokeLength(length)}
-//             checkedColor={color.success}
-//             uncheckedColor={color.primaryDarker}
-//           /> */}
-//           </View>
-//         ))}
-//       </View>
-//     </CenterView>
-//   )
-// }
-
-// const JOKE_LENGTH_CONTAINER: ViewStyle = {
-//   ...SETTING_ROW,
-//   flexDirection: "column",
-//   alignItems: "flex-start",
-// }
-
-// const ROW: ViewStyle = {
-//   flexDirection: "row",
-//   paddingTop: spacing[2],
-// }
-
-// const CHECKBOX: ViewStyle = {
-//   justifyContent: "center",
-//   alignItems: "center",
-//   width: "33%",
-// }
+const Spacer = ({ height = 16 }) => <MotiView style={{ height }} />

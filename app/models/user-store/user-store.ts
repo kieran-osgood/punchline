@@ -1,6 +1,7 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import { JokeLength } from "app/graphql"
 import { RootStore } from "app/models"
+import { JokeLengths, VerticalCheckboxesProps } from "components"
 import { cast, getRoot, Instance, SnapshotOut, types } from "mobx-state-tree"
 import R from "ramda"
 import { withEnvironment } from "../extensions/with-environment"
@@ -36,6 +37,13 @@ export const UserStoreModel = types
 
       return largestJoke
     },
+    get checkboxMap(): VerticalCheckboxesProps["data"] {
+      return JokeLengths.map((x) => ({
+        label: x.slice(0, 1) + x.slice(1).toLowerCase(),
+        value: x,
+        isChecked: self.jokeLengthPreferences.get(x) ?? false,
+      }))
+    },
   }))
   .actions((self) => ({
     updateUser: (user: FirebaseAuthTypes.User | null) => {
@@ -46,6 +54,12 @@ export const UserStoreModel = types
       self.user = cast(R.pick(UserDataKeys, user))
     },
     toggleJokeLength: (value: JokeLength, isChecked?: boolean) => {
+      const oneJokeIsTrue =
+        [...self.jokeLengthPreferences.values()].reduce((a, b) => Number(a) + Number(b), 0) === 1
+      if (oneJokeIsTrue && self.jokeLengthPreferences.get(value) === true) {
+        // Ensure at least 1 joke is true
+        return
+      }
       self.jokeLengthPreferences.set(value, isChecked ?? false)
     },
   }))
