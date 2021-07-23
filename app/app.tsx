@@ -7,6 +7,7 @@ import { NavigationContainerRef } from "@react-navigation/native"
 import { categoryModelPrimitives, nodes } from "app/graphql"
 import { StoreContext as GraphQLStoreContext, useQuery } from "app/graphql/reactUtils"
 import { RootStore, RootStoreProvider, setupRootStore, useStores } from "app/models"
+import { AsyncStorage } from "app/utils/storage/async-storage"
 import { observer } from "mobx-react-lite"
 import React, { useEffect, useRef, useState } from "react"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
@@ -31,17 +32,17 @@ export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 const App = observer(function App() {
   const navigationRef = useRef<NavigationContainerRef | null>(null)
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
+
   setRootNavigation(navigationRef)
   useBackButtonHandler(navigationRef, canExit)
   const { initialNavigationState, onNavigationStateChange } = useNavigationPersistence(
     storage,
     NAVIGATION_PERSISTENCE_KEY,
   )
-  // Kick off initial async loading actions, like loading fonts and RootStore
+
+  // Kick off initial async loading actions, like RootStore
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-extra-semi
     ;(async () => {
-      // await initFonts() // expo
       setupRootStore().then((newRootStore) => {
         newRootStore.userStore?.updateUser(auth().currentUser)
         setRootStore(newRootStore)
@@ -49,12 +50,25 @@ const App = observer(function App() {
     })()
   }, [])
 
+  const resetStores = async () => {
+    try {
+      await AsyncStorage.clear()
+      await auth().signOut()
+
+      const newRootStore = await setupRootStore()
+      newRootStore.userStore?.updateUser(auth().currentUser)
+      setRootStore(newRootStore)
+    } catch (error) {
+      __DEV__ && console.tron.log!("error logging out: ", error)
+    }
+  }
+
   // Wait for state to load from AsyncStorage
   if (!rootStore || !rootStore.api) return null
 
   return (
     <ToggleStorybook>
-      <RootStoreProvider value={rootStore}>
+      <RootStoreProvider value={{ ...rootStore, resetStores }}>
         <GraphQLStoreContext.Provider value={rootStore.api}>
           <Authorization>
             <SafeAreaProvider initialMetrics={initialWindowMetrics}>

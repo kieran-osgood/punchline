@@ -7,7 +7,8 @@ import { RootStore } from "./root-store"
  * - Consume stores in our screens (or other components, though it's
  *   preferable to just connect screens)
  */
-const RootStoreContext = createContext<RootStore>({} as RootStore)
+type RootStoreWithReset = RootStore & { resetStores: React.DispatchWithoutAction }
+const RootStoreContext = createContext<RootStoreWithReset>({} as RootStoreWithReset)
 
 /**
  * The provider our root component will use to expose the root store

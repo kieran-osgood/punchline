@@ -5,10 +5,9 @@ import { createUserStoreDefaultModel } from "../user-store/user-store"
 /**
  * A RootStore model.
  */
-// prettier-ignore
 export const RootStoreModel = types.model("RootStore").props({
   userStore: createUserStoreDefaultModel(),
-  api: types.optional(RootStore, {})
+  api: types.optional(RootStore, {}),
 })
 
 /**

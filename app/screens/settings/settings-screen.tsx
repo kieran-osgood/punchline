@@ -1,7 +1,9 @@
 import auth from "@react-native-firebase/auth"
+import { useStores } from "app/models"
+import { Logout } from "assets/images/logout"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { Linking, TextStyle, ViewStyle } from "react-native"
+import { Linking, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import { BUG_REPORT_EMAIL } from "react-native-dotenv"
 import { color, spacing } from "theme"
 import {
@@ -33,20 +35,33 @@ const ROOT: ViewStyle = {
   paddingBottom: spacing[5],
 }
 
-const LogoutButton = () => (
-  <Button
-    text="Logout"
-    // style={PILL_BUTTON}
-    textStyle={LOGOUT_BUTTON}
-    onPress={() => auth().signOut()}
-  />
-)
+const LogoutButton = () => {
+  const { resetStores } = useStores()
+  return (
+    <TouchableOpacity style={LOGOUT_BUTTON_CONTAINER} onPress={() => resetStores()}>
+      <Logout scale={1} />
+      <Text style={LOGOUT_TEXT_CONTAINER}>
+        <Text text="Logout" style={LOGOUT_BUTTON} />
+      </Text>
+    </TouchableOpacity>
+  )
+}
+
+const LOGOUT_BUTTON_CONTAINER: ViewStyle = {
+  flexDirection: "row",
+  alignItems: "center",
+  width: "100%",
+}
 
 const LOGOUT_BUTTON: TextStyle = {
   fontSize: 18,
   fontWeight: "bold",
   color: color.text,
-  textAlign: "center",
+  textAlign: "left",
+}
+
+const LOGOUT_TEXT_CONTAINER: TextStyle = {
+  marginLeft: spacing[3],
 }
 
 const LoginConversion = () => (
@@ -58,8 +73,8 @@ const LoginConversion = () => (
       style={{ fontSize: 12 }}
       text="Currently signed in as a guest. In order to save your bookmarks and history, link a social media authentication provider below"
     />
-    <GoogleSignInButton isAnonymousConversion={true} />
-    <FacebookSignInButton isAnonymousConversion={true} />
+    <GoogleSignInButton isAnonymousConversion />
+    <FacebookSignInButton isAnonymousConversion />
   </CenterView>
 )
 
