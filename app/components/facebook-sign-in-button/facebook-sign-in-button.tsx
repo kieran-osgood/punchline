@@ -1,11 +1,11 @@
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import { useStores } from "app/models"
+import { Facebook } from "images"
+import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { Button, ViewStyle } from "react-native"
-import { observer } from "mobx-react-lite"
-import { BUTTON_CONTAINER, BUTTON_ICON, BUTTON_TITLE, PILL_BUTTON } from "../"
-import { FirebaseAuthTypes } from "@react-native-firebase/auth"
-import { Facebook } from "images"
-import auth from "@react-native-firebase/auth"
-import { LoginManager, AccessToken } from "react-native-fbsdk-next"
+import { AccessToken, LoginManager } from "react-native-fbsdk-next"
+import { BUTTON_CONTAINER, BUTTON_ICON, BUTTON_TITLE, PILL_BUTTON } from ".."
 
 export interface FacebookSignInButtonProps {
   /**
@@ -25,13 +25,20 @@ export interface FacebookSignInButtonProps {
 export const FacebookSignInButton = observer(function FacebookSignInButton(
   props: FacebookSignInButtonProps,
 ) {
-  const { style, title = "Log in with Facebook", isAnonymousConversion = false, setIsLoading } = props
+  const {
+    style,
+    title = "Log in with Facebook",
+    isAnonymousConversion = false,
+    setIsLoading,
+  } = props
+
+  const { userStore } = useStores()
 
   async function onFacebookButtonPress() {
     if (setIsLoading) setIsLoading(true)
     // Attempt login with permissions
     await LoginManager.logInWithPermissions(["public_profile", "email"])
-    // Once signed in, get the users AccesToken
+    // Once signed in, get the users AccessToken
     const data = await AccessToken.getCurrentAccessToken()
 
     if (!data) {
@@ -52,6 +59,9 @@ export const FacebookSignInButton = observer(function FacebookSignInButton(
   const signInWithFacebook = (facebookCredential: FirebaseAuthTypes.AuthCredential) => {
     auth()
       .signInWithCredential(facebookCredential)
+      .then((userCredential) => {
+        userStore.login(userCredential)
+      })
       // .catch(() => crashlytics().log('Error signin in with facebook'))
       .finally(() => {
         if (setIsLoading) setIsLoading(false)

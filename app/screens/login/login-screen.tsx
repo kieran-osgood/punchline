@@ -1,20 +1,20 @@
-import React from "react"
+import {
+  AppLogo,
+  CenterView,
+  FacebookSignInButton,
+  GoogleSignInButton,
+  GuestSignInButton,
+  LoadingModal,
+  Screen,
+  Text,
+} from "components"
 import { observer } from "mobx-react-lite"
+import React from "react"
 import { Alert, BackHandler, TextStyle, ViewStyle } from "react-native"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
 import { color, spacing } from "theme"
-import {
-  LoadingModal,
-  AppLogo,
-  CenterView,
-  Screen,
-  Text,
-  GoogleSignInButton,
-  GuestSigninButton,
-  FacebookSignInButton,
-} from "components"
 
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -98,7 +98,7 @@ export const LoginScreen = observer(function LoginScreen() {
           onError={errorPopup}
         />
         <Text style={TEXT_SEPERATOR} text="Or" />
-        <GuestSigninButton />
+        <GuestSignInButton />
       </CenterView>
       <Text text={`COPYRIGHT \u00A9 ${new Date().getFullYear()} KO.DEV`} style={COPYRIGHT_TEXT} />
     </Screen>

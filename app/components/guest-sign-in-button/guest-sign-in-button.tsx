@@ -1,17 +1,18 @@
-import * as React from "react"
 import auth from "@react-native-firebase/auth"
-import { Button } from 'react-native-elements'
+import { useStores } from "app/models"
 import { observer } from "mobx-react-lite"
-import { useStores } from 'app/models'
+import * as React from "react"
+import { Button } from "react-native-elements"
 
-export interface GuestSigninButtonProps {}
+export interface GuestSignInButtonProps {}
 
 /**
  * Button for anonymously authenticating with Firestore
  */
-export const GuestSigninButton = observer(function GuestSigninButton(props: GuestSigninButtonProps) {
+export const GuestSignInButton = observer(function GuestSignInButton(
+  props: GuestSignInButtonProps,
+) {
   const { userStore } = useStores()
-
   return (
     <Button
       title="Continue as guest"
@@ -20,7 +21,7 @@ export const GuestSigninButton = observer(function GuestSigninButton(props: Gues
         auth()
           .signInAnonymously()
           .then((userCredential) => {
-            userStore.updateUser(userCredential.user)
+            userStore.login(userCredential)
           })
           .catch((error) => {
             console.error(error)

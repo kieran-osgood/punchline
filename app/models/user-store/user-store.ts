@@ -63,6 +63,19 @@ export const UserStoreModel = types
       self.jokeLengthPreferences.set(value, isChecked ?? false)
     },
   }))
+  .actions((self) => ({
+    login: (credential: FirebaseAuthTypes.UserCredential) => {
+      // TODO: add error handling
+      const root = getRoot(self) as RootStore
+      root.api.mutateLogin({
+        input: {
+          firebaseUid: credential.user.uid,
+          username: credential.user.displayName ?? "Guest",
+        },
+      })
+      self.updateUser(credential.user)
+    },
+  }))
 
 type UserStoreType = Instance<typeof UserStoreModel>
 export interface UserStore extends UserStoreType {}

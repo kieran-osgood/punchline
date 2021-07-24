@@ -1,12 +1,12 @@
-import * as React from "react"
-import { TextStyle, ViewStyle } from "react-native"
-import { observer } from "mobx-react-lite"
 import { GoogleSignin } from "@react-native-community/google-signin"
 import auth from "@react-native-firebase/auth"
+import { useStores } from "app/models"
 import { Google as GoogleIcon } from "assets/images"
+import { observer } from "mobx-react-lite"
+import * as React from "react"
+import { TextStyle, ViewStyle } from "react-native"
+import { Button } from "react-native-elements"
 import { color, spacing } from "theme"
-import { Button } from 'react-native-elements'
-import { useStores } from 'app/models'
 
 export interface GoogleSignInButtonProps {
   /**
@@ -23,13 +23,15 @@ export interface GoogleSignInButtonProps {
 /**
  * Google Sign in button
  */
-export const GoogleSignInButton = observer(function GoogleSigninButton(props: GoogleSignInButtonProps) {
+export const GoogleSignInButton = observer(function GoogleSigninButton(
+  props: GoogleSignInButtonProps,
+) {
   const {
     isAnonymousConversion = false,
     title = "Log in with Google",
     setIsLoading,
     onSuccess,
-    onError
+    onError,
   } = props
   const { userStore } = useStores()
 
@@ -45,7 +47,8 @@ export const GoogleSignInButton = observer(function GoogleSigninButton(props: Go
   const signInWithGoogle = async (idToken: string | null) => {
     setIsLoading?.(true)
     const googleCredential = auth.GoogleAuthProvider.credential(idToken)
-    await auth().signInWithCredential(googleCredential)
+    const userCredential = await auth().signInWithCredential(googleCredential)
+    userStore.login(userCredential)
     setIsLoading?.(false)
   }
 
