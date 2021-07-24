@@ -53,7 +53,11 @@ export const JokeScreen = observer(function JokeScreen() {
     ),
   )
 
-  const handleBad = () => {
+  const handleBookmarkPress = () => {}
+  const handleSkipPress = () => {}
+
+  const handleDownVote = () => {}
+  const handleUpVote = () => {
     translateX.value = withTiming(width * 1.2)
     translateY.value = withTiming(150)
     rotate.value = withSpring(1)
@@ -89,7 +93,13 @@ export const JokeScreen = observer(function JokeScreen() {
         <ShareIcons jokeId={route.params?.jokeId ?? ""} />
       </View>
 
-      <Controls onBad={handleBad} />
+      <Controls
+        bookmarked={false}
+        handleDownVote={handleDownVote}
+        handleUpVote={handleUpVote}
+        handleSkipPress={handleSkipPress}
+        handleBookmarkPress={handleBookmarkPress}
+      />
       <AdBanner />
     </Screen>
   )
@@ -128,32 +138,31 @@ const JOKE_INFO: ViewStyle = {
 }
 
 type ButtonsProps = {
-  onBad: () => void
+  handleDownVote: () => void
+  handleUpVote: () => void
+  handleBookmarkPress: () => void
+  handleSkipPress: () => void
+  bookmarked: boolean
 }
 export const Controls = (props: ButtonsProps) => {
-  const rate = () => {
-    props.onBad()
-  }
-  const bookmark = () => {}
-  const skip = () => {}
-
+  const { bookmarked, handleBookmarkPress, handleDownVote, handleUpVote, handleSkipPress } = props
   return (
     <View style={BUTTONS}>
-      <CircularButton style={DISLIKE} onPress={rate} activeOpacity={0.8}>
+      <CircularButton style={DISLIKE} onPress={handleDownVote} activeOpacity={0.8}>
         <CryingEmoji />
       </CircularButton>
 
       <View style={SECONDARY_ACTION_BUTTONS}>
-        <CircularButton size="small" onPress={skip} activeOpacity={0.8}>
-          <BookmarkButton />
+        <CircularButton size="small" onPress={handleBookmarkPress} activeOpacity={0.8}>
+          <BookmarkButton {...{ bookmarked }} />
         </CircularButton>
 
-        <CircularButton size="small" onPress={bookmark} activeOpacity={0.8}>
+        <CircularButton size="small" onPress={handleSkipPress} activeOpacity={0.8}>
           <Skip />
         </CircularButton>
       </View>
 
-      <CircularButton onPress={rate} activeOpacity={0.8}>
+      <CircularButton onPress={handleUpVote} activeOpacity={0.8}>
         <LaughingEmoji />
       </CircularButton>
     </View>

@@ -5,7 +5,6 @@ import { IconProps } from "react-native-vector-icons/Icon"
 
 export interface BookmarkButtonProps {
   bookmarked: boolean
-  onPress: () => void
   size?: number
 }
 export const accessibilityLabel = "Bookmark Button"
@@ -13,11 +12,11 @@ export const accessibilityLabel = "Bookmark Button"
  * A star icon component that highlights on press to indicate we wish to bookmark the joke.
  */
 export const BookmarkButton = observer(function BookmarkButton(props: BookmarkButtonProps) {
-  const { bookmarked = true, onPress, size = 34 } = props
+  const { bookmarked = true, size = 34 } = props
   const name = bookmarked ? "star" : "staro"
   const color = bookmarked ? "rgb(255, 193, 7)" : "#000000"
 
-  return <Icon {...{ onPress, name, size, color, accessibilityLabel }} style={STAR} />
+  return <Icon {...{ name, size, color, accessibilityLabel }} style={STAR} />
 })
 
 const STAR: IconProps["style"] = {
