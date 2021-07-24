@@ -1,11 +1,26 @@
 import { useNavigation } from "@react-navigation/native"
-import { jokeModelPrimitives, nodes, useQuery, userJokeHistoryModelPrimitives } from "app/graphql"
+import {
+  jokeModelPrimitives,
+  nodes,
+  useQuery,
+  userJokeHistoryModelPrimitives,
+  UserJokeHistoryModelType,
+} from "app/graphql"
 import { NavigationProps } from "app/navigators"
 import { Expansion } from "assets/images/expansion"
+import { TrashCan } from "assets/images/trash-can"
 import { EmptyState, Link, Text } from "components"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { FlatList, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
+import {
+  Alert,
+  Animated as RNAnimated,
+  FlatList,
+  TextStyle,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native"
+import { RectButton, Swipeable } from "react-native-gesture-handler"
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
@@ -30,7 +45,7 @@ export const BookmarksScreen = observer(function BookmarksScreen() {
       {typeof data?.userJokeHistoryByUserId !== "undefined" &&
       data?.userJokeHistoryByUserId.nodes.length > 0 ? (
         <FlatList
-          data={bookmarks}
+          data={data?.userJokeHistoryByUserId.nodes}
           renderItem={({ item: bookmark, index: thisIndex }) => (
             <Bookmark
               key={bookmark.id}
@@ -60,83 +75,26 @@ const ROOT: ViewStyle = {
   justifyContent: "center",
 }
 
-const bookmarks = [
-  {
-    id: "2",
-    body: "A totally original joke!",
-    score: 0,
-    title: "The Car Joke",
-    __typename: "Joke",
-  },
-  {
-    id: "1",
-    title: "The Really again a Car Joke",
-    body:
-      "A totally originaloriginal original original  totally originaloriginal original original j  totally originaloriginal original original j joke!",
-    score: 0,
-    __typename: "Joke",
-  },
-  {
-    id: "a",
-    body: "A totally original joke!",
-    score: 0,
-    title: "The Car Joke",
-    __typename: "Joke",
-  },
-  {
-    id: "b",
-    title: "The Really again a Car Joke",
-    body:
-      "A totally originaloriginal original original  totally originaloriginal original original j  totally originaloriginal original original j joke!",
-    score: 0,
-    __typename: "Joke",
-  },
-  {
-    id: "c",
-    body: "A totally original joke!",
-    score: 0,
-    title: "The Car Joke",
-    __typename: "Joke",
-  },
-  {
-    id: "d",
-    title: "The Really again a Car Joke",
-    body:
-      "A totally originaloriginal original original  totally originaloriginal original original j  totally originaloriginal original original j joke!",
-    score: 0,
-    __typename: "Joke",
-  },
-  {
-    id: "e",
-    body: "A totally original joke!",
-    score: 0,
-    title: "The Car Joke",
-    __typename: "Joke",
-  },
-  {
-    id: "f",
-    title: "The Really again a Car Joke",
-    body:
-      "A totally originaloriginal original original  totally originaloriginal original original j  totally originaloriginal original original j joke!",
-    score: 0,
-    __typename: "Joke",
-  },
-]
-
 type BookmarkProps = {
-  bookmark: typeof bookmarks[0]
+  bookmark: UserJokeHistoryModelType
   lastTouched: boolean
   handlePress: () => void
 }
 
 export const Bookmark = (props: BookmarkProps) => {
-  const { bookmark, lastTouched } = props
+  const {
+    bookmark: { joke },
+    lastTouched,
+  } = props
   const [expand, setExpand] = React.useState(false)
   const touched = useDerivedValue(() => Number(lastTouched), [lastTouched])
-
+  const query = useQuery()
   const onPress = () => {
     props.handlePress()
     setExpand((current) => !current)
+  }
+  const handleDelete = (id: string) => {
+    query.setQuery((store) => store.mutateDeleteBookmark({ id }))
   }
 
   const style = useAnimatedStyle(
@@ -147,26 +105,33 @@ export const Bookmark = (props: BookmarkProps) => {
   )
 
   return (
-    <Animated.View style={[BOOKMARK, style]}>
-      <TouchableOpacity style={EXPANSION_ROW} {...{ onPress }}>
-        <Text h4 bold text={bookmark.title} style={TEXT} numberOfLines={expand ? undefined : 1} />
-        <Expansion scale={1} />
-      </TouchableOpacity>
-      <Animated.View style={[style, { paddingVertical: spacing[3] }]}>
-        {expand && (
-          <>
-            <Text bold text={bookmark.body} style={BODY} />
-            {/* <ReText
+    <Swipeable
+      friction={2}
+      renderRightActions={(progressAnimatedValue, dragAnimatedValue) => (
+        <RenderRightActions {...{ progressAnimatedValue, dragAnimatedValue, handleDelete }} />
+      )}
+    >
+      <Animated.View style={[BOOKMARK, style]}>
+        <TouchableOpacity style={EXPANSION_ROW} {...{ onPress }}>
+          <Text h4 bold text={joke.title} style={TEXT} numberOfLines={expand ? undefined : 1} />
+          <Expansion scale={1} />
+        </TouchableOpacity>
+        <Animated.View style={[style, { paddingVertical: spacing[3] }]}>
+          {expand && (
+            <>
+              <Text bold text={joke.body} style={BODY} />
+              {/* <ReText
                 text={formattedPrice}
                 style={{ color: "black", fontVariant: ["tabular-nums"] }}
               /> */}
-            <Link jokeId="" style={SHARE}>
-              <Text text="Share" style={SHARE_TEXT} />
-            </Link>
-          </>
-        )}
+              <Link jokeId={joke.id} style={SHARE}>
+                <Text text="Share" style={SHARE_TEXT} />
+              </Link>
+            </>
+          )}
+        </Animated.View>
       </Animated.View>
-    </Animated.View>
+    </Swipeable>
   )
 }
 
@@ -203,4 +168,46 @@ const SHARE_TEXT: TextStyle = {
   fontWeight: "bold",
   textAlign: "center",
   paddingVertical: spacing[2],
+}
+
+type Actions = {
+  progressAnimatedValue: RNAnimated.AnimatedInterpolation
+  dragAnimatedValue: RNAnimated.AnimatedInterpolation
+  handleDelete: () => void
+}
+
+const RenderRightActions = ({ dragAnimatedValue, handleDelete }: Actions) => {
+  const trans = dragAnimatedValue.interpolate({
+    inputRange: [0, 50, 100, 101],
+    outputRange: [-0, 0, 0, 10],
+  })
+  const onPress = () => {
+    Alert.alert("Confirm Delete", "Are you sure you wish to delete this bookmark?", [
+      { text: "Cancel", onPress: () => {} },
+      { text: "Ok", onPress: handleDelete },
+    ])
+  }
+  return (
+    <TouchableOpacity
+      {...{ onPress }}
+      style={{
+        paddingHorizontal: spacing[2],
+      }}
+    >
+      <RectButton>
+        <RNAnimated.View
+          style={[
+            {
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+            },
+            { transform: [{ translateX: trans }] },
+          ]}
+        >
+          <TrashCan scale={1} fill={color.error} />
+        </RNAnimated.View>
+      </RectButton>
+    </TouchableOpacity>
+  )
 }
