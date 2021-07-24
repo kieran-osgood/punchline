@@ -21,16 +21,19 @@ export const UserStoreModel = types
       return root
     },
     get jokeLengthMax(): number {
-      let largestJoke = 0
+      let largestJoke = 1
       self.jokeLengthPreferences.forEach((x, b) => {
         if (x) {
           switch (b) {
             case JokeLength.LARGE:
               largestJoke = largestJoke <= 3 ? 3 : largestJoke
+              break
             case JokeLength.MEDIUM:
               largestJoke = largestJoke <= 2 ? 2 : largestJoke
+              break
             case JokeLength.SMALL:
               largestJoke = largestJoke <= 1 ? 1 : largestJoke
+              break
           }
         }
       })
@@ -41,7 +44,7 @@ export const UserStoreModel = types
       return JokeLengths.map((x) => ({
         label: x.slice(0, 1) + x.slice(1).toLowerCase(),
         value: x,
-        isChecked: self.jokeLengthPreferences.get(x) ?? false,
+        isChecked: self.jokeLengthPreferences.get(x) ?? true,
       }))
     },
   }))
