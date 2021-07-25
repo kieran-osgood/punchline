@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { useRoute } from "@react-navigation/native"
 import Swipeable from "app/components/swipeable/swipeable"
-import { JokeLength, jokeModelPrimitives, nodes, useQuery } from "app/graphql"
-import { useStores } from "app/models"
+import { JokeModelType, RatingValue, useQuery } from "app/graphql"
 import { NavigationProps } from "app/navigators/main-navigator"
 import Skip from "assets/images/skip"
 import {
@@ -64,42 +63,40 @@ const Jokes: JokeModel[] = [
 
 const PAGE_GUTTERS = 15
 
-export const JokeScreen = () => {
-  return <JokeScreenz profiles={Jokes} />
-}
-
-const JokeScreenz = observer(function JokeScreen(props: { profiles: typeof Jokes }) {
-  const { profiles } = props
+export const JokeScreen = observer(function JokeScreen(props) {
+  const [bookmarked, setBookmarked] = React.useState(false)
   const route = useRoute<NavigationProps<"JokeScreen">["route"]>()
-  const { userStore } = useStores()
-  const { data } = useQuery((store) =>
-    store.queryJokes(
-      { blockedCategoryIds: userStore.blockedCategoryIds, jokeLength: JokeLength.MEDIUM },
-      nodes(jokeModelPrimitives),
-    ),
-  )
-  console.tron.log("data: ", data)
-  /**
-   * 1. Create a map of the current cards
-   * 2. have a useRef pointing at the current top card
-   * 3. on click we call a method on that ref and increment towards the next ref
-   * 4. profit
-   */
-
   const topCard = React.useRef<SwipeHandler>(null)
   const scale = useSharedValue(0)
-  const [jokes, setJokes] = React.useState(profiles)
-  const onSwipe = React.useCallback(() => {
-    setJokes(jokes.slice(0, jokes.length - 1))
-  }, [jokes])
+  const { store } = useQuery()
+  console.tron.log({ store: store.nonViewedJokes })
 
-  const handleBookmarkPress = () => {}
-  const handleSkipPress = () => {}
+  React.useEffect(() => {
+    store.fetchMoreJokes()
+  }, [])
+
+  const onSwipe = React.useCallback(
+    (joke: JokeModelType, rating: RatingValue, bookmarked: boolean) => {
+      joke.rate(joke, rating, bookmarked)
+      setBookmarked(false)
+    },
+    [],
+  )
+
+  const handleBookmarkPress = () => {
+    setBookmarked((c) => !c)
+  }
+  const handleSkipPress = () => {
+    onSwipe(store.topOfDeckJoke, RatingValue.SKIP, bookmarked)
+  }
 
   const handleDownVote = () => {
+    onSwipe(store.topOfDeckJoke, RatingValue.BAD, bookmarked)
     topCard.current?.swipeLeft()
   }
+
   const handleUpVote = () => {
+    onSwipe(store.topOfDeckJoke, RatingValue.GOOD, bookmarked)
     topCard.current?.swipeRight()
   }
 
@@ -112,19 +109,11 @@ const JokeScreenz = observer(function JokeScreen(props: { profiles: typeof Jokes
         </View>
 
         <View style={CARDS_CONTAINER}>
-          {jokes.reverse().map((joke, index) => {
-            const onTop = index === jokes.length - 1
+          {store.nonViewedJokes.map((joke) => {
+            const onTop = joke.id === store.topOfDeckJoke.id
+            // console.tron.log("onTop: ", onTop)
             const ref = onTop ? topCard : null
-            return (
-              <Swipeable
-                ref={ref}
-                key={joke.id}
-                joke={joke}
-                scale={scale}
-                onSwipe={onSwipe}
-                onTop={onTop}
-              />
-            )
+            return <Swipeable ref={ref} key={joke.id} joke={joke} scale={scale} onTop={onTop} />
           })}
         </View>
 
@@ -134,11 +123,13 @@ const JokeScreenz = observer(function JokeScreen(props: { profiles: typeof Jokes
         </View>
 
         <Controls
-          bookmarked={false}
-          handleDownVote={handleDownVote}
-          handleUpVote={handleUpVote}
-          handleSkipPress={handleSkipPress}
-          handleBookmarkPress={handleBookmarkPress}
+          {...{
+            bookmarked,
+            handleDownVote,
+            handleUpVote,
+            handleSkipPress,
+            handleBookmarkPress,
+          }}
         />
       </SafeAreaView>
       <AdBanner />

@@ -1,4 +1,5 @@
-import JokeCard, { JokeModel, α } from "app/components/joke-card/joke-card"
+import JokeCard, { α } from "app/components/joke-card/joke-card"
+import { JokeModelType } from "app/graphql"
 import React, { forwardRef, Ref, useImperativeHandle } from "react"
 import { Dimensions, StyleSheet } from "react-native"
 import { PanGestureHandler, PanGestureHandlerGestureEvent } from "react-native-gesture-handler"
@@ -23,8 +24,8 @@ export interface SwipeHandler {
 }
 
 interface SwiperProps {
-  onSwipe: () => void
-  joke: JokeModel
+  onSwipe?: (joke: JokeModelType) => void
+  joke: JokeModelType
   scale: Animated.SharedValue<number>
   onTop: boolean
 }
@@ -33,7 +34,7 @@ const swipe = (
   translateX: Animated.SharedValue<number>,
   dest: number,
   velocity: number,
-  cb: () => void,
+  cb?: () => void,
 ) => {
   "worklet"
   translateX.value = withSpring(
@@ -45,7 +46,7 @@ const swipe = (
       restDisplacementThreshold: dest === 0 ? 0.01 : 100,
     },
     () => {
-      if (dest !== 0) {
+      if (dest !== 0 && typeof cb === "function") {
         runOnJS(cb)()
       }
     },
@@ -58,10 +59,10 @@ const Swiper = ({ onSwipe, joke, scale, onTop }: SwiperProps, ref: Ref<SwipeHand
 
   useImperativeHandle(ref, () => ({
     swipeLeft: () => {
-      swipe(translateX, -A, 5, onSwipe)
+      swipe(translateX, -A, 5)
     },
     swipeRight: () => {
-      swipe(translateX, A, 5, onSwipe)
+      swipe(translateX, A, 5)
     },
   }))
 
@@ -85,7 +86,7 @@ const Swiper = ({ onSwipe, joke, scale, onTop }: SwiperProps, ref: Ref<SwipeHand
     },
     onEnd: ({ velocityX, velocityY }) => {
       const dest = snapPoint(translateX.value, velocityX, snapPoints)
-      swipe(translateX, dest, 5, onSwipe)
+      swipe(translateX, dest, 5)
       translateY.value = withSpring(0, { velocity: velocityY })
     },
   })

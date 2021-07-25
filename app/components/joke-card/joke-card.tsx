@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-unused-styles */
 /* eslint-disable react-native/no-color-literals */
 // @flow
+import { JokeModelType } from "app/graphql"
 import { Text } from "components"
 import * as React from "react"
 import { Dimensions, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
@@ -11,16 +12,12 @@ import Animated, {
   useDerivedValue,
 } from "react-native-reanimated"
 import { color, spacing } from "theme"
-export interface JokeModel {
-  id: number
-  body: string
-}
 
 const { width } = Dimensions.get("window")
 export const α = Math.PI / 12
 
 interface CardProps {
-  joke: JokeModel
+  joke: JokeModelType
   translateX: Animated.SharedValue<number>
   translateY: Animated.SharedValue<number>
   scale: Animated.SharedValue<number>
@@ -45,7 +42,9 @@ const JokeCard = ({ joke, translateX, translateY, onTop, scale }: CardProps) => 
       { scale: onTop ? 1 : scale.value },
     ],
   }))
-  const color = randomColor()
+
+  const color = React.useMemo(() => randomColor(), [])
+
   return (
     <Animated.View style={[StyleSheet.absoluteFill, container]}>
       <View style={styles.overlay}>

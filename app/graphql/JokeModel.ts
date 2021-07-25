@@ -1,19 +1,60 @@
-import { Instance } from "mobx-state-tree"
+import { RatingValue, RootStoreType } from "app/graphql"
+import { RootStore as RootStoreTree } from "app/models"
+import { getRoot, Instance, types } from "mobx-state-tree"
 import { JokeModelBase } from "./JokeModel.base"
-
 /* The TypeScript type of an instance of JokeModel */
 export interface JokeModelType extends Instance<typeof JokeModel.Type> {}
 
 /* A graphql query fragment builders for JokeModel */
-export { selectFromJoke, jokeModelPrimitives, JokeModelSelector } from "./JokeModel.base"
+export { jokeModelPrimitives, JokeModelSelector, selectFromJoke } from "./JokeModel.base"
 
 /**
  * JokeModel
  */
-export const JokeModel = JokeModelBase
-  .actions(self => ({
+export const JokeModel = JokeModelBase.props({
+  viewed: types.optional(types.boolean, false),
+})
+  .views((self) => ({
+    get root(): RootStoreTree {
+      return getRoot(self)
+    },
+    get api(): RootStoreType {
+      return this.root.api
+    },
+  }))
+  .actions((self) => ({
     // This is an auto-generated example action.
     log() {
       console.log(JSON.stringify(self))
-    }
+    },
+    markViewed() {
+      self.viewed = true
+    },
   }))
+  .actions((self) => ({
+    rate(joke: JokeModelType, rating: RatingValue, bookmarked: boolean) {
+      const query = self.api.mutateRateJoke(
+        {
+          input: {
+            jokeId: joke.id,
+            rating: rating,
+            bookmarked,
+          },
+        },
+        undefined,
+        () => {
+          self.markViewed()
+        },
+      )
+      return query
+    },
+  }))
+
+types.snapshotProcessor(JokeModel, {
+  preProcessor(snapshot: JokeModelType) {
+    return {
+      ...snapshot,
+      viewed: false,
+    }
+  },
+})

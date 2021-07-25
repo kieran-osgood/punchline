@@ -56,7 +56,10 @@ export async function setupRootStore() {
   }
 
   // track changes & save to storage
-  onSnapshot(rootStore, (snapshot) => storage.save(ROOT_STATE_STORAGE_KEY, snapshot))
+  onSnapshot(rootStore, (snapshot) => {
+    // snapshot.api.__queryCache.jokes = null
+    storage.save(ROOT_STATE_STORAGE_KEY, snapshot)
+  })
 
   return rootStore
 }
