@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { useRoute } from "@react-navigation/native"
 import Swipeable from "app/components/swipeable/swipeable"
+import { JokeLength, jokeModelPrimitives, nodes, useQuery } from "app/graphql"
+import { useStores } from "app/models"
 import { NavigationProps } from "app/navigators/main-navigator"
 import Skip from "assets/images/skip"
 import {
   AdBanner,
   BookmarkButton,
   CircularButton,
+  JokeModel,
   Ratings,
   ShareIcons,
   SwipeHandler,
@@ -45,40 +48,39 @@ export const defaultProfiles = [
     profile: require("./assets/4.jpg"),
   },
 ]
-const Jokes = [
+const Jokes: JokeModel[] = [
   {
     id: 1,
-    title: "The Car Joke",
-    // body: `"Crime in multi-storey car parks. That is wrong on so many different levels"`,
-    body: "https://i.pcmag.com/imagery/reviews/058odIpsFui7XT7sYt0XBFr-9..1569472704.jpg",
+    index: 1,
+    // title: "The Car Joke",
+    body: `Crime in multi-storey car parks. That is wrong on so many different levels`,
   },
 
   {
     id: 2,
-    title: "The Other Car Joke",
-    body:
-      "https://media.autoexpress.co.uk/image/private/s--vQLHQYNh--/v1597144530/autoexpress/2020/08/Audi%20S3%20revealed-12.jpg",
-    // body: `" That is wrong on so many different levels"`,
+    index: 1,
+    // title: "The Other Car Joke",
+    body: `That is wrong on so many different levels`,
   },
 ]
 
 const PAGE_GUTTERS = 15
 
-// const { data } = useQuery((store) =>
-//   store.queryJokes(
-//     { blockedCategoryIds: userStore.blockedCategoryIds, jokeLength: JokeLength.MEDIUM },
-//     nodes(jokeModelPrimitives),
-//   ),
-// )
 export const JokeScreen = () => {
-  return <JokeScreenz profiles={defaultProfiles} />
+  return <JokeScreenz profiles={Jokes} />
 }
 
-const JokeScreenz = observer(function JokeScreen(props: { profiles: typeof defaultProfiles }) {
+const JokeScreenz = observer(function JokeScreen(props: { profiles: typeof Jokes }) {
   const { profiles } = props
   const route = useRoute<NavigationProps<"JokeScreen">["route"]>()
-  // const { userStore } = useStores()
-
+  const { userStore } = useStores()
+  const { data } = useQuery((store) =>
+    store.queryJokes(
+      { blockedCategoryIds: userStore.blockedCategoryIds, jokeLength: JokeLength.MEDIUM },
+      nodes(jokeModelPrimitives),
+    ),
+  )
+  console.tron.log("data: ", data)
   /**
    * 1. Create a map of the current cards
    * 2. have a useRef pointing at the current top card
@@ -108,19 +110,18 @@ const JokeScreenz = observer(function JokeScreen(props: { profiles: typeof defau
       <SafeAreaView style={ROOT} testID="JokeScreen">
         <View style={HEADER}>
           <Text text="Dad Jokes" style={{ ...CATEGORY_NAME, ...CENTER_TEXT }} bold />
-
           <Text h2 text="The Car Joke" bold style={CENTER_TEXT} />
         </View>
 
         <View style={CARDS_CONTAINER}>
-          {jokes.map((joke, index) => {
+          {jokes.reverse().map((joke, index) => {
             const onTop = index === jokes.length - 1
             const ref = onTop ? topCard : null
             return (
               <Swipeable
                 ref={ref}
                 key={joke.id}
-                profile={joke}
+                joke={joke}
                 scale={scale}
                 onSwipe={onSwipe}
                 onTop={onTop}
@@ -151,7 +152,6 @@ const ROOT: ViewStyle = {
   backgroundColor: color.background,
   flex: 1,
   justifyContent: "space-between",
-  // alignItems: "center",
 }
 
 const HEADER: ViewStyle = {
@@ -161,20 +161,11 @@ const HEADER: ViewStyle = {
 }
 
 const CARDS_CONTAINER: ViewStyle = {
-  // position: "relative",
-  // flex: 1,
-  // width: "100%",
-  // zIndex: 100,
   flex: 1,
   marginHorizontal: 16,
   zIndex: 100,
 }
 
-const CARD: ViewStyle = {
-  marginHorizontal: PAGE_GUTTERS,
-  height: "100%",
-  position: "relative",
-}
 const CENTER_TEXT: TextStyle = {
   textAlign: "center",
 }

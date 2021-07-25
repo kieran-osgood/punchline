@@ -1,4 +1,4 @@
-import Profile, { ProfileModel, α } from "app/components/profile/profile"
+import JokeCard, { JokeModel, α } from "app/components/joke-card/joke-card"
 import React, { forwardRef, Ref, useImperativeHandle } from "react"
 import { Dimensions, StyleSheet } from "react-native"
 import { PanGestureHandler, PanGestureHandlerGestureEvent } from "react-native-gesture-handler"
@@ -24,7 +24,7 @@ export interface SwipeHandler {
 
 interface SwiperProps {
   onSwipe: () => void
-  profile: ProfileModel
+  joke: JokeModel
   scale: Animated.SharedValue<number>
   onTop: boolean
 }
@@ -52,7 +52,7 @@ const swipe = (
   )
 }
 
-const Swiper = ({ onSwipe, profile, scale, onTop }: SwiperProps, ref: Ref<SwipeHandler>) => {
+const Swiper = ({ onSwipe, joke, scale, onTop }: SwiperProps, ref: Ref<SwipeHandler>) => {
   const translateX = useSharedValue(0)
   const translateY = useSharedValue(0)
 
@@ -89,12 +89,13 @@ const Swiper = ({ onSwipe, profile, scale, onTop }: SwiperProps, ref: Ref<SwipeH
       translateY.value = withSpring(0, { velocity: velocityY })
     },
   })
+
   return (
-    <PanGestureHandler onGestureEvent={onGestureEvent}>
+    <PanGestureHandler>
+      {/* to re-enable swiping use: <PanGestureHandler {...{onGestureEvent}}> */}
       <Animated.View style={StyleSheet.absoluteFill}>
-        {/* <Card key={id} style={CARD} {...{ id, index, body, liked }} /> */}
-        <Profile
-          profile={profile}
+        <JokeCard
+          joke={joke}
           translateX={translateX}
           translateY={translateY}
           scale={scale}
