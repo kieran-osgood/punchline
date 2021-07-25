@@ -51,14 +51,12 @@ export const defaultProfiles = [
 const Jokes: JokeModel[] = [
   {
     id: 1,
-    index: 1,
     // title: "The Car Joke",
     body: `Crime in multi-storey car parks. That is wrong on so many different levels`,
   },
 
   {
     id: 2,
-    index: 1,
     // title: "The Other Car Joke",
     body: `That is wrong on so many different levels`,
   },

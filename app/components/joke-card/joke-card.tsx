@@ -13,7 +13,6 @@ import Animated, {
 import { color, spacing } from "theme"
 export interface JokeModel {
   id: number
-  index: number
   body: string
 }
 
@@ -29,7 +28,7 @@ interface CardProps {
 }
 
 const JokeCard = ({ joke, translateX, translateY, onTop, scale }: CardProps) => {
-  const { body, index } = joke
+  const { body } = joke
   const x = useDerivedValue(() => (onTop ? translateX.value : 0))
   const container = useAnimatedStyle(() => ({
     transform: [
@@ -46,13 +45,13 @@ const JokeCard = ({ joke, translateX, translateY, onTop, scale }: CardProps) => 
       { scale: onTop ? 1 : scale.value },
     ],
   }))
-
+  const color = randomColor()
   return (
     <Animated.View style={[StyleSheet.absoluteFill, container]}>
       <View style={styles.overlay}>
-        <View style={CONTAINER(index)}>
+        <View style={[CONTAINER, { backgroundColor: color.background }]}>
           <View style={INNER}>
-            <Text style={TEXT(index)} bold text={body} />
+            <Text style={{ ...TEXT, ...{ color: color.text } }} bold text={body} />
           </View>
         </View>
       </View>
@@ -70,6 +69,8 @@ const colors = [
   { background: "hsl(336, 100%, 45%)", text: color.line },
   { background: "hsl(234, 89%, 60%)", text: color.line },
 ]
+
+const randomColor = (): typeof colors[0] => colors[Math.floor(colors.length * Math.random())]
 
 const styles = StyleSheet.create({
   footer: {
@@ -118,15 +119,6 @@ const styles = StyleSheet.create({
   },
 })
 
-const CONTAINER = (index: number): ViewStyle => ({
-  justifyContent: "center",
-  backgroundColor: colors[index].background,
-  padding: spacing[3],
-  borderRadius: spacing[3],
-  shadowColor: "#000000",
-  flex: 1,
-  ...CARD_SHADOW,
-})
 export const CARD_SHADOW = {
   shadowOffset: {
     width: spacing[1],
@@ -136,10 +128,19 @@ export const CARD_SHADOW = {
   shadowRadius: spacing[1],
   marginBottom: spacing[2],
 }
-const TEXT = (index: number): TextStyle => ({
-  color: colors[index].text,
+
+const CONTAINER: ViewStyle = {
+  justifyContent: "center",
+  padding: spacing[3],
+  borderRadius: spacing[3],
+  shadowColor: "#000000",
+  flex: 1,
+  ...CARD_SHADOW,
+}
+
+const TEXT: TextStyle = {
   fontSize: 18,
-})
+}
 
 const INNER: ViewStyle = {
   flexDirection: "row",
