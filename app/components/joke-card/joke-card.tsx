@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     justifyContent: "space-between",
-    padding: 16,
   },
 })
 

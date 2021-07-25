@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { useRoute } from "@react-navigation/native"
 import Swipeable from "app/components/swipeable/swipeable"
 import { JokeModelType, RatingValue, useQuery } from "app/graphql"
@@ -8,7 +7,6 @@ import {
   AdBanner,
   BookmarkButton,
   CircularButton,
-  JokeModel,
   Ratings,
   ShareIcons,
   SwipeHandler,
@@ -21,55 +19,14 @@ import { SafeAreaView, TextStyle, View, ViewStyle } from "react-native"
 import { useSharedValue } from "react-native-reanimated"
 import { color, spacing } from "theme"
 
-export const defaultProfiles = [
-  {
-    id: "1",
-    name: "Caroline",
-    age: 24,
-    profile: require("./assets/1.jpg"),
-  },
-  {
-    id: "2",
-    name: "Jack",
-    age: 30,
-    profile: require("./assets/2.jpg"),
-  },
-  {
-    id: "3",
-    name: "Anet",
-    age: 21,
-    profile: require("./assets/3.jpg"),
-  },
-  {
-    id: "4",
-    name: "John",
-    age: 28,
-    profile: require("./assets/4.jpg"),
-  },
-]
-const Jokes: JokeModel[] = [
-  {
-    id: 1,
-    // title: "The Car Joke",
-    body: `Crime in multi-storey car parks. That is wrong on so many different levels`,
-  },
-
-  {
-    id: 2,
-    // title: "The Other Car Joke",
-    body: `That is wrong on so many different levels`,
-  },
-]
-
 const PAGE_GUTTERS = 15
 
-export const JokeScreen = observer(function JokeScreen(props) {
-  const [bookmarked, setBookmarked] = React.useState(false)
+export const JokeScreen = observer(function JokeScreen() {
   const route = useRoute<NavigationProps<"JokeScreen">["route"]>()
-  const topCard = React.useRef<SwipeHandler>(null)
-  const scale = useSharedValue(0)
   const { store } = useQuery()
-  console.tron.log({ store: store.nonViewedJokes })
+  const scale = useSharedValue(0)
+  const [bookmarked, setBookmarked] = React.useState(false)
+  const topCard = React.useRef<SwipeHandler>(null)
 
   React.useEffect(() => {
     store.fetchMoreJokes()
@@ -86,6 +43,7 @@ export const JokeScreen = observer(function JokeScreen(props) {
   const handleBookmarkPress = () => {
     setBookmarked((c) => !c)
   }
+
   const handleSkipPress = () => {
     onSwipe(store.topOfDeckJoke, RatingValue.SKIP, bookmarked)
   }
@@ -104,21 +62,28 @@ export const JokeScreen = observer(function JokeScreen(props) {
     <>
       <SafeAreaView style={ROOT} testID="JokeScreen">
         <View style={HEADER}>
-          <Text text="Dad Jokes" style={{ ...CATEGORY_NAME, ...CENTER_TEXT }} bold />
-          <Text h2 text="The Car Joke" bold style={CENTER_TEXT} />
+          <Text
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            text={store.topOfDeckJoke.categories?.[0].name}
+            style={{ ...CATEGORY_NAME, ...CENTER_TEXT }}
+            bold
+          />
+          <Text h2 text={store.topOfDeckJoke.title} bold style={CENTER_TEXT} />
         </View>
 
         <View style={CARDS_CONTAINER}>
           {store.nonViewedJokes.map((joke) => {
             const onTop = joke.id === store.topOfDeckJoke.id
-            // console.tron.log("onTop: ", onTop)
             const ref = onTop ? topCard : null
             return <Swipeable ref={ref} key={joke.id} joke={joke} scale={scale} onTop={onTop} />
           })}
         </View>
 
         <View style={JOKE_INFO}>
-          <Ratings likes={0} dislikes={0} />
+          <Ratings
+            likes={store.topOfDeckJoke.positiveRating ?? 0}
+            dislikes={store.topOfDeckJoke.negativeRating ?? 0}
+          />
           <ShareIcons jokeId={route.params?.jokeId ?? ""} />
         </View>
 

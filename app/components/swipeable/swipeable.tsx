@@ -1,22 +1,13 @@
 import JokeCard, { α } from "app/components/joke-card/joke-card"
 import { JokeModelType } from "app/graphql"
 import React, { forwardRef, Ref, useImperativeHandle } from "react"
-import { Dimensions, StyleSheet } from "react-native"
-import { PanGestureHandler, PanGestureHandlerGestureEvent } from "react-native-gesture-handler"
-import Animated, {
-  Extrapolate,
-  interpolate,
-  runOnJS,
-  useAnimatedGestureHandler,
-  useSharedValue,
-  withSpring,
-} from "react-native-reanimated"
-import { snapPoint } from "react-native-redash"
+import { Dimensions, StyleSheet, View } from "react-native"
+import Animated, { runOnJS, useSharedValue, withSpring } from "react-native-reanimated"
 
 const { width, height } = Dimensions.get("window")
 
 const A = Math.round(width * Math.cos(α) + height * Math.sin(α))
-const snapPoints = [-A, 0, A]
+// const snapPoints = [-A, 0, A]
 
 export interface SwipeHandler {
   swipeLeft: () => void
@@ -47,63 +38,61 @@ const swipe = (
     },
     () => {
       if (dest !== 0 && typeof cb === "function") {
-        runOnJS(cb)()
+        runOnJS(() => setTimeout(cb, 600))()
       }
     },
   )
 }
 
-const Swiper = ({ onSwipe, joke, scale, onTop }: SwiperProps, ref: Ref<SwipeHandler>) => {
+const Swiper = ({ joke, scale, onTop }: SwiperProps, ref: Ref<SwipeHandler>) => {
   const translateX = useSharedValue(0)
   const translateY = useSharedValue(0)
 
   useImperativeHandle(ref, () => ({
     swipeLeft: () => {
-      swipe(translateX, -A, 5)
+      if (onTop) swipe(translateX, -A, 5)
     },
     swipeRight: () => {
-      swipe(translateX, A, 5)
+      if (onTop) swipe(translateX, A, 5)
     },
   }))
 
-  const onGestureEvent = useAnimatedGestureHandler<
-    PanGestureHandlerGestureEvent,
-    { x: number; y: number }
-  >({
-    onStart: (_, ctx) => {
-      ctx.x = translateX.value
-      ctx.y = translateY.value
-    },
-    onActive: ({ translationX, translationY }, { x, y }) => {
-      translateX.value = x + translationX
-      translateY.value = y + translationY
-      scale.value = interpolate(
-        translateX.value,
-        [-width / 4, 0, width / 4],
-        [1, 0.95, 1],
-        Extrapolate.CLAMP,
-      )
-    },
-    onEnd: ({ velocityX, velocityY }) => {
-      const dest = snapPoint(translateX.value, velocityX, snapPoints)
-      swipe(translateX, dest, 5)
-      translateY.value = withSpring(0, { velocity: velocityY })
-    },
-  })
+  // const onGestureEvent = useAnimatedGestureHandler<
+  //   PanGestureHandlerGestureEvent,
+  //   { x: number; y: number }
+  // >({
+  //   onStart: (_, ctx) => {
+  //     ctx.x = translateX.value
+  //     ctx.y = translateY.value
+  //   },
+  //   onActive: ({ translationX, translationY }, { x, y }) => {
+  //     translateX.value = x + translationX
+  //     translateY.value = y + translationY
+  //     scale.value = interpolate(
+  //       translateX.value,
+  //       [-width / 4, 0, width / 4],
+  //       [1, 0.95, 1],
+  //       Extrapolate.CLAMP,
+  //     )
+  //   },
+  //   onEnd: ({ velocityX, velocityY }) => {
+  //     const dest = snapPoint(translateX.value, velocityX, snapPoints)
+  //     swipe(translateX, dest, 5)
+  //     translateY.value = withSpring(0, { velocity: velocityY })
+  //   },
+  // })
 
+  /* to re-enable swiping use: <PanGestureHandler {...{onGestureEvent}}> */
   return (
-    <PanGestureHandler>
-      {/* to re-enable swiping use: <PanGestureHandler {...{onGestureEvent}}> */}
-      <Animated.View style={StyleSheet.absoluteFill}>
-        <JokeCard
-          joke={joke}
-          translateX={translateX}
-          translateY={translateY}
-          scale={scale}
-          onTop={onTop}
-        />
-      </Animated.View>
-    </PanGestureHandler>
+    <View style={StyleSheet.absoluteFill}>
+      <JokeCard
+        joke={joke}
+        translateX={translateX}
+        translateY={translateY}
+        scale={scale}
+        onTop={onTop}
+      />
+    </View>
   )
 }
 
