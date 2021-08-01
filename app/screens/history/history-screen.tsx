@@ -21,20 +21,24 @@ const ROOT: ViewStyle = {
 
 export const HistoryScreen = observer(function HistoryScreen() {
   const navigation = useNavigation<NavigationProps<"UserProfileScreen">["navigation"]>()
-  const { data } = useQuery((store) =>
-    store.queryUserJokeHistoryByUserId(
-      {},
-      nodes(userJokeHistoryModelPrimitives, `joke{${jokeModelPrimitives.toString()}}`),
-    ),
+  const { data } = useQuery(
+    (store) =>
+      store.queryUserJokeHistoryByUserId(
+        {},
+        nodes(userJokeHistoryModelPrimitives, `joke{${jokeModelPrimitives.toString()}}`),
+      ),
+    { fetchPolicy: "no-cache" },
   )
 
+  const hasData =
+    typeof data?.userJokeHistoryByUserId !== "undefined" &&
+    data.userJokeHistoryByUserId.nodes.length > 0
   return (
-    <Screen style={ROOT} preset="scroll" unsafe>
-      {typeof data?.userJokeHistoryByUserId !== "undefined" &&
-      data?.userJokeHistoryByUserId.nodes.length > 0 ? (
+    <Screen style={ROOT} preset="fixed" unsafe>
+      {hasData ? (
         <FlatList
           style={FLAT_LIST}
-          data={data?.userJokeHistoryByUserId.nodes}
+          data={data.userJokeHistoryByUserId.nodes}
           renderItem={({ index: key, item: userJokeHistory }) => (
             <ListItem {...{ key, userJokeHistory }} />
           )}
@@ -66,7 +70,7 @@ const ListItem = ({ userJokeHistory }: { userJokeHistory: UserJokeHistoryType })
     // addToHistory({ joke, rating: joke.rating, bookmark: !bookmarked })
   }
 
-  if (!userJokeHistory.id) return null
+  if (!userJokeHistory.joke) return null
 
   return (
     <View style={LIST_ITEM}>

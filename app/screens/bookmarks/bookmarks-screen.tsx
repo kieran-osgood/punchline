@@ -1,13 +1,12 @@
+/* eslint-disable react-native/no-color-literals */
 import { useNavigation } from "@react-navigation/native"
 import {
-  jokeModelPrimitives,
   nodes,
   useQuery,
   userJokeHistoryModelPrimitives,
   UserJokeHistoryModelType,
 } from "app/graphql"
 import { NavigationProps } from "app/navigators"
-import { Expansion } from "assets/images/expansion"
 import { TrashCan } from "assets/images/trash-can"
 import { EmptyState, Link, Text } from "components"
 import { observer } from "mobx-react-lite"
@@ -16,36 +15,59 @@ import {
   Alert,
   Animated as RNAnimated,
   FlatList,
+  LayoutChangeEvent,
+  RefreshControl,
+  StyleSheet,
   TextStyle,
-  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
   ViewStyle,
 } from "react-native"
 import { RectButton, Swipeable } from "react-native-gesture-handler"
 import Animated, {
-  interpolateColor,
+  measure,
+  runOnUI,
+  useAnimatedRef,
   useAnimatedStyle,
   useDerivedValue,
+  useSharedValue,
+  withSpring,
+  withTiming,
 } from "react-native-reanimated"
+import { mix, mixColor } from "react-native-redash"
+import Svg, { Path } from "react-native-svg"
 import { color, spacing } from "theme"
 import { Screen } from "../../components/screen/screen"
 
 export const BookmarksScreen = observer(function BookmarksScreen() {
   const navigation = useNavigation<NavigationProps<"UserProfileScreen">["navigation"]>()
   const [index, setIndex] = React.useState<number | null>(null)
+  const [refreshing, setRefreshing] = React.useState(false)
 
-  const { data } = useQuery((store) =>
+  const { data, query } = useQuery((store) =>
     store.queryUserJokeHistoryByUserId(
-      {},
-      nodes(userJokeHistoryModelPrimitives, `joke{${jokeModelPrimitives.toString()}}`),
+      { where: { bookmarked: { eq: true } } },
+      nodes(userJokeHistoryModelPrimitives.id.rating.bookmarked.joke((j) => j.id.title.body)),
+      { fetchPolicy: "no-cache" },
     ),
   )
 
+  const hasData =
+    typeof data?.userJokeHistoryByUserId !== "undefined" &&
+    data.userJokeHistoryByUserId.nodes.length > 0
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true)
+    await query?.refetch()
+    setRefreshing(false)
+  }, [])
+
   return (
     <Screen style={ROOT} preset="fixed" unsafe>
-      {typeof data?.userJokeHistoryByUserId !== "undefined" &&
-      data?.userJokeHistoryByUserId.nodes.length > 0 ? (
+      {hasData ? (
         <FlatList
-          data={data?.userJokeHistoryByUserId.nodes}
+          refreshControl={<RefreshControl {...{ refreshing, onRefresh }} />}
+          data={data.userJokeHistoryByUserId.nodes}
           renderItem={({ item: bookmark, index: thisIndex }) => (
             <Bookmark
               key={bookmark.id}
@@ -57,7 +79,7 @@ export const BookmarksScreen = observer(function BookmarksScreen() {
         />
       ) : (
         <EmptyState
-          title="Zero Bookmarks!"
+          title="No Bookmarks!"
           body="It appears you've not bookmarked any jokes. Make sure to press the star on jokes to save them here!"
           ctaText="Go save some jokes!"
           image="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flat_tick_icon.svg/1200px-Flat_tick_icon.svg.png"
@@ -82,74 +104,82 @@ type BookmarkProps = {
 }
 
 export const Bookmark = (props: BookmarkProps) => {
-  const {
-    bookmark: { joke },
-    lastTouched,
-  } = props
-  const [expand, setExpand] = React.useState(false)
+  const { bookmark, lastTouched, handlePress } = props
   const touched = useDerivedValue(() => Number(lastTouched), [lastTouched])
   const query = useQuery()
-  const onPress = () => {
-    props.handlePress()
-    setExpand((current) => !current)
-  }
-  const handleDelete = (id: string) => {
-    query.setQuery((store) => store.mutateDeleteBookmark({ id }))
+
+  const handleDelete = () => {
+    query.setQuery((store) =>
+      store.mutateDeleteBookmark({ id: bookmark.id }, undefined, () => {
+        query.store.removeChild(bookmark)
+      }),
+    )
   }
 
-  const style = useAnimatedStyle(
-    () => ({
-      borderColor: interpolateColor(touched.value, [0, 1], ["#000", color.success]),
-    }),
-    [lastTouched],
-  )
+  // const style = useAnimatedStyle(
+  //   () => ({
+  //     borderColor: interpolateColor(touched.value, [0, 1], ["#000", color.success]),
+  //   }),
+  //   [lastTouched],
+  // )
 
+  const aref = useAnimatedRef<View>()
+  const open = useSharedValue(false)
+  const progress = useDerivedValue(() => (open.value ? withSpring(1) : withTiming(0)))
+  const height = useSharedValue(0)
+  const headerStyle = useAnimatedStyle(() => ({
+    borderBottomLeftRadius: progress.value === 0 ? 8 : 0,
+    borderBottomRightRadius: progress.value === 0 ? 8 : 0,
+  }))
+  const style = useAnimatedStyle(() => ({
+    height: height.value * progress.value + 1,
+    opacity: progress.value === 0 ? 0 : 1,
+  }))
+  const [onLayout, setOnLayout] = React.useState<LayoutChangeEvent>({
+    nativeEvent: { layout: { height: 0 } },
+  })
   return (
-    <Swipeable
-      friction={2}
-      renderRightActions={(progressAnimatedValue, dragAnimatedValue) => (
-        <RenderRightActions {...{ progressAnimatedValue, dragAnimatedValue, handleDelete }} />
-      )}
-    >
-      <Animated.View style={[BOOKMARK, style]}>
-        <TouchableOpacity style={EXPANSION_ROW} {...{ onPress }}>
-          <Text h4 bold text={joke.title} style={TEXT} numberOfLines={expand ? undefined : 1} />
-          <Expansion scale={1} />
-        </TouchableOpacity>
-        <Animated.View style={[style, { paddingVertical: spacing[3] }]}>
-          {expand && (
-            <>
-              <Text bold text={joke.body} style={BODY} />
-              {/* <ReText
-                text={formattedPrice}
-                style={{ color: "black", fontVariant: ["tabular-nums"] }}
-              /> */}
-              <Link jokeId={joke.id} style={SHARE}>
-                <Text text="Share" style={SHARE_TEXT} />
-              </Link>
-            </>
-          )}
+    <View ref={aref} collapsable={false} onLayout={setOnLayout}>
+      <Swipeable
+        friction={2}
+        renderRightActions={(progressAnimatedValue, dragAnimatedValue) => (
+          <RenderRightActions {...{ progressAnimatedValue, dragAnimatedValue, handleDelete }} />
+        )}
+      >
+        <TouchableWithoutFeedback
+          onPress={() => {
+            if (height.value === 0) {
+              runOnUI(() => {
+                "worklet"
+                const m = measure(aref)
+                height.value = m.height + (onLayout.nativeEvent.layout.height ?? 0)
+              })()
+            }
+            open.value = !open.value
+          }}
+        >
+          <Animated.View style={[styles.container, headerStyle]}>
+            <View>
+              <Text style={styles.title} h4 bold numberOfLines={open.value ? undefined : 1}>
+                {bookmark.joke.title}
+              </Text>
+            </View>
+            <Chevron {...{ progress }} />
+            {/* <Expansion scale={1} /> */}
+          </Animated.View>
+        </TouchableWithoutFeedback>
+
+        <Animated.View style={[styles.items, style]}>
+          <Text bold text={bookmark.joke.body} style={BODY} />
+          <Link jokeId={bookmark.joke.id} style={SHARE}>
+            <Text text="Share" style={SHARE_TEXT} />
+          </Link>
         </Animated.View>
-      </Animated.View>
-    </Swipeable>
+      </Swipeable>
+    </View>
   )
 }
 
-const BOOKMARK: ViewStyle = {
-  borderColor: "black",
-  borderWidth: 1,
-  borderRadius: 25,
-  padding: spacing[5],
-  marginTop: spacing[3],
-}
-const EXPANSION_ROW: ViewStyle = {
-  flexDirection: "row",
-  justifyContent: "space-between",
-}
-const TEXT: TextStyle = {
-  width: "90%",
-  flexWrap: "wrap",
-}
 const BODY: TextStyle = {
   color: color.dim,
 }
@@ -161,6 +191,7 @@ const SHARE: ViewStyle = {
   width: "50%",
   alignSelf: "flex-end",
   marginTop: spacing[3],
+  height: 35,
 }
 const SHARE_TEXT: TextStyle = {
   color: "#000",
@@ -181,33 +212,91 @@ const RenderRightActions = ({ dragAnimatedValue, handleDelete }: Actions) => {
     inputRange: [0, 50, 100, 101],
     outputRange: [-0, 0, 0, 10],
   })
+
   const onPress = () => {
     Alert.alert("Confirm Delete", "Are you sure you wish to delete this bookmark?", [
-      { text: "Cancel", onPress: () => {} },
+      { text: "Cancel" },
       { text: "Ok", onPress: handleDelete },
     ])
   }
+
   return (
-    <TouchableOpacity
+    <RectButton
       {...{ onPress }}
       style={{
         paddingHorizontal: spacing[2],
       }}
     >
-      <RectButton>
-        <RNAnimated.View
-          style={[
-            {
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100%",
-            },
-            { transform: [{ translateX: trans }] },
-          ]}
-        >
-          <TrashCan scale={1} fill={color.error} />
-        </RNAnimated.View>
-      </RectButton>
-    </TouchableOpacity>
+      <RNAnimated.View style={[TRASH_CAN, { transform: [{ translateX: trans }] }]}>
+        <TrashCan scale={1} fill={color.error} />
+      </RNAnimated.View>
+    </RectButton>
   )
 }
+
+const TRASH_CAN: ViewStyle = {
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100%",
+}
+
+const size = 30
+
+interface ChevronProps {
+  progress: Animated.SharedValue<number>
+}
+
+const Chevron = ({ progress }: ChevronProps) => {
+  const style = useAnimatedStyle(() => ({
+    backgroundColor: mixColor(progress.value, "#525251", "#e45645") as string,
+    transform: [{ rotateZ: `${mix(progress.value, 0, Math.PI)}rad` }],
+  }))
+  return (
+    <Animated.View style={[styles.arrowcontainer, style]}>
+      <Svg
+        width={24}
+        height={24}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="white"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <Path d="M6 9l6 6 6-6" />
+      </Svg>
+    </Animated.View>
+  )
+}
+
+export default Chevron
+
+const styles = StyleSheet.create({
+  arrowcontainer: {
+    alignItems: "center",
+    backgroundColor: "#525251",
+    borderRadius: size / 2,
+    borderWidth: 1,
+    height: size,
+    justifyContent: "center",
+    width: size,
+  },
+  container: {
+    alignItems: "center",
+    backgroundColor: "white",
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 16,
+    padding: 16,
+  },
+  items: {
+    overflow: "hidden",
+  },
+  title: {
+    flexWrap: "wrap",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+})

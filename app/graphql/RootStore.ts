@@ -1,6 +1,6 @@
-import { JokeLength, jokeModelPrimitives } from "app/graphql"
+import { jokeModelPrimitives } from "app/graphql"
 import { RootStore as RootStoreTree } from "app/models"
-import { getEnv, getRoot, Instance, types } from "mobx-state-tree"
+import { destroy, getEnv, getRoot, IAnyStateTreeNode, Instance, types } from "mobx-state-tree"
 import { RootStoreBase } from "./RootStore.base"
 
 export interface RootStoreType extends Instance<typeof RootStore.Type> {}
@@ -14,6 +14,9 @@ export const RootStore = RootStoreBase.props({
     },
   }))
   .actions((self) => ({
+    removeChild(item: IAnyStateTreeNode) {
+      destroy(item)
+    },
     setAuthorizationHeader() {
       getEnv(self).gqlHttpClient.setHeaders({ Authorization: "bearer " + self.accessToken })
     },
@@ -24,11 +27,10 @@ export const RootStore = RootStoreBase.props({
       self.setAuthorizationHeader()
     },
     fetchMoreJokes() {
-      // TODO: test replacing blockedCategoryIds param with (getRoot() as Rootstore).userStore.blockedCategoryIds
       const query = self.queryJokes(
         {
           blockedCategoryIds: self.root.userStore.blockedCategoryIds,
-          jokeLength: JokeLength.MEDIUM,
+          jokeLength: self.root.userStore.jokeLengthMaxEnum,
         },
         nodes(jokeModelPrimitives),
         { fetchPolicy: "no-cache" },

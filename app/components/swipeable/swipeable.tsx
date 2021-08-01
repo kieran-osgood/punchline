@@ -2,7 +2,14 @@ import JokeCard, { α } from "app/components/joke-card/joke-card"
 import { JokeModelType } from "app/graphql"
 import React, { forwardRef, Ref, useImperativeHandle } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"
-import Animated, { runOnJS, useSharedValue, withSpring } from "react-native-reanimated"
+import Animated, {
+  Extrapolate,
+  interpolate,
+  runOnJS,
+  useDerivedValue,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated"
 
 const { width, height } = Dimensions.get("window")
 
@@ -17,7 +24,7 @@ export interface SwipeHandler {
 interface SwiperProps {
   onSwipe?: (joke: JokeModelType) => void
   joke: JokeModelType
-  scale: Animated.SharedValue<number>
+  // scale: Animated.SharedValue<number>
   onTop: boolean
 }
 
@@ -44,9 +51,17 @@ const swipe = (
   )
 }
 
-const Swiper = ({ joke, scale, onTop }: SwiperProps, ref: Ref<SwipeHandler>) => {
+const Swiper = ({ joke, onTop }: SwiperProps, ref: Ref<SwipeHandler>) => {
   const translateX = useSharedValue(0)
   const translateY = useSharedValue(0)
+  const scaled = useDerivedValue(() => {
+    return interpolate(
+      translateX.value,
+      [-width / 4, 0, width / 4],
+      [1, 0.95, 1],
+      Extrapolate.CLAMP,
+    )
+  }, [translateX.value])
 
   useImperativeHandle(ref, () => ({
     swipeLeft: () => {
@@ -89,7 +104,7 @@ const Swiper = ({ joke, scale, onTop }: SwiperProps, ref: Ref<SwipeHandler>) => 
         joke={joke}
         translateX={translateX}
         translateY={translateY}
-        scale={scale}
+        scale={scaled}
         onTop={onTop}
       />
     </View>

@@ -40,6 +40,19 @@ export const UserStoreModel = types
 
       return largestJoke
     },
+    get jokeLengthMaxEnum(): JokeLength {
+      const b = this.jokeLengthMax
+      switch (b) {
+        case 3:
+          return JokeLength.LARGE
+        case 2:
+          return JokeLength.MEDIUM
+        case 1:
+          return JokeLength.SMALL
+      }
+
+      return JokeLength.SMALL
+    },
     get checkboxMap(): VerticalCheckboxesProps["data"] {
       return JokeLengths.map((x) => ({
         label: x.slice(0, 1) + x.slice(1).toLowerCase(),
