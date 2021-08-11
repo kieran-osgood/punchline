@@ -11,6 +11,7 @@ export const UserStoreModel = types
   .model("UserStore", {
     user: types.maybeNull(UserModel),
     jokeLengthPreferences: types.map(types.boolean),
+    onboardingComplete: types.boolean,
   })
   .extend(withEnvironment)
   .views((self) => ({
@@ -89,7 +90,20 @@ export const UserStoreModel = types
           username: credential.user.displayName ?? "Guest",
         },
       })
+
       self.updateUser(credential.user)
+    },
+    completeOnboarding: () => {
+      const root = getRoot(self) as RootStore
+      if (self.user?.uid) {
+        root.api.mutateCompleteOnboarding({
+          input: {
+            firebaseUid: self.user.uid,
+            username: self.user.displayName ?? "Guest",
+          },
+        })
+        self.onboardingComplete = true
+      }
     },
   }))
 
@@ -97,4 +111,7 @@ type UserStoreType = Instance<typeof UserStoreModel>
 export interface UserStore extends UserStoreType {}
 type UserStoreSnapshotType = SnapshotOut<typeof UserStoreModel>
 export interface UserStoreSnapshot extends UserStoreSnapshotType {}
-export const createUserStoreDefaultModel = () => types.optional(UserStoreModel, {})
+export const createUserStoreDefaultModel = () =>
+  types.optional(UserStoreModel, {
+    onboardingComplete: false,
+  })

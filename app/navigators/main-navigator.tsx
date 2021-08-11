@@ -5,13 +5,13 @@
  *
  * You'll likely spend most of your time in this file.
  */
-import React from "react"
-import { RouteProp } from "@react-navigation/native"
 import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs"
-import { JokeScreen, SettingsScreen, UserProfileScreen } from "../screens"
-import { observer } from "mobx-react-lite"
+import { RouteProp } from "@react-navigation/native"
 import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack"
 import { Header } from "components"
+import { observer } from "mobx-react-lite"
+import React from "react"
+import { JokeScreen, OnboardingScreen, SettingsScreen, UserProfileScreen } from "../screens"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -32,6 +32,7 @@ export type RouteParamList = {
   SettingsScreen: undefined
   LoginScreen: undefined
   UserProfileScreen: undefined
+  OnboardingScreen: undefined
 }
 
 export type NavigationProps<T extends keyof RouteParamList> = {
@@ -42,33 +43,48 @@ export type NavigationProps<T extends keyof RouteParamList> = {
 const Stack = createStackNavigator<RouteParamList>()
 
 export const MainNavigator = observer(function MainNavigator() {
+  const onboarded = false
+  //  const store = useStores()
+  //  store.userStore.user.onboardingComplete
   return (
     <Stack.Navigator initialRouteName="JokeScreen" headerMode="screen">
-      <Stack.Screen
-        name="JokeScreen"
-        component={JokeScreen}
-        options={{
-          header: ({ navigation }) => (
-            <Header {...{ navigation }} left="account" right="settings" />
-          ),
-        }}
-      />
-      <Stack.Screen
-        name="UserProfileScreen"
-        component={UserProfileScreen}
-        options={{
-          header: ({ navigation }) => <Header {...{ navigation }} left="back" />,
-          gestureDirection: "horizontal-inverted",
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }}
-      />
-      <Stack.Screen
-        name="SettingsScreen"
-        component={SettingsScreen}
-        options={{
-          header: ({ navigation }) => <Header {...{ navigation }} left="back" />,
-        }}
-      />
+      {!onboarded ? (
+        <Stack.Screen
+          name="OnboardingScreen"
+          component={OnboardingScreen}
+          options={{
+            header: () => null,
+          }}
+        />
+      ) : (
+        <>
+          <Stack.Screen
+            name="JokeScreen"
+            component={JokeScreen}
+            options={{
+              header: ({ navigation }) => (
+                <Header {...{ navigation }} left="account" right="settings" />
+              ),
+            }}
+          />
+          <Stack.Screen
+            name="UserProfileScreen"
+            component={UserProfileScreen}
+            options={{
+              header: ({ navigation }) => <Header {...{ navigation }} left="back" />,
+              gestureDirection: "horizontal-inverted",
+              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+            }}
+          />
+          <Stack.Screen
+            name="SettingsScreen"
+            component={SettingsScreen}
+            options={{
+              header: ({ navigation }) => <Header {...{ navigation }} left="back" />,
+            }}
+          />
+        </>
+      )}
     </Stack.Navigator>
   )
 })
@@ -83,4 +99,4 @@ export const MainNavigator = observer(function MainNavigator() {
  * `canExit` is used in ./app/app.tsx in the `useBackButtonHandler` hook.
  */
 export type MainRouteNames = keyof RouteParamList
-export const mainExitRoutes: [MainRouteNames] = ["JokeScreen"]
+export const mainExitRoutes: MainRouteNames[] = ["OnboardingScreen", "JokeScreen"]
