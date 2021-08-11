@@ -3,7 +3,7 @@ import { useStores } from "app/models"
 import { Logout } from "assets/images/logout"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { Linking, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
+import { Linking, TextStyle, ViewStyle } from "react-native"
 import { BUG_REPORT_EMAIL } from "react-native-dotenv"
 import { color, spacing } from "theme"
 import {
@@ -38,30 +38,30 @@ const ROOT: ViewStyle = {
 const LogoutButton = () => {
   const { resetStores } = useStores()
   return (
-    <TouchableOpacity style={LOGOUT_BUTTON_CONTAINER} onPress={() => resetStores()}>
+    <Button
+      text="Bug Report"
+      style={LOGOUT_BUTTON_CONTAINER}
+      textStyle={LOGOUT_BUTTON}
+      onPress={() => resetStores()}
+    >
       <Logout scale={1} />
-      <Text style={LOGOUT_TEXT_CONTAINER}>
-        <Text text="Logout" style={LOGOUT_BUTTON} />
-      </Text>
-    </TouchableOpacity>
+      <Text text="Logout" style={LOGOUT_BUTTON} />
+    </Button>
   )
 }
 
 const LOGOUT_BUTTON_CONTAINER: ViewStyle = {
-  flexDirection: "row",
   alignItems: "center",
-  width: "100%",
+  backgroundColor: "transparent",
+  flexDirection: "row",
 }
 
 const LOGOUT_BUTTON: TextStyle = {
   fontSize: 18,
   fontWeight: "bold",
   color: color.text,
-  textAlign: "left",
-}
-
-const LOGOUT_TEXT_CONTAINER: TextStyle = {
   marginLeft: spacing[3],
+  width: "25%",
 }
 
 const LoginConversion = () => (
