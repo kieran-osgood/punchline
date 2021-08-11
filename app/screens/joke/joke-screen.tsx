@@ -16,7 +16,6 @@ import { CryingEmoji, LaughingEmoji } from "images"
 import { observer } from "mobx-react-lite"
 import React from "react"
 import { SafeAreaView, TextStyle, View, ViewStyle } from "react-native"
-import { useSharedValue } from "react-native-reanimated"
 import { color, spacing } from "theme"
 
 const PAGE_GUTTERS = 15
@@ -24,7 +23,6 @@ const PAGE_GUTTERS = 15
 export const JokeScreen = observer(function JokeScreen() {
   const route = useRoute<NavigationProps<"JokeScreen">["route"]>()
   const { store } = useQuery()
-  const scale = useSharedValue(0)
   const [bookmarked, setBookmarked] = React.useState(false)
   const topCard = React.useRef<SwipeHandler>(null)
 
@@ -64,7 +62,7 @@ export const JokeScreen = observer(function JokeScreen() {
         <View style={HEADER}>
           <Text
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            text={store.topOfDeckJoke.categories?.[0].name}
+            text={store.topOfDeckJoke?.categories?.[0].name}
             style={{ ...CATEGORY_NAME, ...CENTER_TEXT }}
             bold
           />
@@ -75,7 +73,7 @@ export const JokeScreen = observer(function JokeScreen() {
           {store.nonViewedJokes.map((joke) => {
             const onTop = joke.id === store.topOfDeckJoke.id
             const ref = onTop ? topCard : null
-            return <Swipeable ref={ref} key={joke.id} joke={joke} scale={scale} onTop={onTop} />
+            return <Swipeable ref={ref} key={joke.id} joke={joke} onTop={onTop} />
           })}
         </View>
 
@@ -148,21 +146,21 @@ export const Controls = (props: ButtonsProps) => {
   const { bookmarked, handleBookmarkPress, handleDownVote, handleUpVote, handleSkipPress } = props
   return (
     <View style={BUTTONS}>
-      <CircularButton style={DISLIKE} onPress={handleDownVote} activeOpacity={0.8}>
+      <CircularButton style={DISLIKE} onPress={handleDownVote} activeOpacity={0.7}>
         <CryingEmoji />
       </CircularButton>
 
       <View style={SECONDARY_ACTION_BUTTONS}>
-        <CircularButton size="small" onPress={handleBookmarkPress} activeOpacity={0.8}>
+        <CircularButton size="small" onPress={handleBookmarkPress} activeOpacity={0.7}>
           <BookmarkButton {...{ bookmarked }} />
         </CircularButton>
 
-        <CircularButton size="small" onPress={handleSkipPress} activeOpacity={0.8}>
+        <CircularButton size="small" onPress={handleSkipPress} activeOpacity={0.7}>
           <Skip />
         </CircularButton>
       </View>
 
-      <CircularButton onPress={handleUpVote} activeOpacity={0.8}>
+      <CircularButton onPress={handleUpVote} activeOpacity={0.7}>
         <LaughingEmoji />
       </CircularButton>
     </View>
