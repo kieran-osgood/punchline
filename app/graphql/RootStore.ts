@@ -1,4 +1,4 @@
-import { jokeModelPrimitives } from "app/graphql"
+import { JokeModel, jokeModelPrimitives } from "app/graphql"
 import { RootStore as RootStoreTree } from "app/models"
 import { destroy, getEnv, getRoot, IAnyStateTreeNode, Instance, types } from "mobx-state-tree"
 import { RootStoreBase } from "./RootStore.base"
@@ -46,6 +46,10 @@ export const RootStore = RootStoreBase.props({
       if (this.nonViewedJokes.length <= 10) {
         self.fetchMoreJokes()
       }
+      if (this.nonViewedJokes.length === 0) {
+        return JokeModel.create({ id: "-1" })
+      }
+
       return this.nonViewedJokes[this.nonViewedJokes.length - 1]
     },
   }))
