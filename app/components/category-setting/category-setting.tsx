@@ -1,11 +1,12 @@
+import { categoryModelPrimitives, CategoryModelType, nodes, useQuery } from "app/graphql"
+import { SortEnumType } from "app/graphql/SortEnumTypeEnum"
+import { Blocked, SIZE } from "assets/images/blocked"
+import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { TextStyle, TouchableOpacity, View, ViewStyle } from "react-native"
-import { observer } from "mobx-react-lite"
-import { color, spacing, typography } from "../../theme"
-import { Text } from "../"
-import { useQuery, nodes, categoryModelPrimitives, CategoryModelType } from "app/graphql"
 import { SvgUri } from "react-native-svg"
-import { SortEnumType } from "app/graphql/SortEnumTypeEnum"
+import { Text } from "../"
+import { color, spacing, typography } from "../../theme"
 
 export interface CategorySettingProps {
   /**
@@ -61,49 +62,52 @@ type CategoryProps = {
   category: CategoryModelType
 }
 const Category = observer(function Category({ category }: CategoryProps) {
-  if (!category || !category.image) return null
   const { store } = useQuery()
-  const onPress = () => {
-    store.categories.get(category.id)?.update(!category.isActive)
-  }
-  // TODO: convert this to use an animated SVG ⛔️ to show blocked categories
+
+  if (!category.image) return null
+  const { id, isActive, name, image } = category
+  const uri = image.length > 0 ? image : " "
+  const activeTextStyle = { color: isActive ? color.dim : color.primary }
+
+  const onPress = () => store.categories.get(id)?.update(!isActive)
+
   return (
-    <TouchableOpacity
-      style={[
-        CATEGORY_CONTAINER,
-        { backgroundColor: category.isActive ? "lightgrey" : "transparent" },
-      ]}
-      activeOpacity={0.6}
-      {...{ onPress }}
-    >
+    <TouchableOpacity style={CATEGORY_CONTAINER} activeOpacity={0.6} {...{ onPress }}>
       <View style={IMAGE_CONTAINER}>
         <SvgUri
+          style={isActive ? CATEGORY_ICON : {}}
           width={SVG_SIZE}
           height={SVG_SIZE}
-          uri={
-            category.image.length > 0
-              ? category.image
-              : "https://reactnativecode.com/wp-content/uploads/2017/05/react_thumb_install.png"
-          }
+          {...{ uri }}
         />
+        {isActive && <Blocked scale={SVG_SIZE / SIZE} style={BLOCKED} />}
       </View>
       <View>
-        <Text style={TEXT} text={category.name} />
+        <Text style={{ ...TEXT, ...activeTextStyle }} text={name} />
       </View>
     </TouchableOpacity>
   )
 })
+
+const CATEGORY_ICON: ViewStyle = {
+  opacity: 0.55,
+}
 
 const IMAGE_CONTAINER: ViewStyle = {
   minHeight: SVG_SIZE,
   minWidth: SVG_SIZE,
 }
 
+const BLOCKED: ViewStyle = {
+  position: "absolute",
+  zIndex: 10,
+}
+
 const TEXT: TextStyle = {
   fontFamily: typography.primary,
   fontSize: 14,
-  color: color.primary,
-  paddingTop: spacing[2]
+  paddingTop: spacing[2],
+  fontWeight: "500",
 }
 
 const CATEGORY_CONTAINER: ViewStyle = {
@@ -112,6 +116,6 @@ const CATEGORY_CONTAINER: ViewStyle = {
   width: "32%",
   justifyContent: "space-between",
   alignItems: "center",
-  paddingVertical: spacing[5],
+  paddingVertical: spacing[2],
   marginRight: spacing[1],
 }
