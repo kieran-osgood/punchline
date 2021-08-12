@@ -5,5 +5,11 @@
         "**/.settings": true,
         "**/.factorypath": true
     },
-    "java.configuration.updateBuildConfiguration": "disabled"
+    "java.configuration.updateBuildConfiguration": "disabled",
+    "cSpell.words": [
+        "Firestore",
+        "Moti",
+        "crashlytics"
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib"
 }
