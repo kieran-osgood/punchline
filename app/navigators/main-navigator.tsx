@@ -8,6 +8,7 @@
 import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs"
 import { RouteProp } from "@react-navigation/native"
 import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack"
+import { useStores } from "app/models"
 import { Header } from "components"
 import { observer } from "mobx-react-lite"
 import React from "react"
@@ -43,12 +44,12 @@ export type NavigationProps<T extends keyof RouteParamList> = {
 const Stack = createStackNavigator<RouteParamList>()
 
 export const MainNavigator = observer(function MainNavigator() {
-  const onboarded = false
+  const store = useStores()
   //  const store = useStores()
   //  store.userStore.user.onboardingComplete
   return (
     <Stack.Navigator initialRouteName="JokeScreen" headerMode="screen">
-      {!onboarded ? (
+      {!store.userStore.onboardingComplete ? (
         <Stack.Screen
           name="OnboardingScreen"
           component={OnboardingScreen}

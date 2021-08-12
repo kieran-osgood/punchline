@@ -55,10 +55,10 @@ export const UserStoreModel = types
       return JokeLength.SMALL
     },
     get checkboxMap(): VerticalCheckboxesProps["data"] {
-      return JokeLengths.map((x) => ({
+      return JokeLengths.map((x, idx) => ({
         label: x.slice(0, 1) + x.slice(1).toLowerCase(),
         value: x,
-        isChecked: self.jokeLengthPreferences.get(x) ?? true,
+        isChecked: self.jokeLengthPreferences.get(x) ?? idx === 0,
       }))
     },
   }))
@@ -114,4 +114,7 @@ export interface UserStoreSnapshot extends UserStoreSnapshotType {}
 export const createUserStoreDefaultModel = () =>
   types.optional(UserStoreModel, {
     onboardingComplete: false,
+    jokeLengthPreferences: {
+      [JokeLength.SMALL]: true,
+    },
   })
