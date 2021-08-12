@@ -3,7 +3,8 @@ import { useStores } from "app/models"
 import { Facebook } from "images"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { Button, ViewStyle } from "react-native"
+import { ViewStyle } from "react-native"
+import { Button } from "react-native-elements"
 import { AccessToken, LoginManager } from "react-native-fbsdk-next"
 import { BUTTON_CONTAINER, BUTTON_ICON, BUTTON_TITLE, PILL_BUTTON } from ".."
 
@@ -84,8 +85,7 @@ export const FacebookSignInButton = observer(function FacebookSignInButton(
 
   return (
     <Button
-      title={title}
-      buttonStyle={[PILL_BUTTON, style]}
+      buttonStyle={PILL_BUTTON}
       titleStyle={BUTTON_TITLE}
       containerStyle={BUTTON_CONTAINER}
       raised

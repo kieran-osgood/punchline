@@ -67,28 +67,23 @@ export const GoogleSignInButton = observer(function GoogleSigninButton(
 
   return (
     <Button
-      title={title}
+      // title={title}
       buttonStyle={PILL_BUTTON}
       titleStyle={BUTTON_TITLE}
       containerStyle={BUTTON_CONTAINER}
       raised
-      icon={<GoogleIcon style={BUTTON_ICON} />}
+      icon={<GoogleIcon style={BUTTON_ICON} scale={1.2} />}
       onPress={() => handlePress()}
     />
   )
 })
 
-export const BUTTON_ICON: ViewStyle = {
-  position: "absolute",
-  left: spacing[6],
-}
+export const BUTTON_ICON: ViewStyle = {}
 
 export const BUTTON_TITLE: TextStyle = {
   fontSize: 18,
   fontWeight: "bold",
-  width: "100%",
   color: color.text,
-  marginLeft: "40%",
   textAlign: "left",
 }
 
@@ -100,6 +95,5 @@ export const PILL_BUTTON: ViewStyle = {
 }
 
 export const BUTTON_CONTAINER: ViewStyle = {
-  width: 305,
-  marginVertical: spacing[3],
+  borderRadius: 75,
 }

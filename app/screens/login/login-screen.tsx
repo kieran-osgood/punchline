@@ -1,4 +1,5 @@
 import {
+  AppleSignInButton,
   AppLogo,
   CenterView,
   FacebookSignInButton,
@@ -10,7 +11,7 @@ import {
 } from "components"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { Alert, BackHandler, TextStyle, ViewStyle } from "react-native"
+import { Alert, BackHandler, TextStyle, View, ViewStyle } from "react-native"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 // import { useNavigation } from "@react-navigation/native"
 // import { useStores } from "../../models"
@@ -61,6 +62,12 @@ const BUTTONS_CONTAINER: ViewStyle = {
   flex: 0,
 }
 
+const ROW: ViewStyle = {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  width: "50%",
+}
+
 export const LoginScreen = observer(function LoginScreen() {
   const [isLoading, setIsLoading] = React.useState(false)
 
@@ -81,22 +88,29 @@ export const LoginScreen = observer(function LoginScreen() {
     <Screen style={ROOT} preset="fixed" testID="LoginScreen">
       <AppLogo style={APP_LOGO} />
 
-      <Text h1 text="Login" style={TEXT_CENTER} />
+      <Text h1 text="Get Started" style={TEXT_CENTER} />
       <Text
         style={COPY}
-        text="Login to bookmark your favourite jokes for later, and view your history!"
+        text="Create an account to save your bookmarked joked permanently, or continue as a guest to get started right away!"
       />
       <CenterView style={BUTTONS_CONTAINER}>
-        <GoogleSignInButton
-          setIsLoading={(val) => setIsLoading(val)}
-          onSuccess={successPopup}
-          onError={errorPopup}
-        />
-        <FacebookSignInButton
-          setIsLoading={(val) => setIsLoading(val)}
-          onSuccess={successPopup}
-          onError={errorPopup}
-        />
+        <View style={ROW}>
+          <GoogleSignInButton
+            setIsLoading={(val) => setIsLoading(val)}
+            onSuccess={successPopup}
+            onError={errorPopup}
+          />
+          <FacebookSignInButton
+            setIsLoading={(val) => setIsLoading(val)}
+            onSuccess={successPopup}
+            onError={errorPopup}
+          />
+          <AppleSignInButton
+            setIsLoading={(val) => setIsLoading(val)}
+            onSuccess={successPopup}
+            onError={errorPopup}
+          />
+        </View>
         <Text style={TEXT_SEPERATOR} text="Or" />
         <GuestSignInButton />
       </CenterView>

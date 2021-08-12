@@ -1,15 +1,17 @@
-import * as React from 'react'
-import Svg, { Path } from 'react-native-svg'
-import { SVGProps } from 'app/types'
+import { SVGProps } from "app/types"
+import * as React from "react"
+import Svg, { Path } from "react-native-svg"
 
-export function Google(props: SVGProps) {
+export const SIZE = 20
+
+export function Google(props: { scale?: number } & SVGProps) {
+  const { scale = 0 } = props
+
+  const width = scale <= 0 ? undefined : scale * SIZE
+  const height = scale <= 0 ? undefined : scale * SIZE
+
   return (
-    <Svg
-      style={props.style}
-      width={20}
-      height={20}
-      viewBox="0 0 256 262"
-      preserveAspectRatio="xMidYMid">
+    <Svg viewBox="0 0 256 262" preserveAspectRatio="xMidYMid" {...props} {...{ width, height }}>
       <Path
         d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"
         fill="#4285F4"
