@@ -4,7 +4,6 @@ import { Logout } from "assets/images/logout"
 import { observer } from "mobx-react-lite"
 import React from "react"
 import { Linking, TextStyle, ViewStyle } from "react-native"
-import { BUG_REPORT_EMAIL } from "react-native-dotenv"
 import { color, spacing } from "theme"
 import {
   Button,
@@ -17,6 +16,8 @@ import {
   Text,
 } from "../../components"
 
+const packageJson = require("package.json")
+
 export const SettingsScreen = observer(function SettingsScreen() {
   return (
     <Screen style={ROOT} preset="scroll" unsafe>
@@ -25,6 +26,7 @@ export const SettingsScreen = observer(function SettingsScreen() {
       {auth().currentUser?.isAnonymous && <LoginConversion />}
       <LogoutButton />
       <BugReport />
+      <AppVersion />
     </Screen>
   )
 })
@@ -71,7 +73,7 @@ const LoginConversion = () => (
     </Text>
     <Text
       style={{ fontSize: 12 }}
-      text="Currently signed in as a guest. In order to save your bookmarks and history, link a social media authentication provider below"
+      text="Convert your guest account using a social media identity to save your bookmarks and preferences."
     />
     <GoogleSignInButton isAnonymousConversion />
     <FacebookSignInButton isAnonymousConversion />
@@ -83,14 +85,17 @@ const LOGIN_CONVERSION: ViewStyle = {
   width: "100%",
 }
 
-const BugReport = () => (
-  <Button
-    text="Bug Report"
-    style={BUG_REPORT_BUTTON}
-    textStyle={BUG_BUTTON_TEXT}
-    onPress={() => Linking.openURL(BUG_REPORT_EMAIL)}
-  />
-)
+const BugReport = () => {
+  const mail = `mailto:ko.dev.issues@gmail.com?subject=Punchline Bug Report AppID: ${packageJson.version} Env:${process.env.NODE_ENV}&body=App Version: ${packageJson.version}, ${process.env.NODE_ENV}\n\nPlease explain the issue you experienced.`
+  return (
+    <Button
+      text="Bug Report"
+      style={BUG_REPORT_BUTTON}
+      textStyle={BUG_BUTTON_TEXT}
+      onPress={() => Linking.openURL(mail)}
+    />
+  )
+}
 
 const BUG_REPORT_BUTTON: ViewStyle = {
   backgroundColor: "transparent",
@@ -100,4 +105,17 @@ const BUG_BUTTON_TEXT: TextStyle = {
   fontSize: 13,
   color: color.error,
   textAlign: "center",
+}
+
+const AppVersion = () => {
+  return (
+    <Text style={APP_VERSION}>
+      App Version: {packageJson.version}, {process.env.NODE_ENV}
+    </Text>
+  )
+}
+const APP_VERSION: TextStyle = {
+  textAlign: "center",
+  color: "grey",
+  fontSize: 12,
 }
