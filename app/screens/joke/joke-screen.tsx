@@ -27,8 +27,13 @@ export const JokeScreen = observer(function JokeScreen() {
   const topCard = React.useRef<SwipeHandler>(null)
 
   React.useEffect(() => {
-    store.fetchMoreJokes()
-  }, [])
+    /**
+     * This mostly works now in that it correctly chooses "Progress" joke as the top card joke
+     * but the react mapping isn't changing properly to reflect this
+     */
+    store.setDeepLinkJoke("Sm9rZQppNg==")
+    store.fetchInitialJokes(route.params?.jokeId)
+  }, [route.params?.jokeId])
 
   const onSwipe = React.useCallback(
     (joke: JokeModelType, rating: RatingValue, bookmarked: boolean) => {
@@ -60,6 +65,7 @@ export const JokeScreen = observer(function JokeScreen() {
     <>
       <SafeAreaView style={ROOT} testID="JokeScreen">
         <View style={HEADER}>
+          <Text>title: {store.topOfDeckJoke.title}</Text>
           <Text
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             text={store.topOfDeckJoke?.categories?.[0].name}
@@ -69,11 +75,11 @@ export const JokeScreen = observer(function JokeScreen() {
           <Text h2 text={store.topOfDeckJoke.title} bold style={CENTER_TEXT} />
         </View>
 
-        <View style={CARDS_CONTAINER}>
+        <View style={CARDS_CONTAINER} key={store.deepLinkJokeId}>
           {store.nonViewedJokes.map((joke) => {
             const onTop = joke.id === store.topOfDeckJoke.id
             const ref = onTop ? topCard : null
-            return <Swipeable ref={ref} key={joke.id} joke={joke} onTop={onTop} />
+            return <Swipeable key={joke.id} {...{ onTop, joke, ref }} />
           })}
         </View>
 
@@ -82,7 +88,7 @@ export const JokeScreen = observer(function JokeScreen() {
             likes={store.topOfDeckJoke.positiveRating ?? 0}
             dislikes={store.topOfDeckJoke.negativeRating ?? 0}
           />
-          <ShareIcons jokeId={route.params?.jokeId ?? ""} />
+          <ShareIcons jokeId={store.topOfDeckJoke.id} />
         </View>
 
         <Controls

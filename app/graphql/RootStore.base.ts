@@ -37,9 +37,9 @@ import { userErrorModelPrimitives, UserErrorModelSelector } from "./UserErrorMod
 import { nodeModelPrimitives, NodeModelSelector , NodeUnion } from "./"
 
 import { ApplyPolicy } from "./ApplyPolicyEnum"
+import { JokeLength } from "./JokeLengthEnum"
 import { RatingValue } from "./RatingValueEnum"
 import { SortEnumType } from "./SortEnumTypeEnum"
-import { JokeLength } from "./JokeLengthEnum"
 import { ErrorCodes } from "./ErrorCodesEnum"
 
 export type JokeFilterInput = {
@@ -54,6 +54,7 @@ export type JokeFilterInput = {
   userJokeHistories?: ListFilterInputTypeOfUserJokeHistoryFilterInput
   categories?: ListFilterInputTypeOfCategoryFilterInput
   users?: ListFilterInputTypeOfUserFilterInput
+  length?: JokeLengthOperationFilterInput
 }
 export type JokeSortInput = {
   id?: SortEnumType
@@ -62,6 +63,7 @@ export type JokeSortInput = {
   positiveRating?: SortEnumType
   negativeRating?: SortEnumType
   skipRating?: SortEnumType
+  length?: SortEnumType
 }
 export type CategoryFilterInput = {
   and?: CategoryFilterInput[]
@@ -138,6 +140,12 @@ export type ListFilterInputTypeOfUserFilterInput = {
   none?: UserFilterInput
   some?: UserFilterInput
   any?: boolean
+}
+export type JokeLengthOperationFilterInput = {
+  eq?: JokeLength
+  neq?: JokeLength
+  in?: JokeLength[]
+  nin?: JokeLength[]
 }
 export type ListFilterInputTypeOfJokeFilterInput = {
   all?: JokeFilterInput
@@ -246,8 +254,8 @@ export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
         ${typeof resultSelector === "function" ? resultSelector(new NodeModelSelector()).toString() : resultSelector}
       } }`, variables, options)
     },
-    queryJokes(variables: { first?: number, after?: string, last?: number, before?: string, jokeLength: JokeLength, blockedCategoryIds: string[], where?: JokeFilterInput, order?: JokeSortInput[] }, resultSelector: string | ((qb: JokeConnectionModelSelector) => JokeConnectionModelSelector) = jokeConnectionModelPrimitives.toString(), options: QueryOptions = {}) {
-      return self.query<{ jokes: JokeConnectionModelType}>(`query jokes($first: Int, $after: String, $last: Int, $before: String, $jokeLength: JokeLength!, $blockedCategoryIds: [ID!]!, $where: JokeFilterInput, $order: [JokeSortInput!]) { jokes(first: $first, after: $after, last: $last, before: $before, jokeLength: $jokeLength, blockedCategoryIds: $blockedCategoryIds, where: $where, order: $order) {
+    queryJokes(variables: { first?: number, after?: string, last?: number, before?: string, deepLinkedJokeId?: string, jokeLength: JokeLength, blockedCategoryIds: string[], where?: JokeFilterInput, order?: JokeSortInput[] }, resultSelector: string | ((qb: JokeConnectionModelSelector) => JokeConnectionModelSelector) = jokeConnectionModelPrimitives.toString(), options: QueryOptions = {}) {
+      return self.query<{ jokes: JokeConnectionModelType}>(`query jokes($first: Int, $after: String, $last: Int, $before: String, $deepLinkedJokeId: ID, $jokeLength: JokeLength!, $blockedCategoryIds: [ID!]!, $where: JokeFilterInput, $order: [JokeSortInput!]) { jokes(first: $first, after: $after, last: $last, before: $before, deepLinkedJokeId: $deepLinkedJokeId, jokeLength: $jokeLength, blockedCategoryIds: $blockedCategoryIds, where: $where, order: $order) {
         ${typeof resultSelector === "function" ? resultSelector(new JokeConnectionModelSelector()).toString() : resultSelector}
       } }`, variables, options)
     },
