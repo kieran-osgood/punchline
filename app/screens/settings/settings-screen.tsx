@@ -3,9 +3,10 @@ import { useStores } from "app/models"
 import { Logout } from "assets/images/logout"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { Linking, TextStyle, ViewStyle } from "react-native"
+import { Linking, TextStyle, View, ViewStyle } from "react-native"
 import { color, spacing } from "theme"
 import {
+  AppleSignInButton,
   Button,
   CategorySetting,
   CenterView,
@@ -25,8 +26,8 @@ export const SettingsScreen = observer(function SettingsScreen() {
       <CategorySetting />
       {auth().currentUser?.isAnonymous && <LoginConversion />}
       <LogoutButton />
-      <BugReport />
       <AppVersion />
+      <BugReport />
     </Screen>
   )
 })
@@ -75,14 +76,21 @@ const LoginConversion = () => (
       style={{ fontSize: 12 }}
       text="Convert your guest account using a social media identity to save your bookmarks and preferences."
     />
-    <GoogleSignInButton isAnonymousConversion />
-    <FacebookSignInButton isAnonymousConversion />
+    <View style={SOCIAL_BUTTONS}>
+      <GoogleSignInButton isAnonymousConversion />
+      <FacebookSignInButton isAnonymousConversion />
+      <AppleSignInButton isAnonymousConversion />
+    </View>
   </CenterView>
 )
 
 const LOGIN_CONVERSION: ViewStyle = {
   paddingBottom: spacing[4],
   width: "100%",
+}
+
+const SOCIAL_BUTTONS: ViewStyle = {
+  flexDirection: "row",
 }
 
 const BugReport = () => {
