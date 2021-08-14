@@ -4,6 +4,7 @@ import { RootStore } from "app/models"
 import { JokeLengths, VerticalCheckboxesProps } from "components"
 import { cast, getRoot, Instance, SnapshotOut, types } from "mobx-state-tree"
 import R from "ramda"
+import Toast from "react-native-toast-message"
 import { withEnvironment } from "../extensions/with-environment"
 import { UserDataKeys, UserModel } from "../user/user"
 
@@ -24,26 +25,25 @@ export const UserStoreModel = types
     get jokeLengthMax(): number {
       let largestJoke = 1
       self.jokeLengthPreferences.forEach((x, b) => {
-        if (x) {
-          switch (b) {
-            case JokeLength.LARGE:
-              largestJoke = largestJoke <= 3 ? 3 : largestJoke
-              break
-            case JokeLength.MEDIUM:
-              largestJoke = largestJoke <= 2 ? 2 : largestJoke
-              break
-            case JokeLength.SMALL:
-              largestJoke = largestJoke <= 1 ? 1 : largestJoke
-              break
-          }
+        if (!x) return
+
+        switch (b) {
+          case JokeLength.LARGE:
+            largestJoke = largestJoke <= 3 ? 3 : largestJoke
+            break
+          case JokeLength.MEDIUM:
+            largestJoke = largestJoke <= 2 ? 2 : largestJoke
+            break
+          case JokeLength.SMALL:
+            largestJoke = largestJoke <= 1 ? 1 : largestJoke
+            break
         }
       })
 
       return largestJoke
     },
     get jokeLengthMaxEnum(): JokeLength {
-      const b = this.jokeLengthMax
-      switch (b) {
+      switch (this.jokeLengthMax) {
         case 3:
           return JokeLength.LARGE
         case 2:
@@ -75,7 +75,12 @@ export const UserStoreModel = types
         [...self.jokeLengthPreferences.values()].reduce((a, b) => Number(a) + Number(b), 0) === 1
       if (oneJokeIsTrue && self.jokeLengthPreferences.get(value) === true) {
         // Ensure at least 1 joke is true
-        return
+        return Toast.show({
+          type: "error",
+          text1: "Woops!",
+          text2: "You must have at least (1) length selected.",
+          position: "bottom",
+        })
       }
       self.jokeLengthPreferences.set(value, isChecked ?? false)
     },

@@ -4,17 +4,18 @@
  * and a "main" flow (which is contained in your MainNavigator) which the user
  * will use once logged in.
  */
-import React from "react"
 import {
   LinkingOptions,
   NavigationContainer,
   NavigationContainerRef,
 } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
-import { mainExitRoutes, MainNavigator, MainRouteNames } from "app/navigators/main-navigator"
-import { authExitRoutes, AuthNavigator, AuthRouteNames } from "app/navigators/auth-navigator"
 import { useStores } from "app/models"
+import { authExitRoutes, AuthNavigator, AuthRouteNames } from "app/navigators/auth-navigator"
+import { mainExitRoutes, MainNavigator, MainRouteNames } from "app/navigators/main-navigator"
 import { observer } from "mobx-react-lite"
+import React from "react"
+import Toast from "react-native-toast-message"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -42,15 +43,9 @@ const RootStack = observer(function RootStack() {
       }}
     >
       {!userStore.user ? (
-        <Stack.Screen
-          name="AuthNavigator"
-          component={AuthNavigator}
-        />
+        <Stack.Screen name="AuthNavigator" component={AuthNavigator} />
       ) : (
-        <Stack.Screen
-          name="MainNavigator"
-          component={MainNavigator}
-        />
+        <Stack.Screen name="MainNavigator" component={MainNavigator} />
       )}
     </Stack.Navigator>
   )
@@ -63,6 +58,7 @@ export const RootNavigator = React.forwardRef<
   return (
     <NavigationContainer {...props} {...{ ref, linking }}>
       <RootStack />
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </NavigationContainer>
   )
 })
