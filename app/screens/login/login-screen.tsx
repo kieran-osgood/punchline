@@ -91,7 +91,7 @@ export const LoginScreen = observer(function LoginScreen() {
       <Text h1 text="Get Started" style={TEXT_CENTER} />
       <Text
         style={COPY}
-        text="Create an account to save your bookmarked joked permanently, or continue as a guest to get started right away!"
+        text="Create an account to save your bookmarked jokes permanently, or continue as a guest to get started right away!"
       />
       <CenterView style={BUTTONS_CONTAINER}>
         <View style={ROW}>

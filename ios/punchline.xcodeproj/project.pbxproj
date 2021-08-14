@@ -35,6 +35,8 @@
 		8D3D2E99D3814D73E5353ACB /* Pods-punchline-punchlineTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline-punchlineTests.debug.xcconfig"; path = "Target Support Files/Pods-punchline-punchlineTests/Pods-punchline-punchlineTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B1F37994A1DE4BDA88E588E2 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		E41867E42621B302004EC29E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E47821E526C7BCA100B8C710 /* punchlineDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = punchlineDebug.entitlements; path = punchline/punchlineDebug.entitlements; sourceTree = "<group>"; };
+		E47821E626C7BCAD00B8C710 /* punchlineRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = punchlineRelease.entitlements; path = punchline/punchlineRelease.entitlements; sourceTree = "<group>"; };
 		E4CB847126A3069900D5023F /* punchline-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "punchline-Bridging-Header.h"; sourceTree = "<group>"; };
 		E4CB847226A3069A00D5023F /* fbsdk-bridging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "fbsdk-bridging.swift"; sourceTree = "<group>"; };
 		E4CC6CE82623186A0035557C /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
@@ -58,6 +60,8 @@
 		13B07FAE1A68108700A75B9A /* punchline */ = {
 			isa = PBXGroup;
 			children = (
+				E47821E626C7BCAD00B8C710 /* punchlineRelease.entitlements */,
+				E47821E526C7BCA100B8C710 /* punchlineDebug.entitlements */,
 				E4CC6CE72623176A0035557C /* Fonts */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -398,6 +402,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = punchline/punchlineDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -426,7 +431,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_ENTITLEMENTS = punchline/punchlineRelease.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 2PP5ZVY8FD;
