@@ -8,6 +8,8 @@ import { TextStyle, ViewStyle } from "react-native"
 import { Button } from "react-native-elements"
 import { color, spacing } from "theme"
 
+const PROVIDER_NAME = "Google"
+
 export interface GoogleSignInButtonProps {
   /**
    * An optional style override useful for padding & margin.
@@ -15,8 +17,7 @@ export interface GoogleSignInButtonProps {
   style?: ViewStyle
   setIsLoading?: (val: boolean) => void
   isAnonymousConversion?: boolean
-  title?: string
-  onSuccess?: () => void
+  onSuccess?: (provider: string) => void
   onError?: () => void
 }
 
@@ -26,13 +27,7 @@ export interface GoogleSignInButtonProps {
 export const GoogleSignInButton = observer(function GoogleSigninButton(
   props: GoogleSignInButtonProps,
 ) {
-  const {
-    isAnonymousConversion = false,
-    title = "Log in with Google",
-    setIsLoading,
-    onSuccess,
-    onError,
-  } = props
+  const { isAnonymousConversion = false, setIsLoading, onSuccess, onError } = props
   const { userStore } = useStores()
 
   const handlePress = async () => {
@@ -56,11 +51,13 @@ export const GoogleSignInButton = observer(function GoogleSigninButton(
     if (idToken === null) onError?.()
 
     const credential = auth.GoogleAuthProvider.credential(idToken)
+    console.log("credential: ", credential)
     auth()
       .currentUser?.linkWithCredential(credential)
       .then((e) => {
+        console.log("e: ", e)
         userStore.updateUser(e.user)
-        onSuccess?.()
+        onSuccess?.(PROVIDER_NAME)
       })
       .catch(() => onError?.())
   }

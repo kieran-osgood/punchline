@@ -4,6 +4,7 @@ import { Logout } from "assets/images/logout"
 import { observer } from "mobx-react-lite"
 import React from "react"
 import { Linking, TextStyle, View, ViewStyle } from "react-native"
+import Toast from "react-native-toast-message"
 import { color, spacing } from "theme"
 import {
   AppleSignInButton,
@@ -67,22 +68,33 @@ const LOGOUT_BUTTON: TextStyle = {
   width: "25%",
 }
 
-const LoginConversion = () => (
-  <CenterView style={LOGIN_CONVERSION}>
-    <Text h3 bold>
-      Link Account
-    </Text>
-    <Text
-      style={{ fontSize: 12 }}
-      text="Convert your guest account using a social media identity to save your bookmarks and preferences."
-    />
-    <View style={SOCIAL_BUTTONS}>
-      <GoogleSignInButton isAnonymousConversion />
-      <FacebookSignInButton isAnonymousConversion />
-      <AppleSignInButton isAnonymousConversion />
-    </View>
-  </CenterView>
-)
+const LoginConversion = () => {
+  const onSuccess = (provider: string) => {
+    Toast.show({
+      type: "success",
+      text1: "Success!",
+      text2: `Next time you log in select the ${provider} login button.`,
+      position: "bottom",
+    })
+  }
+
+  return (
+    <CenterView style={LOGIN_CONVERSION}>
+      <Text h3 bold>
+        Link Account
+      </Text>
+      <Text
+        style={{ fontSize: 12 }}
+        text="Convert your guest account using a social media identity to save your bookmarks and preferences."
+      />
+      <View style={SOCIAL_BUTTONS}>
+        <GoogleSignInButton isAnonymousConversion {...{ onSuccess }} />
+        <FacebookSignInButton isAnonymousConversion {...{ onSuccess }} />
+        <AppleSignInButton isAnonymousConversion {...{ onSuccess }} />
+      </View>
+    </CenterView>
+  )
+}
 
 const LOGIN_CONVERSION: ViewStyle = {
   paddingBottom: spacing[4],
@@ -94,7 +106,7 @@ const SOCIAL_BUTTONS: ViewStyle = {
 }
 
 const BugReport = () => {
-  const mail = `mailto:ko.dev.issues@gmail.com?subject=Punchline Bug Report AppID: ${packageJson.version} Env:${process.env.NODE_ENV}&body=App Version: ${packageJson.version}, ${process.env.NODE_ENV}\n\nPlease explain the issue you experienced.`
+  const mail = `mailto:ko.dev.issues@gmail.com?subject=Punchline Bug Report AppID: ${packageJson.version} Env: ${process.env.NODE_ENV}&body=App Version: ${packageJson.version}, ${process.env.NODE_ENV}\n\nPlease explain the issue you experienced.`
   return (
     <Button
       text="Bug Report"

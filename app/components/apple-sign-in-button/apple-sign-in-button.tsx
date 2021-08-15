@@ -12,8 +12,7 @@ import "react-native-get-random-values"
 import { color, spacing } from "theme"
 import { v4 as uuid } from "uuid"
 
-// AdHocPunchline
-// 3S6A3587WD
+const PROVIDER_NAME = "Apple"
 
 export interface AppleSignInButtonProps {
   /**
@@ -23,7 +22,7 @@ export interface AppleSignInButtonProps {
   setIsLoading?: (val: boolean) => void
   isAnonymousConversion?: boolean
   title?: string
-  onSuccess?: () => void
+  onSuccess?: (provider: string) => void
   onError?: () => void
 }
 
@@ -50,7 +49,7 @@ export const AppleSignInButton = observer(function AppleSigninButton(
           : await signInWithAppleIOS()
       }
 
-      onSuccess?.()
+      onSuccess?.(PROVIDER_NAME)
     } catch (error) {
       console.log("error: ", error)
       onError?.()

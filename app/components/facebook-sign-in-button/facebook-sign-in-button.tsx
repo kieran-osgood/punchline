@@ -8,6 +8,8 @@ import { Button } from "react-native-elements"
 import { AccessToken, LoginManager } from "react-native-fbsdk-next"
 import { BUTTON_CONTAINER, BUTTON_ICON, BUTTON_TITLE, PILL_BUTTON } from ".."
 
+const PROVIDER_NAME = "Facebook"
+
 export interface FacebookSignInButtonProps {
   /**
    * An optional style override useful for padding & margin.
@@ -16,7 +18,7 @@ export interface FacebookSignInButtonProps {
   setIsLoading?: (val: boolean) => void
   isAnonymousConversion?: boolean
   title?: string
-  onSuccess?: () => void
+  onSuccess?: (provider: string) => void
   onError?: () => void
 }
 
@@ -26,34 +28,33 @@ export interface FacebookSignInButtonProps {
 export const FacebookSignInButton = observer(function FacebookSignInButton(
   props: FacebookSignInButtonProps,
 ) {
-  const {
-    style,
-    title = "Log in with Facebook",
-    isAnonymousConversion = false,
-    setIsLoading,
-  } = props
-
+  const { isAnonymousConversion = false, setIsLoading, onSuccess, onError } = props
   const { userStore } = useStores()
 
   async function onFacebookButtonPress() {
-    if (setIsLoading) setIsLoading(true)
-    // Attempt login with permissions
-    await LoginManager.logInWithPermissions(["public_profile", "email"])
-    // Once signed in, get the users AccessToken
-    const data = await AccessToken.getCurrentAccessToken()
+    setIsLoading?.(true)
+    try {
+      console.log("await: ")
+      // Attempt login with permissions
+      await LoginManager.logInWithPermissions(["public_profile", "email"])
+      // Once signed in, get the users AccessToken
+      const data = await AccessToken.getCurrentAccessToken()
 
-    if (!data) {
-      if (setIsLoading) setIsLoading(false)
-      return
-    }
+      if (!data) {
+        if (setIsLoading) setIsLoading(false)
+        return
+      }
 
-    // Create a Firebase credential with the AccessToken
-    const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken)
+      // Create a Firebase credential with the AccessToken
+      const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken)
 
-    if (isAnonymousConversion) {
-      convertFacebook(data.accessToken)
-    } else {
-      signInWithFacebook(facebookCredential)
+      if (isAnonymousConversion) {
+        convertFacebook(data.accessToken)
+      } else {
+        signInWithFacebook(facebookCredential)
+      }
+    } catch (error) {
+      onError?.()
     }
   }
 
@@ -71,14 +72,16 @@ export const FacebookSignInButton = observer(function FacebookSignInButton(
 
   const convertFacebook = (accessToken: string | null) => {
     const credential = auth.FacebookAuthProvider.credential(accessToken)
+    console.log("credential: ", credential)
     auth()
       .currentUser?.linkWithCredential(credential)
       .then(function () {
-        // successPopup()
+        console.log("PROVIDER_NAME: ", PROVIDER_NAME)
+        onSuccess?.(PROVIDER_NAME)
       })
       .catch(function () {
-        if (setIsLoading) setIsLoading(false)
-        // errorPopup()
+        setIsLoading?.(false)
+        onError?.()
         // crashlytics().log(`Error upgrading anonymous account ${error}`)
       })
   }
