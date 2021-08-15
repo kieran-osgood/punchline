@@ -1,9 +1,9 @@
+import { flatten, mergeAll } from "ramda"
 import * as React from "react"
 import { TouchableOpacity } from "react-native"
 import { Text } from "../text/text"
-import { viewPresets, textPresets } from "./button.presets"
+import { textPresets, viewPresets } from "./button.presets"
 import { ButtonProps } from "./button.props"
-import { mergeAll, flatten } from "ramda"
 
 /**
  * For your text displaying needs.
@@ -18,6 +18,7 @@ export function Button(props: ButtonProps) {
     style: styleOverride = {},
     textStyle: textStyleOverride = {},
     children,
+    caps,
     ...rest
   } = props
 
@@ -26,7 +27,7 @@ export function Button(props: ButtonProps) {
     flatten([textPresets[preset] || textPresets.primary, textStyleOverride]),
   )
 
-  const content = children || <Text text={text} style={textStyle} />
+  const content = children || <Text text={caps ? text?.toUpperCase() : text} style={textStyle} />
 
   return (
     <TouchableOpacity style={viewStyle} {...rest}>

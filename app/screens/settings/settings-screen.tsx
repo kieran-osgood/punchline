@@ -3,14 +3,14 @@ import { useStores } from "app/models"
 import { Logout } from "assets/images/logout"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { Linking, TextStyle, View, ViewStyle } from "react-native"
+import { Linking, Switch, TextStyle, View, ViewStyle } from "react-native"
+import { TouchableOpacity } from "react-native-gesture-handler"
 import Toast from "react-native-toast-message"
 import { color, spacing } from "theme"
 import {
   AppleSignInButton,
   Button,
   CategorySetting,
-  CenterView,
   FacebookSignInButton,
   GoogleSignInButton,
   JokeLengthSetting,
@@ -19,24 +19,86 @@ import {
 } from "../../components"
 
 const packageJson = require("package.json")
+const MARGINS = spacing[4]
 
 export const SettingsScreen = observer(function SettingsScreen() {
+  const [isEnabled, setIsEnabled] = React.useState(false)
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState)
+
   return (
     <Screen style={ROOT} preset="scroll" unsafe>
-      <JokeLengthSetting />
-      <CategorySetting />
-      {auth().currentUser?.isAnonymous && <LoginConversion />}
-      <LogoutButton />
+      <Text style={TITLE}>App Settings</Text>
+      <View style={SECTION}>
+        <JokeLengthSetting />
+        <CategorySetting />
+      </View>
+
+      {/* <Text>Profanity Filter</Text> */}
+      {/* <Text>Hidden Words</Text> */}
+
+      <Text style={TITLE}>Notifications</Text>
+      <View style={[SECTION, ROW]}>
+        <View>
+          <Text>Push Notifications</Text>
+        </View>
+        <Switch
+          trackColor={{ false: "#767577", true: color.primary }}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleSwitch}
+          value={isEnabled}
+        />
+      </View>
+
+      <Text style={TITLE}>Account</Text>
+      <View style={SECTION}>
+        <Link>Privacy Policy</Link>
+        <Link>Terms of Service</Link>
+        <Link>Data Policy</Link>
+        <Link>Clear Cache Data</Link>
+      </View>
+
+      <View style={SECTION}>
+        {auth().currentUser?.isAnonymous && <LoginConversion />}
+        <LogoutButton />
+        <BugReport />
+      </View>
       <AppVersion />
-      <BugReport />
     </Screen>
   )
 })
 
+const Link = ({ children }) => {
+  return (
+    <TouchableOpacity
+      style={{
+        paddingVertical: spacing[3],
+        borderBottomColor: color.background,
+        borderBottomWidth: 1,
+      }}
+    >
+      <Text>{children}</Text>
+    </TouchableOpacity>
+  )
+}
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
-  paddingHorizontal: spacing[4],
   paddingBottom: spacing[5],
+}
+const TITLE: TextStyle = {
+  paddingVertical: spacing[3],
+  fontWeight: "500",
+  paddingHorizontal: MARGINS,
+}
+const ROW: ViewStyle = {
+  flexDirection: "row",
+  width: "100%",
+  justifyContent: "space-between",
+  alignItems: "center",
+  paddingVertical: spacing[2],
+}
+const SECTION: ViewStyle = {
+  backgroundColor: "white",
+  paddingHorizontal: MARGINS,
 }
 
 const LogoutButton = () => {
@@ -79,8 +141,8 @@ const LoginConversion = () => {
   }
 
   return (
-    <CenterView style={LOGIN_CONVERSION}>
-      <Text h3 bold>
+    <View style={LOGIN_CONVERSION}>
+      <Text h4 bold>
         Link Account
       </Text>
       <Text
@@ -92,7 +154,7 @@ const LoginConversion = () => {
         <FacebookSignInButton isAnonymousConversion {...{ onSuccess }} />
         <AppleSignInButton isAnonymousConversion {...{ onSuccess }} />
       </View>
-    </CenterView>
+    </View>
   )
 }
 

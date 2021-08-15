@@ -23,7 +23,8 @@ export const color = {
   /**
    * The screen background.
    */
-  background: palette.background,
+  background: "hsl(220, 23.1%, 97.5%)",
+  // background: palette.background,
   /**
    * The main tinting color.
    */

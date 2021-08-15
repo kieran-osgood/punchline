@@ -30,7 +30,7 @@ export const JokeLengthSetting = observer(function JokeLengthSetting(
 
   return (
     <View style={[CONTAINER, style]}>
-      <Text h2 bold text="Joke Length" style={TITLE} />
+      <Text h4 bold text="Joke Length" style={TITLE} />
       <View style={ROW}>
         <JokePreview selected={userStore.jokeLengthMax} />
         <VerticalCheckboxes
@@ -47,6 +47,7 @@ export const JokeLengthSetting = observer(function JokeLengthSetting(
 
 const CONTAINER: ViewStyle = {
   justifyContent: "center",
+  paddingTop: spacing[3],
 }
 const ROW: ViewStyle = {
   flexDirection: "row",
@@ -61,14 +62,14 @@ type JokePreviewProps = {
 export const JokePreview = (props: JokePreviewProps) => {
   const { selected } = props
 
-  const colors = [color.palette.blue, color.palette.green, color.palette.angry]
+  const colors = [color.primary, "#6570DC", color.primary]
   return (
     <MotiView
-      transition={{ type: "spring" }}
+      transition={{ type: "timing" }}
       style={[PREVIEW, CARD_SHADOW]}
       animate={{ backgroundColor: "#fff" }}
     >
-      <Skeleton {...{ colors, colorMode, transition }} height={25} width={"70%"} />
+      <Skeleton {...{ colors, colorMode, transition }} height={20} width={"70%"} />
       <Spacer />
       {[...Array(selected).keys()].map((select) => (
         <React.Fragment key={select}>

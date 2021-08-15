@@ -31,7 +31,7 @@ export const CategorySetting = observer(function CategorySetting(props: Category
 
   return (
     <View style={[CONTAINER, style]}>
-      <Text h3 bold text="Category Filter" />
+      <Text h4 bold text="Category Filter" />
       <Text>
         <Text text="Select categories you " />
         <Text bold text="don't " />
