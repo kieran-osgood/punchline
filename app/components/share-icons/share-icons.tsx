@@ -1,7 +1,8 @@
-import * as React from "react"
-import { Share, Linking, TouchableOpacity, View, ViewStyle, StyleProp } from "react-native"
+import { Facebook, Share as ShareIcon, Twitter } from "images"
 import { observer } from "mobx-react-lite"
-import { Facebook, Twitter, Share as ShareIcon } from "images"
+import * as React from "react"
+import { StyleProp, TouchableOpacity, View, ViewStyle } from "react-native"
+import Share from "react-native-share"
 import { spacing } from "theme"
 
 export interface ShareIconsProps {
@@ -20,12 +21,12 @@ export const ShareIcons = observer(function ShareIcons(props: ShareIconsProps) {
 
   return (
     <View style={[CONTAINER, style]}>
-      {/* <Link {...{ jokeId }}>
+      <Link {...{ jokeId }} type="facebook">
         <Facebook />
       </Link>
-      <Link {...{ jokeId }}>
+      <Link {...{ jokeId }} type="twitter">
         <Twitter />
-      </Link> */}
+      </Link>
       <Link {...{ jokeId }}>
         <ShareIcon scale={1.1} />
       </Link>
@@ -39,31 +40,50 @@ const CONTAINER: ViewStyle = {
   alignItems: "center",
 }
 
+export function assertNever<T>(_value: never): T {
+  return _value
+}
+
 type LinkProps = {
   jokeId: string
   children: React.ReactNode
   style?: StyleProp<ViewStyle>
+  type?: Type
 }
 
-export const Link = ({ jokeId, children, style = {} }: LinkProps) => {
+type Type = "facebook" | "twitter" | "default"
+
+export const Link = ({ jokeId, children, style = {}, type = "default" }: LinkProps) => {
   const onPress = async () => {
-    try {
-      const result = await Share.share({
-        title: "Take a look at this joke!",
-        message: `https://punch-line.co.uk/jokes/${jokeId}`,
+    Share.shareSingle({
+      title: "Share via",
+      message: "some message",
+      url: "some share url",
+      social: Share.Social.FACEBOOK,
+    })
+      .then((res) => {
+        console.log({ res })
       })
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
-    } catch (error) {
-      // alert(error.message);
-    }
+      .catch((err) => {
+        err && console.log(err)
+      })
+    // try {
+    //   const result = await Share.share({
+    //     title: "Take a look at this joke!",
+    //     message: `/${jokeId}`,
+    //   })
+    //   if (result.action === Share.sharedAction) {
+    //     if (result.activityType) {
+    //       // shared with activity type of result.activityType
+    //     } else {
+    //       // shared
+    //     }
+    //   } else if (result.action === Share.dismissedAction) {
+    //     // dismissed
+    //   }
+    // } catch (error) {
+    //   // alert(error.message);
+    // }
   }
 
   return (
