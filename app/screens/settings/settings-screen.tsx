@@ -4,12 +4,11 @@ import { Logout } from "assets/images/logout"
 import { observer } from "mobx-react-lite"
 import React from "react"
 import { Linking, Switch, TextStyle, View, ViewStyle } from "react-native"
-import { TouchableOpacity } from "react-native-gesture-handler"
 import Toast from "react-native-toast-message"
+import { Button } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 import {
   AppleSignInButton,
-  Button,
   CategorySetting,
   FacebookSignInButton,
   GoogleSignInButton,
@@ -67,18 +66,14 @@ export const SettingsScreen = observer(function SettingsScreen() {
   )
 })
 
-const Link = ({ children }) => {
-  return (
-    <TouchableOpacity
-      style={{
-        paddingVertical: spacing[3],
-        borderBottomColor: color.background,
-        borderBottomWidth: 1,
-      }}
-    >
-      <Text>{children}</Text>
-    </TouchableOpacity>
-  )
+const Link = ({ children }: { children: string }) => {
+  return <Button link style={LINK} label={children} />
+}
+
+const LINK: ViewStyle = {
+  paddingVertical: spacing[3],
+  borderBottomColor: color.background,
+  borderBottomWidth: 1,
 }
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
@@ -105,14 +100,12 @@ const LogoutButton = () => {
   const { resetStores } = useStores()
   return (
     <Button
-      text="Bug Report"
+      label="Logout"
       style={LOGOUT_BUTTON_CONTAINER}
-      textStyle={LOGOUT_BUTTON}
-      onPress={() => resetStores()}
-    >
-      <Logout scale={1} />
-      <Text text="Logout" style={LOGOUT_BUTTON} />
-    </Button>
+      labelStyle={LOGOUT_BUTTON}
+      onPress={resetStores}
+      iconSource={() => <Logout scale={1} />}
+    />
   )
 }
 

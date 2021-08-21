@@ -1,4 +1,4 @@
-import JokeCard, { α } from "app/components/joke-card/joke-card"
+import JokeCard, { α } from "app/components/joke/joke-card/joke-card"
 import { JokeModelType } from "app/graphql"
 import React, { forwardRef, Ref, useImperativeHandle } from "react"
 import { Dimensions, StyleSheet, View } from "react-native"

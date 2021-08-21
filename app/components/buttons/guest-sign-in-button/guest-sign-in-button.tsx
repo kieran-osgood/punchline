@@ -2,7 +2,7 @@ import auth from "@react-native-firebase/auth"
 import { useStores } from "app/models"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { Button } from "react-native-elements"
+import { Button } from "react-native-ui-lib"
 
 export interface GuestSignInButtonProps {}
 

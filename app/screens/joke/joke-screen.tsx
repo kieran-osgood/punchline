@@ -3,19 +3,12 @@ import Swipeable from "app/components/swipeable/swipeable"
 import { JokeModelType, RatingValue, useQuery } from "app/graphql"
 import { NavigationProps } from "app/navigators/main-navigator"
 import Skip from "assets/images/skip"
-import {
-  AdBanner,
-  BookmarkButton,
-  CircularButton,
-  Ratings,
-  ShareIcons,
-  SwipeHandler,
-  Text,
-} from "components"
+import { AdBanner, BookmarkButton, Ratings, ShareIcons, SwipeHandler, Text } from "components"
 import { CryingEmoji, LaughingEmoji } from "images"
 import { observer } from "mobx-react-lite"
 import React from "react"
 import { SafeAreaView, TextStyle, View, ViewStyle } from "react-native"
+import { Button } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
 const PAGE_GUTTERS = 15
@@ -65,7 +58,7 @@ export const JokeScreen = observer(function JokeScreen() {
     <>
       <SafeAreaView style={ROOT} testID="JokeScreen">
         <View style={HEADER}>
-          <Text>title: {store.topOfDeckJoke.title}</Text>
+          {/* <Text>title: {store.topOfDeckJoke.title}</Text> */}
           <Text
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             text={store.topOfDeckJoke?.categories?.[0].name}
@@ -152,23 +145,23 @@ export const Controls = (props: ButtonsProps) => {
   const { bookmarked, handleBookmarkPress, handleDownVote, handleUpVote, handleSkipPress } = props
   return (
     <View style={BUTTONS}>
-      <CircularButton style={DISLIKE} onPress={handleDownVote} activeOpacity={0.7}>
+      <Button style={DISLIKE} round onPress={handleDownVote} activeOpacity={0.7}>
         <CryingEmoji />
-      </CircularButton>
+      </Button>
 
       <View style={SECONDARY_ACTION_BUTTONS}>
-        <CircularButton size="small" onPress={handleBookmarkPress} activeOpacity={0.7}>
+        <Button size={Button.sizes.small} round onPress={handleBookmarkPress} activeOpacity={0.7}>
           <BookmarkButton {...{ bookmarked }} />
-        </CircularButton>
+        </Button>
 
-        <CircularButton size="small" onPress={handleSkipPress} activeOpacity={0.7}>
+        <Button size={Button.sizes.small} round onPress={handleSkipPress} activeOpacity={0.7}>
           <Skip />
-        </CircularButton>
+        </Button>
       </View>
 
-      <CircularButton onPress={handleUpVote} activeOpacity={0.7}>
+      <Button round onPress={handleUpVote} activeOpacity={0.7}>
         <LaughingEmoji />
-      </CircularButton>
+      </Button>
     </View>
   )
 }

@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
-import { Story, StoryScreen, UseCase } from "../../../storybook/views"
-import { color } from "../../theme"
+import { Story, StoryScreen, UseCase } from "../../../../../storybook/views"
+import { color } from "../../../../theme"
 import { FacebookSignInButton } from "./facebook-sign-in-button"
 
 storiesOf("FacebookSigninButton", module)

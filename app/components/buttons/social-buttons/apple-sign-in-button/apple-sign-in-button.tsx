@@ -1,15 +1,14 @@
 // import { GoogleSignin } from "@react-native-community/google-signin"
 import { appleAuth, appleAuthAndroid } from "@invertase/react-native-apple-authentication"
 import auth from "@react-native-firebase/auth"
+import { ICON_BUTTON } from "app/components/buttons/social-buttons"
 import { useStores } from "app/models"
 import { Apple } from "assets/images/apple"
-import { BUTTON_ICON } from "components"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { Platform, TextStyle, ViewStyle } from "react-native"
-import { Button } from "react-native-elements"
+import { Platform, ViewStyle } from "react-native"
 import "react-native-get-random-values"
-import { color, spacing } from "theme"
+import { Button } from "react-native-ui-lib"
 import { v4 as uuid } from "uuid"
 
 const PROVIDER_NAME = "Apple"
@@ -159,33 +158,12 @@ export const AppleSignInButton = observer(function AppleSigninButton(
     <>
       {(Platform.OS === "ios" || appleAuthAndroid.isSupported) && (
         <Button
-          // title={title}
-          buttonStyle={PILL_BUTTON}
-          titleStyle={BUTTON_TITLE}
-          containerStyle={BUTTON_CONTAINER}
-          raised
-          icon={<Apple style={BUTTON_ICON} scale={0.01} />}
+          style={ICON_BUTTON}
+          iconSource={() => <Apple scale={0.01} />}
           onPress={handlePress}
+          round
         />
       )}
     </>
   )
 })
-
-const BUTTON_TITLE: TextStyle = {
-  fontSize: 18,
-  fontWeight: "bold",
-  color: color.text,
-  textAlign: "left",
-}
-
-const PILL_BUTTON: ViewStyle = {
-  borderRadius: 100,
-  paddingVertical: spacing[4],
-  paddingHorizontal: spacing[4],
-  backgroundColor: color.palette.white,
-}
-
-const BUTTON_CONTAINER: ViewStyle = {
-  borderRadius: 75,
-}

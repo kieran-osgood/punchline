@@ -1,12 +1,12 @@
 import { GoogleSignin } from "@react-native-community/google-signin"
 import auth from "@react-native-firebase/auth"
+import { ICON_BUTTON } from "app/components/buttons/social-buttons"
 import { useStores } from "app/models"
 import { Google as GoogleIcon } from "assets/images"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { TextStyle, ViewStyle } from "react-native"
-import { Button } from "react-native-elements"
-import { color, spacing } from "theme"
+import { ViewStyle } from "react-native"
+import { Button } from "react-native-ui-lib"
 
 const PROVIDER_NAME = "Google"
 
@@ -24,7 +24,7 @@ export interface GoogleSignInButtonProps {
 /**
  * Google Sign in button
  */
-export const GoogleSignInButton = observer(function GoogleSigninButton(
+export const GoogleSignInButton = observer(function GoogleSignInButton(
   props: GoogleSignInButtonProps,
 ) {
   const { isAnonymousConversion = false, setIsLoading, onSuccess, onError } = props
@@ -51,7 +51,9 @@ export const GoogleSignInButton = observer(function GoogleSigninButton(
     if (idToken === null) onError?.()
 
     const credential = auth.GoogleAuthProvider.credential(idToken)
+
     console.log("credential: ", credential)
+
     auth()
       .currentUser?.linkWithCredential(credential)
       .then((e) => {
@@ -64,33 +66,11 @@ export const GoogleSignInButton = observer(function GoogleSigninButton(
 
   return (
     <Button
-      // title={title}
-      buttonStyle={PILL_BUTTON}
-      titleStyle={BUTTON_TITLE}
-      containerStyle={BUTTON_CONTAINER}
-      raised
-      icon={<GoogleIcon style={BUTTON_ICON} scale={1.2} />}
+      style={ICON_BUTTON}
+      iconSource={() => <GoogleIcon scale={1.2} />}
       onPress={() => handlePress()}
+      round
+      size={Button.sizes.large}
     />
   )
 })
-
-export const BUTTON_ICON: ViewStyle = {}
-
-export const BUTTON_TITLE: TextStyle = {
-  fontSize: 18,
-  fontWeight: "bold",
-  color: color.text,
-  textAlign: "left",
-}
-
-export const PILL_BUTTON: ViewStyle = {
-  borderRadius: 100,
-  paddingVertical: spacing[4],
-  paddingHorizontal: spacing[4],
-  backgroundColor: color.palette.white,
-}
-
-export const BUTTON_CONTAINER: ViewStyle = {
-  borderRadius: 75,
-}

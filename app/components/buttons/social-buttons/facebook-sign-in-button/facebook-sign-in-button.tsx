@@ -1,12 +1,12 @@
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import { ICON_BUTTON } from "app/components/buttons/social-buttons"
 import { useStores } from "app/models"
 import { Facebook } from "images"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { ViewStyle } from "react-native"
-import { Button } from "react-native-elements"
 import { AccessToken, LoginManager } from "react-native-fbsdk-next"
-import { BUTTON_CONTAINER, BUTTON_ICON, BUTTON_TITLE, PILL_BUTTON } from ".."
+import { Button } from "react-native-ui-lib"
 
 const PROVIDER_NAME = "Facebook"
 
@@ -88,12 +88,10 @@ export const FacebookSignInButton = observer(function FacebookSignInButton(
 
   return (
     <Button
-      buttonStyle={PILL_BUTTON}
-      titleStyle={BUTTON_TITLE}
-      containerStyle={BUTTON_CONTAINER}
-      raised
-      icon={<Facebook style={BUTTON_ICON} />}
+      style={ICON_BUTTON}
+      iconSource={() => <Facebook />}
       onPress={() => onFacebookButtonPress()}
+      round
     />
   )
 })

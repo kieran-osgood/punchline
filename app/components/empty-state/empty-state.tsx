@@ -1,7 +1,8 @@
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { Image, ImageStyle, TextStyle, View, ViewStyle } from "react-native"
-import { Button, Text } from "../"
+import { Button } from "react-native-ui-lib"
+import { Text } from "../"
 import { spacing } from "../../theme"
 
 export interface EmptyStateProps {
@@ -27,12 +28,13 @@ export const EmptyState = observer(function EmptyState(props: EmptyStateProps) {
       <Image source={{ uri }} style={IMAGE} />
       <Text h4 bold style={NOTE} text={title} />
       <Text style={NOTE} text={body} />
-      <Button text={ctaText} style={CTA} textStyle={CTA_TEXT} {...{ onPress }} />
+      <Button label={ctaText} style={CTA} labelStyle={CTA_TEXT} {...{ onPress }} />
     </View>
   )
 })
 
 const GAP = spacing[5]
+
 const CONTAINER: ViewStyle = {
   alignItems: "center",
   flex: 0.75,
@@ -43,15 +45,18 @@ const NOTE: TextStyle = {
   marginTop: GAP,
   textAlign: "center",
 }
+
 const CTA: ViewStyle = {
   borderRadius: 8,
   paddingHorizontal: spacing[6],
   paddingVertical: spacing[3],
   marginTop: GAP,
 }
+
 const CTA_TEXT: TextStyle = {
   fontSize: 16,
 }
+
 const IMAGE: ImageStyle = {
   width: 150,
   height: 150,
