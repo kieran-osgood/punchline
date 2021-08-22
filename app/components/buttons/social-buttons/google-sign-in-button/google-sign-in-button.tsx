@@ -67,10 +67,11 @@ export const GoogleSignInButton = observer(function GoogleSignInButton(
   return (
     <Button
       style={ICON_BUTTON}
-      iconSource={() => <GoogleIcon scale={1.2} />}
+      iconSource={() => <GoogleIcon scale={1.6} />}
       onPress={() => handlePress()}
       round
       size={Button.sizes.large}
+      enableShadow
     />
   )
 })

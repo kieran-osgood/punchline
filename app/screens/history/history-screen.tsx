@@ -34,6 +34,7 @@ export const HistoryScreen = observer(function HistoryScreen() {
   const hasData =
     typeof data?.userJokeHistoryByUserId !== "undefined" &&
     data.userJokeHistoryByUserId.nodes.length > 0
+
   return (
     <Screen style={ROOT} preset="fixed" unsafe>
       {hasData ? (
@@ -79,10 +80,10 @@ const ListItem = ({ userJokeHistory }: { userJokeHistory: UserJokeHistoryType })
         <Button
           label={userJokeHistory.joke.title}
           onPress={() => setCollapsed(!collapsed)}
-          style={EXPANSION_BUTTON_CONTAINER}
+          // style={EXPANSION_BUTTON_CONTAINER}
           // buttonStyle={EXPANSION_BUTTON}
-          textStyle={COLLAPSIBLE_BUTTON}
-          preset="link"
+          // textStyle={COLLAPSIBLE_BUTTON}
+          // preset="link"
         />
         <View style={BOOKMARK_BUTTON_CONTAINER}>
           <BookmarkButton {...{ bookmarked, onPress }} />
@@ -90,7 +91,7 @@ const ListItem = ({ userJokeHistory }: { userJokeHistory: UserJokeHistoryType })
       </View>
       <Collapsible style={COLLAPSIBLE} {...{ collapsed }}>
         <View style={EXPANDED_VIEW}>
-          <Text text="" />
+          {/* <Text text="" /> */}
           <Text text={userJokeHistory.joke.body} />
         </View>
       </Collapsible>

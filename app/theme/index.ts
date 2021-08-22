@@ -1,15 +1,24 @@
-// import { ThemeManager } from "react-native-ui-lib"
+import { Platform, TextStyle } from "react-native"
+import { ThemeManager } from "react-native-ui-lib"
 
-// ThemeManager.setComponentTheme("Text", {
-//   text70: true, // will set the text70 typography modifier prop to be true by default
-//   dark10: true, // will set the dark10 color modifier prop to be true by default
-// })
+const fontFamily = (bold: boolean): TextStyle => ({
+  fontFamily: Platform.select({
+    ios: !bold ? "Montserrat" : "Montserrat-Bold", // The font family name
+    android: !bold ? "Montserrat-Regular" : "Montserrat-Bold", // The file name
+  }),
+})
+
+ThemeManager.setComponentTheme("Text", (props, context) => {
+  return {
+    style: [fontFamily(props.bold), props.style],
+  }
+})
 
 // ThemeManager.setComponentTheme("Button", (props, context) => {
 //   return {
-//     // this will apply a different backgroundColor
-//     // depends if the Button is an outline or not
-//     //     backgroundColor: props.outline ? "black" : "green",
+// this will apply a different backgroundColor
+// depends if the Button is an outline or not
+//     backgroundColor: props.outline ? "black" : "green",
 //   }
 // })
 

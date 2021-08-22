@@ -92,6 +92,7 @@ export const FacebookSignInButton = observer(function FacebookSignInButton(
       iconSource={() => <Facebook />}
       onPress={() => onFacebookButtonPress()}
       round
+      enableShadow
     />
   )
 })

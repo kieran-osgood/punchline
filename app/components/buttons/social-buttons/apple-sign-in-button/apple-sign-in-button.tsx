@@ -162,6 +162,7 @@ export const AppleSignInButton = observer(function AppleSigninButton(
           iconSource={() => <Apple scale={0.01} />}
           onPress={handlePress}
           round
+          enableShadow
         />
       )}
     </>
