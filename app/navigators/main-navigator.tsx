@@ -12,7 +12,7 @@ import { useStores } from "app/models"
 import { Header } from "components"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { JokeScreen, OnboardingScreen, SettingsScreen, UserProfileScreen } from "../screens"
+import { JokeScreen, OnboardingScreen, SettingsStack, UserProfileScreen } from "../screens"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -30,10 +30,10 @@ export type RouteParamList = {
   JokeScreen?: {
     jokeId?: string
   }
-  SettingsScreen: undefined
   LoginScreen: undefined
   UserProfileScreen: undefined
   OnboardingScreen: undefined
+  SettingsStack: undefined
 }
 
 export type NavigationProps<T extends keyof RouteParamList> = {
@@ -45,8 +45,6 @@ const Stack = createStackNavigator<RouteParamList>()
 
 export const MainNavigator = observer(function MainNavigator() {
   const store = useStores()
-  //  const store = useStores()
-  //  store.userStore.user.onboardingComplete
   return (
     <Stack.Navigator initialRouteName="JokeScreen" headerMode="screen">
       {!store.userStore.onboardingComplete ? (
@@ -78,10 +76,10 @@ export const MainNavigator = observer(function MainNavigator() {
             }}
           />
           <Stack.Screen
-            name="SettingsScreen"
-            component={SettingsScreen}
+            name="SettingsStack"
+            component={SettingsStack}
             options={{
-              header: ({ navigation }) => <Header {...{ navigation }} left="back" />,
+              header: () => null,
             }}
           />
         </>

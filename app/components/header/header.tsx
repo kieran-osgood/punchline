@@ -39,7 +39,7 @@ export const Header = observer(function Header({ navigation, left, right }: Head
 
       <View style={COL}>
         {right === "settings" && (
-          <TouchableOpacity style={SETTINGS} onPress={() => navigation.navigate("SettingsScreen")}>
+          <TouchableOpacity style={SETTINGS} onPress={() => navigation.navigate("SettingsStack")}>
             <SettingsIcon />
           </TouchableOpacity>
         )}

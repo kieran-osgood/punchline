@@ -1,7 +1,7 @@
 import auth from "@react-native-firebase/auth"
 import { useNavigation } from "@react-navigation/core"
 import { useStores } from "app/models"
-import { NavigationProps } from "app/navigators"
+import { SettingsStackProps } from "app/screens"
 import { Logout } from "assets/images/logout"
 import { observer } from "mobx-react-lite"
 import React from "react"
@@ -15,24 +15,24 @@ import {
   FacebookSignInButton,
   GoogleSignInButton,
   Screen,
-} from "../../components"
+} from "../../../components"
 
 const packageJson = require("package.json")
 const MARGINS = spacing[4]
 
-export const SettingsScreen = observer(function SettingsScreen() {
+export const MainSettingsScreen = observer(function MainSettingsScreen() {
   const [isEnabled, setIsEnabled] = React.useState(false)
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState)
-  const navigation = useNavigation<NavigationProps<"SettingsScreen">["navigation"]>()
+  const navigation = useNavigation<SettingsStackProps<"Main">["navigation"]>()
 
   return (
     <Screen style={ROOT} preset="scroll" unsafe>
       <Section title="App Settings">
-        <Divider row arrow onPress={() => navigation.navigate("")}>
+        <Divider row arrow onPress={() => navigation.navigate("JokeLength")}>
           <Text text80BO>Joke Length</Text>
         </Divider>
 
-        <Divider row arrow onPress={() => navigation.navigate("")}>
+        <Divider row arrow onPress={() => navigation.navigate("Category")}>
           <Text text80BO>Blocked Categories</Text>
         </Divider>
 
