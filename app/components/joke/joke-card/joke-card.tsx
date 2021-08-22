@@ -1,16 +1,15 @@
 /* eslint-disable react-native/no-unused-styles */
 /* eslint-disable react-native/no-color-literals */
-// @flow
 import { JokeModelType } from "app/graphql"
-import { Text } from "components"
 import * as React from "react"
-import { Dimensions, ScrollView, StyleSheet, TextStyle, View, ViewStyle } from "react-native"
+import { Dimensions, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
 import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
   useDerivedValue,
 } from "react-native-reanimated"
+import { Text } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
 const { width } = Dimensions.get("window")
@@ -44,17 +43,15 @@ const JokeCard = ({ joke, translateX, translateY, onTop, scale }: CardProps) => 
   }))
 
   const color = React.useMemo(() => randomColor(), [])
-  onTop && console.log(body)
+  // onTop && console.log(body)
   return (
     <Animated.View style={[StyleSheet.absoluteFill, container]}>
       <View style={styles.overlay}>
         <View style={[CONTAINER, { backgroundColor: color.background }]}>
-          <ScrollView
-            style={INNER}
-            showsVerticalScrollIndicator
-            contentContainerStyle={INNER_CONTENT_CONTAINER}
-          >
-            <Text style={{ ...TEXT, ...{ color: color.text } }} bold text={body} />
+          <ScrollView showsVerticalScrollIndicator>
+            <Text text60BO color={color.text}>
+              {body}
+            </Text>
           </ScrollView>
         </View>
       </View>
@@ -139,17 +136,4 @@ const CONTAINER: ViewStyle = {
   flex: 1,
   position: "relative",
   ...CARD_SHADOW,
-}
-
-const TEXT: TextStyle = {
-  fontSize: 18,
-}
-
-const INNER: ViewStyle = {
-  flexDirection: "row",
-}
-
-const INNER_CONTENT_CONTAINER: ViewStyle = {
-  flexShrink: 1,
-  flexDirection: "row",
 }

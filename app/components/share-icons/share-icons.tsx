@@ -1,9 +1,9 @@
 import { Facebook, Share as ShareIcon, Twitter } from "images"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { StyleProp, TouchableOpacity, View, ViewStyle } from "react-native"
+import { StyleProp, ViewStyle } from "react-native"
 import Share from "react-native-share"
-import { spacing } from "theme"
+import { TouchableOpacity, View } from "react-native-ui-lib"
 
 export interface ShareIconsProps {
   /**
@@ -20,7 +20,7 @@ export const ShareIcons = observer(function ShareIcons(props: ShareIconsProps) {
   const { jokeId, style } = props
 
   return (
-    <View style={[CONTAINER, style]}>
+    <View style={style} row center>
       <Link {...{ jokeId }} type="facebook">
         <Facebook />
       </Link>
@@ -33,12 +33,6 @@ export const ShareIcons = observer(function ShareIcons(props: ShareIconsProps) {
     </View>
   )
 })
-
-const CONTAINER: ViewStyle = {
-  flexDirection: "row",
-  justifyContent: "center",
-  alignItems: "center",
-}
 
 export function assertNever<T>(_value: never): T {
   return _value
@@ -87,14 +81,10 @@ export const Link = ({ jokeId, children, style = {}, type = "default" }: LinkPro
   }
 
   return (
-    <TouchableOpacity {...{ onPress }} style={[LINK, style]}>
+    <TouchableOpacity {...{ onPress }} style={style} padding-s2>
       {children}
     </TouchableOpacity>
   )
 }
 
 export default Link
-
-const LINK: ViewStyle = {
-  padding: spacing[1],
-}

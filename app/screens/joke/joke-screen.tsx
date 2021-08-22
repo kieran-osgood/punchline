@@ -113,6 +113,7 @@ const HEADER: ViewStyle = {
 
 const CARDS_CONTAINER: ViewStyle = {
   flex: 1,
+  // height: "100%",
   marginHorizontal: 16,
   zIndex: 100,
 }
@@ -131,7 +132,7 @@ const JOKE_INFO: ViewStyle = {
   width: "100%",
   justifyContent: "space-between",
   paddingHorizontal: PAGE_GUTTERS * 1.35,
-  maxHeight: 25,
+  maxHeight: 35,
 }
 
 type ButtonsProps = {
@@ -145,23 +146,40 @@ export const Controls = (props: ButtonsProps) => {
   const { bookmarked, handleBookmarkPress, handleDownVote, handleUpVote, handleSkipPress } = props
   return (
     <View style={BUTTONS}>
-      <Button style={DISLIKE} round onPress={handleDownVote} activeOpacity={0.7}>
-        <CryingEmoji />
-      </Button>
+      <Button
+        style={[ACTION_BUTTON, { padding: spacing[4] }]}
+        iconStyle={{ padding: spacing[4] }}
+        round
+        onPress={handleDownVote}
+        activeOpacity={0.7}
+        iconSource={() => <CryingEmoji scale={1.1} />}
+      />
 
       <View style={SECONDARY_ACTION_BUTTONS}>
-        <Button size={Button.sizes.small} round onPress={handleBookmarkPress} activeOpacity={0.7}>
-          <BookmarkButton {...{ bookmarked }} />
-        </Button>
+        <Button
+          style={ACTION_BUTTON}
+          round
+          onPress={handleBookmarkPress}
+          activeOpacity={0.7}
+          iconSource={() => <BookmarkButton {...{ bookmarked }} size={28} />}
+        />
 
-        <Button size={Button.sizes.small} round onPress={handleSkipPress} activeOpacity={0.7}>
-          <Skip />
-        </Button>
+        <Button
+          style={ACTION_BUTTON}
+          round
+          onPress={handleSkipPress}
+          activeOpacity={0.7}
+          iconSource={() => <Skip />}
+        />
       </View>
 
-      <Button round onPress={handleUpVote} activeOpacity={0.7}>
-        <LaughingEmoji />
-      </Button>
+      <Button
+        style={ACTION_BUTTON}
+        round
+        onPress={handleUpVote}
+        activeOpacity={0.7}
+        iconSource={() => <LaughingEmoji scale={1.4} />}
+      />
     </View>
   )
 }
@@ -169,16 +187,26 @@ export const Controls = (props: ButtonsProps) => {
 const BUTTONS: ViewStyle = {
   flexDirection: "row",
   justifyContent: "space-between",
-  width: "80%",
+  height: "20%",
+  width: "70%",
   paddingVertical: 25,
   alignSelf: "center",
 }
-
 const SECONDARY_ACTION_BUTTONS: ViewStyle = {
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
+  position: "relative",
 }
-const DISLIKE: ViewStyle = {
-  padding: spacing[4],
+const ACTION_BUTTON: ViewStyle = {
+  justifyContent: "center",
+  backgroundColor: "hsl(0, 0%, 93%)",
+  borderRadius: 75,
+  shadowColor: "grey",
+  shadowOpacity: 0.5,
+  shadowOffset: { width: 0, height: 4 },
+  shadowRadius: 4,
+  position: "relative",
+  alignItems: "center",
+  padding: 5,
 }

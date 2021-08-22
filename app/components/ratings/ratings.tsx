@@ -1,9 +1,10 @@
-import * as React from "react"
-import { TextStyle, View, ViewStyle } from "react-native"
+import { CryingEmoji, LaughingEmoji } from "images"
 import { observer } from "mobx-react-lite"
-import { Text } from "../"
-import { LaughingEmoji, CryingEmoji } from "images"
+import * as React from "react"
+import { ViewStyle } from "react-native"
+import { Text, View } from "react-native-ui-lib"
 
+const scale = 0.55
 export interface RatingsProps {
   /**
    * An optional style override useful for padding & margin.
@@ -20,53 +21,24 @@ export const Ratings = observer(function Ratings(props: RatingsProps) {
   const { likes, dislikes, style } = props
 
   return (
-    <View style={[CONTAINER, style]}>
+    <View {...{ style }} row>
       <Rating rating={likes}>
-        <LaughingEmoji style={LIKE} scale={0.45} />
+        <LaughingEmoji {...{ scale }} />
       </Rating>
       <Rating rating={dislikes}>
-        <CryingEmoji style={DISLIKE} scale={0.35} />
+        <CryingEmoji {...{ scale }} />
       </Rating>
     </View>
   )
 })
 
-const EMOJI_PADDING = 4
-const CONTAINER: ViewStyle = {
-  flexDirection: "row",
-}
-const SECTION: ViewStyle = {
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "center",
-  marginRight: 8,
-}
-const LIKE: ViewStyle = {
-  width: 20,
-  marginLeft: EMOJI_PADDING,
-  height: "100%",
-}
-const DISLIKE: ViewStyle = {
-  marginLeft: EMOJI_PADDING,
-}
-const TEXT: TextStyle = {
-  fontSize: 18,
-}
-
 const Rating = ({ rating, children }: { rating: number; children: React.ReactNode }) => {
   return (
-    <View style={SECTION}>
-      <View>
-        <Text bold style={TEXT}>
-          {String(rating)}
-        </Text>
+    <View center row marginR-s3 width-20>
+      <Text text60BO>{String(rating)}</Text>
+      <View center marginL-s2>
+        {children}
       </View>
-      <View style={RATING}>{children}</View>
     </View>
   )
-}
-
-const RATING: ViewStyle = {
-  justifyContent: "center",
-  alignItems: "center",
 }
