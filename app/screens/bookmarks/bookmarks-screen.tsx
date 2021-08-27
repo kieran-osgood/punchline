@@ -10,7 +10,7 @@ import { NavigationProps } from "app/navigators"
 import { TrashCan } from "assets/images/trash-can"
 import { EmptyState, Link, Text } from "components"
 import { observer } from "mobx-react-lite"
-import React from "react"
+import React, { useCallback, useState } from "react"
 import {
   Alert,
   Animated as RNAnimated,
@@ -19,14 +19,10 @@ import {
   RefreshControl,
   StyleSheet,
   TextStyle,
-  TouchableWithoutFeedback,
-  View,
   ViewStyle,
 } from "react-native"
 import { RectButton, Swipeable } from "react-native-gesture-handler"
 import Animated, {
-  measure,
-  runOnUI,
   useAnimatedRef,
   useAnimatedStyle,
   useDerivedValue,
@@ -36,6 +32,7 @@ import Animated, {
 } from "react-native-reanimated"
 import { mix, mixColor } from "react-native-redash"
 import Svg, { Path } from "react-native-svg"
+import { Card, ExpandableSection, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 import { Screen } from "../../components/screen/screen"
 
@@ -102,11 +99,27 @@ type BookmarkProps = {
   lastTouched: boolean
   handlePress: () => void
 }
+type Size = { width: number; height: number } | null
+const useComponentSize = (): [Size, typeof onLayout] => {
+  const [size, setSize] = useState<Size>(null)
+
+  const onLayout = useCallback((event: LayoutChangeEvent) => {
+    const { width, height } = event.nativeEvent.layout
+    setSize({ width, height })
+  }, [])
+
+  return [size, onLayout]
+}
 
 export const Bookmark = (props: BookmarkProps) => {
   const { bookmark, lastTouched, handlePress } = props
-  const touched = useDerivedValue(() => Number(lastTouched), [lastTouched])
+  const [expanded, setExpanded] = React.useState(false)
   const query = useQuery()
+
+  const open = useSharedValue(false)
+  const ref = useAnimatedRef<View>()
+  const touched = useDerivedValue(() => Number(lastTouched), [lastTouched])
+  const progress = useDerivedValue(() => (expanded ? withSpring(1) : withTiming(0)), [expanded])
 
   const handleDelete = () => {
     query.setQuery((store) =>
@@ -116,67 +129,38 @@ export const Bookmark = (props: BookmarkProps) => {
     )
   }
 
-  // const style = useAnimatedStyle(
-  //   () => ({
-  //     borderColor: interpolateColor(touched.value, [0, 1], ["#000", color.success]),
-  //   }),
-  //   [lastTouched],
-  // )
-
-  const aref = useAnimatedRef<View>()
-  const open = useSharedValue(false)
-  const progress = useDerivedValue(() => (open.value ? withSpring(1) : withTiming(0)))
-  const height = useSharedValue(0)
-  const headerStyle = useAnimatedStyle(() => ({
-    borderBottomLeftRadius: progress.value === 0 ? 8 : 0,
-    borderBottomRightRadius: progress.value === 0 ? 8 : 0,
-  }))
-  const style = useAnimatedStyle(() => ({
-    height: height.value * progress.value + 1,
-    opacity: progress.value === 0 ? 0 : 1,
-  }))
-  const [onLayout, setOnLayout] = React.useState<LayoutChangeEvent>({
-    nativeEvent: { layout: { height: 0 } },
-  })
   return (
-    <View ref={aref} collapsable={false} onLayout={setOnLayout}>
+    <Card collapsable={false} ref={ref} marginV-s3>
       <Swipeable
         friction={2}
         renderRightActions={(progressAnimatedValue, dragAnimatedValue) => (
           <RenderRightActions {...{ progressAnimatedValue, dragAnimatedValue, handleDelete }} />
         )}
       >
-        <TouchableWithoutFeedback
-          onPress={() => {
-            if (height.value === 0) {
-              runOnUI(() => {
-                "worklet"
-                const m = measure(aref)
-                height.value = m.height + (onLayout.nativeEvent.layout.height ?? 0)
-              })()
-            }
-            open.value = !open.value
-          }}
-        >
-          <Animated.View style={[styles.container, headerStyle]}>
-            <View>
-              <Text style={styles.title} h4 bold numberOfLines={open.value ? undefined : 1}>
-                {bookmark.joke.title}
-              </Text>
+        <ExpandableSection
+          top={false}
+          expanded={expanded}
+          onPress={() => setExpanded((c) => !c)}
+          sectionHeader={
+            <View style={styles.container} padding-s4 marginV-s3 row centerV spread>
+              <View>
+                <Text style={styles.title} h4 bold numberOfLines={open.value ? undefined : 1}>
+                  {bookmark.joke.title}
+                </Text>
+              </View>
+              <Chevron {...{ progress }} />
             </View>
-            <Chevron {...{ progress }} />
-            {/* <Expansion scale={1} /> */}
-          </Animated.View>
-        </TouchableWithoutFeedback>
-
-        <Animated.View style={[styles.items, style]}>
-          <Text bold text={bookmark.joke.body} style={BODY} />
-          <Link jokeId={bookmark.joke.id} style={SHARE}>
-            <Text text="Share" style={SHARE_TEXT} />
-          </Link>
-        </Animated.View>
+          }
+        >
+          <View style={styles.items} paddingH-s4>
+            <Text bold text={bookmark.joke.body} style={BODY} />
+            <Link jokeId={bookmark.joke.id} style={SHARE}>
+              <Text text="Share" style={SHARE_TEXT} />
+            </Link>
+          </View>
+        </ExpandableSection>
       </Swipeable>
-    </View>
+    </Card>
   )
 }
 
@@ -191,7 +175,6 @@ const SHARE: ViewStyle = {
   width: "50%",
   alignSelf: "flex-end",
   marginTop: spacing[3],
-  height: 35,
 }
 const SHARE_TEXT: TextStyle = {
   color: "#000",
@@ -282,14 +265,9 @@ const styles = StyleSheet.create({
     width: size,
   },
   container: {
-    alignItems: "center",
     backgroundColor: "white",
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 16,
-    padding: 16,
   },
   items: {
     overflow: "hidden",
