@@ -15,7 +15,7 @@ import { color, spacing } from "theme"
 const { width } = Dimensions.get("window")
 export const α = Math.PI / 12
 
-interface CardProps {
+interface JokeCardProps {
   joke: JokeModelType
   translateX: Animated.SharedValue<number>
   translateY: Animated.SharedValue<number>
@@ -23,7 +23,7 @@ interface CardProps {
   onTop: boolean
 }
 
-const JokeCard = ({ joke, translateX, translateY, onTop, scale }: CardProps) => {
+const JokeCard = ({ joke, translateX, translateY, onTop, scale }: JokeCardProps) => {
   const { body } = joke
   const x = useDerivedValue(() => (onTop ? translateX.value : 0))
   const container = useAnimatedStyle(() => ({

@@ -6,10 +6,11 @@ import {
   UserJokeHistoryModelType as UserJokeHistoryType,
 } from "app/graphql/UserJokeHistoryModel"
 import { NavigationProps } from "app/navigators"
+import EmptyStateImage from "assets/images/empty-state-image"
 import { BookmarkButton, Screen, Text } from "components"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { FlatList, TextStyle, View, ViewStyle } from "react-native"
+import { FlatList, StatusBar, View, ViewStyle } from "react-native"
 import Collapsible from "react-native-collapsible"
 import { Button } from "react-native-ui-lib"
 import { color, spacing } from "theme"
@@ -21,7 +22,7 @@ const ROOT: ViewStyle = {
 }
 
 export const HistoryScreen = observer(function HistoryScreen() {
-  const navigation = useNavigation<NavigationProps<"UserProfileScreen">["navigation"]>()
+  const navigation = useNavigation<NavigationProps<"UserProfileTabs">["navigation"]>()
   const { data } = useQuery(
     (store) =>
       store.queryUserJokeHistoryByUserId(
@@ -37,6 +38,7 @@ export const HistoryScreen = observer(function HistoryScreen() {
 
   return (
     <Screen style={ROOT} preset="fixed" unsafe>
+      <StatusBar barStyle="dark-content" />
       {hasData ? (
         <FlatList
           style={FLAT_LIST}
@@ -51,17 +53,13 @@ export const HistoryScreen = observer(function HistoryScreen() {
           title="Empty History"
           body="There doesn't seem to be any jokes in your history. Check back after you've rated some jokes!"
           ctaText="Explore Jokes!"
-          image="https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Flat_tick_icon.svg/1200px-Flat_tick_icon.svg.png"
+          image={<EmptyStateImage />}
           onPress={() => navigation.navigate("JokeScreen")}
         />
       )}
     </Screen>
   )
 })
-
-const COLLAPSIBLE_BUTTON: TextStyle = {
-  color: color.text,
-}
 
 const ListItem = ({ userJokeHistory }: { userJokeHistory: UserJokeHistoryType }) => {
   const [collapsed, setCollapsed] = React.useState(true)

@@ -58,7 +58,6 @@ export const JokeScreen = observer(function JokeScreen() {
     <>
       <SafeAreaView style={ROOT} testID="JokeScreen">
         <View style={HEADER}>
-          {/* <Text>title: {store.topOfDeckJoke.title}</Text> */}
           <Text
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
             text={store.topOfDeckJoke?.categories?.[0].name}

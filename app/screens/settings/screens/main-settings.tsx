@@ -5,7 +5,7 @@ import { SettingsStackProps } from "app/screens"
 import { Logout } from "assets/images/logout"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { Linking, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
+import { Linking, StatusBar, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import Toast from "react-native-toast-message"
 import { Button, Switch, Text, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
@@ -27,6 +27,8 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
 
   return (
     <Screen style={ROOT} preset="scroll" unsafe>
+      <StatusBar barStyle="dark-content" />
+
       <Section title="App Settings">
         <Divider row arrow onPress={() => navigation.navigate("JokeLength")}>
           <Text text80BO>Joke Length</Text>
