@@ -29,7 +29,7 @@ export const Header = observer(function Header({ navigation, left, right }: Head
           </TouchableOpacity>
         )}
         {left === "account" && (
-          <TouchableOpacity onPress={() => navigation.navigate("UserProfileScreen")}>
+          <TouchableOpacity onPress={() => navigation.navigate("UserProfileTabs")}>
             <AccountIcon />
           </TouchableOpacity>
         )}

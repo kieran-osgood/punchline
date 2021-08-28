@@ -1,9 +1,10 @@
-import React from "react"
-import { observer } from "mobx-react-lite"
-import { ViewStyle } from "react-native"
-import { color } from "theme"
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs"
+import { observer } from "mobx-react-lite"
+import React from "react"
+import { ViewStyle } from "react-native"
+import { ThemeManager } from "react-native-ui-lib"
 import Icon from "react-native-vector-icons/AntDesign"
+import { color } from "theme"
 import { BookmarksScreen } from "../bookmarks/bookmarks-screen"
 import { HistoryScreen } from "../history/history-screen"
 
@@ -19,13 +20,13 @@ const TAB_BAR: ViewStyle = {
 }
 
 const INDICATOR: ViewStyle = {
-  borderBottomColor: "#87B56A",
+  borderBottomColor: ThemeManager.CTABackgroundColor,
   borderBottomWidth: 4,
 }
 
 const size = 25
 
-export const UserProfileScreen = observer(function UserProfileScreen() {
+export const UserProfileTabs = observer(function UserProfileTabs() {
   return (
     <Tab.Navigator
       tabBarOptions={{

@@ -37,8 +37,8 @@ import { color, spacing } from "theme"
 import { Screen } from "../../components/screen/screen"
 
 export const BookmarksScreen = observer(function BookmarksScreen() {
-  const navigation = useNavigation<NavigationProps<"UserProfileScreen">["navigation"]>()
   const [index, setIndex] = React.useState<number | null>(null)
+  const navigation = useNavigation<NavigationProps<"UserProfileTabs">["navigation"]>()
   const [refreshing, setRefreshing] = React.useState(false)
 
   const { data, query } = useQuery((store) =>
