@@ -2,6 +2,7 @@ import auth from "@react-native-firebase/auth"
 import { useNavigation } from "@react-navigation/core"
 import { useStores } from "app/models"
 import { SettingsStackProps } from "app/screens"
+import RightArrow from "assets/images/arrow"
 import { Logout } from "assets/images/logout"
 import { observer } from "mobx-react-lite"
 import React from "react"
@@ -31,39 +32,36 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
 
       <Section title="App Settings">
         <Divider row arrow onPress={() => navigation.navigate("JokeLength")}>
-          <Text text80BO>Joke Length</Text>
+          <Text text80>Joke Length</Text>
         </Divider>
 
         <Divider row arrow onPress={() => navigation.navigate("Category")}>
-          <Text text80BO>Blocked Categories</Text>
+          <Text text80>Blocked Categories</Text>
         </Divider>
 
         <Divider row>
-          <Text text80BO>Profanity Filter</Text>
+          <Text text80>Profanity Filter</Text>
           <Switch onValueChange={toggleSwitch} value={isEnabled} />
         </Divider>
       </Section>
 
-      {/*
-        <Divider>
-          <JokeLengthSetting />
-        </Divider>
-
-        <Divider>
-          <CategorySetting />
-        </Divider>
-      */}
-
       <Section title="Notifications">
         <Divider row>
-          <Text text80BO>Push Notifications</Text>
+          <Text text80>Push Notifications</Text>
           <Switch onValueChange={toggleSwitch} value={isEnabled} />
         </Divider>
       </Section>
 
       <Section title="Account">
-        <LoginConversion />
+        <Divider>
+          <LoginConversion />
+        </Divider>
+        <Divider>
+          <BugReport />
+        </Divider>
+      </Section>
 
+      <Section title="More Information">
         <Divider>
           <Link>Privacy Policy</Link>
         </Divider>
@@ -81,12 +79,8 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
         </Divider>
 
         <Divider>
-          <BugReport />
+          <LogoutButton />
         </Divider>
-      </Section>
-
-      <Section style={{ marginTop: spacing[5] }}>
-        <LogoutButton />
       </Section>
 
       <AppVersion />
@@ -94,10 +88,6 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
     </Screen>
   )
 })
-
-const Arrow = () => {
-  return <Text grey30>{">"}</Text>
-}
 
 type SectionProps = {
   children: React.ReactNode
@@ -137,12 +127,12 @@ const Divider = ({
       {onPress ? (
         <TouchableOpacity {...{ style, onPress }}>
           {children}
-          {arrow && <Arrow />}
+          {arrow && <RightArrow />}
         </TouchableOpacity>
       ) : (
         <View {...{ style }}>
           {children}
-          {arrow && <Arrow />}
+          {arrow && <RightArrow />}
         </View>
       )}
     </>
@@ -151,7 +141,7 @@ const Divider = ({
 
 const Title = ({ children }: { children: string }) => {
   return (
-    <Text style={TITLE} grey30>
+    <Text style={TITLE} grey40 text90>
       {children}
     </Text>
   )
@@ -238,7 +228,6 @@ const LoginConversion = () => {
           preferences.
         </Text>
       </View>
-
       <View style={SOCIAL_BUTTONS} center>
         <GoogleSignInButton isAnonymousConversion {...{ onSuccess }} />
         <FacebookSignInButton isAnonymousConversion {...{ onSuccess }} />
@@ -272,16 +261,6 @@ const BugReport = () => {
       onPress={() => Linking.openURL(mail)}
     />
   )
-}
-
-const BUG_REPORT_BUTTON: ViewStyle = {
-  backgroundColor: "transparent",
-}
-
-const BUG_BUTTON_TEXT: TextStyle = {
-  fontSize: 13,
-  color: color.error,
-  textAlign: "center",
 }
 
 const AppVersion = () => {
