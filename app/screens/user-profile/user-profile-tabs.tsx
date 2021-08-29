@@ -23,39 +23,16 @@ const INDICATOR: ViewStyle = {
   borderBottomWidth: 4,
 }
 
-const size = 25
-
 export const UserProfileTabs = observer(function UserProfileTabs() {
   return (
     <Tab.Navigator
       tabBarOptions={{
         style: TAB_BAR,
-        showIcon: true,
         indicatorStyle: INDICATOR,
       }}
     >
-      <Tab.Screen
-        name="Bookmarks"
-        component={BookmarksScreen}
-        options={
-          {
-            // tabBarIcon: function TabIcon({ color }) {
-            //   return <Icon name="staro" {...{ color, size }} />
-            // },
-          }
-        }
-      />
-      <Tab.Screen
-        name="History"
-        component={HistoryScreen}
-        options={
-          {
-            // tabBarIcon: function TabIcon({ color }) {
-            //   return <Icon name="book" {...{ color, size }} />
-            // },
-          }
-        }
-      />
+      <Tab.Screen name="Bookmarks" component={BookmarksScreen} />
+      <Tab.Screen name="History" component={HistoryScreen} />
     </Tab.Navigator>
   )
 })
