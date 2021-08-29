@@ -14,23 +14,18 @@ export type UserProfileRouteParamList = {
 
 const Tab = createMaterialTopTabNavigator<UserProfileRouteParamList>()
 
-const TAB_BAR: ViewStyle = {
+const style: ViewStyle = {
   backgroundColor: color.background,
 }
 
-const INDICATOR: ViewStyle = {
+const indicatorStyle: ViewStyle = {
   borderBottomColor: ThemeManager.CTABackgroundColor,
   borderBottomWidth: 4,
 }
 
 export const UserProfileTabs = observer(function UserProfileTabs() {
   return (
-    <Tab.Navigator
-      tabBarOptions={{
-        style: TAB_BAR,
-        indicatorStyle: INDICATOR,
-      }}
-    >
+    <Tab.Navigator tabBarOptions={{ style, indicatorStyle }}>
       <Tab.Screen name="Bookmarks" component={BookmarksScreen} />
       <Tab.Screen name="History" component={HistoryScreen} />
     </Tab.Navigator>
