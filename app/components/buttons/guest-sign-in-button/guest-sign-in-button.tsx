@@ -10,26 +10,22 @@ export interface GuestSignInButtonProps {}
  * Button for anonymously authenticating with Firestore
  */
 export const GuestSignInButton = observer(function GuestSignInButton(
-  props: GuestSignInButtonProps,
+  _props: GuestSignInButtonProps,
 ) {
   const { userStore } = useStores()
-  return (
-    <Button
-      title="Continue as guest"
-      type="clear"
-      onPress={() => {
-        auth()
-          .signInAnonymously()
-          .then((userCredential) => {
-            userStore.login(userCredential)
-          })
-          .catch((error) => {
-            console.error(error)
-            // if (error.code === "auth/operation-not-allowed") {
-            // crashlytics().log('Enable anonymous in your firebase console.')
-            // }
-          })
-      }}
-    />
-  )
+  const onPress = () => {
+    auth()
+      .signInAnonymously()
+      .then((userCredential) => {
+        console.log("userCredential: ", userCredential)
+        userStore.login(userCredential)
+      })
+      .catch((error) => {
+        console.error(error)
+        // if (error.code === "auth/operation-not-allowed") {
+        // crashlytics().log('Enable anonymous in your firebase console.')
+        // }
+      })
+  }
+  return <Button link label="Continue as guest" {...{ onPress }} />
 })
