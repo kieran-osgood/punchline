@@ -71,11 +71,7 @@ export const LoginScreen = observer(function LoginScreen() {
         </View>
 
         <View flex-2 center width="100%">
-          <Text center>
-            {
-              "Create an account to save your bookmarked jokes permanently, or continue as a guest to get started right away!"
-            }
-          </Text>
+          <Text center>{"Create an account to save jokes and preferences"}</Text>
 
           <View width={"100%"} row spread marginV-s6>
             <GoogleSignInButton {...{ setIsLoading, onSuccess, onError }} />
