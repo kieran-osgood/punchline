@@ -8,7 +8,7 @@ import { observer } from "mobx-react-lite"
 import React from "react"
 import { Linking, StatusBar, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import Toast from "react-native-toast-message"
-import { Button, Switch, Text, View, ViewPropTypes } from "react-native-ui-lib"
+import { Button, Switch, Text, ThemeManager, View, ViewPropTypes } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 import {
   AppleSignInButton,
@@ -203,26 +203,14 @@ const LogoutButton = () => {
   return (
     <Button
       label="Logout"
-      style={LOGOUT_BUTTON_CONTAINER}
-      labelStyle={LOGOUT_BUTTON}
+      text70BO
+      enableShadow
+      backgroundColor="transparent"
+      color={ThemeManager.titleColor}
       onPress={resetStores}
       iconSource={() => <Logout scale={1} />}
     />
   )
-}
-
-const LOGOUT_BUTTON_CONTAINER: ViewStyle = {
-  alignItems: "center",
-  backgroundColor: "transparent",
-  flexDirection: "row",
-}
-
-const LOGOUT_BUTTON: TextStyle = {
-  fontSize: 18,
-  fontWeight: "bold",
-  color: color.text,
-  marginLeft: spacing[3],
-  width: "25%",
 }
 
 const LoginConversion = () => {
@@ -238,7 +226,7 @@ const LoginConversion = () => {
   }
 
   return (
-    <View style={LOGIN_CONVERSION} center>
+    <View center paddingB-s3>
       <View>
         <Text text60BO>Link Account</Text>
         <Text>
@@ -246,7 +234,7 @@ const LoginConversion = () => {
           preferences.
         </Text>
       </View>
-      <View style={SOCIAL_BUTTONS} center>
+      <View row paddingV-s6 spread width="60%">
         <GoogleSignInButton isAnonymousConversion {...{ onSuccess }} />
         <FacebookSignInButton isAnonymousConversion {...{ onSuccess }} />
         <AppleSignInButton isAnonymousConversion {...{ onSuccess }} />
@@ -255,25 +243,11 @@ const LoginConversion = () => {
   )
 }
 
-const LOGIN_CONVERSION: ViewStyle = {
-  paddingBottom: spacing[4],
-  width: "100%",
-}
-
-const SOCIAL_BUTTONS: ViewStyle = {
-  flexDirection: "row",
-  paddingVertical: spacing[4],
-  justifyContent: "space-around",
-  width: "75%",
-}
-
 const BugReport = () => {
   const mail = `mailto:ko.dev.issues@gmail.com?subject=Punchline Bug Report AppID: ${packageJson.version} Env: ${process.env.NODE_ENV}&body=App Version: ${packageJson.version}, ${process.env.NODE_ENV}\n\nPlease explain the issue you experienced.`
   return (
     <Button
       label="Bug Report"
-      // style={BUG_REPORT_BUTTON}
-      // textStyle={BUG_BUTTON_TEXT}
       red10
       backgroundColor="transparent"
       onPress={() => Linking.openURL(mail)}
@@ -283,16 +257,11 @@ const BugReport = () => {
 
 const AppVersion = () => {
   return (
-    <View paddingV-s3>
+    <View paddingV-s10>
       <AppLogo />
-      <Text style={APP_VERSION}>
+      <Text center grey10 marginT-s2 text90>
         App Version: {packageJson.version}, {process.env.NODE_ENV}
       </Text>
     </View>
   )
-}
-const APP_VERSION: TextStyle = {
-  textAlign: "center",
-  color: "grey",
-  fontSize: 12,
 }

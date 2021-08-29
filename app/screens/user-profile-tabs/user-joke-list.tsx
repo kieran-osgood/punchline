@@ -110,12 +110,10 @@ export const UserJoke = observer(function Bookmark(props: BookmarkProps) {
     )
   }
 
-  const onPress = () => {
-    bookmark.toggleBookmark()
-  }
+  const onPress = () => bookmark.toggleBookmark()
 
   return (
-    <Card collapsable={false} marginV-s3>
+    <Card collapsable={false} marginV-s2>
       <Swipeable
         friction={2}
         renderRightActions={(progressAnimatedValue, dragAnimatedValue) => (
