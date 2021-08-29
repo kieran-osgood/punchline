@@ -7,7 +7,7 @@ export interface RootStoreType extends Instance<typeof RootStore.Type> {}
 
 export const RootStore = RootStoreBase.props({
   accessToken: types.maybeNull(types.string),
-  deepLinkJokeId: types.maybeNull(types.string),
+  deepLinkJokeId: types.maybe(types.string),
 })
   .views((self) => ({
     get root(): RootStoreTree {
@@ -21,7 +21,7 @@ export const RootStore = RootStoreBase.props({
     setAuthorizationHeader() {
       getEnv(self).gqlHttpClient.setHeaders({ Authorization: "bearer " + self.accessToken })
     },
-    setDeepLinkJoke(deepLinkInitialJoke: string | null) {
+    setDeepLinkJoke(deepLinkInitialJoke: string | undefined) {
       self.deepLinkJokeId = deepLinkInitialJoke
     },
   }))
@@ -31,7 +31,6 @@ export const RootStore = RootStoreBase.props({
       self.setAuthorizationHeader()
     },
     fetchInitialJokes(deepLinkInitialJoke?: string) {
-      deepLinkInitialJoke = "Sm9rZQppNg=="
       const query = self.queryJokes(
         {
           blockedCategoryIds: self.root.userStore.blockedCategoryIds,
@@ -60,7 +59,7 @@ export const RootStore = RootStoreBase.props({
       }
       if (self.deepLinkJokeId) {
         const id = self.deepLinkJokeId
-        self.setDeepLinkJoke(null)
+        self.setDeepLinkJoke(undefined)
         const deepJoke = self.jokes.get(id)
         return deepJoke ?? this.nonViewedJokes[this.nonViewedJokes.length - 1]
       }
