@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import auth from "@react-native-firebase/auth"
 import { useNavigation } from "@react-navigation/core"
 import { useStores } from "app/models"
@@ -6,7 +7,7 @@ import { Logout } from "assets/images/logout"
 import RightArrow from "assets/images/right-arrow"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { Linking, StatusBar, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
+import { Alert, Linking, StatusBar, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import Toast from "react-native-toast-message"
 import { Button, Switch, Text, ThemeManager, View, ViewPropTypes } from "react-native-ui-lib"
 import { color, spacing } from "theme"
@@ -78,6 +79,25 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
           <LoginConversion />
         </Divider>
         <Divider>
+          <Link
+            onPress={() => {
+              console.log("test")
+              Alert.alert("Clear Cache", "Confirm you wish you clear data saved to device.", [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                {
+                  text: "OK",
+                  onPress: () => AsyncStorage.clear(),
+                },
+              ])
+            }}
+          >
+            Clear Cache Data
+          </Link>
+        </Divider>
+        <Divider>
           <BugReport />
         </Divider>
       </Section>
@@ -93,10 +113,6 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
 
         <Divider>
           <Link>Data Policy</Link>
-        </Divider>
-
-        <Divider>
-          <Link>Clear Cache Data</Link>
         </Divider>
       </Section>
 
@@ -132,8 +148,8 @@ const Section = ({ children, title, style, ...rest }: SectionProps) => {
   )
 }
 
-const Link = ({ children }: { children: string }) => {
-  return <Button link style={LINK} label={children} />
+const Link = ({ children, onPress }: { children: string; onPress?: (...args: any[]) => any }) => {
+  return <Button link style={LINK} label={children} {...{ onPress }} />
 }
 
 type DividerProps = {
@@ -211,6 +227,10 @@ const SECTION: ViewStyle = {
 
 const LogoutButton = () => {
   const { resetStores } = useStores()
+  const onPress = () => {
+    resetStores()
+    AsyncStorage.clear()
+  }
   return (
     <Button
       label="Logout"
@@ -218,8 +238,8 @@ const LogoutButton = () => {
       enableShadow
       backgroundColor="transparent"
       color={ThemeManager.titleColor}
-      onPress={resetStores}
       iconSource={() => <Logout scale={1} />}
+      {...{ onPress }}
     />
   )
 }
