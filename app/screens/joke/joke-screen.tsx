@@ -8,7 +8,7 @@ import { AdBanner, BookmarkButton, Ratings, ShareIcons, SwipeHandler } from "com
 import { CryingEmoji, LaughingEmoji } from "images"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { SafeAreaView, TextStyle, View, ViewStyle } from "react-native"
+import { SafeAreaView, StatusBar, TextStyle, View, ViewStyle } from "react-native"
 import { Button, Text } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
@@ -58,6 +58,8 @@ export const JokeScreen = observer(function JokeScreen() {
   return (
     <>
       <SafeAreaView style={ROOT} testID="JokeScreen">
+        <StatusBar barStyle="dark-content" />
+
         <View style={HEADER}>
           <Text style={{ ...CATEGORY_NAME, ...CENTER_TEXT }} bold>
             {store.topOfDeckJoke?.categories?.[0].name}
