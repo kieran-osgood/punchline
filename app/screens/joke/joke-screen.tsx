@@ -22,10 +22,11 @@ export const JokeScreen = observer(function JokeScreen() {
 
   React.useEffect(() => {
     /**
+     * TODO
      * This mostly works now in that it correctly chooses "Progress" joke as the top card joke
      * but the react mapping isn't changing properly to reflect this
      */
-    store.setDeepLinkJoke("Sm9rZQppNg==")
+    store.setDeepLinkJoke(route.params?.jokeId)
     store.fetchInitialJokes(route.params?.jokeId)
   }, [route.params?.jokeId])
 

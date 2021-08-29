@@ -87,6 +87,7 @@ export type UserJokeHistoryFilterInput = {
   id?: ComparableInt32OperationFilterInput
   bookmarked?: BooleanOperationFilterInput
   rating?: RatingValueOperationFilterInput
+  createdAt?: ComparableDateTimeOperationFilterInput
   user?: UserFilterInput
   joke?: JokeFilterInput
 }
@@ -94,6 +95,7 @@ export type UserJokeHistorySortInput = {
   id?: SortEnumType
   bookmarked?: SortEnumType
   rating?: SortEnumType
+  createdAt?: SortEnumType
   user?: UserSortInput
   joke?: JokeSortInput
 }
@@ -165,6 +167,20 @@ export type RatingValueOperationFilterInput = {
   in?: RatingValue[]
   nin?: RatingValue[]
 }
+export type ComparableDateTimeOperationFilterInput = {
+  eq?: any
+  neq?: any
+  in?: any[]
+  nin?: any[]
+  gt?: any
+  ngt?: any
+  gte?: any
+  ngte?: any
+  lt?: any
+  nlt?: any
+  lte?: any
+  nlte?: any
+}
 export type UserFilterInput = {
   and?: UserFilterInput[]
   or?: UserFilterInput[]
@@ -187,20 +203,6 @@ export type UserSortInput = {
   createdOn?: SortEnumType
   lastLogin?: SortEnumType
   onboardingComplete?: SortEnumType
-}
-export type ComparableDateTimeOperationFilterInput = {
-  eq?: any
-  neq?: any
-  in?: any[]
-  nin?: any[]
-  gt?: any
-  ngt?: any
-  gte?: any
-  ngte?: any
-  lt?: any
-  nlt?: any
-  lte?: any
-  nlte?: any
 }
 export type UserLoginInput = {
   firebaseUid: string
