@@ -149,7 +149,7 @@ export const Bookmark = observer(function Bookmark(props: BookmarkProps) {
           sectionHeader={
             <View style={CONTAINER} padding-s4 marginV-s3 row centerV spread>
               <View>
-                <Text style={TITLE} h4 bold numberOfLines={open.value ? undefined : 1}>
+                <Text style={TITLE} text70 bold numberOfLines={open.value ? undefined : 1}>
                   {bookmark.joke.title}
                 </Text>
               </View>

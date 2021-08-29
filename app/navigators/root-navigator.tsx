@@ -42,7 +42,7 @@ const RootStack = observer(function RootStack() {
         headerShown: false,
       }}
     >
-      {!userStore.user ? (
+      {!userStore.user?.uid ? (
         <Stack.Screen name="AuthNavigator" component={AuthNavigator} />
       ) : (
         <Stack.Screen name="MainNavigator" component={MainNavigator} />
