@@ -200,7 +200,7 @@ const SECONDARY_ACTION_BUTTONS: ViewStyle = {
   alignItems: "center",
   position: "relative",
 }
-const ACTION_BUTTON: ViewStyle = {
+export const ACTION_BUTTON: ViewStyle = {
   justifyContent: "center",
   backgroundColor: "hsl(0, 0%, 93%)",
   borderRadius: 75,

@@ -1,4 +1,4 @@
-import { UserJokeListProps } from "app/screens/user-profile-tabs/joke-bookmark-history-list"
+import { UserJokeListProps } from "app/screens/user-profile-tabs/user-joke-list"
 import { BookmarkButton } from "components"
 import { observer } from "mobx-react-lite"
 import * as React from "react"

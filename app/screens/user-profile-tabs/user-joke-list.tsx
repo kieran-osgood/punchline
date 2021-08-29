@@ -7,6 +7,7 @@ import {
 } from "app/graphql"
 import { useStores } from "app/models"
 import { NavigationProps } from "app/navigators"
+import { ACTION_BUTTON } from "app/screens"
 import EmptyStateImage from "assets/images/empty-state-image"
 import { TrashCan } from "assets/images/trash-can"
 import { BookmarkButton, EmptyState, Link, Screen } from "components"
@@ -32,7 +33,7 @@ import Animated, {
 } from "react-native-reanimated"
 import { mix, mixColor } from "react-native-redash"
 import Svg, { Path } from "react-native-svg"
-import { Card, ExpandableSection, Text, View } from "react-native-ui-lib"
+import { Button, Card, ExpandableSection, Text, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
 export type UserJokeListProps = {
@@ -132,26 +133,28 @@ export const UserJoke = observer(function Bookmark(props: BookmarkProps) {
                   {bookmark.joke.title}
                 </Text>
               </View>
-              <View row>
-                {type === "HISTORY" && (
-                  <BookmarkButton
-                    size={24}
-                    bookmarked={Boolean(bookmark.bookmarked)}
-                    {...{ onPress }}
-                  />
-                )}
-                <Chevron {...{ progress }} />
-              </View>
+
+              <Chevron {...{ progress }} />
             </View>
           }
         >
-          <View style={ITEMS} paddingH-s4>
+          <View marginB-s4 paddingH-s4 centerV>
             <Text bold style={JOKE_BODY}>
               {bookmark.joke.body}
             </Text>
-            <Link jokeId={bookmark.joke.id} style={SHARE}>
-              <Text style={SHARE_TEXT}>{"Share"}</Text>
-            </Link>
+            <View row centerV spread marginT-s3>
+              <Button
+                {...{ onPress }}
+                round
+                style={ACTION_BUTTON}
+                iconSource={() => (
+                  <BookmarkButton size={24} bookmarked={Boolean(bookmark.bookmarked)} />
+                )}
+              />
+              <Link jokeId={bookmark.joke.id} style={SHARE}>
+                <Text style={SHARE_TEXT}>{"Share"}</Text>
+              </Link>
+            </View>
           </View>
         </ExpandableSection>
       </Swipeable>
@@ -174,14 +177,13 @@ const SHARE: ViewStyle = {
   borderRadius: 5,
   width: "50%",
   alignSelf: "flex-end",
-  marginTop: spacing[3],
 }
 const SHARE_TEXT: TextStyle = {
   color: "#000",
   fontSize: 16,
   fontWeight: "bold",
   textAlign: "center",
-  paddingVertical: spacing[2],
+  paddingVertical: spacing[0],
 }
 
 type Actions = {
