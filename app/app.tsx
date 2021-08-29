@@ -11,6 +11,7 @@ import { AsyncStorage } from "app/utils/storage/async-storage"
 import { observer } from "mobx-react-lite"
 import React, { useEffect, useRef, useState } from "react"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
+import { ConnectionStatusBar } from "react-native-ui-lib"
 import { ToggleStorybook } from "../storybook/toggle-storybook"
 import "./i18n"
 import {
@@ -40,11 +41,22 @@ const App = observer(function App() {
     NAVIGATION_PERSISTENCE_KEY,
   )
 
+  // useEffect(() => {
+  //   const init = async () => {
+  //     // …do multiple sync or async tasks
+  //   }
+
+  //   init().finally(async () => {
+  //     await RNBootSplash.hide({ fade: true })
+  //     console.log("Bootsplash has been hidden successfully")
+  //   })
+  // }, [])
+
   // Kick off initial async loading actions, like RootStore
   useEffect(() => {
     ;(async () => {
       setupRootStore().then((newRootStore) => {
-        newRootStore.userStore?.updateUser(auth().currentUser)
+        newRootStore.userStore.updateUser(auth().currentUser)
         setRootStore(newRootStore)
       })
     })()
@@ -56,12 +68,13 @@ const App = observer(function App() {
       await auth().signOut()
 
       const newRootStore = await setupRootStore()
-      newRootStore.userStore?.updateUser(auth().currentUser)
+      newRootStore.userStore.updateUser(auth().currentUser)
       setRootStore(newRootStore)
     } catch (error) {
       __DEV__ && console.tron.log!("error logging out: ", error)
     }
   }
+  // const [connected, setConnected] = React.useState({ isConnected: false })
 
   // Wait for state to load from AsyncStorage
   if (!rootStore || !rootStore.api) return null
@@ -72,11 +85,17 @@ const App = observer(function App() {
         <GraphQLStoreContext.Provider value={rootStore.api}>
           <Authorization>
             <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+              <ConnectionStatusBar
+              // onConnectionChange={(isConnected) => setConnected({ isConnected })}
+              />
               <RootNavigator
                 ref={navigationRef}
                 initialState={initialNavigationState}
                 onStateChange={onNavigationStateChange}
               />
+              {/* <Text text20 color="pink">
+                {String(connected.isConnected)}
+              </Text> */}
             </SafeAreaProvider>
           </Authorization>
         </GraphQLStoreContext.Provider>
