@@ -18,7 +18,7 @@ import { color, spacing } from "theme"
 const ROOT: ViewStyle = {
   backgroundColor: color.background,
   flex: 1,
-  justifyContent: "center",
+  paddingHorizontal: spacing[3],
 }
 
 export const HistoryScreen = observer(function HistoryScreen() {
