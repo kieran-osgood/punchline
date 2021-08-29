@@ -4,8 +4,8 @@ import React from "react"
 import { ViewStyle } from "react-native"
 import { ThemeManager } from "react-native-ui-lib"
 import { color } from "theme"
-import { BookmarksScreen } from "../bookmarks/bookmarks-screen"
-import { HistoryScreen } from "../history/history-screen"
+import { BookmarksScreen } from "./screens/bookmarks-screen"
+import { HistoryScreen } from "./screens/history-screen"
 
 export type UserProfileRouteParamList = {
   Bookmarks: undefined

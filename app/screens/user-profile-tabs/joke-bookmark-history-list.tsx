@@ -1,15 +1,16 @@
 import { useNavigation } from "@react-navigation/native"
 import {
-  nodes,
+  RootStoreType,
   useQuery,
-  userJokeHistoryModelPrimitives,
-  UserJokeHistoryModelType,
+  UserJokeHistoryConnectionModelType,
+  UserJokeHistoryModelType
 } from "app/graphql"
 import { NavigationProps } from "app/navigators"
 import EmptyStateImage from "assets/images/empty-state-image"
 import { TrashCan } from "assets/images/trash-can"
-import { BookmarkButton, EmptyState, Link } from "components"
+import { BookmarkButton, EmptyState, Link, Screen } from "components"
 import { observer } from "mobx-react-lite"
+import { UseQueryHookResult } from "mst-gql"
 import React from "react"
 import {
   Alert,
@@ -18,7 +19,7 @@ import {
   RefreshControl,
   StatusBar,
   TextStyle,
-  ViewStyle,
+  ViewStyle
 } from "react-native"
 import { RectButton, Swipeable } from "react-native-gesture-handler"
 import Animated, {
@@ -26,25 +27,30 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
   withSpring,
-  withTiming,
+  withTiming
 } from "react-native-reanimated"
 import { mix, mixColor } from "react-native-redash"
 import Svg, { Path } from "react-native-svg"
-import { Button, Card, ExpandableSection, Text, View } from "react-native-ui-lib"
+import { Card, ExpandableSection, Text, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
-import { Screen } from "../../components/screen/screen"
 
-export const BookmarksScreen = observer(function BookmarksScreen() {
+export type BookmarksScreenProps = {
+  type: "HISTORY" | "BOOKMARK"
+  query: UseQueryHookResult<
+    RootStoreType,
+    {
+      userJokeHistoryByUserId: UserJokeHistoryConnectionModelType
+    }
+  >
+}
+
+export const JokeBookmarkHistoryList = observer(function JokeBookmarkHistoryList(
+  props: BookmarksScreenProps,
+) {
+  const { type } = props
+  const { query, data } = props.query
   const navigation = useNavigation<NavigationProps<"UserProfileTabs">["navigation"]>()
   const [refreshing, setRefreshing] = React.useState(false)
-
-  const { data, query } = useQuery((store) =>
-    store.queryUserJokeHistoryByUserId(
-      { where: { bookmarked: { eq: true } } },
-      nodes(userJokeHistoryModelPrimitives.id.rating.bookmarked.joke((j) => j.id.title.body)),
-      { fetchPolicy: "no-cache" },
-    ),
-  )
 
   const hasData =
     typeof data?.userJokeHistoryByUserId !== "undefined" &&
@@ -64,27 +70,13 @@ export const BookmarksScreen = observer(function BookmarksScreen() {
         <FlatList
           refreshControl={<RefreshControl {...{ refreshing, onRefresh }} />}
           data={data.userJokeHistoryByUserId.nodes}
-          renderItem={({ item: bookmark }) => <Bookmark key={bookmark.id} {...{ bookmark }} />}
+          renderItem={({ item: bookmark }) => (
+            <Bookmark key={bookmark.id} {...{ bookmark, type }} />
+          )}
         />
       ) : (
         <EmptyState
-          title="No Bookmarks!"
-          body={
-            <>
-              <Text style={BODY} text70 center>
-                {"It appears you've not bookmarked any jokes.\n Make sure to press  "}
-                <Button
-                  round
-                  style={ACTION_BUTTON}
-                  activeOpacity={0.7}
-                  iconSource={() => <BookmarkButton bookmarked size={13} />}
-                  disabled
-                />
-                {"  to save them here!"}
-              </Text>
-            </>
-          }
-          ctaText="Go save some jokes!"
+          {...{ type }}
           image={<EmptyStateImage />}
           onPress={() => navigation.navigate("JokeScreen")}
         />
@@ -98,29 +90,13 @@ const ROOT: ViewStyle = {
   flex: 1,
   paddingHorizontal: spacing[3],
 }
-const BODY: TextStyle = {
-  lineHeight: 28,
-}
-const ACTION_BUTTON: ViewStyle = {
-  justifyContent: "center",
-  backgroundColor: "hsl(0, 0%, 93%)",
-  borderRadius: 75,
-  shadowColor: "grey",
-  shadowOpacity: 0.5,
-  shadowOffset: { width: 0, height: 4 },
-  shadowRadius: 4,
-  position: "relative",
-  alignItems: "center",
-  padding: 5,
-  width: 25,
-  height: 25,
-}
 
 type BookmarkProps = {
   bookmark: UserJokeHistoryModelType
+  type: BookmarksScreenProps["type"]
 }
 export const Bookmark = observer(function Bookmark(props: BookmarkProps) {
-  const { bookmark } = props
+  const { bookmark, type } = props
   const [expanded, setExpanded] = React.useState(false)
   const query = useQuery()
   const open = useSharedValue(false)
@@ -132,6 +108,10 @@ export const Bookmark = observer(function Bookmark(props: BookmarkProps) {
         query.store.removeChild(bookmark)
       }),
     )
+  }
+
+  const onPress = () => {
+    // Add bookmark
   }
 
   return (
@@ -153,7 +133,16 @@ export const Bookmark = observer(function Bookmark(props: BookmarkProps) {
                   {bookmark.joke.title}
                 </Text>
               </View>
-              <Chevron {...{ progress }} />
+              <View row>
+                {type === "HISTORY" && (
+                  <BookmarkButton
+                    size={24}
+                    bookmarked={Boolean(bookmark.bookmarked)}
+                    {...{ onPress }}
+                  />
+                )}
+                <Chevron {...{ progress }} />
+              </View>
             </View>
           }
         >
