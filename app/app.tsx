@@ -33,7 +33,7 @@ export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 const App = observer(function App() {
   const navigationRef = useRef<NavigationContainerRef | null>(null)
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
-
+  const firstRender = React.useRef(true)
   setRootNavigation(navigationRef)
   useBackButtonHandler(navigationRef, canExit)
   const { initialNavigationState, onNavigationStateChange } = useNavigationPersistence(
@@ -43,14 +43,20 @@ const App = observer(function App() {
 
   // Kick off initial async loading actions, like RootStore
   useEffect(() => {
-    ;(async () => {
-      setupRootStore().then((newRootStore) => {
-        newRootStore.userStore.updateUser(auth().currentUser)
-        setRootStore(newRootStore)
+    if (firstRender.current) {
+      firstRender.current = false
+
+      const init = async () => {
+        setupRootStore().then((newRootStore) => {
+          newRootStore.userStore.updateUser(auth().currentUser)
+          setRootStore(newRootStore)
+        })
+      }
+
+      init().finally(() => {
+        RNBootSplash.hide({ fade: true })
       })
-    })().finally(async () => {
-      await RNBootSplash.hide({ fade: true })
-    })
+    }
   }, [])
 
   const resetStores = async () => {
