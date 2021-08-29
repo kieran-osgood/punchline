@@ -7,14 +7,12 @@ import {
   GuestSignInButton,
   LoadingModal,
   Screen,
-  Text,
 } from "components"
 import { observer } from "mobx-react-lite"
 import React from "react"
 import { Alert, BackHandler, TextStyle, View, ViewStyle } from "react-native"
 import { widthPercentageToDP } from "react-native-responsive-screen"
-// import { useNavigation } from "@react-navigation/native"
-// import { useStores } from "../../models"
+import { Text } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
 const ROOT: ViewStyle = {
@@ -88,11 +86,14 @@ export const LoginScreen = observer(function LoginScreen() {
     <Screen style={ROOT} preset="fixed" testID="LoginScreen">
       <AppLogo style={APP_LOGO} />
 
-      <Text h1 text="Get Started" style={TEXT_CENTER} />
-      <Text
-        style={COPY}
-        text="Create an account to save your bookmarked jokes permanently, or continue as a guest to get started right away!"
-      />
+      <Text h1 style={TEXT_CENTER}>
+        {"Get Started"}
+      </Text>
+      <Text style={COPY}>
+        {
+          "Create an account to save your bookmarked jokes permanently, or continue as a guest to get started right away!"
+        }
+      </Text>
       <CenterView style={BUTTONS_CONTAINER}>
         <View style={ROW}>
           <GoogleSignInButton
@@ -111,10 +112,10 @@ export const LoginScreen = observer(function LoginScreen() {
             onError={errorPopup}
           />
         </View>
-        <Text style={TEXT_SEPERATOR} text="Or" />
+        <Text style={TEXT_SEPERATOR}>{"Or"}</Text>
         <GuestSignInButton />
       </CenterView>
-      <Text text={`COPYRIGHT \u00A9 ${new Date().getFullYear()} KO.DEV`} style={COPYRIGHT_TEXT} />
+      <Text style={COPYRIGHT_TEXT}>{`COPYRIGHT \u00A9 ${new Date().getFullYear()} KO.DEV`}</Text>
     </Screen>
   )
 })

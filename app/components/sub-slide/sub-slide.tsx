@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { TextStyle, View, ViewStyle } from "react-native"
+import { Button, Text } from "react-native-ui-lib"
 import { color, spacing } from "theme"
-import { Button, Text } from "../"
 
 export interface SubSlideProps {
   /**
@@ -27,9 +27,9 @@ export const SubSlide = observer(function SubSlide(props: SubSlideProps) {
       </Text>
       <Text style={DESCRIPTION}>{description}</Text>
       <Button
-        text={last ? "Let's get started" : "Next"}
+        label={last ? "Let's get started" : "Next"}
         style={last ? {} : BUTTON}
-        textStyle={BUTTON_TEXT}
+        // textStyle={BUTTON_TEXT}
         {...{ onPress }}
       />
     </View>

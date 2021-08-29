@@ -1,9 +1,9 @@
+import { flatten, mergeAll } from "ramda"
 import React from "react"
 import { TextInput, TextInputProps, TextStyle, View, ViewStyle } from "react-native"
-import { color, spacing, typography } from "../../theme"
+import { Text } from "react-native-ui-lib"
 import { translate, TxKeyPath } from "../../i18n"
-import { Text } from "../text/text"
-import { mergeAll, flatten } from "ramda"
+import { color, spacing, typography } from "../../theme"
 
 // the base styling for the container
 const CONTAINER: ViewStyle = {
@@ -91,7 +91,7 @@ export function TextField(props: TextFieldProps) {
 
   return (
     <View style={containerStyle}>
-      <Text preset="fieldLabel" tx={labelTx} text={label} />
+      <Text preset="fieldLabel">{label}</Text>
       <TextInput
         placeholder={actualPlaceholder}
         placeholderTextColor={color.palette.lighterGrey}

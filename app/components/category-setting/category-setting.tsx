@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { TextStyle, TouchableOpacity, View, ViewStyle } from "react-native"
 import { SvgUri } from "react-native-svg"
-import { Text } from "../"
+import { Text } from "react-native-ui-lib"
 import { color, spacing, typography } from "../../theme"
 
 export interface CategorySettingProps {
@@ -31,11 +31,13 @@ export const CategorySetting = observer(function CategorySetting(props: Category
 
   return (
     <View style={[CONTAINER, style]}>
-      <Text h4 bold text="Category Filter" />
+      <Text text70 bold>
+        {"Category Filter"}
+      </Text>
       <Text>
-        <Text text="Select categories you " />
-        <Text bold text="don't " />
-        <Text text="wish to see" />
+        <Text>{"Select categories you "}</Text>
+        <Text bold>{"don't "}</Text>
+        <Text>{"wish to see"}</Text>
       </Text>
 
       <View style={CATEGORIES}>
@@ -83,7 +85,7 @@ const Category = observer(function Category({ category }: CategoryProps) {
         {isActive && <Blocked scale={SVG_SIZE / SIZE} style={BLOCKED} />}
       </View>
       <View>
-        <Text style={{ ...TEXT, ...activeTextStyle }} text={name} />
+        <Text style={{ ...TEXT, ...activeTextStyle }}>{name}</Text>
       </View>
     </TouchableOpacity>
   )

@@ -71,13 +71,14 @@ export const BookmarksScreen = observer(function BookmarksScreen() {
           title="No Bookmarks!"
           body={
             <>
-              <Text style={BODY} text80 center>
+              <Text style={BODY} text70 center>
                 {"It appears you've not bookmarked any jokes.\n Make sure to press  "}
                 <Button
                   round
                   style={ACTION_BUTTON}
                   activeOpacity={0.7}
                   iconSource={() => <BookmarkButton bookmarked size={13} />}
+                  disabled
                 />
                 {"  to save them here!"}
               </Text>
@@ -157,9 +158,11 @@ export const Bookmark = observer(function Bookmark(props: BookmarkProps) {
           }
         >
           <View style={ITEMS} paddingH-s4>
-            <Text bold text={bookmark.joke.body} style={JOKE_BODY} />
+            <Text bold style={JOKE_BODY}>
+              {bookmark.joke.body}
+            </Text>
             <Link jokeId={bookmark.joke.id} style={SHARE}>
-              <Text text="Share" style={SHARE_TEXT} />
+              <Text style={SHARE_TEXT}>{"Share"}</Text>
             </Link>
           </View>
         </ExpandableSection>

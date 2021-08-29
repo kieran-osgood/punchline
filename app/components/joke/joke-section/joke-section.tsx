@@ -6,13 +6,13 @@ import React from "react"
 import { ScrollView, TextStyle, View, ViewStyle } from "react-native"
 import Swiper from "react-native-deck-swiper"
 import { heightPercentageToDP as hp } from "react-native-responsive-screen"
+import { Text } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 import { JokeLength } from "../../../graphql/JokeLengthEnum"
 import { jokeModelPrimitives } from "../../../graphql/JokeModel.base"
 import { useQuery } from "../../../graphql/reactUtils"
 import { nodes } from "../../../graphql/RootStore"
 import { CenterView } from "../../center-view/center-view"
-import { Text } from "../../text/text"
 
 const CONTAINER: ViewStyle = {
   width: "95%",
@@ -118,14 +118,15 @@ const JokeCard = ({ joke }: { joke: JokeModelType }) => {
           left: spacing[5],
         }}
       >
-        <Text h3 text={joke.title} style={JOKE_TITLE} />
-        <Text
-          style={JOKE_TEXT}
-          text={joke.body
+        <Text text30 style={JOKE_TITLE}>
+          {joke.title}
+        </Text>
+        <Text style={JOKE_TEXT}>
+          {joke.body
             ?.split(/\n/g)
             .map((x) => x.charAt(0).toUpperCase() + x.substr(1))
             .join("\n")}
-        />
+        </Text>
         {/* {joke.category ? (
           <View style={CATEGORY_SECTION}>
             <Text text="Category: " />

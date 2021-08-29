@@ -24,7 +24,7 @@ export const EmptyState = observer(function EmptyState(props: EmptyStateProps) {
   return (
     <View>
       {image}
-      <Text h1 bold center text40 marginT-s3>
+      <Text bold center text40 marginT-s3>
         {title}
       </Text>
       {typeof body === "string" ? (

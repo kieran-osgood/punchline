@@ -5,7 +5,8 @@ import { observer } from "mobx-react-lite"
 import { MotiTransitionProp, MotiView } from "moti"
 import * as React from "react"
 import { TextStyle, View, ViewStyle } from "react-native"
-import { CARD_SHADOW, Text, VerticalCheckboxes } from "../"
+import { Text } from "react-native-ui-lib"
+import { CARD_SHADOW, VerticalCheckboxes } from "../"
 import { color, spacing } from "../../theme"
 
 export const JokeLengths: JokeLength[] = Object.keys(JokeLength)
@@ -30,7 +31,9 @@ export const JokeLengthSetting = observer(function JokeLengthSetting(
 
   return (
     <View style={[CONTAINER, style]}>
-      <Text h4 bold text="Joke Length" style={TITLE} />
+      <Text text70 bold style={TITLE}>
+        {"Joke Length"}
+      </Text>
       <View style={ROW}>
         <JokePreview selected={userStore.jokeLengthMax} />
         <VerticalCheckboxes

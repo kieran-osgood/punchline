@@ -1,9 +1,9 @@
+import { flatten, mergeAll } from "ramda"
 import * as React from "react"
-import { TouchableOpacity, TextStyle, ViewStyle, View } from "react-native"
-import { Text } from "../text/text"
+import { TextStyle, TouchableOpacity, View, ViewStyle } from "react-native"
+import { Text } from "react-native-ui-lib"
 import { color, spacing } from "../../theme"
 import { CheckboxProps } from "./checkbox.props"
-import { mergeAll, flatten } from "ramda"
 
 const ROOT: ViewStyle = {
   flexDirection: "row",
@@ -48,7 +48,9 @@ export function Checkbox(props: CheckboxProps) {
       style={rootStyle}
     >
       <View style={outlineStyle}>{props.value && <View style={fillStyle} />}</View>
-      <Text text={props.text} tx={props.tx} numberOfLines={numberOfLines} style={LABEL} />
+      <Text numberOfLines={numberOfLines} style={LABEL}>
+        {props.text}
+      </Text>
     </TouchableOpacity>
   )
 }

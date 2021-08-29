@@ -1,14 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { useRoute } from "@react-navigation/native"
 import Swipeable from "app/components/swipeable/swipeable"
 import { JokeModelType, RatingValue, useQuery } from "app/graphql"
 import { NavigationProps } from "app/navigators/main-navigator"
 import Skip from "assets/images/skip"
-import { AdBanner, BookmarkButton, Ratings, ShareIcons, SwipeHandler, Text } from "components"
+import { AdBanner, BookmarkButton, Ratings, ShareIcons, SwipeHandler } from "components"
 import { CryingEmoji, LaughingEmoji } from "images"
 import { observer } from "mobx-react-lite"
 import React from "react"
 import { SafeAreaView, TextStyle, View, ViewStyle } from "react-native"
-import { Button } from "react-native-ui-lib"
+import { Button, Text } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
 const PAGE_GUTTERS = 15
@@ -58,13 +59,13 @@ export const JokeScreen = observer(function JokeScreen() {
     <>
       <SafeAreaView style={ROOT} testID="JokeScreen">
         <View style={HEADER}>
-          <Text
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            text={store.topOfDeckJoke?.categories?.[0].name}
-            style={{ ...CATEGORY_NAME, ...CENTER_TEXT }}
-            bold
-          />
-          <Text h2 text={store.topOfDeckJoke.title} bold style={CENTER_TEXT} />
+          <Text style={{ ...CATEGORY_NAME, ...CENTER_TEXT }} bold>
+            {store.topOfDeckJoke?.categories?.[0].name}
+          </Text>
+
+          <Text text40 bold style={CENTER_TEXT}>
+            {store.topOfDeckJoke.title}
+          </Text>
         </View>
 
         <View style={CARDS_CONTAINER} key={store.deepLinkJokeId}>

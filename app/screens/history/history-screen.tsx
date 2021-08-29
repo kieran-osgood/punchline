@@ -7,12 +7,12 @@ import {
 } from "app/graphql/UserJokeHistoryModel"
 import { NavigationProps } from "app/navigators"
 import EmptyStateImage from "assets/images/empty-state-image"
-import { BookmarkButton, Screen, Text } from "components"
+import { BookmarkButton, Screen } from "components"
 import { observer } from "mobx-react-lite"
 import React from "react"
 import { FlatList, StatusBar, View, ViewStyle } from "react-native"
 import Collapsible from "react-native-collapsible"
-import { Button } from "react-native-ui-lib"
+import { Button, Text } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
 const ROOT: ViewStyle = {
@@ -89,8 +89,7 @@ const ListItem = ({ userJokeHistory }: { userJokeHistory: UserJokeHistoryType })
       </View>
       <Collapsible style={COLLAPSIBLE} {...{ collapsed }}>
         <View style={EXPANDED_VIEW}>
-          {/* <Text text="" /> */}
-          <Text text={userJokeHistory.joke.body} />
+          <Text>{userJokeHistory.joke.body}</Text>
         </View>
       </Collapsible>
     </View>
