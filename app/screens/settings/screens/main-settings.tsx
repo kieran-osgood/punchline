@@ -8,7 +8,7 @@ import { observer } from "mobx-react-lite"
 import React from "react"
 import { Linking, StatusBar, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import Toast from "react-native-toast-message"
-import { Button, Switch, Text, View } from "react-native-ui-lib"
+import { Button, Switch, Text, View, ViewPropTypes } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 import {
   AppleSignInButton,
@@ -50,6 +50,16 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
           <Text text80>Push Notifications</Text>
           <Switch onValueChange={toggleSwitch} value={isEnabled} />
         </Divider>
+
+        <Divider row>
+          <Text text80>Email</Text>
+          <Switch onValueChange={toggleSwitch} value={isEnabled} />
+        </Divider>
+
+        <Divider row>
+          <Text text80>Team</Text>
+          <Switch onValueChange={toggleSwitch} value={isEnabled} />
+        </Divider>
       </Section>
 
       <Section title="Account">
@@ -77,10 +87,18 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
         <Divider>
           <Link>Clear Cache Data</Link>
         </Divider>
+      </Section>
 
-        <Divider>
-          <LogoutButton />
-        </Divider>
+      <Section marginT-s5 marginH-s5>
+        <Link>Rate Us</Link>
+      </Section>
+
+      <Section marginT-s5 marginH-s5>
+        <Link>Share Punchline</Link>
+      </Section>
+
+      <Section marginT-s5 marginH-s5>
+        <LogoutButton />
       </Section>
 
       <AppVersion />
@@ -93,10 +111,10 @@ type SectionProps = {
   children: React.ReactNode
   title?: string
   style?: ViewStyle | ViewStyle[]
-}
-const Section = ({ children, title, style }: SectionProps) => {
+} & ViewPropTypes
+const Section = ({ children, title, style, ...rest }: SectionProps) => {
   return (
-    <View {...{ style }}>
+    <View {...{ style }} {...rest}>
       {!!title && <Title>{title}</Title>}
       <View style={SECTION}>{children}</View>
     </View>
