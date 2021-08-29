@@ -1,7 +1,7 @@
+import auth from "@react-native-firebase/auth"
 import {
   AppleSignInButton,
   AppLogo,
-  CenterView,
   FacebookSignInButton,
   GoogleSignInButton,
   GuestSignInButton,
@@ -10,64 +10,13 @@ import {
 } from "components"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { Alert, BackHandler, TextStyle, View, ViewStyle } from "react-native"
+import { Alert, BackHandler, ViewStyle } from "react-native"
 import { widthPercentageToDP } from "react-native-responsive-screen"
-import { Text } from "react-native-ui-lib"
+import { Button, Text, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
-const ROOT: ViewStyle = {
-  backgroundColor: color.background,
-  justifyContent: "space-between",
-  alignItems: "center",
-  paddingBottom: spacing[3],
-}
-
-const APP_LOGO: ViewStyle = {
-  paddingTop: spacing[3],
-}
-
-const COPY: TextStyle = {
-  width: widthPercentageToDP("70"),
-  textAlign: "center",
-}
-export const PILL_BUTTON: ViewStyle = {
-  borderRadius: 100,
-  paddingVertical: spacing[4],
-  paddingHorizontal: spacing[4],
-  backgroundColor: color.palette.white,
-}
-
-export const BUTTON_CONTAINER: ViewStyle = {
-  width: 305,
-  marginVertical: spacing[3],
-}
-
-const TEXT_SEPERATOR: TextStyle = {
-  fontSize: 15,
-  marginVertical: spacing[5],
-}
-
-const COPYRIGHT_TEXT: TextStyle = {
-  paddingBottom: spacing[3],
-  textAlign: "center",
-}
-
-const TEXT_CENTER: TextStyle = {
-  textAlign: "center",
-}
-
-const BUTTONS_CONTAINER: ViewStyle = {
-  flex: 0,
-}
-
-const ROW: ViewStyle = {
-  flexDirection: "row",
-  justifyContent: "space-between",
-  width: "50%",
-}
-
 export const LoginScreen = observer(function LoginScreen() {
-  const [isLoading, setIsLoading] = React.useState(false)
+  const [isLoading, setLoading] = React.useState(false)
 
   React.useEffect(() => {
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
@@ -78,49 +27,84 @@ export const LoginScreen = observer(function LoginScreen() {
     return () => backHandler.remove()
   }, [])
 
+  const setIsLoading = (val: boolean) => setLoading(val)
+
   if (isLoading) {
     return <LoadingModal />
   }
+  const handleTroubleLoggingIn = () => {
+    console.log("print")
+    auth().sendSignInLinkToEmail("kieranbosgood@gmail.com", {
+      handleCodeInApp: true,
+      url: "app/email-login",
+      iOS: {
+        bundleId: "com.ko.punchline",
+      },
+      android: {
+        packageName: "com.ko.punchline",
+        installApp: true,
+        minimumVersion: "12",
+      },
+      dynamicLinkDomain: "app.punch-line.co.uk/login",
+    })
 
+    // const authz = auth()
+    // sendSignInLinkToEmail(auth, email, actionCodeSettings)
+    //   .then(() => {
+    //     // The link was successfully sent. Inform the user.
+    //     // Save the email locally so you don't need to ask the user for it again
+    //     // if they open the link on the same device.
+    //     window.localStorage.setItem("emailForSignIn", email)
+    //     // ...
+    //   })
+    //   .catch((error) => {
+    //     const errorCode = error.code
+    //     const errorMessage = error.message
+    //     // ...
+    //   })
+  }
   return (
     <Screen style={ROOT} preset="fixed" testID="LoginScreen">
-      <AppLogo style={APP_LOGO} />
-
-      <Text h1 style={TEXT_CENTER}>
-        {"Get Started"}
-      </Text>
-      <Text style={COPY}>
-        {
-          "Create an account to save your bookmarked jokes permanently, or continue as a guest to get started right away!"
-        }
-      </Text>
-      <CenterView style={BUTTONS_CONTAINER}>
-        <View style={ROW}>
-          <GoogleSignInButton
-            setIsLoading={(val) => setIsLoading(val)}
-            onSuccess={successPopup}
-            onError={errorPopup}
-          />
-          <FacebookSignInButton
-            setIsLoading={(val) => setIsLoading(val)}
-            onSuccess={successPopup}
-            onError={errorPopup}
-          />
-          <AppleSignInButton
-            setIsLoading={(val) => setIsLoading(val)}
-            onSuccess={successPopup}
-            onError={errorPopup}
-          />
+      <View centerH spread flex-1 width={widthPercentageToDP("60%")}>
+        <View flex-1 centerV>
+          <AppLogo />
         </View>
-        <Text style={TEXT_SEPERATOR}>{"Or"}</Text>
-        <GuestSignInButton />
-      </CenterView>
-      <Text style={COPYRIGHT_TEXT}>{`COPYRIGHT \u00A9 ${new Date().getFullYear()} KO.DEV`}</Text>
+
+        <View flex-2 center width="100%">
+          <Text center>
+            {
+              "Create an account to save your bookmarked jokes permanently, or continue as a guest to get started right away!"
+            }
+          </Text>
+
+          <View width={"100%"} row spread marginV-s6>
+            <GoogleSignInButton {...{ setIsLoading, onSuccess, onError }} />
+            <FacebookSignInButton {...{ setIsLoading, onSuccess, onError }} />
+            <AppleSignInButton {...{ setIsLoading, onSuccess, onError }} />
+          </View>
+
+          <Text marginV-s6>{"Or"}</Text>
+
+          <GuestSignInButton />
+        </View>
+
+        <View marginV-s6>
+          <Button label="Trouble logging in?" link marginB-s3 onPress={handleTroubleLoggingIn} />
+          <Text>{`COPYRIGHT \u00A9 ${new Date().getFullYear()} KO.DEV`}</Text>
+        </View>
+      </View>
     </Screen>
   )
 })
 
-const successPopup = () => {
+const ROOT: ViewStyle = {
+  backgroundColor: color.background,
+  justifyContent: "space-between",
+  alignItems: "center",
+  paddingBottom: spacing[3],
+}
+
+const onSuccess = () => {
   Alert.alert(
     "Success",
     "Successfully linked your account, your bookmarks and history has been transferred to this account.",
@@ -128,7 +112,7 @@ const successPopup = () => {
   )
 }
 
-const errorPopup = () => {
+const onError = () => {
   Alert.alert(
     "Error",
     "Unable to link acccounts, please reload the app and try again or contact support.",
