@@ -51,6 +51,7 @@ export type JokeFilterInput = {
   positiveRating?: ComparableInt32OperationFilterInput
   negativeRating?: ComparableInt32OperationFilterInput
   skipRating?: ComparableInt32OperationFilterInput
+  reportCount?: ComparableInt32OperationFilterInput
   userJokeHistories?: ListFilterInputTypeOfUserJokeHistoryFilterInput
   categories?: ListFilterInputTypeOfCategoryFilterInput
   users?: ListFilterInputTypeOfUserFilterInput
@@ -63,6 +64,7 @@ export type JokeSortInput = {
   positiveRating?: SortEnumType
   negativeRating?: SortEnumType
   skipRating?: SortEnumType
+  reportCount?: SortEnumType
   length?: SortEnumType
 }
 export type CategoryFilterInput = {
@@ -236,8 +238,8 @@ queryUserJokeHistoryByUserId="queryUserJokeHistoryByUserId"
 }
 export enum RootStoreBaseMutations {
 mutateRateJoke="mutateRateJoke",
-mutateDeleteBookmark="mutateDeleteBookmark",
-mutateUpdateBookmark="mutateUpdateBookmark",
+mutateDeleteUserJokeHistory="mutateDeleteUserJokeHistory",
+mutateUpdateUserJokeHistory="mutateUpdateUserJokeHistory",
 mutateLogin="mutateLogin",
 mutateCompleteOnboarding="mutateCompleteOnboarding"
 }
@@ -290,13 +292,13 @@ export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
         ${typeof resultSelector === "function" ? resultSelector(new MutateUserJokeHistoryPayloadModelSelector()).toString() : resultSelector}
       } }`, variables, optimisticUpdate)
     },
-    mutateDeleteBookmark(variables: { id: string }, resultSelector: string | ((qb: MutateUserJokeHistoryPayloadModelSelector) => MutateUserJokeHistoryPayloadModelSelector) = mutateUserJokeHistoryPayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {
-      return self.mutate<{ deleteBookmark: MutateUserJokeHistoryPayloadModelType}>(`mutation deleteBookmark($id: ID!) { deleteBookmark(id: $id) {
+    mutateDeleteUserJokeHistory(variables: { id: string }, resultSelector: string | ((qb: MutateUserJokeHistoryPayloadModelSelector) => MutateUserJokeHistoryPayloadModelSelector) = mutateUserJokeHistoryPayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {
+      return self.mutate<{ deleteUserJokeHistory: MutateUserJokeHistoryPayloadModelType}>(`mutation deleteUserJokeHistory($id: ID!) { deleteUserJokeHistory(id: $id) {
         ${typeof resultSelector === "function" ? resultSelector(new MutateUserJokeHistoryPayloadModelSelector()).toString() : resultSelector}
       } }`, variables, optimisticUpdate)
     },
-    mutateUpdateBookmark(variables: { input: UpdateBookmarkInput }, resultSelector: string | ((qb: MutateUserJokeHistoryPayloadModelSelector) => MutateUserJokeHistoryPayloadModelSelector) = mutateUserJokeHistoryPayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {
-      return self.mutate<{ updateBookmark: MutateUserJokeHistoryPayloadModelType}>(`mutation updateBookmark($input: UpdateBookmarkInput!) { updateBookmark(input: $input) {
+    mutateUpdateUserJokeHistory(variables: { input: UpdateBookmarkInput }, resultSelector: string | ((qb: MutateUserJokeHistoryPayloadModelSelector) => MutateUserJokeHistoryPayloadModelSelector) = mutateUserJokeHistoryPayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {
+      return self.mutate<{ updateUserJokeHistory: MutateUserJokeHistoryPayloadModelType}>(`mutation updateUserJokeHistory($input: UpdateBookmarkInput!) { updateUserJokeHistory(input: $input) {
         ${typeof resultSelector === "function" ? resultSelector(new MutateUserJokeHistoryPayloadModelSelector()).toString() : resultSelector}
       } }`, variables, optimisticUpdate)
     },

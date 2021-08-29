@@ -104,7 +104,7 @@ export const UserJoke = observer(function Bookmark(props: BookmarkProps) {
 
   const handleDelete = () => {
     query.setQuery((store) =>
-      store.mutateDeleteBookmark({ id: bookmark.id }, undefined, () => {
+      store.mutateDeleteUserJokeHistory({ id: bookmark.id }, undefined, () => {
         query.store.removeChild(bookmark)
       }),
     )

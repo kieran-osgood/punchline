@@ -27,7 +27,7 @@ export const UserJokeHistoryModel = UserJokeHistoryModelBase.views((self) => ({
     console.log(JSON.stringify(self))
   },
   toggleBookmark() {
-    const query = self.api.mutateUpdateBookmark(
+    const query = self.api.mutateUpdateUserJokeHistory(
       {
         input: {
           id: self.id,

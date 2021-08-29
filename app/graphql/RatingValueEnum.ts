@@ -10,6 +10,7 @@ import { types } from "mobx-state-tree"
 export enum RatingValue {
   SKIP="SKIP",
 GOOD="GOOD",
+REPORTED="REPORTED",
 BAD="BAD"
 }
 
@@ -19,5 +20,6 @@ BAD="BAD"
 export const RatingValueEnumType = types.enumeration("RatingValue", [
         "SKIP",
   "GOOD",
+  "REPORTED",
   "BAD",
       ])
