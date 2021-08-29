@@ -3,9 +3,9 @@ import { SortEnumType } from "app/graphql/SortEnumTypeEnum"
 import { Blocked, SIZE } from "assets/images/blocked"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { TextStyle, TouchableOpacity, View, ViewStyle } from "react-native"
+import { TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import { SvgUri } from "react-native-svg"
-import { Text } from "react-native-ui-lib"
+import { Text, ThemeManager, View } from "react-native-ui-lib"
 import { color, spacing, typography } from "../../theme"
 
 export interface CategorySettingProps {
@@ -30,14 +30,12 @@ export const CategorySetting = observer(function CategorySetting(props: Category
   )
 
   return (
-    <View style={[CONTAINER, style]}>
-      <Text text70 bold>
+    <View style={[CONTAINER, style]} center>
+      <Text text60 bold center>
         {"Category Filter"}
       </Text>
-      <Text>
-        <Text>{"Select categories you "}</Text>
-        <Text bold>{"don't "}</Text>
-        <Text>{"wish to see"}</Text>
+      <Text center marginV-s2 highlightString="don't" highlightStyle={HIGHLIGHT_STYLE}>
+        {"Select categories you don't wish to see"}
       </Text>
 
       <View style={CATEGORIES}>
@@ -48,7 +46,10 @@ export const CategorySetting = observer(function CategorySetting(props: Category
     </View>
   )
 })
-
+const HIGHLIGHT_STYLE: TextStyle = {
+  fontWeight: "bold",
+  color: ThemeManager.titleColor,
+}
 const CONTAINER: ViewStyle = {
   justifyContent: "center",
   paddingTop: spacing[3],

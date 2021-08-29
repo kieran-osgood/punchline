@@ -1,6 +1,7 @@
-import { CategorySetting } from "components"
+import { CategorySetting, Screen } from "components"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
+import { View } from "react-native-ui-lib"
 
 type CategorySettingScreenProps = {}
 
@@ -8,9 +9,11 @@ export const CategorySettingScreen = observer(function CategorySettingScreen(
   props: CategorySettingScreenProps,
 ) {
   return (
-    <>
-      <CategorySetting />
-    </>
+    <Screen preset="scroll" backgroundColor="white" unsafe>
+      <View paddingH-s5>
+        <CategorySetting />
+      </View>
+    </Screen>
   )
 })
 
