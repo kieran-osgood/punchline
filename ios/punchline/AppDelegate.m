@@ -13,6 +13,7 @@
 #import <Firebase.h>
 #import <React/RCTLinkingManager.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import "RNBootSplash.h"
 // MANUAL INSTALL
 
 #ifdef FB_SONARKIT_ENABLED
@@ -75,7 +76,9 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  
+
+  [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView];
+
   return YES;
 }
 

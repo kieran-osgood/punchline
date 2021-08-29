@@ -10,6 +10,7 @@ import { RootStore, RootStoreProvider, setupRootStore, useStores } from "app/mod
 import { AsyncStorage } from "app/utils/storage/async-storage"
 import { observer } from "mobx-react-lite"
 import React, { useEffect, useRef, useState } from "react"
+import RNBootSplash from "react-native-bootsplash"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
 import { ConnectionStatusBar } from "react-native-ui-lib"
 import { ToggleStorybook } from "../storybook/toggle-storybook"
@@ -22,7 +23,6 @@ import {
   useNavigationPersistence,
 } from "./navigators"
 import "./utils/ignore-warnings"
-// import { initFonts } from "./theme/fonts" // expo
 import * as storage from "./utils/storage"
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
@@ -41,17 +41,6 @@ const App = observer(function App() {
     NAVIGATION_PERSISTENCE_KEY,
   )
 
-  // useEffect(() => {
-  //   const init = async () => {
-  //     // …do multiple sync or async tasks
-  //   }
-
-  //   init().finally(async () => {
-  //     await RNBootSplash.hide({ fade: true })
-  //     console.log("Bootsplash has been hidden successfully")
-  //   })
-  // }, [])
-
   // Kick off initial async loading actions, like RootStore
   useEffect(() => {
     ;(async () => {
@@ -59,7 +48,9 @@ const App = observer(function App() {
         newRootStore.userStore.updateUser(auth().currentUser)
         setRootStore(newRootStore)
       })
-    })()
+    })().finally(async () => {
+      await RNBootSplash.hide({ fade: true })
+    })
   }, [])
 
   const resetStores = async () => {
@@ -74,10 +65,9 @@ const App = observer(function App() {
       __DEV__ && console.tron.log!("error logging out: ", error)
     }
   }
-  // const [connected, setConnected] = React.useState({ isConnected: false })
 
   // Wait for state to load from AsyncStorage
-  if (!rootStore || !rootStore.api) return null
+  if (!rootStore) return null
 
   return (
     <ToggleStorybook>
@@ -93,9 +83,6 @@ const App = observer(function App() {
                 initialState={initialNavigationState}
                 onStateChange={onNavigationStateChange}
               />
-              {/* <Text text20 color="pink">
-                {String(connected.isConnected)}
-              </Text> */}
             </SafeAreaProvider>
           </Authorization>
         </GraphQLStoreContext.Provider>
