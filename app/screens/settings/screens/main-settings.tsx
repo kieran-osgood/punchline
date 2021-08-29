@@ -22,9 +22,8 @@ const packageJson = require("package.json")
 const MARGINS = spacing[4]
 
 export const MainSettingsScreen = observer(function MainSettingsScreen() {
-  const [isEnabled, setIsEnabled] = React.useState(false)
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState)
   const navigation = useNavigation<SettingsStackProps<"Main">["navigation"]>()
+  const { settings } = useStores()
 
   return (
     <Screen style={ROOT} preset="scroll" unsafe>
@@ -41,24 +40,36 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
 
         <Divider row>
           <Text text80>Profanity Filter</Text>
-          <Switch onValueChange={toggleSwitch} value={isEnabled} />
+          <Switch
+            onValueChange={() => settings.setProfanityFilter(!settings.profanityFilter)}
+            value={settings.profanityFilter}
+          />
         </Divider>
       </Section>
 
       <Section title="Notifications">
         <Divider row>
           <Text text80>Push Notifications</Text>
-          <Switch onValueChange={toggleSwitch} value={isEnabled} />
+          <Switch
+            onValueChange={() => settings.setNotification("push", !settings.notifications.push)}
+            value={settings.notifications.push}
+          />
         </Divider>
 
         <Divider row>
           <Text text80>Email</Text>
-          <Switch onValueChange={toggleSwitch} value={isEnabled} />
+          <Switch
+            onValueChange={() => settings.setNotification("email", !settings.notifications.email)}
+            value={settings.notifications.email}
+          />
         </Divider>
 
         <Divider row>
           <Text text80>Team</Text>
-          <Switch onValueChange={toggleSwitch} value={isEnabled} />
+          <Switch
+            onValueChange={() => settings.setNotification("team", !settings.notifications.team)}
+            value={settings.notifications.team}
+          />
         </Divider>
       </Section>
 

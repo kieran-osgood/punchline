@@ -4,8 +4,8 @@ import { useStores } from "app/models"
 import { observer } from "mobx-react-lite"
 import { MotiTransitionProp, MotiView } from "moti"
 import * as React from "react"
-import { TextStyle, View, ViewStyle } from "react-native"
-import { Text } from "react-native-ui-lib"
+import { ViewStyle } from "react-native"
+import { Text, View } from "react-native-ui-lib"
 import { CARD_SHADOW, VerticalCheckboxes } from "../"
 import { color, spacing } from "../../theme"
 
@@ -27,38 +27,31 @@ export const JokeLengthSetting = observer(function JokeLengthSetting(
   props: JokeLengthSettingProps,
 ) {
   const { style } = props
-  const { userStore } = useStores()
+  const { settings } = useStores()
 
   return (
-    <View style={[CONTAINER, style]}>
-      <Text text70 bold style={TITLE}>
+    <View {...{ style }} center paddingV-s9 paddingH-s5>
+      <Text text60 bold marginB-s7>
         {"Joke Length"}
       </Text>
-      <View style={ROW}>
-        <JokePreview selected={userStore.jokeLengthMax} />
+      <View row>
+        <JokePreview selected={settings.jokeLengthMax} />
         <VerticalCheckboxes
-          data={userStore.checkboxMap}
-          style={{ width: "50%" }}
-          onPress={(value, isChecked) => {
-            userStore.toggleJokeLength(value, isChecked)
-          }}
+          data={settings.checkboxMap}
+          style={VERTICAL_BOXES}
+          onPress={(value, isChecked) => settings.toggleJokeLength(value, isChecked)}
         />
       </View>
     </View>
   )
 })
 
-const CONTAINER: ViewStyle = {
-  justifyContent: "center",
-  paddingTop: spacing[3],
-}
-const ROW: ViewStyle = {
-  flexDirection: "row",
+const VERTICAL_BOXES: ViewStyle = {
+  width: "50%",
 }
 
 const transition: MotiTransitionProp = {}
 const colorMode = "light"
-
 type JokePreviewProps = {
   selected: number
 }
@@ -86,9 +79,6 @@ export const JokePreview = (props: JokePreviewProps) => {
   )
 }
 
-const TITLE: TextStyle = {
-  marginBottom: spacing[2],
-}
 const PREVIEW: ViewStyle = {
   borderWidth: 1,
   borderRadius: spacing[4],
