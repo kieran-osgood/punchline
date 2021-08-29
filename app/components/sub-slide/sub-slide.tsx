@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { TextStyle, View, ViewStyle } from "react-native"
-import { Button, Text } from "react-native-ui-lib"
-import { color, spacing } from "theme"
+import { ViewStyle } from "react-native"
+import { Button, Text, ThemeManager, View } from "react-native-ui-lib"
+import { color } from "theme"
 
 export interface SubSlideProps {
   /**
@@ -21,43 +21,24 @@ export const SubSlide = observer(function SubSlide(props: SubSlideProps) {
   const { subtitle, description, last, onPress } = props
 
   return (
-    <View style={CONTAINER}>
-      <Text h3 style={SUBTITLE}>
+    <View center padding-s9 flex-1>
+      <Text text50 marginB-s3 center>
         {subtitle}
       </Text>
-      <Text style={DESCRIPTION}>{description}</Text>
+      <Text marginB-s8 center>
+        {description}
+      </Text>
       <Button
         label={last ? "Let's get started" : "Next"}
-        style={last ? {} : BUTTON}
-        // textStyle={BUTTON_TEXT}
+        backgroundColor={last ? ThemeManager.primaryColor : color.line}
+        color={color.text}
+        labelStyle={{ color: last ? ThemeManager.CTATextColor : ThemeManager.titleColor }}
         {...{ onPress }}
       />
     </View>
   )
 })
 
-const CONTAINER: ViewStyle = {
-  alignItems: "center",
-  flex: 1,
-  justifyContent: "center",
-  padding: 44,
-}
-const DESCRIPTION: TextStyle = {
-  color: "#0C0D34",
-  marginBottom: 40,
-  textAlign: "center",
-}
-const SUBTITLE: TextStyle = {
-  marginBottom: 12,
-  textAlign: "center",
-}
-const BUTTON_TEXT: TextStyle = {
-  color: color.text,
-  fontSize: 15,
-}
 const BUTTON: ViewStyle = {
   backgroundColor: color.line,
-  borderRadius: 75,
-  paddingVertical: spacing[3],
-  paddingHorizontal: spacing[6],
 }
