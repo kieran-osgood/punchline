@@ -19,9 +19,10 @@ export interface HeaderProps {
  */
 export const Header = observer(function Header({ navigation, left, right }: HeaderProps) {
   const insets = useSafeAreaInsets()
+  const style = { paddingTop: insets.top < 30 ? 30 : insets.top }
 
   return (
-    <View style={[CONTAINER, { paddingTop: insets.top }]}>
+    <View style={[CONTAINER, style]}>
       <View style={COL}>
         {left === "back" && (
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -52,7 +53,7 @@ const CONTAINER: ViewStyle = {
   flexDirection: "row",
   justifyContent: "space-between",
   paddingHorizontal: 25,
-  paddingBottom: 20,
+  paddingBottom: 15,
   backgroundColor: color.background,
   borderBottomColor: color.line,
   borderBottomWidth: StyleSheet.hairlineWidth,
