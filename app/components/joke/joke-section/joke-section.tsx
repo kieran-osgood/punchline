@@ -53,7 +53,10 @@ export const JokeSection = observer(function JokeSection(props: JokeSectionProps
   const [bookmarked, setBookmarked] = React.useState(false)
   const swiper = React.useRef<Swiper<JokeModelType>>(null)
   const { data } = useQuery((store) =>
-    store.queryJokes({ jokeLength: JokeLength.MEDIUM }, nodes(jokeModelPrimitives)),
+    store.queryJokes(
+      { jokeLength: JokeLength.MEDIUM, blockedCategoryIds: [] },
+      nodes(jokeModelPrimitives),
+    ),
   )
   if (!data?.jokes) return null
   const { jokes } = data
@@ -102,7 +105,7 @@ export const JokeSection = observer(function JokeSection(props: JokeSectionProps
   )
 })
 
-const JokeCard = ({ joke }: { joke: JokeModelType }) => {
+const JokeCard = ({ joke }: { joke?: JokeModelType }) => {
   const ref = React.useRef<ScrollView>(null)
   if (joke === undefined) return null
 
@@ -127,17 +130,11 @@ const JokeCard = ({ joke }: { joke: JokeModelType }) => {
             .map((x) => x.charAt(0).toUpperCase() + x.substr(1))
             .join("\n")}
         </Text>
-        {/* {joke.category ? (
-          <View style={CATEGORY_SECTION}>
-            <Text text="Category: " />
-            <Text style={CATEGORY_PILL} text={joke.category} />
-          </View>
-        ) : null} */}
-        <View></View>
       </ScrollView>
     </View>
   )
 }
+
 const SCROLL_VIEW_STYLE: ViewStyle = {
   alignItems: "center",
   marginTop: spacing[2],
@@ -145,7 +142,6 @@ const SCROLL_VIEW_STYLE: ViewStyle = {
   minHeight: "84%",
   paddingBottom: hp("5%"),
 }
-
 const JOKE_TITLE: TextStyle = {
   color: color.storybookDarkBg,
   textAlign: "center",
@@ -156,19 +152,4 @@ const JOKE_TEXT: TextStyle = {
   padding: spacing[2],
   paddingBottom: "5%",
   textAlign: "center",
-}
-const CATEGORY_SECTION: ViewStyle = {
-  width: "100%",
-  flexDirection: "row",
-  paddingHorizontal: spacing[3],
-  alignItems: "center",
-  justifyContent: "center",
-}
-const CATEGORY_PILL: TextStyle = {
-  color: color.text,
-  backgroundColor: color.line,
-  paddingVertical: spacing[1],
-  paddingHorizontal: spacing[3],
-  borderRadius: 30,
-  borderColor: color.text,
 }
