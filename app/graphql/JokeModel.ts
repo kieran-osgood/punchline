@@ -36,6 +36,7 @@ export const JokeModel = JokeModelBase.props({
       const query = self.api.mutateRateJoke(
         {
           input: {
+            // joke.id not needed to pass in? self.joke.id
             jokeId: joke.id,
             rating: rating,
             bookmarked,

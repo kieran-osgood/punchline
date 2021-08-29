@@ -204,6 +204,11 @@ export type UserLoginInput = {
   firebaseUid: string
   username: string
 }
+export type UpdateBookmarkInput = {
+  id: string
+  rating?: RatingValue
+  bookmarked?: boolean
+}
 export type RateJokeInput = {
   jokeId: string
   rating: RatingValue
@@ -232,6 +237,7 @@ queryUserJokeHistoryByUserId="queryUserJokeHistoryByUserId"
 export enum RootStoreBaseMutations {
 mutateRateJoke="mutateRateJoke",
 mutateDeleteBookmark="mutateDeleteBookmark",
+mutateUpdateBookmark="mutateUpdateBookmark",
 mutateLogin="mutateLogin",
 mutateCompleteOnboarding="mutateCompleteOnboarding"
 }
@@ -286,6 +292,11 @@ export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
     },
     mutateDeleteBookmark(variables: { id: string }, resultSelector: string | ((qb: MutateUserJokeHistoryPayloadModelSelector) => MutateUserJokeHistoryPayloadModelSelector) = mutateUserJokeHistoryPayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {
       return self.mutate<{ deleteBookmark: MutateUserJokeHistoryPayloadModelType}>(`mutation deleteBookmark($id: ID!) { deleteBookmark(id: $id) {
+        ${typeof resultSelector === "function" ? resultSelector(new MutateUserJokeHistoryPayloadModelSelector()).toString() : resultSelector}
+      } }`, variables, optimisticUpdate)
+    },
+    mutateUpdateBookmark(variables: { input: UpdateBookmarkInput }, resultSelector: string | ((qb: MutateUserJokeHistoryPayloadModelSelector) => MutateUserJokeHistoryPayloadModelSelector) = mutateUserJokeHistoryPayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {
+      return self.mutate<{ updateBookmark: MutateUserJokeHistoryPayloadModelType}>(`mutation updateBookmark($input: UpdateBookmarkInput!) { updateBookmark(input: $input) {
         ${typeof resultSelector === "function" ? resultSelector(new MutateUserJokeHistoryPayloadModelSelector()).toString() : resultSelector}
       } }`, variables, optimisticUpdate)
     },

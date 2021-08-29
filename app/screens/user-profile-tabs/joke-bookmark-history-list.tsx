@@ -3,8 +3,9 @@ import {
   RootStoreType,
   useQuery,
   UserJokeHistoryConnectionModelType,
-  UserJokeHistoryModelType
+  UserJokeHistoryModelType,
 } from "app/graphql"
+import { useStores } from "app/models"
 import { NavigationProps } from "app/navigators"
 import EmptyStateImage from "assets/images/empty-state-image"
 import { TrashCan } from "assets/images/trash-can"
@@ -19,7 +20,7 @@ import {
   RefreshControl,
   StatusBar,
   TextStyle,
-  ViewStyle
+  ViewStyle,
 } from "react-native"
 import { RectButton, Swipeable } from "react-native-gesture-handler"
 import Animated, {
@@ -27,14 +28,14 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
   withSpring,
-  withTiming
+  withTiming,
 } from "react-native-reanimated"
 import { mix, mixColor } from "react-native-redash"
 import Svg, { Path } from "react-native-svg"
 import { Card, ExpandableSection, Text, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
-export type BookmarksScreenProps = {
+export type UserJokeListProps = {
   type: "HISTORY" | "BOOKMARK"
   query: UseQueryHookResult<
     RootStoreType,
@@ -44,17 +45,15 @@ export type BookmarksScreenProps = {
   >
 }
 
-export const JokeBookmarkHistoryList = observer(function JokeBookmarkHistoryList(
-  props: BookmarksScreenProps,
-) {
+export const UserJokeList = observer(function JokeBookmarkHistoryList(props: UserJokeListProps) {
   const { type } = props
-  const { query, data } = props.query
+  const { query } = props.query
   const navigation = useNavigation<NavigationProps<"UserProfileTabs">["navigation"]>()
   const [refreshing, setRefreshing] = React.useState(false)
+  const store = useStores()
 
-  const hasData =
-    typeof data?.userJokeHistoryByUserId !== "undefined" &&
-    data.userJokeHistoryByUserId.nodes.length > 0
+  const data =
+    type === "BOOKMARK" ? store.api.bookmarkedJokes : [...store.api.userJokeHistories.values()]
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true)
@@ -66,12 +65,12 @@ export const JokeBookmarkHistoryList = observer(function JokeBookmarkHistoryList
     <Screen style={ROOT} preset="fixed" unsafe>
       <StatusBar barStyle="dark-content" />
 
-      {hasData ? (
+      {data.length > 0 ? (
         <FlatList
           refreshControl={<RefreshControl {...{ refreshing, onRefresh }} />}
-          data={data.userJokeHistoryByUserId.nodes}
+          data={data}
           renderItem={({ item: bookmark }) => (
-            <Bookmark key={bookmark.id} {...{ bookmark, type }} />
+            <UserJoke key={bookmark.id} {...{ bookmark, type }} />
           )}
         />
       ) : (
@@ -93,9 +92,9 @@ const ROOT: ViewStyle = {
 
 type BookmarkProps = {
   bookmark: UserJokeHistoryModelType
-  type: BookmarksScreenProps["type"]
+  type: UserJokeListProps["type"]
 }
-export const Bookmark = observer(function Bookmark(props: BookmarkProps) {
+export const UserJoke = observer(function Bookmark(props: BookmarkProps) {
   const { bookmark, type } = props
   const [expanded, setExpanded] = React.useState(false)
   const query = useQuery()
@@ -111,7 +110,7 @@ export const Bookmark = observer(function Bookmark(props: BookmarkProps) {
   }
 
   const onPress = () => {
-    // Add bookmark
+    bookmark.toggleBookmark()
   }
 
   return (

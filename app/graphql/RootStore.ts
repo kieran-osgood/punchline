@@ -67,6 +67,9 @@ export const RootStore = RootStoreBase.props({
 
       return this.nonViewedJokes[this.nonViewedJokes.length - 1]
     },
+    get bookmarkedJokes() {
+      return [...self.userJokeHistories.values()].filter((x) => x.bookmarked)
+    },
   }))
 
 export const nodes = (val: any, ...rest: string[]) =>

@@ -1,4 +1,4 @@
-import { BookmarksScreenProps } from "app/screens/user-profile-tabs/joke-bookmark-history-list"
+import { UserJokeListProps } from "app/screens/user-profile-tabs/joke-bookmark-history-list"
 import { BookmarkButton } from "components"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
@@ -15,7 +15,7 @@ export interface EmptyStateProps {
   body?: string | JSX.Element
   ctaText?: string
   onPress: () => void
-  type?: BookmarksScreenProps["type"]
+  type?: UserJokeListProps["type"]
 }
 
 /**
@@ -42,10 +42,7 @@ export const EmptyState = observer(function EmptyState(props: EmptyStateProps) {
   )
 })
 
-export const EmptyStates: Record<
-  BookmarksScreenProps["type"],
-  { title: string; ctaText: string }
-> = {
+export const EmptyStates: Record<UserJokeListProps["type"], { title: string; ctaText: string }> = {
   BOOKMARK: {
     title: "No Bookmarks!",
     ctaText: "Go save some jokes!",
@@ -56,7 +53,7 @@ export const EmptyStates: Record<
   },
 }
 
-const Body = ({ type }: { type?: BookmarksScreenProps["type"] }) => {
+const Body = ({ type }: { type?: UserJokeListProps["type"] }) => {
   return (
     <>
       {type === "BOOKMARK" && (
