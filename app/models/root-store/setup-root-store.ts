@@ -90,6 +90,5 @@ function initialiseVoidServices() {
     environment: process.env.NODE_ENV,
     attachStacktrace: true,
     autoSessionTracking: true,
-    enabled: !__DEV__,
   })
 }

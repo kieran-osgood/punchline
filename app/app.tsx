@@ -4,6 +4,8 @@
  */
 import auth from "@react-native-firebase/auth"
 import { NavigationContainerRef } from "@react-navigation/native"
+import * as Sentry from "@sentry/react-native"
+import { FallbackRender } from "@sentry/react/dist/errorboundary"
 import { categoryModelPrimitives, nodes } from "app/graphql"
 import { StoreContext as GraphQLStoreContext, useQuery } from "app/graphql/reactUtils"
 import { RootStore, RootStoreProvider, setupRootStore, useStores } from "app/models"
@@ -11,8 +13,10 @@ import { AsyncStorage } from "app/utils/storage/async-storage"
 import { observer } from "mobx-react-lite"
 import React, { useEffect, useRef, useState } from "react"
 import RNBootSplash from "react-native-bootsplash"
+import { widthPercentageToDP } from "react-native-responsive-screen"
+import RNRestart from "react-native-restart"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
-import { ConnectionStatusBar } from "react-native-ui-lib"
+import { Button, ConnectionStatusBar, Text, View } from "react-native-ui-lib"
 import { ToggleStorybook } from "../storybook/toggle-storybook"
 import "./i18n"
 import {
@@ -67,6 +71,7 @@ const App = observer(function App() {
       const newRootStore = await setupRootStore()
       newRootStore.userStore.updateUser(auth().currentUser)
       setRootStore(newRootStore)
+      await AsyncStorage.clear()
     } catch (error) {
       __DEV__ && console.tron.log!("error logging out: ", error)
     }
@@ -84,11 +89,18 @@ const App = observer(function App() {
               <ConnectionStatusBar
               // onConnectionChange={(isConnected) => setConnected({ isConnected })}
               />
-              <RootNavigator
-                ref={navigationRef}
-                initialState={initialNavigationState}
-                onStateChange={onNavigationStateChange}
-              />
+              <Sentry.ErrorBoundary
+                fallback={ErrorFallback}
+                // beforeCapture={(scope) => {
+                //   scope.setTag("location", "app.tsx")
+                // }}
+              >
+                <RootNavigator
+                  ref={navigationRef}
+                  initialState={initialNavigationState}
+                  onStateChange={onNavigationStateChange}
+                />
+              </Sentry.ErrorBoundary>
             </SafeAreaProvider>
           </Authorization>
         </GraphQLStoreContext.Provider>
@@ -128,4 +140,24 @@ const Authorization = ({ children }: { children: React.ReactNode }) => {
   // if (store.accessToken == null) return null
 
   return <>{children}</>
+}
+
+const ErrorFallback: FallbackRender = ({ resetError }) => {
+  const onPress = () => {
+    RNRestart.Restart()
+    resetError()
+  }
+
+  return (
+    <View flex-1 center>
+      <View center width={widthPercentageToDP("70%")}>
+        <Text text20BO>{"Oops"}</Text>
+        <Text center marginT-s3>
+          {"Looks like that punchline flopped!\n"}
+          {"We've logged this to our team, so please try again.\n\n"}
+        </Text>
+        <Button label="Restart" marginT-s3 {...{ onPress }} />
+      </View>
+    </View>
+  )
 }

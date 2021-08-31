@@ -399,6 +399,8 @@ PODS:
     - React-Core
   - react-native-netinfo (6.0.1):
     - React-Core
+  - react-native-restart (0.0.22):
+    - React-Core
   - react-native-safe-area-context (3.2.0):
     - React-Core
   - react-native-splash-screen (3.2.0):
@@ -532,18 +534,18 @@ PODS:
   - RNScreens (3.4.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (2.4.2):
+  - RNSentry (2.6.2):
     - React-Core
-    - Sentry (= 6.1.4)
+    - Sentry (= 7.1.4)
   - RNShare (7.0.0):
     - React-Core
   - RNSVG (12.1.1):
     - React
   - RNVectorIcons (8.1.0):
     - React-Core
-  - Sentry (6.1.4):
-    - Sentry/Core (= 6.1.4)
-  - Sentry/Core (6.1.4)
+  - Sentry (7.1.4):
+    - Sentry/Core (= 7.1.4)
+  - Sentry/Core (7.1.4)
   - UMAppLoader (1.3.0)
   - UMBarCodeScannerInterface (5.3.0)
   - UMCameraInterface (5.3.0)
@@ -615,6 +617,7 @@ DEPENDENCIES:
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -750,6 +753,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-get-random-values"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-restart:
+    :path: "../node_modules/react-native-restart"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-splash-screen:
@@ -902,6 +907,7 @@ SPEC CHECKSUMS:
   react-native-fbsdk-next: 19e974b071047b7ed1dad86a9dc3fe77dff76b8c
   react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
   react-native-netinfo: 7cb7877ff31ebeb3d03ce0b4fbb616f121ddd859
+  react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   React-perflogger: aad6d4b4a267936b3667260d1f649b6f6069a675
@@ -931,11 +937,11 @@ SPEC CHECKSUMS:
   RNKeychain: b8e0711b959a19c5b057d1e970d3c83d159b6da5
   RNReanimated: 9c13c86454bfd54dab7505c1a054470bfecd2563
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
-  RNSentry: e86fb2e2fec0365644f4b582938bf66be515acce
+  RNSentry: 68644ef607b780551cc555f084869764f2566652
   RNShare: 00e7409201e3cab13e0febc41fd4465a83ae8225
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
-  Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
+  Sentry: 1d3eb1a25f8c5333c88dd5603904a6d461cd9fcf
   UMAppLoader: 5db5dc03176c6238da9c8b3657a370137882a4ad
   UMBarCodeScannerInterface: 017672479f93de88d94c3a50dfb66b5348b65989
   UMCameraInterface: 22bd2c4bf15dcf68530368fa5704af7490818457
@@ -954,4 +960,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 278f66449ba2fcd68e270b95282627fa63923ccb
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.2
