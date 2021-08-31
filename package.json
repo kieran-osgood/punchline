@@ -29,7 +29,8 @@
     "postinstall": "node ./bin/postInstall",
     "build-ios": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios",
     "build-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
-    "mst-gql": "mst-gql"
+    "mst-gql": "mst-gql",
+    "bootsplash": "yarn react-native generate-bootsplash assets/bootsplash/splash.png --background-color=FFF --logo-width=100 --assets-path=assets/bootsplash --flavor=main"
   },
   "dependencies": {
     "@invertase/react-native-apple-authentication": "^2.1.2",
