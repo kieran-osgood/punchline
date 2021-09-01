@@ -7,7 +7,7 @@ import { Logout } from "assets/images/logout"
 import RightArrow from "assets/images/right-arrow"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { Alert, Linking, StatusBar, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
+import { Alert, StatusBar, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import Toast from "react-native-toast-message"
 import { Button, Switch, Text, ThemeManager, View, ViewPropTypes } from "react-native-ui-lib"
 import { color, spacing } from "theme"
@@ -227,10 +227,8 @@ const SECTION: ViewStyle = {
 
 const LogoutButton = () => {
   const { resetStores } = useStores()
-  const onPress = () => {
-    resetStores()
-    AsyncStorage.clear()
-  }
+  const onPress = () => resetStores()
+
   return (
     <Button
       label="Logout"
@@ -275,13 +273,14 @@ const LoginConversion = () => {
 }
 
 const BugReport = () => {
-  const mail = `mailto:ko.dev.issues@gmail.com?subject=Punchline Bug Report AppID: ${packageJson.version} Env: ${process.env.NODE_ENV}&body=App Version: ${packageJson.version}, ${process.env.NODE_ENV}\n\nPlease explain the issue you experienced.`
+  const navigation = useNavigation<SettingsStackProps<"Main">["navigation"]>()
+
   return (
     <Button
       label="Bug Report"
       red10
       backgroundColor="transparent"
-      onPress={() => Linking.openURL(mail)}
+      onPress={() => navigation.navigate("BugReport")}
     />
   )
 }

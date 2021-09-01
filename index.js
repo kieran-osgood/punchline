@@ -1,3 +1,5 @@
+import * as Sentry from '@sentry/react-native'
+import { AppRegistry } from "react-native"
 import 'react-native-gesture-handler'
 // This is the first file that ReactNative will run when it starts up.
 //
@@ -9,7 +11,6 @@ import 'react-native-gesture-handler'
 //
 // It's easier just to leave it here.
 import App from "./app/app.tsx"
-import { AppRegistry } from "react-native"
 
-AppRegistry.registerComponent("punchline", () => App)
+AppRegistry.registerComponent("punchline", () => Sentry.withTouchEventBoundary(App))
 export default App

@@ -31,7 +31,7 @@ export const EmptyState = observer(function EmptyState(props: EmptyStateProps) {
         {type ? EmptyStates[type].title : title}
       </Text>
       {typeof body === "string" ? (
-        <Text center text70 marginT-s2>
+        <Text center text70 marginV-s4>
           {body}
         </Text>
       ) : (

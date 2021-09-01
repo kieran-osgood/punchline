@@ -8,6 +8,7 @@
 import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs"
 import { RouteProp } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
+import { BugReportScreen } from "app/screens"
 import CategorySettingScreen from "app/screens/settings/screens/category-setting"
 import JokeLengthScreen from "app/screens/settings/screens/joke-length-setting"
 import { MainSettingsScreen } from "app/screens/settings/screens/main-settings"
@@ -31,6 +32,7 @@ export type SettingsRouteParamList = {
   Main: undefined
   Category: undefined
   JokeLength: undefined
+  BugReport: undefined
 }
 
 export type SettingsStackProps<T extends keyof SettingsRouteParamList> = {
@@ -52,6 +54,7 @@ export const SettingsStack = observer(function SettingsNavigator() {
       <Stack.Screen name="Main" component={MainSettingsScreen} />
       <Stack.Screen name="Category" component={CategorySettingScreen} />
       <Stack.Screen name="JokeLength" component={JokeLengthScreen} />
+      <Stack.Screen name="BugReport" component={BugReportScreen} />
     </Stack.Navigator>
   )
 })
