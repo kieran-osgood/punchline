@@ -8,17 +8,18 @@ interface AppLogoProps {
   style?: StyleProp<ViewStyle>
   width?: number
   height?: number
+  color?: string
 }
 
 /**
  * Describe your component here
  */
 export const AppLogo = observer(function AppLogo(props: AppLogoProps) {
-  const { style = {}, width = 200, height = 40 } = props
+  const { style = {}, width = 200, height = 40, color = "#000" } = props
 
   return (
     <View style={[CONTAINER, style]} testID="Logo" center>
-      <Punchline width={width} height={height} />
+      <Punchline width={width} height={height} color={color} />
     </View>
   )
 })
