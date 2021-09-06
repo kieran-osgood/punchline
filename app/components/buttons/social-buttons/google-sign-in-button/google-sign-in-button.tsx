@@ -1,6 +1,6 @@
 import { GoogleSignin } from "@react-native-community/google-signin"
 import auth from "@react-native-firebase/auth"
-import { ICON_BUTTON } from "app/components/buttons/social-buttons"
+import { ICON_BUTTON, ICON_BUTTON_LABEL } from "app/components/buttons/social-buttons"
 import { useStores } from "app/models"
 import { Google as GoogleIcon } from "assets/images"
 import { observer } from "mobx-react-lite"
@@ -66,12 +66,12 @@ export const GoogleSignInButton = observer(function GoogleSignInButton(
 
   return (
     <Button
-      style={ICON_BUTTON}
-      iconSource={() => <GoogleIcon scale={1.6} />}
-      onPress={() => handlePress()}
-      round
-      size={Button.sizes.large}
       enableShadow
+      style={ICON_BUTTON}
+      label="Sign in with Google"
+      labelStyle={ICON_BUTTON_LABEL}
+      onPress={() => handlePress()}
+      iconSource={() => <GoogleIcon scale={1.2} />}
     />
   )
 })

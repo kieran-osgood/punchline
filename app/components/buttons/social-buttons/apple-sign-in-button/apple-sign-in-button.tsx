@@ -1,7 +1,7 @@
 // import { GoogleSignin } from "@react-native-community/google-signin"
 import { appleAuth, appleAuthAndroid } from "@invertase/react-native-apple-authentication"
 import auth from "@react-native-firebase/auth"
-import { ICON_BUTTON } from "app/components/buttons/social-buttons"
+import { ICON_BUTTON, ICON_BUTTON_LABEL } from "app/components/buttons/social-buttons"
 import { useStores } from "app/models"
 import { Apple } from "assets/images/apple"
 import { observer } from "mobx-react-lite"
@@ -161,8 +161,9 @@ export const AppleSignInButton = observer(function AppleSigninButton(
           style={ICON_BUTTON}
           iconSource={() => <Apple scale={0.01} />}
           onPress={handlePress}
-          round
           enableShadow
+          label="Sign in with Apple"
+          labelStyle={ICON_BUTTON_LABEL}
         />
       )}
     </>

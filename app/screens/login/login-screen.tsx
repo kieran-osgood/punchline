@@ -66,7 +66,7 @@ export const LoginScreen = observer(function LoginScreen() {
   }
   return (
     <Screen style={ROOT} preset="fixed" testID="LoginScreen">
-      <View centerH spread flex-1 width={widthPercentageToDP("60%")}>
+      <View centerH spread flex-1 width={widthPercentageToDP("70%")}>
         <View flex-1 centerV>
           <AppLogo
             // color="white"
@@ -80,7 +80,7 @@ export const LoginScreen = observer(function LoginScreen() {
             {"Create an account to save jokes and preferences"}
           </Text>
 
-          <View width={"100%"} row spread marginV-s6>
+          <View width={"100%"} spread marginV-s6>
             <GoogleSignInButton {...{ setIsLoading, onSuccess, onError }} />
             <FacebookSignInButton {...{ setIsLoading, onSuccess, onError }} />
             <AppleSignInButton {...{ setIsLoading, onSuccess, onError }} />

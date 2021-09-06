@@ -1,5 +1,5 @@
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
-import { ICON_BUTTON } from "app/components/buttons/social-buttons"
+import { ICON_BUTTON, ICON_BUTTON_LABEL } from "app/components/buttons/social-buttons"
 import { useStores } from "app/models"
 import { Facebook } from "images"
 import { observer } from "mobx-react-lite"
@@ -91,8 +91,9 @@ export const FacebookSignInButton = observer(function FacebookSignInButton(
       style={ICON_BUTTON}
       iconSource={() => <Facebook />}
       onPress={() => onFacebookButtonPress()}
-      round
       enableShadow
+      label="Sign in with Facebook"
+      labelStyle={ICON_BUTTON_LABEL}
     />
   )
 })
