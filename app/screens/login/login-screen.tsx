@@ -1,4 +1,5 @@
 import auth from "@react-native-firebase/auth"
+import MeshBackground from "assets/images/mesh-background"
 import {
   AppleSignInButton,
   AppLogo,
@@ -12,7 +13,7 @@ import { observer } from "mobx-react-lite"
 import React from "react"
 import { Alert, BackHandler, ViewStyle } from "react-native"
 import { widthPercentageToDP } from "react-native-responsive-screen"
-import { Button, Text, View } from "react-native-ui-lib"
+import { Button, Text, ThemeManager, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
 export const LoginScreen = observer(function LoginScreen() {
@@ -67,11 +68,17 @@ export const LoginScreen = observer(function LoginScreen() {
     <Screen style={ROOT} preset="fixed" testID="LoginScreen">
       <View centerH spread flex-1 width={widthPercentageToDP("60%")}>
         <View flex-1 centerV>
-          <AppLogo />
+          <AppLogo
+            // color="white"
+            width={widthPercentageToDP("80%")}
+            height={widthPercentageToDP("80%") / 5}
+          />
         </View>
 
         <View flex-2 center width="100%">
-          <Text center>{"Create an account to save jokes and preferences"}</Text>
+          <Text color={ThemeManager.titleColor} text50BO center>
+            {"Create an account to save jokes and preferences"}
+          </Text>
 
           <View width={"100%"} row spread marginV-s6>
             <GoogleSignInButton {...{ setIsLoading, onSuccess, onError }} />
@@ -79,16 +86,24 @@ export const LoginScreen = observer(function LoginScreen() {
             <AppleSignInButton {...{ setIsLoading, onSuccess, onError }} />
           </View>
 
-          <Text marginV-s6>{"Or"}</Text>
+          <Text color={ThemeManager.titleColor} marginV-s6 text70BO>
+            {"Or"}
+          </Text>
 
           <GuestSignInButton />
         </View>
 
         <View marginV-s6>
-          <Button label="Trouble logging in?" link marginB-s3 onPress={handleTroubleLoggingIn} />
-          <Text>{`COPYRIGHT \u00A9 ${new Date().getFullYear()} KO.DEV`}</Text>
+          <Button
+            label="Trouble logging in?"
+            text80BO
+            link
+            marginB-s3
+            onPress={handleTroubleLoggingIn}
+          />
         </View>
       </View>
+      <MeshBackground />
     </Screen>
   )
 })

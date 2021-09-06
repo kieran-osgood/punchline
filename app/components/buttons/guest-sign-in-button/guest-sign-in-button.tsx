@@ -27,5 +27,5 @@ export const GuestSignInButton = observer(function GuestSignInButton(
         // }
       })
   }
-  return <Button link label="Continue as guest" {...{ onPress }} />
+  return <Button link text70BO label="Continue as guest" {...{ onPress }} />
 })

@@ -13,7 +13,11 @@ ThemeManager.setComponentTheme("Text", (props, context) => {
     style: [fontFamily(props.bold), props.style],
   }
 })
-
+ThemeManager.setComponentTheme("Button", (props, context) => {
+  return {
+    labelStyle: [{ color: "#2211C9" }, props.labelStyle],
+  }
+})
 // ThemeManager.setComponentTheme("Button", (props, context) => {
 //   return {
 // this will apply a different backgroundColor
