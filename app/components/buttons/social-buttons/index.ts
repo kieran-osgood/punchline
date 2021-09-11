@@ -6,8 +6,10 @@ export const ICON_BUTTON: ViewStyle = {
   backgroundColor: "white",
   marginTop: spacing[4],
   justifyContent: "flex-start",
+  paddingVertical: spacing[3],
 }
 export const ICON_BUTTON_LABEL: TextStyle = {
   paddingLeft: spacing[5],
   color: ThemeManager.titleColor,
+  fontWeight: "bold",
 }

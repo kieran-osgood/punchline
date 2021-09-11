@@ -1,3 +1,4 @@
+// https://github.com/thebergamo/react-native-fbsdk-next
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import { ICON_BUTTON, ICON_BUTTON_LABEL } from "app/components/buttons/social-buttons"
 import { useStores } from "app/models"
@@ -7,7 +8,6 @@ import * as React from "react"
 import { ViewStyle } from "react-native"
 import { AccessToken, LoginManager } from "react-native-fbsdk-next"
 import { Button } from "react-native-ui-lib"
-
 const PROVIDER_NAME = "Facebook"
 
 export interface FacebookSignInButtonProps {
@@ -19,7 +19,7 @@ export interface FacebookSignInButtonProps {
   isAnonymousConversion?: boolean
   title?: string
   onSuccess?: (provider: string) => void
-  onError?: () => void
+  onError?: (error: Error) => void
 }
 
 /**
@@ -31,66 +31,65 @@ export const FacebookSignInButton = observer(function FacebookSignInButton(
   const { isAnonymousConversion = false, setIsLoading, onSuccess, onError } = props
   const { userStore } = useStores()
 
-  async function onFacebookButtonPress() {
+  const onFacebookButtonPress = async () => {
     setIsLoading?.(true)
     try {
-      console.log("await: ")
       // Attempt login with permissions
-      await LoginManager.logInWithPermissions(["public_profile", "email"])
+      console.log("Attempt: ")
+      const result = await LoginManager.logInWithPermissions(["public_profile", "email"])
+      console.log("result: ", result)
+      if (result.isCancelled) {
+        return
+      }
       // Once signed in, get the users AccessToken
       const data = await AccessToken.getCurrentAccessToken()
 
       if (!data) {
-        if (setIsLoading) setIsLoading(false)
-        return
+        setIsLoading?.(false)
+        throw Error("Facebook Sign-In failed - AccessToken empty")
       }
 
       // Create a Firebase credential with the AccessToken
+      console.log("Create: ")
       const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken)
-
       if (isAnonymousConversion) {
         convertFacebook(data.accessToken)
       } else {
         signInWithFacebook(facebookCredential)
       }
     } catch (error) {
-      onError?.()
+      console.log("error: ", error)
+      if (error instanceof Error) onError?.(error)
+    } finally {
+      setIsLoading?.(false)
     }
   }
 
-  const signInWithFacebook = (facebookCredential: FirebaseAuthTypes.AuthCredential) => {
+  const signInWithFacebook = async (facebookCredential: FirebaseAuthTypes.AuthCredential) => {
     auth()
       .signInWithCredential(facebookCredential)
-      .then((userCredential) => {
-        userStore.login(userCredential)
-      })
-      // .catch(() => crashlytics().log('Error signin in with facebook'))
-      .finally(() => {
-        if (setIsLoading) setIsLoading(false)
-      })
+      .then(userStore.login)
+      .catch(onError)
+      .finally(() => setIsLoading?.(false))
   }
 
-  const convertFacebook = (accessToken: string | null) => {
+  const convertFacebook = async (accessToken: string) => {
     const credential = auth.FacebookAuthProvider.credential(accessToken)
-    console.log("credential: ", credential)
     auth()
       .currentUser?.linkWithCredential(credential)
-      .then(function () {
-        console.log("PROVIDER_NAME: ", PROVIDER_NAME)
+      .then((e) => {
+        userStore.updateUser(e.user)
         onSuccess?.(PROVIDER_NAME)
       })
-      .catch(function () {
-        setIsLoading?.(false)
-        onError?.()
-        // crashlytics().log(`Error upgrading anonymous account ${error}`)
-      })
+      .catch(onError)
+      .finally(() => setIsLoading?.(false))
   }
 
   return (
     <Button
       style={ICON_BUTTON}
       iconSource={() => <Facebook />}
-      onPress={() => onFacebookButtonPress()}
+      onPress={onFacebookButtonPress}
       enableShadow
       label="Sign in with Facebook"
       labelStyle={ICON_BUTTON_LABEL}

@@ -1,4 +1,5 @@
-import { GoogleSignin } from "@react-native-community/google-signin"
+// https://github.com/react-native-google-signin/google-signin
+import { GoogleSignin, statusCodes } from "@react-native-community/google-signin"
 import auth from "@react-native-firebase/auth"
 import { ICON_BUTTON, ICON_BUTTON_LABEL } from "app/components/buttons/social-buttons"
 import { useStores } from "app/models"
@@ -18,9 +19,14 @@ export interface GoogleSignInButtonProps {
   setIsLoading?: (val: boolean) => void
   isAnonymousConversion?: boolean
   onSuccess?: (provider: string) => void
-  onError?: () => void
+  onError?: (error: Error) => void
 }
-
+type GoogleSignInError = {
+  message: string
+  stack: string
+  name: string
+  code: typeof statusCodes[keyof typeof statusCodes]
+}
 /**
  * Google Sign in button
  */
@@ -31,37 +37,44 @@ export const GoogleSignInButton = observer(function GoogleSignInButton(
   const { userStore } = useStores()
 
   const handlePress = async () => {
-    const { idToken } = await GoogleSignin.signIn()
-    if (isAnonymousConversion) {
-      convertGoogle(idToken)
-    } else {
-      signInWithGoogle(idToken)
-    }
+    return GoogleSignin.signIn()
+      .then(({ idToken }) => {
+        if (idToken === null) throw Error("idToken null")
+        if (isAnonymousConversion) return convertGoogle(idToken)
+        return signInWithGoogle(idToken)
+      })
+      .catch((error: GoogleSignInError) => {
+        if (error.code !== statusCodes.SIGN_IN_CANCELLED) {
+          onError?.(error)
+        }
+      })
+      .finally(() => setIsLoading?.(false))
   }
 
-  const signInWithGoogle = async (idToken: string | null) => {
+  const signInWithGoogle = async (idToken: string) => {
     setIsLoading?.(true)
     const googleCredential = auth.GoogleAuthProvider.credential(idToken)
-    const userCredential = await auth().signInWithCredential(googleCredential)
-    userStore.login(userCredential)
-    setIsLoading?.(false)
+    auth()
+      .signInWithCredential(googleCredential)
+      .then(userStore.login)
+      .catch((error: GoogleSignInError) => {
+        onError?.(error)
+      })
+      .finally(() => setIsLoading?.(false))
   }
 
-  const convertGoogle = (idToken: string | null) => {
-    if (idToken === null) onError?.()
-
+  const convertGoogle = async (idToken: string) => {
     const credential = auth.GoogleAuthProvider.credential(idToken)
-
-    console.log("credential: ", credential)
-
     auth()
       .currentUser?.linkWithCredential(credential)
       .then((e) => {
-        console.log("e: ", e)
         userStore.updateUser(e.user)
         onSuccess?.(PROVIDER_NAME)
       })
-      .catch(() => onError?.())
+      .catch((error: GoogleSignInError) => {
+        onError?.(error)
+      })
+      .finally(() => setIsLoading?.(false))
   }
 
   return (
@@ -70,7 +83,7 @@ export const GoogleSignInButton = observer(function GoogleSignInButton(
       style={ICON_BUTTON}
       label="Sign in with Google"
       labelStyle={ICON_BUTTON_LABEL}
-      onPress={() => handlePress()}
+      onPress={handlePress}
       iconSource={() => <GoogleIcon scale={1.2} />}
     />
   )

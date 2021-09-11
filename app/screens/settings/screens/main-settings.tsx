@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import auth from "@react-native-firebase/auth"
 import { useNavigation } from "@react-navigation/core"
+import * as Sentry from "@sentry/react-native"
 import { useStores } from "app/models"
 import { SettingsStackProps } from "app/screens"
 import { Logout } from "assets/images/logout"
@@ -81,7 +82,6 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
         <Divider>
           <Link
             onPress={() => {
-              console.log("test")
               Alert.alert("Clear Cache", "Confirm you wish you clear data saved to device.", [
                 {
                   text: "Cancel",
@@ -254,19 +254,30 @@ const LoginConversion = () => {
     })
   }
 
+  const onError = (error: Error) => {
+    Sentry.captureException(error)
+
+    Toast.show({
+      type: "error",
+      text1: "Error",
+      text2: error.message,
+      position: "bottom",
+    })
+  }
+
   return (
-    <View center paddingB-s3>
+    <View center marginV-s3>
       <View>
-        <Text text60BO>Link Account</Text>
-        <Text>
+        <Text text60BO>Link Social Account</Text>
+        <Text marginT-s2>
           Convert your guest account using a social media identity to save your bookmarks and
           preferences.
         </Text>
       </View>
-      <View row paddingV-s6 spread width="60%">
-        <GoogleSignInButton isAnonymousConversion {...{ onSuccess }} />
-        <FacebookSignInButton isAnonymousConversion {...{ onSuccess }} />
-        <AppleSignInButton isAnonymousConversion {...{ onSuccess }} />
+      <View paddingV-s6 spread width="80%">
+        <GoogleSignInButton isAnonymousConversion {...{ onSuccess, onError }} />
+        <FacebookSignInButton isAnonymousConversion {...{ onSuccess, onError }} />
+        <AppleSignInButton isAnonymousConversion {...{ onSuccess, onError }} />
       </View>
     </View>
   )

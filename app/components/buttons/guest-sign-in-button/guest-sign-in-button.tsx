@@ -1,4 +1,5 @@
 import auth from "@react-native-firebase/auth"
+import * as Sentry from "@sentry/react-native"
 import { useStores } from "app/models"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
@@ -7,25 +8,15 @@ import { Button } from "react-native-ui-lib"
 export interface GuestSignInButtonProps {}
 
 /**
- * Button for anonymously authenticating with Firestore
+ * Button for authenticating with Firestore anonymously
  */
 export const GuestSignInButton = observer(function GuestSignInButton(
   _props: GuestSignInButtonProps,
 ) {
   const { userStore } = useStores()
   const onPress = () => {
-    auth()
-      .signInAnonymously()
-      .then((userCredential) => {
-        console.log("userCredential: ", userCredential)
-        userStore.login(userCredential)
-      })
-      .catch((error) => {
-        console.error(error)
-        // if (error.code === "auth/operation-not-allowed") {
-        // crashlytics().log('Enable anonymous in your firebase console.')
-        // }
-      })
+    auth().signInAnonymously().then(userStore.login).catch(Sentry.captureException)
   }
-  return <Button link text70BO label="Continue as guest" {...{ onPress }} />
+
+  return <Button link text70BO label="Continue as a guest" {...{ onPress }} />
 })

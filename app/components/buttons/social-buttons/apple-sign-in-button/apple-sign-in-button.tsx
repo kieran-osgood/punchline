@@ -1,4 +1,4 @@
-// import { GoogleSignin } from "@react-native-community/google-signin"
+// https://github.com/invertase/react-native-apple-authentication
 import { appleAuth, appleAuthAndroid } from "@invertase/react-native-apple-authentication"
 import auth from "@react-native-firebase/auth"
 import { ICON_BUTTON, ICON_BUTTON_LABEL } from "app/components/buttons/social-buttons"
@@ -9,10 +9,14 @@ import * as React from "react"
 import { Platform, ViewStyle } from "react-native"
 import "react-native-get-random-values"
 import { Button } from "react-native-ui-lib"
-import { v4 as uuid } from "uuid"
 
 const PROVIDER_NAME = "Apple"
-
+type AppleSignInError = {
+  message: string
+  stack: string
+  name: string
+  code: typeof appleAuth.Error[keyof typeof appleAuth.Error]
+}
 export interface AppleSignInButtonProps {
   /**
    * An optional style override useful for padding & margin.
@@ -22,7 +26,7 @@ export interface AppleSignInButtonProps {
   isAnonymousConversion?: boolean
   title?: string
   onSuccess?: (provider: string) => void
-  onError?: () => void
+  onError?: (error: Error) => void
 }
 
 /**
@@ -37,121 +41,71 @@ export const AppleSignInButton = observer(function AppleSigninButton(
   const handlePress = async () => {
     setIsLoading?.(true)
     try {
-      if (Platform.OS === "android") {
-        isAnonymousConversion
-          ? convertApple(await generateAppleIOSToken())
-          : await signInWithAppleAndroid()
+      const user = isAnonymousConversion ? await convertApple() : await signInWithApple()
+      if (user) {
+        userStore.updateUser(user)
+        onSuccess?.(PROVIDER_NAME)
       }
-      if (Platform.OS === "ios") {
-        isAnonymousConversion
-          ? convertApple(await generateAppleAndroidToken())
-          : await signInWithAppleIOS()
-      }
-
-      onSuccess?.(PROVIDER_NAME)
     } catch (error) {
-      console.log("error: ", error)
-      onError?.()
+      if (error instanceof Error) onError?.(error)
     } finally {
       setIsLoading?.(false)
     }
-  }
-
-  const generateAppleIOSToken = async (): Promise<string> => {
-    const appleAuthRequestResponse = await appleAuth.performRequest({
-      requestedOperation: appleAuth.Operation.LOGIN,
-      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-    })
-
-    if (!appleAuthRequestResponse.identityToken) throw Error()
-
-    return appleAuthRequestResponse.identityToken
-  }
-
-  const generateAppleAndroidToken = async (): Promise<string> => {
-    const response = await signInWithAppleAndroid()
-    if (!response.id_token) throw Error()
-    return response.id_token
-  }
-
-  async function signInWithAppleAndroid() {
-    // Generate secure, random values for state and nonce
-    const rawNonce = uuid()
-    const state = uuid()
-
-    // Configure the request
-    appleAuthAndroid.configure({
-      // The Service ID you registered with Apple
-      clientId: "com.ko.punchline-android",
-
-      // Return URL added to your Apple dev console. We intercept this redirect, but it must still match
-      // the URL you provided to Apple. It can be an empty route on your backend as it's never called.
-      redirectUri: "https://punchline-f9af3.firebaseapp.com/__/auth/handler",
-
-      // The type of response requested - code, id_token, or both.
-      responseType: appleAuthAndroid.ResponseType.ALL,
-
-      // The amount of user information requested from Apple.
-      scope: appleAuthAndroid.Scope.ALL,
-
-      // Random nonce value that will be SHA256 hashed before sending to Apple.
-      nonce: rawNonce,
-
-      // Unique state value used to prevent CSRF attacks. A UUID will be generated if nothing is provided.
-      state,
-    })
-
-    // Open the browser window for user sign in
-    const response = await appleAuthAndroid.signIn()
-    const { nonce, id_token: identityToken } = response
-
-    if (identityToken) {
-      // Create a Firebase credential from the response
-      const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce)
-
-      // Sign the user in with the credential
-      const userCredential = await auth().signInWithCredential(appleCredential)
-      userStore.login(userCredential)
-    }
-    return response
-    // Send the authorization code to your backend for verification
   }
 
   /**
    * Note the sign in request can error, e.g. if the user cancels the sign-in.
    * Use `appleAuth.Error` to determine the type of error, e.g. `error.code === appleAuth.Error.CANCELED`
    */
-  async function signInWithAppleIOS() {
-    // Start the sign-in request
+  async function signInWithApple() {
+    try {
+      // 1). start a apple sign-in request
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      })
+
+      // 2). if the request was successful, extract the token and nonce
+      const { identityToken, nonce } = appleAuthRequestResponse
+
+      // can be null in some scenarios
+      if (identityToken) {
+        // 3). create a Firebase `AppleAuthProvider` credential
+        const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce)
+
+        // 4). use the created `AppleAuthProvider` credential to start a Firebase auth request,
+        //     in this example `signInWithCredential` is used, but you could also call `linkWithCredential`
+        //     to link the account to an existing user
+        const userCredential = await auth().signInWithCredential(appleCredential)
+        return userCredential.user
+      } else {
+        // handle this - retry?
+        throw Error("IdentityToken is null")
+      }
+    } catch (error) {
+      const appleError = error as AppleSignInError
+      if (appleAuth.Error.CANCELED !== appleError.code) {
+        onError?.(appleError)
+      }
+      return null
+    }
+  }
+
+  const convertApple = async () => {
+    // 1). start a apple sign-in request
     const appleAuthRequestResponse = await appleAuth.performRequest({
       requestedOperation: appleAuth.Operation.LOGIN,
       requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
     })
-    // Ensure Apple returned a user identityToken
-    if (!appleAuthRequestResponse.identityToken) {
-      throw Error("Apple Sign-In failed - no identify token returned")
-    }
-    // Create a Firebase credential from the response
+
+    // 2). if the request was successful, extract the token and nonce
     const { identityToken, nonce } = appleAuthRequestResponse
-    if (identityToken) {
-      const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce)
 
-      // Sign the user in with the credential
-      const userCredential = await auth().signInWithCredential(appleCredential)
-      userStore.login(userCredential)
-    }
-  }
+    if (!identityToken) throw Error("Identity Token empty")
 
-  const convertApple = (idToken: string | null) => {
-    if (idToken === null) onError?.()
-
-    const credential = auth.AppleAuthProvider.credential(idToken)
-    auth()
-      .currentUser?.linkWithCredential(credential)
-      .then((e) => {
-        userStore.updateUser(e.user)
-        onSuccess?.()
-      })
+    const credential = auth.AppleAuthProvider.credential(identityToken, nonce)
+    const userCredential = await auth().currentUser?.linkWithCredential(credential)
+    return userCredential?.user ?? null
   }
 
   return (

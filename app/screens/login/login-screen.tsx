@@ -1,4 +1,5 @@
 import auth from "@react-native-firebase/auth"
+import * as Sentry from "@sentry/react-native"
 import MeshBackground from "assets/images/mesh-background"
 import {
   AppleSignInButton,
@@ -11,13 +12,14 @@ import {
 } from "components"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { Alert, BackHandler, ViewStyle } from "react-native"
+import { BackHandler, TextStyle, ViewStyle } from "react-native"
 import { widthPercentageToDP } from "react-native-responsive-screen"
+import Toast from "react-native-toast-message"
 import { Button, Text, ThemeManager, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
 export const LoginScreen = observer(function LoginScreen() {
-  const [isLoading, setLoading] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
 
   React.useEffect(() => {
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
@@ -28,11 +30,6 @@ export const LoginScreen = observer(function LoginScreen() {
     return () => backHandler.remove()
   }, [])
 
-  const setIsLoading = (val: boolean) => setLoading(val)
-
-  if (isLoading) {
-    return <LoadingModal />
-  }
   const handleTroubleLoggingIn = () => {
     console.log("print")
     auth().sendSignInLinkToEmail("kieranbosgood@gmail.com", {
@@ -64,41 +61,44 @@ export const LoginScreen = observer(function LoginScreen() {
     //     // ...
     //   })
   }
+
+  if (isLoading) {
+    return <LoadingModal />
+  }
+
   return (
     <Screen style={ROOT} preset="fixed" testID="LoginScreen">
       <View centerH spread flex-1 width={widthPercentageToDP("70%")}>
         <View flex-1 centerV>
           <AppLogo
             // color="white"
-            width={widthPercentageToDP("80%")}
-            height={widthPercentageToDP("80%") / 5}
+            width={widthPercentageToDP("95%")}
+            height={widthPercentageToDP("95%") / 5}
           />
         </View>
-
         <View flex-2 center width="100%">
-          <Text color={ThemeManager.titleColor} text50BO center>
-            {"Create an account to save jokes and preferences"}
+          <Text color={ThemeManager.titleColor} text60BO center>
+            {"Create an account to save bookmarks & preferences"}
           </Text>
 
-          <View width={"100%"} spread marginV-s6>
-            <GoogleSignInButton {...{ setIsLoading, onSuccess, onError }} />
-            <FacebookSignInButton {...{ setIsLoading, onSuccess, onError }} />
-            <AppleSignInButton {...{ setIsLoading, onSuccess, onError }} />
+          <View width={"100%"} spread marginV-s4>
+            <GoogleSignInButton {...{ setIsLoading, onError }} />
+            <FacebookSignInButton {...{ setIsLoading, onError }} />
+            <AppleSignInButton {...{ setIsLoading, onError }} />
           </View>
 
-          <Text color={ThemeManager.titleColor} marginV-s6 text70BO>
-            {"Or"}
-          </Text>
+          <View style={SPACER} marginV-s4 height-0 />
 
           <GuestSignInButton />
         </View>
 
         <View marginV-s6>
           <Button
-            label="Trouble logging in?"
+            label="Trouble signing in?"
             text80BO
             link
             marginB-s3
+            labelStyle={LABEL}
             onPress={handleTroubleLoggingIn}
           />
         </View>
@@ -114,19 +114,24 @@ const ROOT: ViewStyle = {
   alignItems: "center",
   paddingBottom: spacing[3],
 }
-
-const onSuccess = () => {
-  Alert.alert(
-    "Success",
-    "Successfully linked your account, your bookmarks and history has been transferred to this account.",
-    [{ text: "Ok" }],
-  )
+const SPACER: ViewStyle = {
+  borderBottomWidth: 1,
+  borderBottomColor: ThemeManager.titleColor,
+  opacity: 0.5,
+  borderWidth: 1,
+  width: 50,
+}
+const LABEL: TextStyle = {
+  textDecorationLine: "underline",
 }
 
-const onError = () => {
-  Alert.alert(
-    "Error",
-    "Unable to link acccounts, please reload the app and try again or contact support.",
-    [{ text: "Ok" }],
-  )
+const onError = (error: Error) => {
+  Sentry.captureException(error)
+
+  Toast.show({
+    type: "error",
+    text1: "Error",
+    text2: error.message,
+    position: "bottom",
+  })
 }
