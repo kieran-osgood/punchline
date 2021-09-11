@@ -57,6 +57,7 @@
     "apisauce": "2.0.0",
     "babel-plugin-module-resolver": "^4.1.0",
     "babel-preset-expo": "^8.3.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "expo-linear-gradient": "^9.2.0",
     "expo-localization": "9.1.0",
     "graphql-request": "^3.4.0",
@@ -274,6 +275,7 @@
     "parser": "@typescript-eslint/parser",
     "extends": [
       "prettier",
+      "plugin:react-hooks/recommended",
       "plugin:@typescript-eslint/recommended",
       "plugin:react/recommended",
       "plugin:react-native/all",
@@ -332,7 +334,24 @@
       "react-native/no-raw-text": 0,
       "react/no-unescaped-entities": 0,
       "react/prop-types": "off",
-      "space-before-function-paren": 0
+      "space-before-function-paren": 0,
+      "no-restricted-imports": [
+        "error",
+        {
+          "paths": [
+            {
+              "name": "react-native",
+              "importNames": [
+                "View",
+                "Text",
+                "Image",
+                "Button"
+              ],
+              "message": "Prefer react-native-ui-lib imports instead"
+            }
+          ]
+        }
+      ]
     }
   }
 }
