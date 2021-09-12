@@ -9,9 +9,17 @@ export const UserStoreModel = types
   .model("UserStore", {
     user: types.maybeNull(UserModel),
     onboardingComplete: types.boolean,
+    goodJokeCount: types.number,
+    lastDisplayedReviewPrompt: types.Date,
   })
   .extend(withEnvironment)
   .actions((self) => ({
+    increaseGoodJokeCount() {
+      ++self.goodJokeCount
+    },
+    setLastDisplayedReviewPrompt(date = new Date()) {
+      self.lastDisplayedReviewPrompt = date
+    },
     updateUser: (user: FirebaseAuthTypes.User | null) => {
       if (user === null) {
         self.user = null
@@ -54,4 +62,6 @@ export interface UserStoreSnapshot extends UserStoreSnapshotType {}
 export const createUserStoreDefaultModel = () =>
   types.optional(UserStoreModel, {
     onboardingComplete: false,
+    goodJokeCount: 0,
+    lastDisplayedReviewPrompt: new Date(),
   })

@@ -8,10 +8,11 @@
 import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs"
 import { RouteProp } from "@react-navigation/native"
 import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack"
+import withRateApp from "app/components/use-rate-app/use-rate-app"
 import { useStores } from "app/models"
 import { Header } from "components"
 import { observer } from "mobx-react-lite"
-import React from "react"
+import * as React from "react"
 import { JokeScreen, OnboardingScreen, SettingsStack, UserProfileTabs } from "../screens"
 
 /**
@@ -45,6 +46,7 @@ const Stack = createStackNavigator<RouteParamList>()
 
 export const MainNavigator = observer(function MainNavigator() {
   const store = useStores()
+
   return (
     <Stack.Navigator initialRouteName="JokeScreen" headerMode="screen">
       {!store.userStore.onboardingComplete ? (
@@ -59,7 +61,7 @@ export const MainNavigator = observer(function MainNavigator() {
         <>
           <Stack.Screen
             name="JokeScreen"
-            component={JokeScreen}
+            component={withRateApp(JokeScreen)}
             options={{
               header: ({ navigation }) => (
                 <Header {...{ navigation }} left="account" right="settings" />
