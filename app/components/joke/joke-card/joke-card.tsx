@@ -8,6 +8,7 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
   useDerivedValue,
+  withTiming,
 } from "react-native-reanimated"
 import { Text } from "react-native-ui-lib"
 import { color, spacing } from "theme"
@@ -38,12 +39,12 @@ const JokeCard = ({ joke, translateX, translateY, onTop, scale }: JokeCardProps)
           Extrapolate.CLAMP,
         )}rad`,
       },
-      { scale: onTop ? 1 : scale.value },
+      { scale: withTiming(onTop ? 1 : scale.value) },
     ],
   }))
 
   const color = React.useMemo(() => randomColor(), [])
-  // onTop && console.log(body)
+
   return (
     <Animated.View style={[StyleSheet.absoluteFill, container]}>
       <View style={styles.overlay}>

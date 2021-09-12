@@ -54,7 +54,7 @@ const swipe = (
 const Swiper = ({ joke, onTop }: SwiperProps, ref: Ref<SwipeHandler>) => {
   const translateX = useSharedValue(0)
   const translateY = useSharedValue(0)
-  const scaled = useDerivedValue(() => {
+  const scale = useDerivedValue(() => {
     return interpolate(
       translateX.value,
       [-width / 4, 0, width / 4],
@@ -100,13 +100,7 @@ const Swiper = ({ joke, onTop }: SwiperProps, ref: Ref<SwipeHandler>) => {
   /* to re-enable swiping use: <PanGestureHandler {...{onGestureEvent}}> */
   return (
     <View style={StyleSheet.absoluteFill}>
-      <JokeCard
-        joke={joke}
-        translateX={translateX}
-        translateY={translateY}
-        scale={scaled}
-        onTop={onTop}
-      />
+      <JokeCard {...{ onTop, scale, translateX, translateY, joke }} />
     </View>
   )
 }
