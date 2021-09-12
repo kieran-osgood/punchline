@@ -1,4 +1,4 @@
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import * as Sentry from "@sentry/react-native"
 import MeshBackground from "assets/images/mesh-background"
 import {
@@ -12,10 +12,10 @@ import {
 } from "components"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { BackHandler, TextStyle, ViewStyle } from "react-native"
+import { BackHandler, ViewStyle } from "react-native"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import Toast from "react-native-toast-message"
-import { Button, Text, ThemeManager, View } from "react-native-ui-lib"
+import { Text, ThemeManager, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
 export type LoginResponse = Promise<FirebaseAuthTypes.User | null>
@@ -34,38 +34,6 @@ export const LoginScreen = observer(function LoginScreen() {
 
     return () => backHandler.remove()
   }, [])
-
-  const handleTroubleLoggingIn = async () => {
-    console.log("print")
-    return auth().sendSignInLinkToEmail("kieranbosgood@gmail.com", {
-      handleCodeInApp: true,
-      url: "app/email-login",
-      iOS: {
-        bundleId: "com.ko.punchline",
-      },
-      android: {
-        packageName: "com.ko.punchline",
-        installApp: true,
-        minimumVersion: "12",
-      },
-      dynamicLinkDomain: "web.punch-line.co.uk",
-    })
-
-    // const authz = auth()
-    // sendSignInLinkToEmail(auth, email, actionCodeSettings)
-    //   .then(() => {
-    //     // The link was successfully sent. Inform the user.
-    //     // Save the email locally so you don't need to ask the user for it again
-    //     // if they open the link on the same device.
-    //     window.localStorage.setItem("emailForSignIn", email)
-    //     // ...
-    //   })
-    //   .catch((error) => {
-    //     const errorCode = error.code
-    //     const errorMessage = error.message
-    //     // ...
-    //   })
-  }
 
   if (isLoading) {
     return <LoadingModal />
@@ -93,16 +61,7 @@ export const LoginScreen = observer(function LoginScreen() {
           <GuestSignInButton />
         </View>
 
-        <View marginV-s6>
-          <Button
-            label="Trouble signing in?"
-            text80BO
-            link
-            marginB-s3
-            labelStyle={LABEL}
-            onPress={handleTroubleLoggingIn}
-          />
-        </View>
+        <View marginV-s6>{/* <TroubleSigningInButton /> */}</View>
       </View>
       <MeshBackground />
     </Screen>
@@ -121,9 +80,6 @@ const SPACER: ViewStyle = {
   opacity: 0.5,
   borderWidth: 1,
   width: 50,
-}
-const LABEL: TextStyle = {
-  textDecorationLine: "underline",
 }
 
 const onError: ErrorCallback = (error: Error) => {

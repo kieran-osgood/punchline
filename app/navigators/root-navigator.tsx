@@ -82,6 +82,15 @@ const linking: LinkingOptions = {
           },
         },
       },
+      AuthNavigator: {
+        initialRouteName: "LoginScreen",
+        screens: {
+          LoginScreen: {
+            path: "login/:email",
+            parse: { email: String },
+          },
+        },
+      },
     },
   },
 }
