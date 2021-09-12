@@ -337,6 +337,7 @@
       "react/no-unescaped-entities": 0,
       "react/prop-types": "off",
       "space-before-function-paren": 0,
+      "generator-star-spacing": "off",
       "no-restricted-imports": [
         "error",
         {
