@@ -43,11 +43,9 @@ export const OnboardingCategorySetting = observer(function OnboardingCategorySet
   if (stores.onboarding.randomCategoriesBlocked.length === 0) return null
 
   return (
-    <CategoryMapping
-      categories={stores.onboarding.randomCategoriesBlocked}
-      categoriesOnly
-      {...props}
-    />
+    <View style={props.style}>
+      <CategoryMapping categories={stores.onboarding.randomCategoriesBlocked} categoriesOnly />
+    </View>
   )
 })
 

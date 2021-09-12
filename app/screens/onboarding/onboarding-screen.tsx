@@ -1,4 +1,6 @@
 import { useStores } from "app/models"
+import { OnboardingBookmarks } from "assets/images/onboarding-bookmarks"
+import { OnboardingUserPosts } from "assets/images/onboarding-user-posts"
 import { observer } from "mobx-react-lite"
 import React, { useRef } from "react"
 import { Dimensions, StyleSheet, ViewStyle } from "react-native"
@@ -11,7 +13,7 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
 } from "react-native-reanimated"
-import { Text, View } from "react-native-ui-lib"
+import { View } from "react-native-ui-lib"
 import {
   Dot,
   OnboardingCategorySetting,
@@ -40,43 +42,53 @@ export const slides: Slide[] = [
   {
     title: "Categories",
     subtitle: "Block Categories",
-    description:
-      "Select the types of jokes you don't want to see in the settings page to optimise your experience!",
+    description: "Filter out the jokes you don't like in the settings page.",
     color: "#BFEAF5",
     Picture: observer(function Picture() {
-      return <OnboardingCategorySetting style={{ marginLeft: 75, paddingBottom: 75 }} />
+      return <OnboardingCategorySetting style={SLIDE_1} />
     }),
   },
   {
     title: "Bookmarks",
-    subtitle: "Save Your Favourites",
-    description: "Save your favourites with the bookmark button to come back to at any time.",
+    subtitle: "Bookmark the best!",
+    description:
+      "Save your favourites for sharing later in the home screen or from your history tab.",
     color: "#BEECC4",
 
     Picture: function Picture() {
-      return (
-        <View style={{ marginRight: 75 }}>
-          <Text>a</Text>
-        </View>
-      )
+      return <OnboardingBookmarks containerStyle={SLIDE_2} />
     },
   },
   {
-    title: "Share",
-    subtitle: "Share Jokes",
-    description: "Can't wait to see your friends to share? Share to social media!",
+    title: "Coming Soon!",
+    subtitle: "Submit your best",
+    description: "We're working on an user submission feature, so stay tuned!",
     color: "#FFE4D9",
 
     Picture: function Picture() {
-      return (
-        <View style={{ marginRight: 75 }}>
-          <Text>a</Text>
-        </View>
-      )
+      return <OnboardingUserPosts containerStyle={SLIDE_3} />
     },
   },
 ]
-export const assets = slides.map((slide) => slide.Picture)
+
+const SLIDE_1: ViewStyle = {
+  justifyContent: "center",
+  flex: 1,
+  marginLeft: 75,
+  marginRight: 10,
+}
+const SLIDE_2: ViewStyle = {
+  marginRight: 75,
+  marginLeft: 20,
+  justifyContent: "center",
+  flex: 1,
+}
+const SLIDE_3: ViewStyle = {
+  marginRight: 30,
+  marginLeft: 100,
+  justifyContent: "center",
+  flex: 1,
+}
 
 export const OnboardingScreen = observer(function OnboardingScreen() {
   const store = useStores()
