@@ -1,5 +1,6 @@
 import { RootStore as ApiRootStore } from "app/graphql"
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { createOnboardingDefaultModel } from "../onboarding/onboarding"
 import { createSettingsDefaultModel } from "../settings/settings"
 import { createUserStoreDefaultModel } from "../user-store/user-store"
 
@@ -9,6 +10,7 @@ import { createUserStoreDefaultModel } from "../user-store/user-store"
 export const RootStoreModel = types.model("RootStore").props({
   userStore: createUserStoreDefaultModel(),
   settings: createSettingsDefaultModel(),
+  onboarding: createOnboardingDefaultModel(),
   api: types.optional(ApiRootStore, {}),
 })
 

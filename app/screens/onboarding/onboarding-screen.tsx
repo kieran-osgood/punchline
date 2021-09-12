@@ -1,9 +1,7 @@
-import { useNavigation } from "@react-navigation/core"
 import { useStores } from "app/models"
-import { NavigationProps } from "app/navigators"
 import { observer } from "mobx-react-lite"
 import React, { useRef } from "react"
-import { Dimensions, Image, StyleSheet, View, ViewStyle } from "react-native"
+import { Dimensions, StyleSheet, ViewStyle } from "react-native"
 import Animated, {
   Extrapolate,
   interpolate,
@@ -13,7 +11,15 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
 } from "react-native-reanimated"
-import { Dot, Screen, Slide as SlideCompoent, SLIDE_HEIGHT, SubSlide } from "../../components"
+import { Text, View } from "react-native-ui-lib"
+import {
+  Dot,
+  OnboardingCategorySetting,
+  Screen,
+  Slide as SlideComponent,
+  SLIDE_HEIGHT,
+  SubSlide,
+} from "../../components"
 import { color } from "../../theme"
 
 const ROOT: ViewStyle = {
@@ -27,11 +33,7 @@ interface Slide {
   subtitle: string
   description: string
   color: string
-  picture: {
-    width: number
-    height: number
-    src: number
-  }
+  Picture: () => JSX.Element | null
 }
 
 export const slides: Slide[] = [
@@ -41,23 +43,22 @@ export const slides: Slide[] = [
     description:
       "Select the types of jokes you don't want to see in the settings page to optimise your experience!",
     color: "#BFEAF5",
-    picture: {
-      src: "",
-      // src: require("../assets/1.png"),
-      width: 2513,
-      height: 3583,
-    },
+    Picture: observer(function Picture() {
+      return <OnboardingCategorySetting style={{ marginLeft: 75, paddingBottom: 75 }} />
+    }),
   },
   {
     title: "Bookmarks",
     subtitle: "Save Your Favourites",
     description: "Save your favourites with the bookmark button to come back to at any time.",
     color: "#BEECC4",
-    picture: {
-      src: "",
-      // src: require("../assets/2.png"),
-      width: 2791,
-      height: 3744,
+
+    Picture: function Picture() {
+      return (
+        <View style={{ marginRight: 75 }}>
+          <Text>a</Text>
+        </View>
+      )
     },
   },
   {
@@ -65,30 +66,19 @@ export const slides: Slide[] = [
     subtitle: "Share Jokes",
     description: "Can't wait to see your friends to share? Share to social media!",
     color: "#FFE4D9",
-    picture: {
-      src: "",
-      // src: require("../assets/3.png"),
-      width: 2738,
-      height: 3244,
+
+    Picture: function Picture() {
+      return (
+        <View style={{ marginRight: 75 }}>
+          <Text>a</Text>
+        </View>
+      )
     },
   },
-  // {
-  //   title: "Funky",
-  //   subtitle: "Look Good, Feel Good",
-  //   description: "Discover the latest trends in fashion and explore your personality",
-  //   color: "#FFDDDD",
-  //   picture: {
-  //     src: "",
-  //     // src: require("../assets/4.png"),
-  //     width: 1757,
-  //     height: 2551,
-  //   },
-  // },
 ]
-export const assets = slides.map((slide) => slide.picture.src)
+export const assets = slides.map((slide) => slide.Picture)
 
 export const OnboardingScreen = observer(function OnboardingScreen() {
-  const navigation = useNavigation<NavigationProps<"OnboardingScreen">["navigation"]>()
   const store = useStores()
   const scroll = useRef<Animated.ScrollView>(null)
   const x = useSharedValue(0)
@@ -97,6 +87,7 @@ export const OnboardingScreen = observer(function OnboardingScreen() {
       x.value = contentOffset.x
     },
   })
+
   const backgroundColor = useDerivedValue(() =>
     interpolateColor(
       x.value,
@@ -119,7 +110,7 @@ export const OnboardingScreen = observer(function OnboardingScreen() {
     <Screen style={ROOT} preset="fixed" unsafe>
       <View style={styles.container}>
         <Animated.View style={[styles.slider, slider]}>
-          {slides.map(({ picture }, index) => {
+          {slides.map(({ Picture }, index) => {
             // eslint-disable-next-line react-hooks/rules-of-hooks
             const style = useAnimatedStyle(() => ({
               opacity: interpolate(
@@ -131,13 +122,7 @@ export const OnboardingScreen = observer(function OnboardingScreen() {
             }))
             return (
               <Animated.View style={[styles.underlay, style]} key={index}>
-                <Image
-                  source={picture.src}
-                  style={{
-                    width: width - 75,
-                    height: ((width - 75) * picture.height) / picture.width,
-                  }}
-                />
+                <Picture />
               </Animated.View>
             )
           })}
@@ -151,8 +136,8 @@ export const OnboardingScreen = observer(function OnboardingScreen() {
             onScroll={onScroll}
             scrollEventThrottle={16}
           >
-            {slides.map(({ title, picture }, index) => (
-              <SlideCompoent key={index} right={!!(index % 2)} {...{ title, picture }} />
+            {slides.map(({ title }, index) => (
+              <SlideComponent key={index} right={!!(index % 2)} {...{ title }} />
             ))}
           </Animated.ScrollView>
         </Animated.View>
@@ -166,6 +151,7 @@ export const OnboardingScreen = observer(function OnboardingScreen() {
             </View>
             <Animated.View
               style={[
+                // eslint-disable-next-line react-native/no-inline-styles
                 {
                   flex: 1,
                   flexDirection: "row",

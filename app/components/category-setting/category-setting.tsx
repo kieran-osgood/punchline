@@ -1,5 +1,6 @@
 import { categoryModelPrimitives, CategoryModelType, nodes, useQuery } from "app/graphql"
 import { SortEnumType } from "app/graphql/SortEnumTypeEnum"
+import { useStores } from "app/models"
 import { Blocked, SIZE } from "assets/images/blocked"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
@@ -14,12 +15,7 @@ export interface CategorySettingProps {
    */
   style?: ViewStyle
 }
-
-/**
- * List of category buttons for the user to pick what type of jokes they want to see
- */
 export const CategorySetting = observer(function CategorySetting(props: CategorySettingProps) {
-  const { style } = props
   const { data } = useQuery((store) =>
     store.queryCategories(
       {
@@ -29,23 +25,69 @@ export const CategorySetting = observer(function CategorySetting(props: Category
     ),
   )
 
+  if (!data?.categories) return null
+
+  return <CategoryMapping categories={[...data.categories.nodes.values()]} {...props} />
+})
+export interface OnboardingCategorySettingProps {
+  /**
+   * An optional style override useful for padding & margin.
+   */
+  style?: ViewStyle
+}
+export const OnboardingCategorySetting = observer(function OnboardingCategorySetting(
+  props: CategorySettingProps,
+) {
+  const stores = useStores()
+
+  if (stores.onboarding.randomCategoriesBlocked.length === 0) return null
+
+  return (
+    <CategoryMapping
+      categories={stores.onboarding.randomCategoriesBlocked}
+      categoriesOnly
+      {...props}
+    />
+  )
+})
+
+export interface CategoryMappingProps {
+  /**
+   * An optional style override useful for padding & margin.
+   */
+  style?: ViewStyle
+  categories?: CategoryModelType[]
+  categoriesOnly?: boolean
+}
+export default CategorySetting
+/**
+ * List of category buttons for the user to pick what type of jokes they want to see
+ */
+export const CategoryMapping = observer(function CategoryMapping(props: CategoryMappingProps) {
+  const { style, categories, categoriesOnly = false } = props
+
   return (
     <View style={[CONTAINER, style]} center>
-      <Text text60 bold center>
-        {"Category Filter"}
-      </Text>
-      <Text center marginV-s2 highlightString="don't" highlightStyle={HIGHLIGHT_STYLE}>
-        {"Select categories you don't wish to see"}
-      </Text>
+      {categoriesOnly === false && (
+        <>
+          <Text text60 bold center>
+            {"Category Filter"}
+          </Text>
+          <Text center marginV-s2 highlightString="don't" highlightStyle={HIGHLIGHT_STYLE}>
+            {"Select categories you don't wish to see"}
+          </Text>
+        </>
+      )}
 
       <View style={CATEGORIES}>
-        {data?.categories.nodes.map((category) => (
+        {categories?.map((category) => (
           <Category key={category.id} {...{ category }} />
         ))}
       </View>
     </View>
   )
 })
+
 const HIGHLIGHT_STYLE: TextStyle = {
   fontWeight: "bold",
   color: ThemeManager.titleColor,

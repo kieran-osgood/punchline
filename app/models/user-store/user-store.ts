@@ -1,4 +1,5 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import { categoryModelPrimitives, nodes, SortEnumType } from "app/graphql"
 import { RootStore } from "app/models"
 import { cast, flow, getRoot, Instance, SnapshotOut, types } from "mobx-state-tree"
 import R from "ramda"
@@ -52,6 +53,12 @@ export const UserStoreModel = types
           username: user.displayName ?? "Guest",
         },
       })
+      self.root.api.queryCategories(
+        {
+          order: [{ name: SortEnumType.ASC }],
+        },
+        nodes(categoryModelPrimitives),
+      )
       self.root.api.queryUserCategories({}, (c) => c.nodes((n) => n.id.image.name))
     }),
     completeOnboarding: () => {
