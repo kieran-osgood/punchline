@@ -120,6 +120,7 @@ export const OnboardingScreen = observer(function OnboardingScreen() {
       <View style={styles.container}>
         <Animated.View style={[styles.slider, slider]}>
           {slides.map(({ picture }, index) => {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
             const style = useAnimatedStyle(() => ({
               opacity: interpolate(
                 x.value,
@@ -181,12 +182,17 @@ export const OnboardingScreen = observer(function OnboardingScreen() {
                     onPress={() => {
                       if (last) {
                         store.userStore.completeOnboarding()
-                        navigation.navigate("JokeScreen")
                       } else {
-                        scroll.current?.getNode().scrollTo({
-                          x: width * (index + 1),
-                          animated: true,
-                        })
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        if (scroll.current && scroll.current.scrollTo) {
+                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                          // @ts-ignore
+                          scroll.current.scrollTo({
+                            x: width * (index + 1),
+                            animated: true,
+                          })
+                        }
                       }
                     }}
                     {...{ subtitle, description, last }}
