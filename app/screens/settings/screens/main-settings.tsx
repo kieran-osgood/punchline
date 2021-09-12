@@ -8,7 +8,17 @@ import { Logout } from "assets/images/logout"
 import RightArrow from "assets/images/right-arrow"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { Alert, StatusBar, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
+import {
+  Alert,
+  Linking,
+  Platform,
+  StatusBar,
+  TextStyle,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native"
+import { WEB_URL } from "react-native-dotenv"
+import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 import Toast from "react-native-toast-message"
 import { Button, Switch, Text, ThemeManager, View, ViewPropTypes } from "react-native-ui-lib"
 import { color, spacing } from "theme"
@@ -104,24 +114,34 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
 
       <Section title="More Information">
         <Divider>
-          <Link>Privacy Policy</Link>
+          <Link url={`${WEB_URL}/privacy-policy`}>Privacy Policy</Link>
         </Divider>
 
         <Divider>
-          <Link>Terms of Service</Link>
+          <Link url={`${WEB_URL}/terms-of-service`}>Terms of Service</Link>
         </Divider>
 
         <Divider>
-          <Link>Data Policy</Link>
+          <Link url={`${WEB_URL}/data-policy`}>Data Policy</Link>
         </Divider>
       </Section>
 
       <Section marginT-s5 marginH-s5>
-        <Link>Rate Us</Link>
+        <Link
+          url={
+            Platform.OS === "ios"
+              ? ""
+              : "https://play.google.com/store/apps/details?id=com.ko.punchline&gl=GB"
+          }
+        >
+          Rate Us
+        </Link>
       </Section>
 
       <Section marginT-s5 marginH-s5>
-        <Link>Share Punchline</Link>
+        <Share url={`${WEB_URL}/privacy-policy`}>
+          <Link>Share Punchline</Link>
+        </Share>
       </Section>
 
       <Section marginT-s5 marginH-s5>
@@ -129,10 +149,24 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
       </Section>
 
       <AppVersion />
-      <Button label="Delete Account" br10 marginH backgroundColor="white" red10 />
+      <Button label="Delete Account" br10 marginH backgroundColor="white" red10 labelStyle={{}} />
     </Screen>
   )
 })
+
+type ShareProps = {
+  children: React.ReactNode
+  url: string
+}
+
+export const Share = ({ children, url }: ShareProps) => {
+  const onPress = () => {
+    console.log(url)
+  }
+  return <TouchableWithoutFeedback {...{ onPress }}>{children}</TouchableWithoutFeedback>
+}
+
+export default Share
 
 type SectionProps = {
   children: React.ReactNode
@@ -148,7 +182,24 @@ const Section = ({ children, title, style, ...rest }: SectionProps) => {
   )
 }
 
-const Link = ({ children, onPress }: { children: string; onPress?: (...args: any[]) => any }) => {
+type LinkProps = {
+  children: string
+  onPress?: (...args: any[]) => any
+  url?: string
+}
+const Link = ({ children, onPress: onPressCallback, url }: LinkProps) => {
+  const onPress = () => {
+    if (url) {
+      Linking.canOpenURL(url).then((supported) => {
+        if (supported) {
+          Linking.openURL(url)
+        } else {
+          console.log("Don't know how to open URI: " + url)
+        }
+      })
+    }
+    onPressCallback?.()
+  }
   return <Button link style={LINK} label={children} {...{ onPress }} />
 }
 
@@ -235,6 +286,7 @@ const LogoutButton = () => {
       text70BO
       enableShadow
       backgroundColor="transparent"
+      labelStyle={{}}
       color={ThemeManager.titleColor}
       iconSource={() => <Logout scale={1} />}
       {...{ onPress }}
