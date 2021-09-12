@@ -352,7 +352,7 @@ const AppVersion = () => {
   return (
     <View paddingV-s10>
       <AppLogo />
-      <Text center grey10 marginT-s2 text90>
+      <Text center grey40 marginT-s2 text90R>
         App Version: {packageJson.version}, {process.env.NODE_ENV}
       </Text>
     </View>
