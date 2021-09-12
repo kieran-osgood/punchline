@@ -6,10 +6,10 @@ import { IObservableArray } from "mobx"
 import { types } from "mobx-state-tree"
 import { MSTGQLRef, QueryBuilder, withTypedRefs } from "mst-gql"
 import { ModelBase } from "./ModelBase"
-import { JokeEdgeModel, JokeEdgeModelType } from "./JokeEdgeModel"
-import { JokeEdgeModelSelector } from "./JokeEdgeModel.base"
 import { JokeModel, JokeModelType } from "./JokeModel"
 import { JokeModelSelector } from "./JokeModel.base"
+import { JokesEdgeModel, JokesEdgeModelType } from "./JokesEdgeModel"
+import { JokesEdgeModelSelector } from "./JokesEdgeModel.base"
 import { PageInfoModel, PageInfoModelType } from "./PageInfoModel"
 import { PageInfoModelSelector } from "./PageInfoModel.base"
 import { RootStoreType } from "./index"
@@ -21,19 +21,19 @@ type Refs = {
 }
 
 /**
- * JokeConnectionBase
- * auto generated base class for the model JokeConnectionModel.
+ * JokesConnectionBase
+ * auto generated base class for the model JokesConnectionModel.
  *
  * A connection to a list of items.
  */
-export const JokeConnectionModelBase = withTypedRefs<Refs>()(ModelBase
-  .named('JokeConnection')
+export const JokesConnectionModelBase = withTypedRefs<Refs>()(ModelBase
+  .named('JokesConnection')
   .props({
-    __typename: types.optional(types.literal("JokeConnection"), "JokeConnection"),
+    __typename: types.optional(types.literal("JokesConnection"), "JokesConnection"),
     /** Information to aid in pagination. */
     pageInfo: types.union(types.undefined, types.late((): any => PageInfoModel)),
     /** A list of edges. */
-    edges: types.union(types.undefined, types.null, types.array(types.late((): any => JokeEdgeModel))),
+    edges: types.union(types.undefined, types.null, types.array(types.late((): any => JokesEdgeModel))),
     /** A flattened list of the nodes. */
     nodes: types.union(types.undefined, types.null, types.array(MSTGQLRef(types.late((): any => JokeModel)))),
     totalCount: types.union(types.undefined, types.integer),
@@ -44,14 +44,14 @@ export const JokeConnectionModelBase = withTypedRefs<Refs>()(ModelBase
     }
   })))
 
-export class JokeConnectionModelSelector extends QueryBuilder {
+export class JokesConnectionModelSelector extends QueryBuilder {
   get totalCount() { return this.__attr(`totalCount`) }
   pageInfo(builder?: string | PageInfoModelSelector | ((selector: PageInfoModelSelector) => PageInfoModelSelector)) { return this.__child(`pageInfo`, PageInfoModelSelector, builder) }
-  edges(builder?: string | JokeEdgeModelSelector | ((selector: JokeEdgeModelSelector) => JokeEdgeModelSelector)) { return this.__child(`edges`, JokeEdgeModelSelector, builder) }
+  edges(builder?: string | JokesEdgeModelSelector | ((selector: JokesEdgeModelSelector) => JokesEdgeModelSelector)) { return this.__child(`edges`, JokesEdgeModelSelector, builder) }
   nodes(builder?: string | JokeModelSelector | ((selector: JokeModelSelector) => JokeModelSelector)) { return this.__child(`nodes`, JokeModelSelector, builder) }
 }
-export function selectFromJokeConnection() {
-  return new JokeConnectionModelSelector()
+export function selectFromJokesConnection() {
+  return new JokesConnectionModelSelector()
 }
 
-export const jokeConnectionModelPrimitives = selectFromJokeConnection().totalCount
+export const jokesConnectionModelPrimitives = selectFromJokesConnection().totalCount

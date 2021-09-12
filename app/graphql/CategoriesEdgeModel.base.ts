@@ -16,15 +16,15 @@ type Refs = {
 }
 
 /**
- * CategoryEdgeBase
- * auto generated base class for the model CategoryEdgeModel.
+ * CategoriesEdgeBase
+ * auto generated base class for the model CategoriesEdgeModel.
  *
  * An edge in a connection.
  */
-export const CategoryEdgeModelBase = withTypedRefs<Refs>()(ModelBase
-  .named('CategoryEdge')
+export const CategoriesEdgeModelBase = withTypedRefs<Refs>()(ModelBase
+  .named('CategoriesEdge')
   .props({
-    __typename: types.optional(types.literal("CategoryEdge"), "CategoryEdge"),
+    __typename: types.optional(types.literal("CategoriesEdge"), "CategoriesEdge"),
     /** A cursor for use in pagination. */
     cursor: types.union(types.undefined, types.string),
     /** The item at the end of the edge. */
@@ -36,12 +36,12 @@ export const CategoryEdgeModelBase = withTypedRefs<Refs>()(ModelBase
     }
   })))
 
-export class CategoryEdgeModelSelector extends QueryBuilder {
+export class CategoriesEdgeModelSelector extends QueryBuilder {
   get cursor() { return this.__attr(`cursor`) }
   node(builder?: string | CategoryModelSelector | ((selector: CategoryModelSelector) => CategoryModelSelector)) { return this.__child(`node`, CategoryModelSelector, builder) }
 }
-export function selectFromCategoryEdge() {
-  return new CategoryEdgeModelSelector()
+export function selectFromCategoriesEdge() {
+  return new CategoriesEdgeModelSelector()
 }
 
-export const categoryEdgeModelPrimitives = selectFromCategoryEdge().cursor
+export const categoriesEdgeModelPrimitives = selectFromCategoriesEdge().cursor

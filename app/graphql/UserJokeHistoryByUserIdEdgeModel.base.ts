@@ -16,15 +16,15 @@ type Refs = {
 }
 
 /**
- * UserJokeHistoryEdgeBase
- * auto generated base class for the model UserJokeHistoryEdgeModel.
+ * UserJokeHistoryByUserIdEdgeBase
+ * auto generated base class for the model UserJokeHistoryByUserIdEdgeModel.
  *
  * An edge in a connection.
  */
-export const UserJokeHistoryEdgeModelBase = withTypedRefs<Refs>()(ModelBase
-  .named('UserJokeHistoryEdge')
+export const UserJokeHistoryByUserIdEdgeModelBase = withTypedRefs<Refs>()(ModelBase
+  .named('UserJokeHistoryByUserIdEdge')
   .props({
-    __typename: types.optional(types.literal("UserJokeHistoryEdge"), "UserJokeHistoryEdge"),
+    __typename: types.optional(types.literal("UserJokeHistoryByUserIdEdge"), "UserJokeHistoryByUserIdEdge"),
     /** A cursor for use in pagination. */
     cursor: types.union(types.undefined, types.string),
     /** The item at the end of the edge. */
@@ -36,12 +36,12 @@ export const UserJokeHistoryEdgeModelBase = withTypedRefs<Refs>()(ModelBase
     }
   })))
 
-export class UserJokeHistoryEdgeModelSelector extends QueryBuilder {
+export class UserJokeHistoryByUserIdEdgeModelSelector extends QueryBuilder {
   get cursor() { return this.__attr(`cursor`) }
   node(builder?: string | UserJokeHistoryModelSelector | ((selector: UserJokeHistoryModelSelector) => UserJokeHistoryModelSelector)) { return this.__child(`node`, UserJokeHistoryModelSelector, builder) }
 }
-export function selectFromUserJokeHistoryEdge() {
-  return new UserJokeHistoryEdgeModelSelector()
+export function selectFromUserJokeHistoryByUserIdEdge() {
+  return new UserJokeHistoryByUserIdEdgeModelSelector()
 }
 
-export const userJokeHistoryEdgeModelPrimitives = selectFromUserJokeHistoryEdge().cursor
+export const userJokeHistoryByUserIdEdgeModelPrimitives = selectFromUserJokeHistoryByUserIdEdge().cursor

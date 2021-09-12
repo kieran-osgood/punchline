@@ -13,20 +13,24 @@ import { UserJokeHistoryModel, UserJokeHistoryModelType } from "./UserJokeHistor
 import { userJokeHistoryModelPrimitives, UserJokeHistoryModelSelector } from "./UserJokeHistoryModel.base"
 import { UserModel, UserModelType } from "./UserModel"
 import { userModelPrimitives, UserModelSelector } from "./UserModel.base"
-import { JokeConnectionModel, JokeConnectionModelType } from "./JokeConnectionModel"
-import { jokeConnectionModelPrimitives, JokeConnectionModelSelector } from "./JokeConnectionModel.base"
-import { CategoryConnectionModel, CategoryConnectionModelType } from "./CategoryConnectionModel"
-import { categoryConnectionModelPrimitives, CategoryConnectionModelSelector } from "./CategoryConnectionModel.base"
-import { UserJokeHistoryConnectionModel, UserJokeHistoryConnectionModelType } from "./UserJokeHistoryConnectionModel"
-import { userJokeHistoryConnectionModelPrimitives, UserJokeHistoryConnectionModelSelector } from "./UserJokeHistoryConnectionModel.base"
+import { JokesConnectionModel, JokesConnectionModelType } from "./JokesConnectionModel"
+import { jokesConnectionModelPrimitives, JokesConnectionModelSelector } from "./JokesConnectionModel.base"
+import { CategoriesConnectionModel, CategoriesConnectionModelType } from "./CategoriesConnectionModel"
+import { categoriesConnectionModelPrimitives, CategoriesConnectionModelSelector } from "./CategoriesConnectionModel.base"
+import { UserCategoriesConnectionModel, UserCategoriesConnectionModelType } from "./UserCategoriesConnectionModel"
+import { userCategoriesConnectionModelPrimitives, UserCategoriesConnectionModelSelector } from "./UserCategoriesConnectionModel.base"
+import { UserJokeHistoryByUserIdConnectionModel, UserJokeHistoryByUserIdConnectionModelType } from "./UserJokeHistoryByUserIdConnectionModel"
+import { userJokeHistoryByUserIdConnectionModelPrimitives, UserJokeHistoryByUserIdConnectionModelSelector } from "./UserJokeHistoryByUserIdConnectionModel.base"
 import { PageInfoModel, PageInfoModelType } from "./PageInfoModel"
 import { pageInfoModelPrimitives, PageInfoModelSelector } from "./PageInfoModel.base"
-import { JokeEdgeModel, JokeEdgeModelType } from "./JokeEdgeModel"
-import { jokeEdgeModelPrimitives, JokeEdgeModelSelector } from "./JokeEdgeModel.base"
-import { CategoryEdgeModel, CategoryEdgeModelType } from "./CategoryEdgeModel"
-import { categoryEdgeModelPrimitives, CategoryEdgeModelSelector } from "./CategoryEdgeModel.base"
-import { UserJokeHistoryEdgeModel, UserJokeHistoryEdgeModelType } from "./UserJokeHistoryEdgeModel"
-import { userJokeHistoryEdgeModelPrimitives, UserJokeHistoryEdgeModelSelector } from "./UserJokeHistoryEdgeModel.base"
+import { JokesEdgeModel, JokesEdgeModelType } from "./JokesEdgeModel"
+import { jokesEdgeModelPrimitives, JokesEdgeModelSelector } from "./JokesEdgeModel.base"
+import { CategoriesEdgeModel, CategoriesEdgeModelType } from "./CategoriesEdgeModel"
+import { categoriesEdgeModelPrimitives, CategoriesEdgeModelSelector } from "./CategoriesEdgeModel.base"
+import { UserCategoriesEdgeModel, UserCategoriesEdgeModelType } from "./UserCategoriesEdgeModel"
+import { userCategoriesEdgeModelPrimitives, UserCategoriesEdgeModelSelector } from "./UserCategoriesEdgeModel.base"
+import { UserJokeHistoryByUserIdEdgeModel, UserJokeHistoryByUserIdEdgeModelType } from "./UserJokeHistoryByUserIdEdgeModel"
+import { userJokeHistoryByUserIdEdgeModelPrimitives, UserJokeHistoryByUserIdEdgeModelSelector } from "./UserJokeHistoryByUserIdEdgeModel.base"
 import { UserPayloadModel, UserPayloadModelType } from "./UserPayloadModel"
 import { userPayloadModelPrimitives, UserPayloadModelSelector } from "./UserPayloadModel.base"
 import { MutateUserJokeHistoryPayloadModel, MutateUserJokeHistoryPayloadModelType } from "./MutateUserJokeHistoryPayloadModel"
@@ -37,9 +41,9 @@ import { userErrorModelPrimitives, UserErrorModelSelector } from "./UserErrorMod
 import { nodeModelPrimitives, NodeModelSelector , NodeUnion } from "./"
 
 import { ApplyPolicy } from "./ApplyPolicyEnum"
-import { JokeLength } from "./JokeLengthEnum"
 import { RatingValue } from "./RatingValueEnum"
 import { SortEnumType } from "./SortEnumTypeEnum"
+import { JokeLength } from "./JokeLengthEnum"
 import { ErrorCodes } from "./ErrorCodesEnum"
 
 export type JokeFilterInput = {
@@ -55,7 +59,6 @@ export type JokeFilterInput = {
   userJokeHistories?: ListFilterInputTypeOfUserJokeHistoryFilterInput
   categories?: ListFilterInputTypeOfCategoryFilterInput
   users?: ListFilterInputTypeOfUserFilterInput
-  length?: JokeLengthOperationFilterInput
 }
 export type JokeSortInput = {
   id?: SortEnumType
@@ -65,7 +68,6 @@ export type JokeSortInput = {
   negativeRating?: SortEnumType
   skipRating?: SortEnumType
   reportCount?: SortEnumType
-  length?: SortEnumType
 }
 export type CategoryFilterInput = {
   and?: CategoryFilterInput[]
@@ -75,11 +77,13 @@ export type CategoryFilterInput = {
   image?: StringOperationFilterInput
   jokes?: ListFilterInputTypeOfJokeFilterInput
   users?: ListFilterInputTypeOfUserFilterInput
+  joke?: JokeFilterInput
 }
 export type CategorySortInput = {
   id?: SortEnumType
   name?: SortEnumType
   image?: SortEnumType
+  joke?: JokeSortInput
 }
 export type UserJokeHistoryFilterInput = {
   and?: UserJokeHistoryFilterInput[]
@@ -144,12 +148,6 @@ export type ListFilterInputTypeOfUserFilterInput = {
   none?: UserFilterInput
   some?: UserFilterInput
   any?: boolean
-}
-export type JokeLengthOperationFilterInput = {
-  eq?: JokeLength
-  neq?: JokeLength
-  in?: JokeLength[]
-  nin?: JokeLength[]
 }
 export type ListFilterInputTypeOfJokeFilterInput = {
   all?: JokeFilterInput
@@ -231,11 +229,9 @@ type Refs = {
 * Enums for the names of base graphql actions
 */
 export enum RootStoreBaseQueries {
-queryNode="queryNode",
 queryJokes="queryJokes",
 queryCategories="queryCategories",
 queryUserCategories="queryUserCategories",
-queryUserJokeHistories="queryUserJokeHistories",
 queryUserJokeHistoryByUserId="queryUserJokeHistoryByUserId"
 }
 export enum RootStoreBaseMutations {
@@ -251,7 +247,7 @@ mutateCompleteOnboarding="mutateCompleteOnboarding"
 */
 export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
   .named("RootStore")
-  .extend(configureStoreMixin([['Joke', () => JokeModel], ['Category', () => CategoryModel], ['UserJokeHistory', () => UserJokeHistoryModel], ['User', () => UserModel], ['JokeConnection', () => JokeConnectionModel], ['CategoryConnection', () => CategoryConnectionModel], ['UserJokeHistoryConnection', () => UserJokeHistoryConnectionModel], ['PageInfo', () => PageInfoModel], ['JokeEdge', () => JokeEdgeModel], ['CategoryEdge', () => CategoryEdgeModel], ['UserJokeHistoryEdge', () => UserJokeHistoryEdgeModel], ['UserPayload', () => UserPayloadModel], ['MutateUserJokeHistoryPayload', () => MutateUserJokeHistoryPayloadModel], ['UserError', () => UserErrorModel]], ['Joke', 'User', 'Category', 'UserJokeHistory'], "js"))
+  .extend(configureStoreMixin([['Joke', () => JokeModel], ['Category', () => CategoryModel], ['UserJokeHistory', () => UserJokeHistoryModel], ['User', () => UserModel], ['JokesConnection', () => JokesConnectionModel], ['CategoriesConnection', () => CategoriesConnectionModel], ['UserCategoriesConnection', () => UserCategoriesConnectionModel], ['UserJokeHistoryByUserIdConnection', () => UserJokeHistoryByUserIdConnectionModel], ['PageInfo', () => PageInfoModel], ['JokesEdge', () => JokesEdgeModel], ['CategoriesEdge', () => CategoriesEdgeModel], ['UserCategoriesEdge', () => UserCategoriesEdgeModel], ['UserJokeHistoryByUserIdEdge', () => UserJokeHistoryByUserIdEdgeModel], ['UserPayload', () => UserPayloadModel], ['MutateUserJokeHistoryPayload', () => MutateUserJokeHistoryPayloadModel], ['UserError', () => UserErrorModel]], ['Joke', 'User', 'Category', 'UserJokeHistory'], "js"))
   .props({
     jokes: types.optional(types.map(types.late((): any => JokeModel)), {}),
     users: types.optional(types.map(types.late((): any => UserModel)), {}),
@@ -259,34 +255,24 @@ export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
     userJokeHistories: types.optional(types.map(types.late((): any => UserJokeHistoryModel)), {})
   })
   .actions(self => ({
-    queryNode(variables: { id: string }, resultSelector: string | ((qb: NodeModelSelector) => NodeModelSelector) = nodeModelPrimitives.toString(), options: QueryOptions = {}) {
-      return self.query<{ node: NodeUnion}>(`query node($id: ID!) { node(id: $id) {
-        ${typeof resultSelector === "function" ? resultSelector(new NodeModelSelector()).toString() : resultSelector}
+    queryJokes(variables: { deepLinkedJokeId?: string, jokeLength: JokeLength, blockedCategoryIds?: string[], first?: number, after?: string, last?: number, before?: string, where?: JokeFilterInput, order?: JokeSortInput[] }, resultSelector: string | ((qb: JokesConnectionModelSelector) => JokesConnectionModelSelector) = jokesConnectionModelPrimitives.toString(), options: QueryOptions = {}) {
+      return self.query<{ jokes: JokesConnectionModelType}>(`query jokes($deepLinkedJokeId: ID, $jokeLength: JokeLength!, $blockedCategoryIds: [ID!], $first: Int, $after: String, $last: Int, $before: String, $where: JokeFilterInput, $order: [JokeSortInput!]) { jokes(deepLinkedJokeId: $deepLinkedJokeId, jokeLength: $jokeLength, blockedCategoryIds: $blockedCategoryIds, first: $first, after: $after, last: $last, before: $before, where: $where, order: $order) {
+        ${typeof resultSelector === "function" ? resultSelector(new JokesConnectionModelSelector()).toString() : resultSelector}
       } }`, variables, options)
     },
-    queryJokes(variables: { first?: number, after?: string, last?: number, before?: string, deepLinkedJokeId?: string, jokeLength: JokeLength, blockedCategoryIds: string[], where?: JokeFilterInput, order?: JokeSortInput[] }, resultSelector: string | ((qb: JokeConnectionModelSelector) => JokeConnectionModelSelector) = jokeConnectionModelPrimitives.toString(), options: QueryOptions = {}) {
-      return self.query<{ jokes: JokeConnectionModelType}>(`query jokes($first: Int, $after: String, $last: Int, $before: String, $deepLinkedJokeId: ID, $jokeLength: JokeLength!, $blockedCategoryIds: [ID!]!, $where: JokeFilterInput, $order: [JokeSortInput!]) { jokes(first: $first, after: $after, last: $last, before: $before, deepLinkedJokeId: $deepLinkedJokeId, jokeLength: $jokeLength, blockedCategoryIds: $blockedCategoryIds, where: $where, order: $order) {
-        ${typeof resultSelector === "function" ? resultSelector(new JokeConnectionModelSelector()).toString() : resultSelector}
+    queryCategories(variables: { first?: number, after?: string, last?: number, before?: string, where?: CategoryFilterInput, order?: CategorySortInput[] }, resultSelector: string | ((qb: CategoriesConnectionModelSelector) => CategoriesConnectionModelSelector) = categoriesConnectionModelPrimitives.toString(), options: QueryOptions = {}) {
+      return self.query<{ categories: CategoriesConnectionModelType}>(`query categories($first: Int, $after: String, $last: Int, $before: String, $where: CategoryFilterInput, $order: [CategorySortInput!]) { categories(first: $first, after: $after, last: $last, before: $before, where: $where, order: $order) {
+        ${typeof resultSelector === "function" ? resultSelector(new CategoriesConnectionModelSelector()).toString() : resultSelector}
       } }`, variables, options)
     },
-    queryCategories(variables: { first?: number, after?: string, last?: number, before?: string, where?: CategoryFilterInput, order?: CategorySortInput[] }, resultSelector: string | ((qb: CategoryConnectionModelSelector) => CategoryConnectionModelSelector) = categoryConnectionModelPrimitives.toString(), options: QueryOptions = {}) {
-      return self.query<{ categories: CategoryConnectionModelType}>(`query categories($first: Int, $after: String, $last: Int, $before: String, $where: CategoryFilterInput, $order: [CategorySortInput!]) { categories(first: $first, after: $after, last: $last, before: $before, where: $where, order: $order) {
-        ${typeof resultSelector === "function" ? resultSelector(new CategoryConnectionModelSelector()).toString() : resultSelector}
+    queryUserCategories(variables: { first?: number, after?: string, last?: number, before?: string, where?: CategoryFilterInput, order?: CategorySortInput[] }, resultSelector: string | ((qb: UserCategoriesConnectionModelSelector) => UserCategoriesConnectionModelSelector) = userCategoriesConnectionModelPrimitives.toString(), options: QueryOptions = {}) {
+      return self.query<{ userCategories: UserCategoriesConnectionModelType}>(`query userCategories($first: Int, $after: String, $last: Int, $before: String, $where: CategoryFilterInput, $order: [CategorySortInput!]) { userCategories(first: $first, after: $after, last: $last, before: $before, where: $where, order: $order) {
+        ${typeof resultSelector === "function" ? resultSelector(new UserCategoriesConnectionModelSelector()).toString() : resultSelector}
       } }`, variables, options)
     },
-    queryUserCategories(variables: { first?: number, after?: string, last?: number, before?: string, uid: string, where?: CategoryFilterInput, order?: CategorySortInput[] }, resultSelector: string | ((qb: CategoryConnectionModelSelector) => CategoryConnectionModelSelector) = categoryConnectionModelPrimitives.toString(), options: QueryOptions = {}) {
-      return self.query<{ userCategories: CategoryConnectionModelType}>(`query userCategories($first: Int, $after: String, $last: Int, $before: String, $uid: String!, $where: CategoryFilterInput, $order: [CategorySortInput!]) { userCategories(first: $first, after: $after, last: $last, before: $before, uid: $uid, where: $where, order: $order) {
-        ${typeof resultSelector === "function" ? resultSelector(new CategoryConnectionModelSelector()).toString() : resultSelector}
-      } }`, variables, options)
-    },
-    queryUserJokeHistories(variables: { first?: number, after?: string, last?: number, before?: string, where?: UserJokeHistoryFilterInput, order?: UserJokeHistorySortInput[] }, resultSelector: string | ((qb: UserJokeHistoryConnectionModelSelector) => UserJokeHistoryConnectionModelSelector) = userJokeHistoryConnectionModelPrimitives.toString(), options: QueryOptions = {}) {
-      return self.query<{ userJokeHistories: UserJokeHistoryConnectionModelType}>(`query userJokeHistories($first: Int, $after: String, $last: Int, $before: String, $where: UserJokeHistoryFilterInput, $order: [UserJokeHistorySortInput!]) { userJokeHistories(first: $first, after: $after, last: $last, before: $before, where: $where, order: $order) {
-        ${typeof resultSelector === "function" ? resultSelector(new UserJokeHistoryConnectionModelSelector()).toString() : resultSelector}
-      } }`, variables, options)
-    },
-    queryUserJokeHistoryByUserId(variables: { first?: number, after?: string, last?: number, before?: string, where?: UserJokeHistoryFilterInput, order?: UserJokeHistorySortInput[] }, resultSelector: string | ((qb: UserJokeHistoryConnectionModelSelector) => UserJokeHistoryConnectionModelSelector) = userJokeHistoryConnectionModelPrimitives.toString(), options: QueryOptions = {}) {
-      return self.query<{ userJokeHistoryByUserId: UserJokeHistoryConnectionModelType}>(`query userJokeHistoryByUserId($first: Int, $after: String, $last: Int, $before: String, $where: UserJokeHistoryFilterInput, $order: [UserJokeHistorySortInput!]) { userJokeHistoryByUserId(first: $first, after: $after, last: $last, before: $before, where: $where, order: $order) {
-        ${typeof resultSelector === "function" ? resultSelector(new UserJokeHistoryConnectionModelSelector()).toString() : resultSelector}
+    queryUserJokeHistoryByUserId(variables: { first?: number, after?: string, last?: number, before?: string, where?: UserJokeHistoryFilterInput, order?: UserJokeHistorySortInput[] }, resultSelector: string | ((qb: UserJokeHistoryByUserIdConnectionModelSelector) => UserJokeHistoryByUserIdConnectionModelSelector) = userJokeHistoryByUserIdConnectionModelPrimitives.toString(), options: QueryOptions = {}) {
+      return self.query<{ userJokeHistoryByUserId: UserJokeHistoryByUserIdConnectionModelType}>(`query userJokeHistoryByUserId($first: Int, $after: String, $last: Int, $before: String, $where: UserJokeHistoryFilterInput, $order: [UserJokeHistorySortInput!]) { userJokeHistoryByUserId(first: $first, after: $after, last: $last, before: $before, where: $where, order: $order) {
+        ${typeof resultSelector === "function" ? resultSelector(new UserJokeHistoryByUserIdConnectionModelSelector()).toString() : resultSelector}
       } }`, variables, options)
     },
     mutateRateJoke(variables: { input: RateJokeInput }, resultSelector: string | ((qb: MutateUserJokeHistoryPayloadModelSelector) => MutateUserJokeHistoryPayloadModelSelector) = mutateUserJokeHistoryPayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {
@@ -309,8 +295,8 @@ export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
         ${typeof resultSelector === "function" ? resultSelector(new UserPayloadModelSelector()).toString() : resultSelector}
       } }`, variables, optimisticUpdate)
     },
-    mutateCompleteOnboarding(variables: { input: UserLoginInput }, resultSelector: string | ((qb: UserPayloadModelSelector) => UserPayloadModelSelector) = userPayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {
-      return self.mutate<{ completeOnboarding: UserPayloadModelType}>(`mutation completeOnboarding($input: UserLoginInput!) { completeOnboarding(input: $input) {
+    mutateCompleteOnboarding(variables?: {  }, resultSelector: string | ((qb: UserPayloadModelSelector) => UserPayloadModelSelector) = userPayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {
+      return self.mutate<{ completeOnboarding: UserPayloadModelType}>(`mutation completeOnboarding { completeOnboarding {
         ${typeof resultSelector === "function" ? resultSelector(new UserPayloadModelSelector()).toString() : resultSelector}
       } }`, variables, optimisticUpdate)
     },

@@ -8,8 +8,8 @@ import { MSTGQLRef, QueryBuilder, withTypedRefs } from "mst-gql"
 import { ModelBase } from "./ModelBase"
 import { PageInfoModel, PageInfoModelType } from "./PageInfoModel"
 import { PageInfoModelSelector } from "./PageInfoModel.base"
-import { UserJokeHistoryEdgeModel, UserJokeHistoryEdgeModelType } from "./UserJokeHistoryEdgeModel"
-import { UserJokeHistoryEdgeModelSelector } from "./UserJokeHistoryEdgeModel.base"
+import { UserJokeHistoryByUserIdEdgeModel, UserJokeHistoryByUserIdEdgeModelType } from "./UserJokeHistoryByUserIdEdgeModel"
+import { UserJokeHistoryByUserIdEdgeModelSelector } from "./UserJokeHistoryByUserIdEdgeModel.base"
 import { UserJokeHistoryModel, UserJokeHistoryModelType } from "./UserJokeHistoryModel"
 import { UserJokeHistoryModelSelector } from "./UserJokeHistoryModel.base"
 import { RootStoreType } from "./index"
@@ -21,19 +21,19 @@ type Refs = {
 }
 
 /**
- * UserJokeHistoryConnectionBase
- * auto generated base class for the model UserJokeHistoryConnectionModel.
+ * UserJokeHistoryByUserIdConnectionBase
+ * auto generated base class for the model UserJokeHistoryByUserIdConnectionModel.
  *
  * A connection to a list of items.
  */
-export const UserJokeHistoryConnectionModelBase = withTypedRefs<Refs>()(ModelBase
-  .named('UserJokeHistoryConnection')
+export const UserJokeHistoryByUserIdConnectionModelBase = withTypedRefs<Refs>()(ModelBase
+  .named('UserJokeHistoryByUserIdConnection')
   .props({
-    __typename: types.optional(types.literal("UserJokeHistoryConnection"), "UserJokeHistoryConnection"),
+    __typename: types.optional(types.literal("UserJokeHistoryByUserIdConnection"), "UserJokeHistoryByUserIdConnection"),
     /** Information to aid in pagination. */
     pageInfo: types.union(types.undefined, types.late((): any => PageInfoModel)),
     /** A list of edges. */
-    edges: types.union(types.undefined, types.null, types.array(types.late((): any => UserJokeHistoryEdgeModel))),
+    edges: types.union(types.undefined, types.null, types.array(types.late((): any => UserJokeHistoryByUserIdEdgeModel))),
     /** A flattened list of the nodes. */
     nodes: types.union(types.undefined, types.null, types.array(MSTGQLRef(types.late((): any => UserJokeHistoryModel)))),
     totalCount: types.union(types.undefined, types.integer),
@@ -44,14 +44,14 @@ export const UserJokeHistoryConnectionModelBase = withTypedRefs<Refs>()(ModelBas
     }
   })))
 
-export class UserJokeHistoryConnectionModelSelector extends QueryBuilder {
+export class UserJokeHistoryByUserIdConnectionModelSelector extends QueryBuilder {
   get totalCount() { return this.__attr(`totalCount`) }
   pageInfo(builder?: string | PageInfoModelSelector | ((selector: PageInfoModelSelector) => PageInfoModelSelector)) { return this.__child(`pageInfo`, PageInfoModelSelector, builder) }
-  edges(builder?: string | UserJokeHistoryEdgeModelSelector | ((selector: UserJokeHistoryEdgeModelSelector) => UserJokeHistoryEdgeModelSelector)) { return this.__child(`edges`, UserJokeHistoryEdgeModelSelector, builder) }
+  edges(builder?: string | UserJokeHistoryByUserIdEdgeModelSelector | ((selector: UserJokeHistoryByUserIdEdgeModelSelector) => UserJokeHistoryByUserIdEdgeModelSelector)) { return this.__child(`edges`, UserJokeHistoryByUserIdEdgeModelSelector, builder) }
   nodes(builder?: string | UserJokeHistoryModelSelector | ((selector: UserJokeHistoryModelSelector) => UserJokeHistoryModelSelector)) { return this.__child(`nodes`, UserJokeHistoryModelSelector, builder) }
 }
-export function selectFromUserJokeHistoryConnection() {
-  return new UserJokeHistoryConnectionModelSelector()
+export function selectFromUserJokeHistoryByUserIdConnection() {
+  return new UserJokeHistoryByUserIdConnectionModelSelector()
 }
 
-export const userJokeHistoryConnectionModelPrimitives = selectFromUserJokeHistoryConnection().totalCount
+export const userJokeHistoryByUserIdConnectionModelPrimitives = selectFromUserJokeHistoryByUserIdConnection().totalCount

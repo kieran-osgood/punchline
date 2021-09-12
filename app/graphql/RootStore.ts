@@ -33,14 +33,13 @@ export const RootStore = RootStoreBase.props({
     fetchInitialJokes(deepLinkInitialJoke?: string) {
       const query = self.queryJokes(
         {
-          blockedCategoryIds: self.root.userStore.blockedCategoryIds,
-          jokeLength: self.root.userStore.jokeLengthMaxEnum,
+          blockedCategoryIds: self.root.settings.blockedCategoryIds,
+          jokeLength: self.root.settings.jokeLengthMaxEnum,
           deepLinkedJokeId: deepLinkInitialJoke,
         },
         nodes(jokeModelPrimitives),
         { fetchPolicy: "no-cache" },
       )
-
       self.setDeepLinkJoke(deepLinkInitialJoke)
 
       return query
