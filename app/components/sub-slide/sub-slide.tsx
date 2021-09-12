@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { ViewStyle } from "react-native"
 import { Button, Text, ThemeManager, View } from "react-native-ui-lib"
 import { color } from "theme"
 
@@ -38,7 +37,3 @@ export const SubSlide = observer(function SubSlide(props: SubSlideProps) {
     </View>
   )
 })
-
-const BUTTON: ViewStyle = {
-  backgroundColor: color.line,
-}

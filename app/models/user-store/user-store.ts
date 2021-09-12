@@ -1,6 +1,6 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import { RootStore } from "app/models"
-import { cast, getRoot, Instance, SnapshotOut, types } from "mobx-state-tree"
+import { cast, flow, getRoot, Instance, SnapshotOut, types } from "mobx-state-tree"
 import R from "ramda"
 import { withEnvironment } from "../extensions/with-environment"
 import { UserDataKeys, UserModel } from "../user/user"
@@ -13,9 +13,17 @@ export const UserStoreModel = types
     lastDisplayedReviewPrompt: types.Date,
   })
   .extend(withEnvironment)
+  .views((self) => ({
+    get root(): RootStore {
+      return getRoot(self)
+    },
+  }))
   .actions((self) => ({
     increaseGoodJokeCount() {
       ++self.goodJokeCount
+    },
+    resetGoodJokecount() {
+      self.goodJokeCount = 0
     },
     setLastDisplayedReviewPrompt(date = new Date()) {
       self.lastDisplayedReviewPrompt = date
@@ -29,28 +37,28 @@ export const UserStoreModel = types
     },
   }))
   .actions((self) => ({
-    login: (credential: FirebaseAuthTypes.UserCredential) => {
+    login: flow(function* (user: FirebaseAuthTypes.User | null) {
+      self.updateUser(user)
+      if (user === null) return
+
+      const token = yield user.getIdToken()
+      self.root.api.setBearerToken(token)
+
       // TODO: add error handling
-      const root = getRoot(self) as RootStore
-      root.api.mutateLogin({
+      // Creates a user on the backend and updates users LastLogin date if already exists
+      self.root.api.mutateLogin({
         input: {
-          firebaseUid: credential.user.uid,
-          username: credential.user.displayName ?? "Guest",
+          firebaseUid: user.uid,
+          username: user.displayName ?? "Guest",
         },
       })
-
-      self.updateUser(credential.user)
-    },
+      self.root.api.queryUserCategories({}, (c) => c.nodes((n) => n.id.image.name))
+    }),
     completeOnboarding: () => {
-      const root = getRoot(self) as RootStore
       if (self.user?.uid) {
-        root.api.mutateCompleteOnboarding({
-          input: {
-            firebaseUid: self.user.uid,
-            username: self.user.displayName ?? "Guest",
-          },
+        self.root.api.mutateCompleteOnboarding({}, undefined, () => {
+          self.onboardingComplete = true
         })
-        self.onboardingComplete = true
       }
     },
   }))

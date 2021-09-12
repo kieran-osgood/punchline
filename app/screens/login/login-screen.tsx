@@ -1,4 +1,4 @@
-import auth from "@react-native-firebase/auth"
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import * as Sentry from "@sentry/react-native"
 import MeshBackground from "assets/images/mesh-background"
 import {
@@ -18,6 +18,11 @@ import Toast from "react-native-toast-message"
 import { Button, Text, ThemeManager, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
+export type LoginResponse = Promise<FirebaseAuthTypes.User | null>
+export type ExtractPromiseValue<T> = T extends PromiseLike<infer U> ? U : never
+export type SuccessCallback = (provider: string, user: FirebaseAuthTypes.User) => void
+export type ErrorCallback = (error: Error) => void
+
 export const LoginScreen = observer(function LoginScreen() {
   const [isLoading, setIsLoading] = React.useState(false)
 
@@ -30,9 +35,9 @@ export const LoginScreen = observer(function LoginScreen() {
     return () => backHandler.remove()
   }, [])
 
-  const handleTroubleLoggingIn = () => {
+  const handleTroubleLoggingIn = async () => {
     console.log("print")
-    auth().sendSignInLinkToEmail("kieranbosgood@gmail.com", {
+    return auth().sendSignInLinkToEmail("kieranbosgood@gmail.com", {
       handleCodeInApp: true,
       url: "app/email-login",
       iOS: {
@@ -43,7 +48,7 @@ export const LoginScreen = observer(function LoginScreen() {
         installApp: true,
         minimumVersion: "12",
       },
-      dynamicLinkDomain: "app.punch-line.co.uk/login",
+      dynamicLinkDomain: "web.punch-line.co.uk",
     })
 
     // const authz = auth()
@@ -70,11 +75,7 @@ export const LoginScreen = observer(function LoginScreen() {
     <Screen style={ROOT} preset="fixed" testID="LoginScreen">
       <View centerH spread flex-1 width={widthPercentageToDP("70%")}>
         <View flex-1 centerV>
-          <AppLogo
-            // color="white"
-            width={widthPercentageToDP("95%")}
-            height={widthPercentageToDP("95%") / 5}
-          />
+          <AppLogo width={widthPercentageToDP("95%")} height={widthPercentageToDP("95%") / 5} />
         </View>
         <View flex-2 center width="100%">
           <Text color={ThemeManager.titleColor} text60BO center>
@@ -125,7 +126,7 @@ const LABEL: TextStyle = {
   textDecorationLine: "underline",
 }
 
-const onError = (error: Error) => {
+const onError: ErrorCallback = (error: Error) => {
   Sentry.captureException(error)
 
   Toast.show({

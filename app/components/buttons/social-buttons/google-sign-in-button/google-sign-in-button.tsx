@@ -2,7 +2,7 @@
 import { GoogleSignin, statusCodes } from "@react-native-community/google-signin"
 import auth from "@react-native-firebase/auth"
 import { ICON_BUTTON, ICON_BUTTON_LABEL } from "app/components/buttons/social-buttons"
-import { useStores } from "app/models"
+import { ErrorCallback, LoginResponse, SuccessCallback } from "app/screens"
 import { Google as GoogleIcon } from "assets/images"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
@@ -18,8 +18,8 @@ export interface GoogleSignInButtonProps {
   style?: ViewStyle
   setIsLoading?: (val: boolean) => void
   isAnonymousConversion?: boolean
-  onSuccess?: (provider: string) => void
-  onError?: (error: Error) => void
+  onSuccess?: SuccessCallback
+  onError?: ErrorCallback
 }
 type GoogleSignInError = {
   message: string
@@ -34,47 +34,39 @@ export const GoogleSignInButton = observer(function GoogleSignInButton(
   props: GoogleSignInButtonProps,
 ) {
   const { isAnonymousConversion = false, setIsLoading, onSuccess, onError } = props
-  const { userStore } = useStores()
 
-  const handlePress = async () => {
-    return GoogleSignin.signIn()
-      .then(({ idToken }) => {
-        if (idToken === null) throw Error("idToken null")
-        if (isAnonymousConversion) return convertGoogle(idToken)
-        return signInWithGoogle(idToken)
-      })
-      .catch((error: GoogleSignInError) => {
-        if (error.code !== statusCodes.SIGN_IN_CANCELLED) {
-          onError?.(error)
-        }
-      })
-      .finally(() => setIsLoading?.(false))
+  const handleGoogleSignInPress = async () => {
+    try {
+      const response = await GoogleSignin.signIn()
+      const { idToken } = response
+      if (idToken === null) throw Error("idToken null")
+      const user = isAnonymousConversion
+        ? await convertGoogle(idToken)
+        : await signInWithGoogle(idToken)
+
+      if (!user) throw Error("handleGoogleSignInPress - User was null")
+
+      onSuccess?.(PROVIDER_NAME, user)
+    } catch (error) {
+      const gError = error as GoogleSignInError
+      if (gError.code !== statusCodes.SIGN_IN_CANCELLED) {
+        onError?.(gError)
+      }
+    } finally {
+      setIsLoading?.(false)
+    }
   }
 
-  const signInWithGoogle = async (idToken: string) => {
-    setIsLoading?.(true)
+  const signInWithGoogle = async (idToken: string): LoginResponse => {
     const googleCredential = auth.GoogleAuthProvider.credential(idToken)
-    auth()
-      .signInWithCredential(googleCredential)
-      .then(userStore.login)
-      .catch((error: GoogleSignInError) => {
-        onError?.(error)
-      })
-      .finally(() => setIsLoading?.(false))
+    const userCredential = await auth().signInWithCredential(googleCredential)
+    return userCredential.user
   }
 
-  const convertGoogle = async (idToken: string) => {
+  const convertGoogle = async (idToken: string): LoginResponse => {
     const credential = auth.GoogleAuthProvider.credential(idToken)
-    auth()
-      .currentUser?.linkWithCredential(credential)
-      .then((e) => {
-        userStore.updateUser(e.user)
-        onSuccess?.(PROVIDER_NAME)
-      })
-      .catch((error: GoogleSignInError) => {
-        onError?.(error)
-      })
-      .finally(() => setIsLoading?.(false))
+    const userCredential = await auth().currentUser?.linkWithCredential(credential)
+    return userCredential?.user ?? null
   }
 
   return (
@@ -83,7 +75,7 @@ export const GoogleSignInButton = observer(function GoogleSignInButton(
       style={ICON_BUTTON}
       label="Sign in with Google"
       labelStyle={ICON_BUTTON_LABEL}
-      onPress={handlePress}
+      onPress={handleGoogleSignInPress}
       iconSource={() => <GoogleIcon scale={1.2} />}
     />
   )

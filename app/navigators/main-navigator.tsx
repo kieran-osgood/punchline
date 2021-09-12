@@ -8,7 +8,7 @@
 import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs"
 import { RouteProp } from "@react-navigation/native"
 import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack"
-import withRateApp from "app/components/use-rate-app/use-rate-app"
+import withRateApp from "app/components/with-rate-app/with-rate-app"
 import { useStores } from "app/models"
 import { Header } from "components"
 import { observer } from "mobx-react-lite"

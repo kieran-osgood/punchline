@@ -1,13 +1,14 @@
 // https://github.com/thebergamo/react-native-fbsdk-next
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import { ICON_BUTTON, ICON_BUTTON_LABEL } from "app/components/buttons/social-buttons"
-import { useStores } from "app/models"
+import { ErrorCallback, ExtractPromiseValue, LoginResponse, SuccessCallback } from "app/screens"
 import { Facebook } from "images"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { ViewStyle } from "react-native"
 import { AccessToken, LoginManager } from "react-native-fbsdk-next"
 import { Button } from "react-native-ui-lib"
+
 const PROVIDER_NAME = "Facebook"
 
 export interface FacebookSignInButtonProps {
@@ -18,8 +19,8 @@ export interface FacebookSignInButtonProps {
   setIsLoading?: (val: boolean) => void
   isAnonymousConversion?: boolean
   title?: string
-  onSuccess?: (provider: string) => void
-  onError?: (error: Error) => void
+  onSuccess?: SuccessCallback
+  onError?: ErrorCallback
 }
 
 /**
@@ -29,15 +30,12 @@ export const FacebookSignInButton = observer(function FacebookSignInButton(
   props: FacebookSignInButtonProps,
 ) {
   const { isAnonymousConversion = false, setIsLoading, onSuccess, onError } = props
-  const { userStore } = useStores()
 
   const onFacebookButtonPress = async () => {
     setIsLoading?.(true)
     try {
       // Attempt login with permissions
-      console.log("Attempt: ")
       const result = await LoginManager.logInWithPermissions(["public_profile", "email"])
-      console.log("result: ", result)
       if (result.isCancelled) {
         return
       }
@@ -50,39 +48,32 @@ export const FacebookSignInButton = observer(function FacebookSignInButton(
       }
 
       // Create a Firebase credential with the AccessToken
-      console.log("Create: ")
       const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken)
-      if (isAnonymousConversion) {
-        convertFacebook(data.accessToken)
-      } else {
-        signInWithFacebook(facebookCredential)
-      }
+
+      const user: ExtractPromiseValue<LoginResponse> = isAnonymousConversion
+        ? await convertFacebook(facebookCredential)
+        : await signInWithFacebook(facebookCredential)
+
+      if (!user) throw Error("onFacebookButtonPress - Sign in failed - user null")
+
+      onSuccess?.(PROVIDER_NAME, user)
     } catch (error) {
-      console.log("error: ", error)
       if (error instanceof Error) onError?.(error)
     } finally {
       setIsLoading?.(false)
     }
   }
 
-  const signInWithFacebook = async (facebookCredential: FirebaseAuthTypes.AuthCredential) => {
-    auth()
-      .signInWithCredential(facebookCredential)
-      .then(userStore.login)
-      .catch(onError)
-      .finally(() => setIsLoading?.(false))
+  const signInWithFacebook = async (
+    facebookCredential: FirebaseAuthTypes.AuthCredential,
+  ): LoginResponse => {
+    const response = await auth().signInWithCredential(facebookCredential)
+    return response.user
   }
 
-  const convertFacebook = async (accessToken: string) => {
-    const credential = auth.FacebookAuthProvider.credential(accessToken)
-    auth()
-      .currentUser?.linkWithCredential(credential)
-      .then((e) => {
-        userStore.updateUser(e.user)
-        onSuccess?.(PROVIDER_NAME)
-      })
-      .catch(onError)
-      .finally(() => setIsLoading?.(false))
+  const convertFacebook = async (credential: FirebaseAuthTypes.AuthCredential): LoginResponse => {
+    const response = await auth().currentUser?.linkWithCredential(credential)
+    return response?.user ?? null
   }
 
   return (

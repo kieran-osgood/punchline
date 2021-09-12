@@ -4,10 +4,11 @@ import {
   appleAuthAndroid,
   AppleRequestResponse,
 } from "@invertase/react-native-apple-authentication"
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import auth from "@react-native-firebase/auth"
 import * as Sentry from "@sentry/react-native"
 import { ICON_BUTTON, ICON_BUTTON_LABEL } from "app/components/buttons/social-buttons"
 import { useStores } from "app/models"
+import { ErrorCallback, ExtractPromiseValue, LoginResponse, SuccessCallback } from "app/screens"
 import { Apple } from "assets/images/apple"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
@@ -16,8 +17,6 @@ import "react-native-get-random-values"
 import { Button } from "react-native-ui-lib"
 import { v4 as uuid } from "uuid"
 
-type LoginResponse = Promise<FirebaseAuthTypes.User | null>
-type ExtractPromiseValue<T> = T extends PromiseLike<infer U> ? U : never
 // Use this type for passing around token/nonce - api inconsistency in naming between ios/android
 type AppleSignInResponse = Pick<AppleRequestResponse, "identityToken" | "nonce">
 
@@ -28,16 +27,16 @@ type AppleSignInError = {
   name: string
   code: typeof appleAuth.Error[keyof typeof appleAuth.Error]
 }
-export interface AppleSignInButtonProps {
+export type AppleSignInButtonProps = {
   /**
    * An optional style override useful for padding & margin.
    */
   style?: ViewStyle
   setIsLoading?: (val: boolean) => void
-  isAnonymousConversion?: boolean
   title?: string
-  onSuccess?: (provider: string) => void
-  onError?: (error: Error) => void
+  isAnonymousConversion?: true
+  onSuccess?: SuccessCallback
+  onError?: ErrorCallback
 }
 
 /**
@@ -68,7 +67,7 @@ export const AppleSignInButton = observer(function AppleSigninButton(
       if (!user) throw Error("handleAppleSignIn - User was null")
 
       userStore.updateUser(user)
-      onSuccess?.(PROVIDER_NAME)
+      onSuccess?.(PROVIDER_NAME, user)
     } catch (error) {
       if (error instanceof Error) onError?.(error)
     } finally {
@@ -100,16 +99,6 @@ export const AppleSignInButton = observer(function AppleSigninButton(
   )
 })
 
-// !!!!!!!!!! IOS !!!!!!!!!!
-const generateAppleIOSToken = async (): Promise<AppleSignInResponse> => {
-  const appleAuthRequestResponse = await appleAuth.performRequest({
-    requestedOperation: appleAuth.Operation.LOGIN,
-    requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-  })
-
-  return appleAuthRequestResponse
-}
-
 /**
  * Note the sign in request can error, e.g. if the user cancels the sign-in.
  * Use `appleAuth.Error` to determine the type of error, e.g. `error.code === appleAuth.Error.CANCELED`
@@ -136,7 +125,15 @@ async function signInWithApple(appleAuthRequestResponse: AppleSignInResponse): L
   }
 }
 
-// !!!!!!!!!! Android !!!!!!!!!!
+const generateAppleIOSToken = async (): Promise<AppleSignInResponse> => {
+  const appleAuthRequestResponse = await appleAuth.performRequest({
+    requestedOperation: appleAuth.Operation.LOGIN,
+    requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+  })
+
+  return appleAuthRequestResponse
+}
+
 const generateAppleAndroidToken = async (): Promise<AppleSignInResponse> => {
   // Generate secure, random values for state and nonce
   const rawNonce = uuid()

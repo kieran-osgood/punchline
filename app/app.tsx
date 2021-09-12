@@ -6,8 +6,7 @@ import auth from "@react-native-firebase/auth"
 import { NavigationContainerRef } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
 import { FallbackRender } from "@sentry/react/dist/errorboundary"
-import { categoryModelPrimitives, nodes } from "app/graphql"
-import { StoreContext as GraphQLStoreContext, useQuery } from "app/graphql/reactUtils"
+import { StoreContext as GraphQLStoreContext } from "app/graphql/reactUtils"
 import { RootStore, RootStoreProvider, setupRootStore, useStores } from "app/models"
 import { AsyncStorage } from "app/utils/storage/async-storage"
 import { observer } from "mobx-react-lite"
@@ -111,36 +110,19 @@ const App = observer(function App() {
 
 export default App
 
-const Authorization = ({ children }: { children: React.ReactNode }) => {
+const Authorization = observer(function Authorization({ children }: { children: React.ReactNode }) {
   const { userStore } = useStores()
-  const { store, setQuery } = useQuery()
-  useQuery((store) => store.queryCategories({}, nodes(categoryModelPrimitives)))
 
   React.useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged((user) => {
-      userStore.updateUser(user)
-      user?.getIdToken().then((idToken) => {
-        store.setBearerToken(idToken)
-
-        // Creates a user on the backend and updates users LastLogin date if already exists
-        setQuery((store) =>
-          store.mutateLogin({
-            input: {
-              firebaseUid: user.uid,
-              username: user.displayName ?? "",
-            },
-          }),
-        )
-      })
+    const unsubscribe = auth().onAuthStateChanged(async (user) => {
+      userStore.login(user)
     })
 
     return () => unsubscribe()
-  }, [])
-
-  // if (store.accessToken == null) return null
+  }, [userStore])
 
   return <>{children}</>
-}
+})
 
 const ErrorFallback: FallbackRender = ({ resetError }) => {
   const onPress = () => {

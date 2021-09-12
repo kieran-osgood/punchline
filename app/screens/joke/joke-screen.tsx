@@ -2,7 +2,6 @@
 import { useRoute } from "@react-navigation/native"
 import Swipeable from "app/components/swipeable/swipeable"
 import { JokeModelType, RatingValue, useQuery } from "app/graphql"
-import { useStores } from "app/models"
 import { NavigationProps } from "app/navigators/main-navigator"
 import Skip from "assets/images/skip"
 import { AdBanner, BookmarkButton, Ratings, ShareIcons, SwipeHandler } from "components"
@@ -10,8 +9,6 @@ import { CryingEmoji, LaughingEmoji } from "images"
 import { observer } from "mobx-react-lite"
 import React from "react"
 import { SafeAreaView, StatusBar, TextStyle, ViewStyle } from "react-native"
-import { ShareDialog } from "react-native-fbsdk-next"
-import { ShareLinkContent } from "react-native-fbsdk-next/types/models/FBShareLinkContent"
 import { Button, Text, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
@@ -31,7 +28,7 @@ export const JokeScreen = observer(function JokeScreen() {
      */
     store.setDeepLinkJoke(route.params?.jokeId)
     store.fetchInitialJokes(route.params?.jokeId)
-  }, [route.params?.jokeId, store.setDeepLinkJoke, store.fetchInitialJokes])
+  }, [route.params?.jokeId, store.setDeepLinkJoke, store.fetchInitialJokes, store])
 
   const onSwipe = React.useCallback(
     (joke: JokeModelType, rating: RatingValue, bookmarked: boolean) => {
@@ -40,11 +37,6 @@ export const JokeScreen = observer(function JokeScreen() {
     },
     [],
   )
-
-  const stores = useStores()
-  stores.userStore.setLastDisplayedReviewPrompt()
-  console.log("lastDisplayedReviewPrompt", stores.userStore.lastDisplayedReviewPrompt)
-  console.log("lastDisplayedReviewPrompt", stores.userStore.goodJokeCount)
 
   const handleBookmarkPress = () => {
     setBookmarked((c) => !c)
@@ -65,39 +57,38 @@ export const JokeScreen = observer(function JokeScreen() {
   }
 
   // Build up a shareable link.
-  const shareLinkContent: ShareLinkContent = {
-    contentType: "link",
-    contentUrl: "https://facebook.com",
-    contentDescription: "Wow, check out this great site!",
-  }
+  // const shareLinkContent: ShareLinkContent = {
+  //   contentType: "link",
+  //   contentUrl: "https://facebook.com",
+  //   contentDescription: "Wow, check out this great site!",
+  // }
 
-  const handle = async () => {
-    console.log("??", typeof ShareDialog)
-    // Share using the share API.
-    ShareDialog.canShow(shareLinkContent)
-      .then((canShare) => {
-        console.log("canShare: ", canShare)
-        if (canShare) {
-          ShareDialog.show(shareLinkContent)
-        }
-      })
-      .then(
-        function (result) {
-          console.log("Share with ShareApi success.", result)
-        },
-        function (error) {
-          console.log("Share with ShareApi failed with error: " + error)
-        },
-      )
-      .catch(() => {
-        console.log("z")
-      })
-  }
+  // const handle = async () => {
+  //   // Share using the share API.
+  //   ShareDialog.canShow(shareLinkContent)
+  //     .then((canShare) => {
+  //       console.log("canShare: ", canShare)
+  //       if (canShare) {
+  //         ShareDialog.show(shareLinkContent)
+  //       }
+  //     })
+  //     .then(
+  //       function (result) {
+  //         console.log("Share with ShareApi success.", result)
+  //       },
+  //       function (error) {
+  //         console.log("Share with ShareApi failed with error: " + error)
+  //       },
+  //     )
+  //     .catch(() => {
+  //       console.log("z")
+  //     })
+  // }
+
   return (
     <>
       <SafeAreaView style={ROOT} testID="JokeScreen">
         <StatusBar barStyle="dark-content" />
-
         <View style={HEADER}>
           <Text style={{ ...CATEGORY_NAME, ...CENTER_TEXT }} bold>
             {store.topOfDeckJoke?.categories?.[0].name}
@@ -107,7 +98,7 @@ export const JokeScreen = observer(function JokeScreen() {
             {store.topOfDeckJoke.title}
           </Text>
         </View>
-        <Button onPress={handle} label="PRESS" />
+        {/* <Button onPress={handle} label="PRESS" /> */}
 
         <View style={CARDS_CONTAINER} key={store.deepLinkJokeId}>
           {store.nonViewedJokes.map((joke) => {
