@@ -13,18 +13,12 @@ ThemeManager.setComponentTheme("Text", (props, context) => {
     style: [fontFamily(props.bold), props.style],
   }
 })
+
 ThemeManager.setComponentTheme("Button", (props, context) => {
   return {
-    labelStyle: [{ color: "#2211C9" }, props.labelStyle],
+    labelStyle: [props.link ? { color: "#2211C9" } : {}, props.labelStyle],
   }
 })
-// ThemeManager.setComponentTheme("Button", (props, context) => {
-//   return {
-// this will apply a different backgroundColor
-// depends if the Button is an outline or not
-//     backgroundColor: props.outline ? "black" : "green",
-//   }
-// })
 
 export * from "./color"
 export * from "./spacing"
