@@ -1,5 +1,6 @@
 import React from "react"
-import { Image, ImageStyle, StyleSheet } from "react-native"
+import { ImageStyle, StyleSheet } from "react-native"
+import { Image } from "react-native-ui-lib"
 
 const background = require("assets/images/mesh-background.png")
 
@@ -12,5 +13,5 @@ export default MeshBackground
 const BACKGROUND: ImageStyle = {
   ...StyleSheet.absoluteFillObject,
   zIndex: -1,
-  opacity: 0.8,
+  height: "100%",
 }

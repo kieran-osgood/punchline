@@ -16,7 +16,7 @@ import { BackHandler, ViewStyle } from "react-native"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import Toast from "react-native-toast-message"
 import { Text, ThemeManager, View } from "react-native-ui-lib"
-import { color, spacing } from "theme"
+import { color } from "theme"
 
 export type LoginResponse = Promise<FirebaseAuthTypes.User | null>
 export type ExtractPromiseValue<T> = T extends PromiseLike<infer U> ? U : never
@@ -40,7 +40,7 @@ export const LoginScreen = observer(function LoginScreen() {
   }
 
   return (
-    <Screen style={ROOT} preset="fixed" testID="LoginScreen">
+    <Screen style={ROOT} preset="fixed" testID="LoginScreen" unsafe>
       <View centerH spread flex-1 width={widthPercentageToDP("70%")}>
         <View flex-1 centerV>
           <AppLogo width={widthPercentageToDP("95%")} height={widthPercentageToDP("95%") / 5} />
@@ -50,7 +50,7 @@ export const LoginScreen = observer(function LoginScreen() {
             {"Create an account to save bookmarks & preferences"}
           </Text>
 
-          <View width={"100%"} spread marginV-s4>
+          <View spread marginV-s4>
             <GoogleSignInButton {...{ setIsLoading, onError }} />
             <FacebookSignInButton {...{ setIsLoading, onError }} />
             <AppleSignInButton {...{ setIsLoading, onError }} />
@@ -72,7 +72,6 @@ const ROOT: ViewStyle = {
   backgroundColor: color.background,
   justifyContent: "space-between",
   alignItems: "center",
-  paddingBottom: spacing[3],
 }
 const SPACER: ViewStyle = {
   borderBottomWidth: 1,

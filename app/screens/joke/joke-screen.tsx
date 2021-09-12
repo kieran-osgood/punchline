@@ -8,7 +8,8 @@ import { AdBanner, BookmarkButton, Ratings, ShareIcons, SwipeHandler } from "com
 import { CryingEmoji, LaughingEmoji } from "images"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { SafeAreaView, StatusBar, TextStyle, ViewStyle } from "react-native"
+import { SafeAreaView, StatusBar, ViewStyle } from "react-native"
+import { heightPercentageToDP } from "react-native-responsive-screen"
 import { Button, Text, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
@@ -90,11 +91,11 @@ export const JokeScreen = observer(function JokeScreen() {
       <SafeAreaView style={ROOT} testID="JokeScreen">
         <StatusBar barStyle="dark-content" />
         <View style={HEADER}>
-          <Text style={{ ...CATEGORY_NAME, ...CENTER_TEXT }} bold>
+          <Text grey30 bold>
             {store.topOfDeckJoke?.categories?.[0].name}
           </Text>
 
-          <Text text40 bold style={CENTER_TEXT}>
+          <Text text40 bold>
             {store.topOfDeckJoke.title}
           </Text>
         </View>
@@ -140,23 +141,13 @@ const ROOT: ViewStyle = {
 const HEADER: ViewStyle = {
   alignItems: "center",
   justifyContent: "center",
-  paddingVertical: spacing[6],
+  height: heightPercentageToDP("15%"),
 }
 
 const CARDS_CONTAINER: ViewStyle = {
-  flex: 1,
-  // height: "100%",
+  height: heightPercentageToDP("50%"),
   marginHorizontal: 16,
   zIndex: 100,
-}
-
-const CENTER_TEXT: TextStyle = {
-  textAlign: "center",
-}
-
-const CATEGORY_NAME: TextStyle = {
-  fontSize: 12,
-  color: color.dim,
 }
 
 const JOKE_INFO: ViewStyle = {
