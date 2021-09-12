@@ -1,4 +1,4 @@
-import { JokeModel, jokeModelPrimitives } from "app/graphql"
+import { JokeModel } from "app/graphql"
 import { RootStore as RootStoreTree } from "app/models"
 import { destroy, getEnv, getRoot, IAnyStateTreeNode, Instance, types } from "mobx-state-tree"
 import { RootStoreBase } from "./RootStore.base"
@@ -37,7 +37,10 @@ export const RootStore = RootStoreBase.props({
           jokeLength: self.root.settings.jokeLengthMaxEnum,
           deepLinkedJokeId: deepLinkInitialJoke,
         },
-        nodes(jokeModelPrimitives),
+        (j) =>
+          j.nodes((n) =>
+            n.id.body.title.negativeRating.positiveRating.categories((c) => c.id.image.name),
+          ),
         { fetchPolicy: "no-cache" },
       )
       self.setDeepLinkJoke(deepLinkInitialJoke)
