@@ -113,5 +113,7 @@ export const createSettingsDefaultModel = () =>
     },
     jokeLengthPreferences: {
       [JokeLength.SMALL]: true,
+      [JokeLength.MEDIUM]: true,
+      [JokeLength.LARGE]: true,
     },
   })
