@@ -49,18 +49,19 @@ type Type = "facebook" | "twitter" | "default"
 
 export const Link = ({ jokeId, children, style = {}, type = "default" }: LinkProps) => {
   const onPress = async () => {
-    Share.shareSingle({
-      title: "Share via",
-      message: "some message",
-      url: "some share url",
-      social: Share.Social.FACEBOOK,
-    })
-      .then((res) => {
-        console.log({ res })
+    try {
+      const res = await Share.shareSingle({
+        title: "Share via",
+        message: "some message",
+        url: "https://web.punch-line.co.uk",
+        social: Share.Social.FACEBOOK,
+        subject: "gufy",
+        type: "asdf",
       })
-      .catch((err) => {
-        err && console.log(err)
-      })
+      console.log({ res })
+    } catch (error) {
+      error && console.log(error)
+    }
     // try {
     //   const result = await Share.share({
     //     title: "Take a look at this joke!",
@@ -81,7 +82,7 @@ export const Link = ({ jokeId, children, style = {}, type = "default" }: LinkPro
   }
 
   return (
-    <TouchableOpacity {...{ onPress }} style={style} padding-s2>
+    <TouchableOpacity onPress={() => onPress()} style={style} padding-s2>
       {children}
     </TouchableOpacity>
   )
