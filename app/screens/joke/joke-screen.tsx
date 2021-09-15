@@ -3,6 +3,7 @@ import { useRoute } from "@react-navigation/native"
 import Swipeable from "app/components/swipeable/swipeable"
 import { JokeModelType, RatingValue, useQuery } from "app/graphql"
 import { NavigationProps } from "app/navigators/main-navigator"
+import { ErrorReportIcon } from "assets/images/error-report"
 import Skip from "assets/images/skip"
 import { AdBanner, BookmarkButton, Ratings, ShareIcons, SwipeHandler } from "components"
 import { CryingEmoji, LaughingEmoji } from "images"
@@ -185,6 +186,15 @@ export const Controls = (props: ButtonsProps) => {
           onPress={handleBookmarkPress}
           activeOpacity={0.7}
           iconSource={() => <BookmarkButton {...{ bookmarked }} size={28} />}
+        />
+        <Button
+          style={ACTION_BUTTON}
+          round
+          onPress={() => {
+            // Open a modal to take the feedbacks!
+          }}
+          activeOpacity={0.7}
+          iconSource={() => <ErrorReportIcon />}
         />
 
         <Button
