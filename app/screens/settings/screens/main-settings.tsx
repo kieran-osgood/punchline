@@ -18,7 +18,6 @@ import {
   ViewStyle,
 } from "react-native"
 import { WEB_URL } from "react-native-dotenv"
-import { TouchableWithoutFeedback } from "react-native-gesture-handler"
 import Toast from "react-native-toast-message"
 import { Button, Switch, Text, ThemeManager, View, ViewPropTypes } from "react-native-ui-lib"
 import { color, spacing } from "theme"
@@ -114,15 +113,15 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
 
       <Section title="More Information">
         <Divider>
-          <Link url={`${WEB_URL}/privacy-policy`}>Privacy Policy</Link>
+          <Link url={`/privacy-policy.html`}>Privacy Policy</Link>
         </Divider>
 
         <Divider>
-          <Link url={`${WEB_URL}/terms-of-service`}>Terms of Service</Link>
+          <Link url={`${WEB_URL}/terms-of-service.html`}>Terms of Service</Link>
         </Divider>
 
         <Divider>
-          <Link url={`${WEB_URL}/data-policy`}>Data Policy</Link>
+          <Link url={`${WEB_URL}/data-policy.html`}>Data Policy</Link>
         </Divider>
       </Section>
 
@@ -139,9 +138,13 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
       </Section>
 
       <Section marginT-s5 marginH-s5>
-        <Share url={`${WEB_URL}/privacy-policy`}>
-          <Link>Share Punchline</Link>
-        </Share>
+        {/*
+          Not ideal - we have the in-app share pop up
+          but thats not reliable so just lik to store
+         */}
+        <Link url={Platform.OS === "ios" ? `app-store` : "play-store"} external>
+          Share Punchline
+        </Link>
       </Section>
 
       <Section marginT-s5 marginH-s5>
@@ -153,20 +156,6 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
     </Screen>
   )
 })
-
-type ShareProps = {
-  children: React.ReactNode
-  url: string
-}
-
-export const Share = ({ children, url }: ShareProps) => {
-  const onPress = () => {
-    console.log(url)
-  }
-  return <TouchableWithoutFeedback {...{ onPress }}>{children}</TouchableWithoutFeedback>
-}
-
-export default Share
 
 type SectionProps = {
   children: React.ReactNode
@@ -186,20 +175,23 @@ type LinkProps = {
   children: string
   onPress?: (...args: any[]) => any
   url?: string
+  external?: boolean
 }
-const Link = ({ children, onPress: onPressCallback, url }: LinkProps) => {
+const Link = ({ children, onPress: onPressCallback, url, external = false }: LinkProps) => {
   const onPress = () => {
-    if (url) {
-      Linking.canOpenURL(url).then((supported) => {
+    const fullUrl = `${external ? "" : WEB_URL}${url}`
+    if (fullUrl) {
+      Linking.canOpenURL(fullUrl).then((supported) => {
         if (supported) {
-          Linking.openURL(url)
+          Linking.openURL(fullUrl)
         } else {
-          console.log("Don't know how to open URI: " + url)
+          console.log("Don't know how to open URI: " + fullUrl)
         }
       })
     }
     onPressCallback?.()
   }
+
   return <Button link style={LINK} label={children} {...{ onPress }} />
 }
 
