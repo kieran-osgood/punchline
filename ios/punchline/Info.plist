@@ -53,6 +53,8 @@
 	<array>
 		<string>fbshareextension</string>
 		<string>facebook</string>
+		<string>facebookstories</string>
+		<string>facebook-stories</string>
 		<string>instagram-stories</string>
 		<string>mailto</string>
 		<string>instagram</string>
@@ -101,6 +103,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDarkContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
