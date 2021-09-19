@@ -1,9 +1,10 @@
 import { JokeLength } from "app/graphql"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { TextStyle, View, ViewStyle } from "react-native"
+import { TextStyle, ViewStyle } from "react-native"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
-import { color, spacing } from "../../theme"
+import { ThemeManager, View } from "react-native-ui-lib"
+import { color } from "../../theme"
 
 export interface VerticalCheckboxesProps {
   /**
@@ -23,7 +24,7 @@ export const VerticalCheckboxes = observer(function VerticalCheckboxes(
   const { data, style, onPress } = props
 
   return (
-    <View style={[CONTAINER, style]}>
+    <View centerV padding-s6>
       {data.map((checkbox) => (
         <BouncyCheckbox
           key={checkbox.value}
@@ -42,13 +43,12 @@ export const VerticalCheckboxes = observer(function VerticalCheckboxes(
     </View>
   )
 })
-const CONTAINER: ViewStyle = {
-  justifyContent: "center",
-  paddingLeft: spacing[5],
-}
 
 const TEXT: TextStyle = {
   textDecorationLine: "none",
+  fontFamily: "Montserrat",
+  fontWeight: "300",
+  color: ThemeManager.titleColor,
 }
 const CHECKBOX: ViewStyle = {
   marginBottom: 10,

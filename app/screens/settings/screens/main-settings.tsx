@@ -42,15 +42,15 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
 
       <Section title="App Settings">
         <Divider row arrow onPress={() => navigation.navigate("JokeLength")}>
-          <Text text80>Joke Length</Text>
+          <Text text90R>Joke Length</Text>
         </Divider>
 
         <Divider row arrow onPress={() => navigation.navigate("Category")}>
-          <Text text80>Blocked Categories</Text>
+          <Text text90R>Blocked Categories</Text>
         </Divider>
 
         <Divider row>
-          <Text text80>Profanity Filter</Text>
+          <Text text90R>Profanity Filter</Text>
           <Switch
             onValueChange={() => settings.setProfanityFilter(!settings.profanityFilter)}
             value={settings.profanityFilter}
@@ -60,7 +60,7 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
 
       <Section title="Notifications">
         <Divider row>
-          <Text text80>Push Notifications</Text>
+          <Text text90R>Push Notifications</Text>
           <Switch
             onValueChange={() => settings.setNotification("push", !settings.notifications.push)}
             value={settings.notifications.push}
@@ -68,7 +68,7 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
         </Divider>
 
         <Divider row>
-          <Text text80>Email</Text>
+          <Text text90R>Email</Text>
           <Switch
             onValueChange={() => settings.setNotification("email", !settings.notifications.email)}
             value={settings.notifications.email}
@@ -76,7 +76,7 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
         </Divider>
 
         <Divider row>
-          <Text text80>Team</Text>
+          <Text text90R>Team</Text>
           <Switch
             onValueChange={() => settings.setNotification("team", !settings.notifications.team)}
             value={settings.notifications.team}
@@ -229,7 +229,7 @@ const Divider = ({
 
 const Title = ({ children }: { children: string }) => {
   return (
-    <Text style={TITLE} grey40 text90>
+    <Text style={TITLE} grey30 text90L>
       {children}
     </Text>
   )
