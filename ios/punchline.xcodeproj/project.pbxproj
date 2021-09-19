@@ -16,6 +16,8 @@
 		E41867E52621B302004EC29E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E41867E42621B302004EC29E /* GoogleService-Info.plist */; };
 		E4A1FA6226DBEDC60020994F /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4A1FA6126DBEDC60020994F /* BootSplash.storyboard */; };
 		E4CB847326A3069A00D5023F /* fbsdk-bridging.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4CB847226A3069A00D5023F /* fbsdk-bridging.swift */; };
+		49F3C49FA81244C2983EA1EC /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A7284CE47FE4502A50A7BE7 /* Montserrat-Light.ttf */; };
+		96E5752B5E6B449C82BC2E5E /* Montserrat-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 261075912AFF42EC8AD15DE4 /* Montserrat-Thin.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,8 @@
 		E4CC6CE92623187F0035557C /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		EADEA568884090C1B008E181 /* libPods-punchline.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-punchline.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		6A7284CE47FE4502A50A7BE7 /* Montserrat-Light.ttf */ = {isa = PBXFileReference; name = "Montserrat-Light.ttf"; path = "../assets/fonts/Montserrat-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		261075912AFF42EC8AD15DE4 /* Montserrat-Thin.ttf */ = {isa = PBXFileReference; name = "Montserrat-Thin.ttf"; path = "../assets/fonts/Montserrat-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +93,8 @@
 			children = (
 				584E0E3281554FDCB7D264FE /* Montserrat-Regular.ttf */,
 				B1F37994A1DE4BDA88E588E2 /* Montserrat-Bold.ttf */,
+				6A7284CE47FE4502A50A7BE7 /* Montserrat-Light.ttf */,
+				261075912AFF42EC8AD15DE4 /* Montserrat-Thin.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -216,6 +222,8 @@
 				E4A1FA6226DBEDC60020994F /* BootSplash.storyboard in Resources */,
 				5E9826D41C0A45A5A47B9BC7 /* Montserrat-Regular.ttf in Resources */,
 				C22659B787274C4BAEE34016 /* Montserrat-Bold.ttf in Resources */,
+				49F3C49FA81244C2983EA1EC /* Montserrat-Light.ttf in Resources */,
+				96E5752B5E6B449C82BC2E5E /* Montserrat-Thin.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
