@@ -15,45 +15,44 @@ Install _fastlane_ using
 or alternatively using `brew install fastlane`
 
 # Available Actions
-## Android
-### android bump_build_number
+### bump_build_number
 ```
-fastlane android bump_build_number
+fastlane bump_build_number
 ```
 Increments internal build number tracking (different than version)
-### android build_android_debug
+### build_debug
 ```
-fastlane android build_android_debug
+fastlane build_debug
 ```
 Build debug android configuration
-### android e2e_debug
+### e2e_debug
 ```
-fastlane android e2e_debug
-```
-
-### android build_android_release
-```
-fastlane android build_android_release
-```
-Build release android configuration
-### android e2e_release
-```
-fastlane android e2e_release
+fastlane e2e_debug
 ```
 
-### android build_android_release_bundle
+### e2e_release
 ```
-fastlane android build_android_release_bundle
+fastlane e2e_release
+```
+
+### build_android_release_bundle
+```
+fastlane build_android_release_bundle
 ```
 Build release android configuration
-### android playstore
+### generate_new_icons
 ```
-fastlane android playstore
+fastlane generate_new_icons
+```
+
+### playstore
+```
+fastlane playstore
 ```
 Build Release configuration and Google Play Store
 
 ----
 
-This README.md is auto-generated and will be re-generated every time [fastlane](https://fastlane.tools) is run.
+This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
 More information about fastlane can be found on [fastlane.tools](https://fastlane.tools).
 The documentation of fastlane can be found on [docs.fastlane.tools](https://docs.fastlane.tools).

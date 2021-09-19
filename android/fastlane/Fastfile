@@ -10,59 +10,39 @@
 #     https://docs.fastlane.tools/plugins/available-plugins
 #
 
-# Uncomment the line if you want fastlane to automatically update itself
-update_fastlane
+## Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+before_all do
+  ensure_bundle_exec
+  setup_circle_ci
+end
 default_platform(:android)
 $gradle_flags = '--no-daemon --max-workers=2 -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-XX:+UnlockExperimentalVMOptions -XX:+HeapDumpOnOutOfMemoryError"'
-# Retrieve version of my app in package.json (React Native case)
+## Retrieve version of my app in package.json (React Native case)
 $package = load_json(json_path: "../package.json")
 $slack_url = "https://hooks.slack.com/services/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"
 
-def getVersionCode
-  # Instead of managing the version code manually it is based on a timestamp in seconds
-  # Any build done more recently is considered to be a higher version
-  # versionCode increase every minute (so max 1 build per minute)
-  # versionCode cannot be smaller than legacyVersionCode
-  thirtySeptemberTwentyTwenty = 1601480940 / 60
-  legacyVersionCode = 10902
-  versionCode = legacyVersionCode + (Time.now.to_i / 60) - thirtySeptemberTwentyTwenty
-
-  if versionCode > 2100000000
-    raise "versionCode cannot be higher than 2100000000"
-  end
-
-  versionCode.floor()
-end
-
+desc "Increments internal build number tracking (different than version)"
 lane :bump_build_number do
-  desc "Increments internal build number tracking (different than version)"
   android_set_version_code(version_code: getVersionCode())
 end
 
 desc "Build debug android configuration"
-lane :build_android_debug do
+lane :build_debug do
   gradle(task: "clean assembleDebug")
 end
 
 lane :e2e_debug do
-  Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed
-    sh("npm i -g detox-cli@#{package["devDependencies"]["detox"]}")
+  Dir.chdir "../.." do ## Navigate to the root of the project where the Detox files are placed
+    sh("npm i -g detox-cli@#{$package["devDependencies"]["detox"]}")
     sh("detox build --configuration android.emu.debug")
     sh("detox test --configuration android.emu.debug --cleanup")
   end
 end
 
-desc "Build release android configuration"
-lane :build_android_release do
-  gradle(
-    task: "assemble",
-    build_type: "Release",
-    flags: $gradle_flags,
-  )
-end
-
 lane :e2e_release do
-  Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed
+  Dir.chdir "../.." do ## Navigate to the root of the project where the Detox files are placed
     # sh("npm i -g detox-cli@#{package['devDependencies']['detox']}")
     sh("detox build --configuration android.emu.release")
     sh("detox test --configuration android.emu.release --cleanup")
@@ -74,43 +54,59 @@ lane :build_android_release_bundle do
   gradle(
     task: "bundle",
     build_type: "Release",
+    properties: {
+      "vname" => $package["version"],
+    },
     flags: $gradle_flags,
+  )
+end
+
+lane :generate_new_icons do
+  ## Generates the app icons - splash screen icons are handled by bootsplash (`yarn bootsplash`)
+  android_appicon(
+    appicon_image_file: "fastlane/metadata/app_icon.png",
+    appicon_icon_types: [:launcher],
+    appicon_path: "app/src/main/res/mipmap",
+    generate_rounded: true,
+    appicon_filename: "ic_launcher_foreground",
+  )
+  android_appicon(
+    appicon_image_file: "fastlane/metadata/app_icon.png",
+    appicon_icon_types: [:notification],
+    appicon_path: "app/src/main/res/drawable",
+    generate_rounded: true,
   )
 end
 
 desc "Build Release configuration and Google Play Store"
 lane :playstore do
-
-  # Clean build folder
+  ## Clean build folder
   gradle(
     task: "clean",
   )
 
-  # Bump android.defaultConfig.versionCode
-  bump_build_number
+  generate_new_icons
 
-  # Do the bundle of the application
-  gradle(
-    task: "bundle",
-    build_type: "Release",
-    properties: {
-      "vname" => $package["version"],
-    },
-  )
+  ## Bump android.defaultConfig.versionCode
+  # bump_build_number
 
-  # Upload Android App Bundle to PlayStore like Internal testing Release
+  ## Do the bundle of the application
+  build_android_release_build
+
+  ## Upload Android App Bundle to PlayStore like Internal testing Release
   upload_to_play_store(
     track: "internal",
-    release_status: "draft", # <http://docs.fastlane.tools/actions/upload_to_play_store/#parameters>
+    release_status: "draft", ## <http://docs.fastlane.tools/actions/upload_to_play_store/#parameters>
     skip_upload_apk: true,
     version_name: $package["version"],
   )
 end
 
-after_all do
+def sendSlack(message, success)
   slack(
     slack_url: $slack_url,
-    message: "App successfully built!",
+    message: message,
+    success: success,
     payload: {
       "Build Date" => Time.new.to_s,
       "Built by" => "KO",
@@ -126,22 +122,10 @@ after_all do
   )
 end
 
-error do
-  slack(
-    slack_url: $slack_url,
-    success: false,
-    message: "App build failed!",
-    payload: {
-      "Build Date" => Time.new.to_s,
-      "Built by" => "KO",
-    },
-    default_payloads: [:git_branch, :git_author],
-    attachment_properties: {
-      fields: [{
- # title: "My Field",
-               # value: "My Value",
-               # short: true
-        }],
-    },
-  )
-end
+# after_all do
+#   sendSlack("App successfully built!", true)
+# end
+
+# error do
+#   sendSlack("App build failed!", false)
+# end

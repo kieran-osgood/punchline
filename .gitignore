@@ -60,7 +60,7 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
-
+/ios/generated/
 # Expo
 .expo/*
 web-build/
