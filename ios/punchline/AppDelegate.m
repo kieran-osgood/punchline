@@ -8,7 +8,7 @@
 #import <UMCore/UMModuleRegistry.h>
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
-
+ 
 // MANUAL INSTALL
 #import <Firebase.h>
 #import <React/RCTLinkingManager.h>
