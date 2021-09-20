@@ -18,14 +18,14 @@ const tabBarStyle: ViewStyle = {
   backgroundColor: color.background,
 }
 
-const tabBarItemStyle: ViewStyle = {
+const tabBarIndicatorStyle: ViewStyle = {
   borderBottomColor: ThemeManager.CTABackgroundColor,
   borderBottomWidth: 4,
 }
 
 export const UserProfileTabs = observer(function UserProfileTabs() {
   return (
-    <Tab.Navigator screenOptions={{ tabBarStyle, tabBarItemStyle }}>
+    <Tab.Navigator screenOptions={{ tabBarStyle, tabBarIndicatorStyle }}>
       <Tab.Screen name="Bookmarks" component={BookmarksScreen} />
       <Tab.Screen name="History" component={HistoryScreen} />
     </Tab.Navigator>
