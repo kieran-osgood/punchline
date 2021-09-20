@@ -22,6 +22,7 @@ import "./i18n"
 import {
   canExit,
   RootNavigator,
+  RootParamList,
   setRootNavigation,
   useBackButtonHandler,
   useNavigationPersistence,
@@ -35,7 +36,7 @@ export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
  * This is the root component of our app.
  */
 const App = observer(function App() {
-  const navigationRef = useNavigationContainerRef()
+  const navigationRef = useNavigationContainerRef<RootParamList>()
   useFlipper(navigationRef)
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
   const firstRender = React.useRef(true)
