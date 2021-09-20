@@ -8,11 +8,22 @@ import {
   LinkingOptions,
   NavigationContainer,
   NavigationContainerRef,
+  NavigatorScreenParams,
 } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { useStores } from "app/models"
-import { authExitRoutes, AuthNavigator, AuthRouteNames } from "app/navigators/auth-navigator"
-import { mainExitRoutes, MainNavigator, MainRouteNames } from "app/navigators/main-navigator"
+import {
+  authExitRoutes,
+  AuthNavigator,
+  AuthRouteNames,
+  AuthRouteParamList,
+} from "app/navigators/auth-navigator"
+import {
+  mainExitRoutes,
+  MainNavigator,
+  MainRouteNames,
+  MainRouteParamList,
+} from "app/navigators/main-navigator"
 import { observer } from "mobx-react-lite"
 import React from "react"
 import Toast from "react-native-toast-message"
@@ -28,8 +39,8 @@ import Toast from "react-native-toast-message"
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
 export type RootParamList = {
-  AuthNavigator: undefined
-  MainNavigator: undefined
+  AuthNavigator: NavigatorScreenParams<AuthRouteParamList>
+  MainNavigator: NavigatorScreenParams<MainRouteParamList>
 }
 
 const Stack = createStackNavigator<RootParamList>()
@@ -52,7 +63,7 @@ const RootStack = observer(function RootStack() {
 })
 
 export const RootNavigator = React.forwardRef<
-  NavigationContainerRef,
+  NavigationContainerRef<RootParamList>,
   Partial<React.ComponentProps<typeof NavigationContainer>>
 >((props, ref) => {
   return (
@@ -69,28 +80,26 @@ export type AllRouteNames = MainRouteNames | AuthRouteNames
 const exitRoutes = [...authExitRoutes, ...mainExitRoutes]
 export const canExit = (routeName: AllRouteNames) => exitRoutes.includes(routeName)
 
-const linking: LinkingOptions = {
+const linking: LinkingOptions<RootParamList> = {
   prefixes: ["https://punch-line.co.uk", "punchline://"],
   config: {
     screens: {
-      MainNavigator: {
-        initialRouteName: "JokeScreen",
-        screens: {
-          JokeScreen: {
-            path: "jokes/:jokeId",
-            parse: { jokeId: String },
-          },
-        },
-      },
-      AuthNavigator: {
-        initialRouteName: "LoginScreen",
-        screens: {
-          LoginScreen: {
-            path: "login/:email",
-            parse: { email: String },
-          },
-        },
-      },
+      // MainNavigator: {
+      //   screens: {
+      //     JokeScreen: {
+      //       path: "jokes/:jokeId",
+      //       parse: { jokeId: String },
+      //     },
+      //   },
+      // },
+      // AuthNavigator: {
+      //   screens: {
+      //     LoginScreen: {
+      //       path: "login/:email",
+      //       parse: { email: String },
+      //     },
+      //   },
+      // },
     },
   },
 }

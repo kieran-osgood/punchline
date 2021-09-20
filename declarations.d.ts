@@ -1,3 +1,5 @@
+import { RootParamList as MyRootParamList } from "app/navigators"
+
 declare module "*.svg" {
   import { SvgProps } from "react-native-svg"
   const content: React.FC<SvgProps>
@@ -9,4 +11,10 @@ declare module "react-native-dotenv" {
   export const WEB_URL: string
   export const SENTRY_ORGANIZATION_SLUG: string
   export const SENTRY_PROJECT_SLUG: string
+}
+
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends MyRootParamList {}
+  }
 }

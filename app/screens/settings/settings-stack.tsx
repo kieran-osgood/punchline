@@ -5,9 +5,8 @@
  *
  * You'll likely spend most of your time in this file.
  */
-import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs"
 import { RouteProp } from "@react-navigation/native"
-import { createStackNavigator } from "@react-navigation/stack"
+import { createStackNavigator, StackNavigationProp } from "@react-navigation/stack"
 import { BugReportScreen } from "app/screens"
 import CategorySettingScreen from "app/screens/settings/screens/category-setting"
 import JokeLengthScreen from "app/screens/settings/screens/joke-length-setting"
@@ -37,7 +36,7 @@ export type SettingsRouteParamList = {
 
 export type SettingsStackProps<T extends keyof SettingsRouteParamList> = {
   route: RouteProp<SettingsRouteParamList, T>
-  navigation: MaterialBottomTabNavigationProp<SettingsRouteParamList, T>
+  navigation: StackNavigationProp<SettingsRouteParamList, T>
 }
 
 const Stack = createStackNavigator<SettingsRouteParamList>()
@@ -46,9 +45,9 @@ export const SettingsStack = observer(function SettingsNavigator() {
   return (
     <Stack.Navigator
       initialRouteName="Main"
-      headerMode="screen"
       screenOptions={{
         header: ({ navigation }) => <Header {...{ navigation }} left="back" />,
+        headerMode: "screen",
       }}
     >
       <Stack.Screen name="Main" component={MainSettingsScreen} />

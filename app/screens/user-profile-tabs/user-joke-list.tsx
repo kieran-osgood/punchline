@@ -6,7 +6,6 @@ import {
   UserJokeHistoryModelType,
 } from "app/graphql"
 import { useStores } from "app/models"
-import { NavigationProps } from "app/navigators"
 import { ACTION_BUTTON } from "app/screens"
 import EmptyStateImage from "assets/images/empty-state-image"
 import { TrashCan } from "assets/images/trash-can"
@@ -49,7 +48,7 @@ export type UserJokeListProps = {
 export const UserJokeList = observer(function JokeBookmarkHistoryList(props: UserJokeListProps) {
   const { type } = props
   const { query } = props.query
-  const navigation = useNavigation<NavigationProps<"UserProfileTabs">["navigation"]>()
+  const navigation = useNavigation()
   const [refreshing, setRefreshing] = React.useState(false)
   const store = useStores()
 
@@ -78,7 +77,11 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
         <EmptyState
           {...{ type }}
           image={<EmptyStateImage />}
-          onPress={() => navigation.navigate("JokeScreen")}
+          onPress={() =>
+            navigation.navigate("MainNavigator", {
+              screen: "JokeScreen",
+            })
+          }
         />
       )}
     </Screen>

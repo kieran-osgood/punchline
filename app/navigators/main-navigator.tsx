@@ -5,9 +5,12 @@
  *
  * You'll likely spend most of your time in this file.
  */
-import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs"
 import { RouteProp } from "@react-navigation/native"
-import { CardStyleInterpolators, createStackNavigator } from "@react-navigation/stack"
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+  StackNavigationProp,
+} from "@react-navigation/stack"
 import withRateApp from "app/components/with-rate-app/with-rate-app"
 import { useStores } from "app/models"
 import { Header } from "components"
@@ -27,7 +30,7 @@ import { JokeScreen, OnboardingScreen, SettingsStack, UserProfileTabs } from "..
  *   https://reactnavigation.org/docs/params/
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
-export type RouteParamList = {
+export type MainRouteParamList = {
   JokeScreen?: {
     jokeId?: string
   }
@@ -37,18 +40,23 @@ export type RouteParamList = {
   SettingsStack: undefined
 }
 
-export type NavigationProps<T extends keyof RouteParamList> = {
-  route: RouteProp<RouteParamList, T>
-  navigation: MaterialBottomTabNavigationProp<RouteParamList, T>
+export type NavigationProps<T extends keyof MainRouteParamList> = {
+  route: RouteProp<MainRouteParamList, T>
+  navigation: StackNavigationProp<MainRouteParamList, T>
 }
 
-const Stack = createStackNavigator<RouteParamList>()
+const Stack = createStackNavigator<MainRouteParamList>()
 
 export const MainNavigator = observer(function MainNavigator() {
   const store = useStores()
 
   return (
-    <Stack.Navigator initialRouteName="JokeScreen" headerMode="screen">
+    <Stack.Navigator
+      initialRouteName="JokeScreen"
+      screenOptions={{
+        headerMode: "screen",
+      }}
+    >
       {!store.userStore.onboardingComplete ? (
         <Stack.Screen
           name="OnboardingScreen"
@@ -99,5 +107,5 @@ export const MainNavigator = observer(function MainNavigator() {
  *
  * `canExit` is used in ./app/app.tsx in the `useBackButtonHandler` hook.
  */
-export type MainRouteNames = keyof RouteParamList
+export type MainRouteNames = keyof MainRouteParamList
 export const mainExitRoutes: MainRouteNames[] = ["OnboardingScreen", "JokeScreen"]

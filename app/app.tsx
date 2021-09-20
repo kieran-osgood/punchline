@@ -3,14 +3,14 @@
  * if you're interested in adding screens and navigators.
  */
 import auth from "@react-native-firebase/auth"
-import { NavigationContainerRef } from "@react-navigation/native"
+import { useNavigationContainerRef } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
 import { FallbackRender } from "@sentry/react/dist/errorboundary"
 import { StoreContext as GraphQLStoreContext } from "app/graphql/reactUtils"
 import { RootStore, RootStoreProvider, setupRootStore, useStores } from "app/models"
 import { AsyncStorage } from "app/utils/storage/async-storage"
 import { observer } from "mobx-react-lite"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import RNBootSplash from "react-native-bootsplash"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import RNRestart from "react-native-restart"
@@ -34,7 +34,7 @@ export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
  * This is the root component of our app.
  */
 const App = observer(function App() {
-  const navigationRef = useRef<NavigationContainerRef | null>(null)
+  const navigationRef = useNavigationContainerRef()
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
   const firstRender = React.useRef(true)
   setRootNavigation(navigationRef)
