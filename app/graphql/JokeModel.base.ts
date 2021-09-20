@@ -38,6 +38,7 @@ export const JokeModelBase = withTypedRefs<Refs>()(ModelBase
     negativeRating: types.union(types.undefined, types.integer),
     skipRating: types.union(types.undefined, types.integer),
     reportCount: types.union(types.undefined, types.integer),
+    explicitContent: types.union(types.undefined, types.boolean),
     userJokeHistories: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => UserJokeHistoryModel)))),
     users: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => UserModel)))),
   })
@@ -55,6 +56,7 @@ export class JokeModelSelector extends QueryBuilder {
   get negativeRating() { return this.__attr(`negativeRating`) }
   get skipRating() { return this.__attr(`skipRating`) }
   get reportCount() { return this.__attr(`reportCount`) }
+  get explicitContent() { return this.__attr(`explicitContent`) }
   categories(builder?: string | CategoryModelSelector | ((selector: CategoryModelSelector) => CategoryModelSelector)) { return this.__child(`categories`, CategoryModelSelector, builder) }
   userJokeHistories(builder?: string | UserJokeHistoryModelSelector | ((selector: UserJokeHistoryModelSelector) => UserJokeHistoryModelSelector)) { return this.__child(`userJokeHistories`, UserJokeHistoryModelSelector, builder) }
   users(builder?: string | UserModelSelector | ((selector: UserModelSelector) => UserModelSelector)) { return this.__child(`users`, UserModelSelector, builder) }
@@ -63,4 +65,4 @@ export function selectFromJoke() {
   return new JokeModelSelector()
 }
 
-export const jokeModelPrimitives = selectFromJoke().title.body.positiveRating.negativeRating.skipRating.reportCount
+export const jokeModelPrimitives = selectFromJoke().title.body.positiveRating.negativeRating.skipRating.reportCount.explicitContent
