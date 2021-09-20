@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "npx react-native start",
-    "android": "npx react-native run-android",
-    "ios": "npx react-native run-ios",
+    "android": "npx react-native run-android && yarn start",
+    "ios": "npx react-native run-ios && yarn start",
     "test:e2e": "detox test -c ios.sim.debug",
     "build:e2e": "detox build -c ios.sim.debug",
     "record:e2e": "detox recorder --configuration \"ios.sim.release\" --outputTestFile \"~/e2e/recorded.js\" --testName \"My Recorded Test\" --record",
