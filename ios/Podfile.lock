@@ -565,18 +565,18 @@ PODS:
   - RNScreens (3.7.2):
     - React-Core
     - React-RCTImage
-  - RNSentry (2.6.2):
+  - RNSentry (3.1.0):
     - React-Core
-    - Sentry (= 7.1.4)
+    - Sentry (= 7.2.6)
   - RNShare (7.0.0):
     - React-Core
   - RNSVG (12.1.1):
     - React
   - RNVectorIcons (8.1.0):
     - React-Core
-  - Sentry (7.1.4):
-    - Sentry/Core (= 7.1.4)
-  - Sentry/Core (7.1.4)
+  - Sentry (7.2.6):
+    - Sentry/Core (= 7.2.6)
+  - Sentry/Core (7.2.6)
   - UMAppLoader (2.2.0)
   - UMCore (7.1.2)
   - UMReactNativeAdapter (6.3.7):
@@ -955,11 +955,11 @@ SPEC CHECKSUMS:
   RNKeychain: b8e0711b959a19c5b057d1e970d3c83d159b6da5
   RNReanimated: d29057cf85e771be4f0180ba1d00a7185e423a7d
   RNScreens: 0591543e343c7444ea1756b6265d81a4295922c9
-  RNSentry: 68644ef607b780551cc555f084869764f2566652
+  RNSentry: a3c522c9f17f191e4972c3e4d6065aba253b593e
   RNShare: 00e7409201e3cab13e0febc41fd4465a83ae8225
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
-  Sentry: 1d3eb1a25f8c5333c88dd5603904a6d461cd9fcf
+  Sentry: be2f8f7a63e5274cc83d0813e40c1680119c0153
   UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
   UMCore: ce3a4faa010239063b8343895b29a6d97b01069d
   UMReactNativeAdapter: bb7922210cf6fdb5768f78685f3c3a2060299119
