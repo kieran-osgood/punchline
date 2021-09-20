@@ -50,7 +50,7 @@ export const slides: Slide[] = [
   },
   {
     title: "Bookmarks",
-    subtitle: "Bookmark the best!",
+    subtitle: "Save the best for later!",
     description:
       "Save your favourites for sharing later in the home screen or from your history tab.",
     color: "#BEECC4",
@@ -61,8 +61,8 @@ export const slides: Slide[] = [
   },
   {
     title: "Coming Soon!",
-    subtitle: "Submit your best",
-    description: "We're working on an user submission feature, so stay tuned!",
+    subtitle: "Be the comedian",
+    description: "We're working on a user submission section, so stay tuned!",
     color: "#FFE4D9",
 
     Picture: function Picture() {
