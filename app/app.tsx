@@ -3,6 +3,7 @@
  * if you're interested in adding screens and navigators.
  */
 import auth from "@react-native-firebase/auth"
+import { useFlipper } from "@react-navigation/devtools"
 import { useNavigationContainerRef } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
 import { FallbackRender } from "@sentry/react/dist/errorboundary"
@@ -35,6 +36,7 @@ export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
  */
 const App = observer(function App() {
   const navigationRef = useNavigationContainerRef()
+  useFlipper(navigationRef)
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
   const firstRender = React.useRef(true)
   setRootNavigation(navigationRef)
