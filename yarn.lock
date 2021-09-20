@@ -16721,13 +16721,6 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-native-animatable@^1.1.0:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.3.tgz#a13a4af8258e3bb14d0a9d839917e9bb9274ec8a"
-  integrity sha512-2ckIxZQAsvWn25Ho+DK3d1mXIgj7tITkrS4pYDvx96WyOttSvzzFeQnM2od0+FUMzILbdHDsDEqZvnz1DYNQ1w==
-  dependencies:
-    prop-types "^15.7.2"
-
 react-native-bootsplash@^3.2.4:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/react-native-bootsplash/-/react-native-bootsplash-3.2.4.tgz#73d3b38606ddc7e1d489012f007c1fbd26fc68d1"
@@ -16822,10 +16815,10 @@ react-native-keychain@6.2.0:
   resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-6.2.0.tgz#8f4cff503aad367141db5aea0189ead9240c28ff"
   integrity sha512-U6fnOQRJPq+c0Abl+FoYy9v0H3kQU587tMamU/o+MoBSUScFLE3DQpkyT1PW4NF5IObgiGuqQdmjC2KgtBpjGA==
 
-react-native-reanimated@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-2.2.0.tgz#a6412c56b4e591d1f00fac949f62d0c72c357c78"
-  integrity sha512-lOJDd+5w1gY6DHGXG2jD1dsjzQmXQ2699HUc3IztvI2WP4zUT+UAA+zSG+5JiBS5DUnTL8YhhkmUQmr1KNGO5w==
+react-native-reanimated@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-2.2.1.tgz#e9109aa2482c893266c5c0c546aebf1b764bf233"
+  integrity sha512-uyAlqFZCcriL3hPXq5zJ4KqAjxBoeinYoJogTIpwlEhmYfsP6oRNktq3PyYCu6/Dj5dXp7MXUcZInXyVSi/c9Q==
   dependencies:
     "@babel/plugin-transform-object-assign" "^7.10.4"
     fbjs "^3.0.0"
@@ -16920,10 +16913,10 @@ react-native-toast-message@^1.4.9:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-ui-lib@^5.29.0:
-  version "5.29.0"
-  resolved "https://registry.yarnpkg.com/react-native-ui-lib/-/react-native-ui-lib-5.29.0.tgz#79679ac6e4ed46436e95e15c4841590aa3ba9ab3"
-  integrity sha512-+ucima3K/j7Ss1mTD1yytNbOZMfXuiBOwWB8VMr6Y68G5b5fPDOL15W78RxAHoRgGLKVH2P7hHmWC+7QVVFBWw==
+react-native-ui-lib@6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-ui-lib/-/react-native-ui-lib-6.0.0.tgz#d82644a0696957070db87148b058685dc61fee92"
+  integrity sha512-2YpBgBodWp2yby05O6MD8Ua1Yeyqdq4jo1d6kcWOJnk9mheJB+4qRtlV+xTixpFNhKCXQwjKf3FON5fB8/STKg==
   dependencies:
     babel-plugin-transform-inline-environment-variables "^0.0.2"
     color "^3.1.0"
@@ -16933,7 +16926,6 @@ react-native-ui-lib@^5.29.0:
     memoize-one "^5.0.5"
     moment "^2.24.0"
     prop-types "^15.5.10"
-    react-native-animatable "^1.1.0"
     react-native-color "0.0.10"
     react-native-redash "^12.0.3"
     react-native-text-size "4.0.0-rc.1"

@@ -28,8 +28,9 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenCentral()
         mavenLocal()
+        maven { url "$rootDir/../node_modules/detox/Detox-android" }
+        maven { url 'https://www.jitpack.io' }
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url("$rootDir/../node_modules/react-native/android")
@@ -37,9 +38,12 @@ allprojects {
         maven {
             // Android JSC is installed from npm
             url("$rootDir/../node_modules/jsc-android/dist")
-            url "$rootDir/../node_modules/detox/Detox-android"
         }
+        mavenCentral()
         google()
-        maven { url 'https://www.jitpack.io' }
+        // This has been re-added after the react-native@0.65.1 upgrade
+        // Dependency declared in react-native-ui-lib https://stackoverflow.com/questions/68934039/react-native-rnuilib-5-30-0-in-react-native-0-65-1-wont-build-due-to-error
+        // If they migrate away from jcenter someday then this can be removed
+        jcenter()
     }
 }
