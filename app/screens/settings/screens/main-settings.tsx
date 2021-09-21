@@ -269,8 +269,8 @@ const SECTION: ViewStyle = {
 }
 
 const LogoutButton = () => {
-  const { resetStores } = useStores()
-  const onPress = () => resetStores()
+  const { resetStore } = useStores()
+  const onPress = () => resetStore()
 
   return (
     <Button

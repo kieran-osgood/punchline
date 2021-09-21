@@ -9,7 +9,6 @@ import * as Sentry from "@sentry/react-native"
 import { FallbackRender } from "@sentry/react/dist/errorboundary"
 import { StoreContext as GraphQLStoreContext } from "app/graphql/reactUtils"
 import { RootStore, RootStoreProvider, setupRootStore, useStores } from "app/models"
-import { AsyncStorage } from "app/utils/storage/async-storage"
 import { observer } from "mobx-react-lite"
 import React, { useEffect, useState } from "react"
 import RNBootSplash from "react-native-bootsplash"
@@ -65,26 +64,12 @@ const App = observer(function App() {
     }
   }, [])
 
-  const resetStores = async () => {
-    try {
-      await AsyncStorage.clear()
-      await auth().signOut()
-
-      const newRootStore = await setupRootStore()
-      newRootStore.userStore.updateUser(auth().currentUser)
-      setRootStore(newRootStore)
-      await AsyncStorage.clear()
-    } catch (error) {
-      __DEV__ && console.tron.log!("error logging out: ", error)
-    }
-  }
-
   // Wait for state to load from AsyncStorage
   if (!rootStore) return null
 
   return (
     <ToggleStorybook>
-      <RootStoreProvider value={{ ...rootStore, resetStores }}>
+      <RootStoreProvider value={rootStore}>
         <GraphQLStoreContext.Provider value={rootStore.api}>
           <Authorization>
             <SafeAreaProvider initialMetrics={initialWindowMetrics}>
