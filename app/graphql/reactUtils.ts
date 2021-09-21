@@ -4,7 +4,7 @@
 
 import { createStoreContext, createUseQueryHook } from "mst-gql"
 import * as React from "react"
-import { ApiStoreType } from "./RootStore"
+import { ApiStoreType } from "./ApiStore"
 
 export const StoreContext = createStoreContext<ApiStoreType>(React)
 

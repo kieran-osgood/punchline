@@ -1,5 +1,5 @@
+import { ApiStoreType } from "app/graphql/ApiStore"
 import { useQuery } from "app/graphql/reactUtils"
-import { ApiStoreType } from "app/graphql/RootStore"
 import { RootStoreBaseMutations, RootStoreBaseQueries } from "app/graphql/RootStore.base"
 import * as React from "react"
 

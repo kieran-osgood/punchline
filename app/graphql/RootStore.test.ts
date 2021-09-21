@@ -1,5 +1,5 @@
 import { createHttpClient } from "mst-gql"
-import { ApiStore } from "./RootStore"
+import { ApiStore } from "./ApiStore"
 
 test("can be created without any user", () => {
   const store = ApiStore.create(undefined, {
