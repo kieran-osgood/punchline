@@ -1,8 +1,8 @@
 import { useNavigation } from "@react-navigation/native"
 import {
-  RootStoreType,
+  ApiStoreType,
   useQuery,
-  UserJokeHistoryConnectionModelType,
+  UserJokeHistoryByUserIdConnectionModelType,
   UserJokeHistoryModelType,
 } from "app/graphql"
 import { useStores } from "app/models"
@@ -38,9 +38,9 @@ import { color, spacing } from "theme"
 export type UserJokeListProps = {
   type: "HISTORY" | "BOOKMARK"
   query: UseQueryHookResult<
-    RootStoreType,
+    ApiStoreType,
     {
-      userJokeHistoryByUserId: UserJokeHistoryConnectionModelType
+      userJokeHistoryByUserId: UserJokeHistoryByUserIdConnectionModelType
     }
   >
 }
