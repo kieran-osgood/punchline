@@ -1,8 +1,10 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import * as Sentry from "@sentry/react-native"
 import { categoryModelPrimitives, nodes, SortEnumType } from "app/graphql"
 import { RootStore } from "app/models"
 import { cast, flow, getRoot, Instance, SnapshotOut, types } from "mobx-state-tree"
 import R from "ramda"
+import Toast from "react-native-toast-message"
 import { withEnvironment } from "../extensions/with-environment"
 import { UserDataKeys, UserModel } from "../user/user"
 
@@ -47,19 +49,52 @@ export const UserStoreModel = types
 
       // TODO: add error handling
       // Creates a user on the backend and updates users LastLogin date if already exists
-      self.root.api.mutateLogin({
+      const loginPromise = self.root.api.mutateLogin({
         input: {
           firebaseUid: user.uid,
           username: user.displayName ?? "Guest",
         },
-      })
-      self.root.api.queryCategories(
-        {
-          order: [{ name: SortEnumType.ASC }],
-        },
-        nodes(categoryModelPrimitives),
-      )
-      self.root.api.queryUserCategories({}, (c) => c.nodes((n) => n.id.image.name))
+      }).promise
+
+      loginPromise
+        .then(() => {
+          self.root.api.queryCategories(
+            {
+              order: [{ name: SortEnumType.ASC }],
+            },
+            nodes(categoryModelPrimitives),
+          )
+
+          self.root.api.queryJokes(
+            {
+              input: {
+                blockedCategoryIds: self.root.settings.blockedCategoryIds,
+                jokeLength: self.root.settings.jokeLengthMaxEnum,
+                deepLinkedJokeId: self.root.api.deepLinkJokeId,
+                profanityFilter: self.root.settings.profanityFilter,
+              },
+              first: 5,
+            },
+            (j) =>
+              j.nodes((n) =>
+                n.id.body.title.negativeRating.positiveRating.categories((c) => c.id.image.name),
+              ),
+            { fetchPolicy: "no-cache" },
+          )
+          self.root.api.queryUserCategories({}, (c) => c.nodes((n) => n.id.image.name))
+        })
+        .catch((err) => {
+          Sentry.captureException(err)
+          // Add a modal pop up
+          self.root.resetStore()
+          Toast.show({
+            type: "error",
+            text1: "Sign-in Error",
+            text2:
+              "We're having trouble signing you in right now. Please try again, or contact support if the issue persists.",
+            position: "bottom",
+          })
+        })
     }),
     completeOnboarding: () => {
       if (self.user?.uid) {
