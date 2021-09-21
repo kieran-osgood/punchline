@@ -8,4 +8,5 @@ import { LogBox } from "react-native"
 LogBox.ignoreLogs([
   "Require cycle:",
   "EventEmitter.removeListener",
+  "Story with id ",
 ])
