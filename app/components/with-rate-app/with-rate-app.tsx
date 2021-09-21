@@ -12,12 +12,12 @@ const withRateApp = (Component: any) => (props: any) => {
   const stores = useStores()
 
   React.useEffect(() => {
-    // This package is only available on android version >= 21 and iOS >= 10.3
+    let isSubscribed = true
 
+    // This package is only available on android version >= 21 and iOS >= 10.3
     // Give you result if version of device supported to rate app or not!
     const available = InAppReview.isAvailable()
     if (!available) return
-    console.log("stores.userStore.goodJokeCount: ", stores.userStore.goodJokeCount)
     if (stores.userStore.goodJokeCount < 30) return
     if (differenceInCalendarDays(stores.userStore.lastDisplayedReviewPrompt, new Date()) > 15) {
       return
@@ -26,6 +26,8 @@ const withRateApp = (Component: any) => (props: any) => {
     // trigger UI InAppreview
     InAppReview.RequestInAppReview()
       .then((hasFlowFinishedSuccessfully) => {
+        if (!isSubscribed) return
+
         stores.userStore.setLastDisplayedReviewPrompt()
         stores.userStore.resetGoodJokecount()
         // when return true in android it means user finished or close review flow
@@ -58,8 +60,12 @@ const withRateApp = (Component: any) => (props: any) => {
         // we continue our app flow.
         // we have some error could happen while lanuching InAppReview,
         // Check table for errors and code number that can return in catch.
-        Sentry.captureException(error)
+        if (isSubscribed) Sentry.captureException(error)
       })
+
+    return () => {
+      isSubscribed = false
+    }
   }, [stores.userStore])
 
   return <Component {...props} />
