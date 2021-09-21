@@ -15,10 +15,10 @@ export {
  * CategoryModel
  */
 export const CategoryModel = CategoryModelBase.props({
-  isActive: types.optional(types.boolean, false),
+  isFiltered: types.optional(types.boolean, false),
 }).actions((self) => ({
   // This is an auto-generated example action.
   update(val: boolean) {
-    self.isActive = val
+    self.isFiltered = val
   },
 }))

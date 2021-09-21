@@ -108,7 +108,7 @@ const Category = observer(function Category({ category }: CategoryProps) {
   const { store } = useQuery()
 
   if (!category.image) return null
-  const { id, isActive, name, image } = category
+  const { id, isFiltered: isActive, name, image } = category
   const uri = image.length > 0 ? image : " "
   const activeTextStyle = { color: isActive ? color.dim : color.primary }
 

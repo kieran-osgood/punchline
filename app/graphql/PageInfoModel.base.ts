@@ -4,9 +4,8 @@
 
 import { types } from "mobx-state-tree"
 import { QueryBuilder } from "mst-gql"
+import { ApiStoreType } from "./index"
 import { ModelBase } from "./ModelBase"
-import { RootStoreType } from "./index"
-
 
 /**
  * PageInfoBase
@@ -14,8 +13,7 @@ import { RootStoreType } from "./index"
  *
  * Information about pagination in a connection.
  */
-export const PageInfoModelBase = ModelBase
-  .named('PageInfo')
+export const PageInfoModelBase = ModelBase.named("PageInfo")
   .props({
     __typename: types.optional(types.literal("PageInfo"), "PageInfo"),
     /** Indicates whether more edges exist following the set defined by the clients arguments. */
@@ -27,20 +25,29 @@ export const PageInfoModelBase = ModelBase
     /** When paginating forwards, the cursor to continue. */
     endCursor: types.union(types.undefined, types.null, types.string),
   })
-  .views(self => ({
+  .views((self) => ({
     get store() {
-      return self.__getStore<RootStoreType>()
-    }
+      return self.__getStore<ApiStoreType>()
+    },
   }))
 
 export class PageInfoModelSelector extends QueryBuilder {
-  get hasNextPage() { return this.__attr(`hasNextPage`) }
-  get hasPreviousPage() { return this.__attr(`hasPreviousPage`) }
-  get startCursor() { return this.__attr(`startCursor`) }
-  get endCursor() { return this.__attr(`endCursor`) }
+  get hasNextPage() {
+    return this.__attr(`hasNextPage`)
+  }
+  get hasPreviousPage() {
+    return this.__attr(`hasPreviousPage`)
+  }
+  get startCursor() {
+    return this.__attr(`startCursor`)
+  }
+  get endCursor() {
+    return this.__attr(`endCursor`)
+  }
 }
 export function selectFromPageInfo() {
   return new PageInfoModelSelector()
 }
 
-export const pageInfoModelPrimitives = selectFromPageInfo().hasNextPage.hasPreviousPage.startCursor.endCursor
+export const pageInfoModelPrimitives = selectFromPageInfo().hasNextPage.hasPreviousPage.startCursor
+  .endCursor

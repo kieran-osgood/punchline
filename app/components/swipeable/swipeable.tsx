@@ -1,7 +1,7 @@
 import JokeCard, { α } from "app/components/joke/joke-card/joke-card"
 import { JokeModelType } from "app/graphql"
 import React, { forwardRef, Ref, useImperativeHandle } from "react"
-import { Dimensions, StyleSheet, View } from "react-native"
+import { Dimensions, StyleSheet } from "react-native"
 import Animated, {
   Extrapolate,
   interpolate,
@@ -10,11 +10,11 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated"
+import { View } from "react-native-ui-lib"
 
 const { width, height } = Dimensions.get("window")
 
 const A = Math.round(width * Math.cos(α) + height * Math.sin(α))
-// const snapPoints = [-A, 0, A]
 
 export interface SwipeHandler {
   swipeLeft: () => void
@@ -24,7 +24,7 @@ export interface SwipeHandler {
 interface SwiperProps {
   onSwipe?: (joke: JokeModelType) => void
   joke: JokeModelType
-  // scale: Animated.SharedValue<number>
+  isLoading: boolean
   onTop: boolean
 }
 
@@ -51,7 +51,7 @@ const swipe = (
   )
 }
 
-const Swiper = ({ joke, onTop }: SwiperProps, ref: Ref<SwipeHandler>) => {
+const SwiperJokeCard = ({ joke, onTop, isLoading }: SwiperProps, ref: Ref<SwipeHandler>) => {
   const translateX = useSharedValue(0)
   const translateY = useSharedValue(0)
   const scale = useDerivedValue(() => {
@@ -100,9 +100,9 @@ const Swiper = ({ joke, onTop }: SwiperProps, ref: Ref<SwipeHandler>) => {
   /* to re-enable swiping use: <PanGestureHandler {...{onGestureEvent}}> */
   return (
     <View style={StyleSheet.absoluteFill}>
-      <JokeCard {...{ onTop, scale, translateX, translateY, joke }} />
+      <JokeCard {...{ onTop, scale, translateX, translateY, joke, loading: isLoading }} />
     </View>
   )
 }
 
-export default forwardRef(Swiper)
+export default forwardRef(SwiperJokeCard)

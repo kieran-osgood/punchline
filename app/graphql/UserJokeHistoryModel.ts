@@ -1,5 +1,5 @@
-import { RootStoreType } from "app/graphql"
-import { RootStore as RootStoreTree } from "app/models"
+import { ApiStoreType } from "app/graphql"
+import { RootStore } from "app/models"
 import { getRoot, Instance } from "mobx-state-tree"
 import { UserJokeHistoryModelBase } from "./UserJokeHistoryModel.base"
 /* The TypeScript type of an instance of UserJokeHistoryModel */
@@ -15,10 +15,10 @@ export {
  * UserJokeHistoryModel
  */
 export const UserJokeHistoryModel = UserJokeHistoryModelBase.views((self) => ({
-  get root(): RootStoreTree {
+  get root(): RootStore {
     return getRoot(self)
   },
-  get api(): RootStoreType {
+  get api(): ApiStoreType {
     return this.root.api
   },
 })).actions((self) => ({

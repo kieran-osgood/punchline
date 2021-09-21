@@ -18,6 +18,11 @@ export const SettingsModel = types
       team: types.boolean,
     }),
   })
+  .views((self) => ({
+    get root(): RootStore {
+      return getRoot(self)
+    },
+  }))
   .actions((self) => ({
     setProfanityFilter(value: boolean) {
       self.profanityFilter = value
@@ -28,8 +33,8 @@ export const SettingsModel = types
   }))
   .views((self) => ({
     get blockedCategoryIds(): string[] {
-      const root = [...(getRoot(self) as RootStore).api.categories.values()]
-        .filter((x) => x.isActive)
+      const root = [...self.root.api.categories.values()]
+        .filter((x) => x.isFiltered)
         .map((x) => x.id)
       return root
     },
@@ -98,7 +103,7 @@ export const SettingsModel = types
  *  .postProcessSnapshot(omit(["password", "socialSecurityNumber", "creditCardNumber"]))
  */
 
-type SettingsType = Instance<typeof SettingsModel>
+export type SettingsType = Instance<typeof SettingsModel>
 export interface Settings extends SettingsType {}
 type SettingsSnapshotType = SnapshotOut<typeof SettingsModel>
 export interface SettingsSnapshot extends SettingsSnapshotType {}

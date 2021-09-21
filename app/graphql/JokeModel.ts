@@ -1,5 +1,7 @@
-import { RatingValue, RootStoreType } from "app/graphql"
+import { ApiStoreType, RatingValue } from "app/graphql"
+import { CategoryModelType } from "app/graphql/CategoryModel"
 import { RootStore as RootStoreTree } from "app/models"
+import { IObservableArray } from "mobx"
 import { getRoot, Instance, types } from "mobx-state-tree"
 import { JokeModelBase } from "./JokeModel.base"
 /* The TypeScript type of an instance of JokeModel */
@@ -18,7 +20,7 @@ export const JokeModel = JokeModelBase.props({
     get root(): RootStoreTree {
       return getRoot(self)
     },
-    get api(): RootStoreType {
+    get api(): ApiStoreType {
       return this.root.api
     },
   }))
@@ -26,6 +28,9 @@ export const JokeModel = JokeModelBase.props({
     // This is an auto-generated example action.
     log() {
       console.log(JSON.stringify(self))
+    },
+    setCategories(categories: IObservableArray<CategoryModelType>) {
+      self.categories = categories
     },
     markViewed() {
       self.viewed = true

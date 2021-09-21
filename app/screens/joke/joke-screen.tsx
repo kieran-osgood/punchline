@@ -18,19 +18,30 @@ const PAGE_GUTTERS = 15
 
 export const JokeScreen = observer(function JokeScreen() {
   const route = useRoute<NavigationProps<"JokeScreen">["route"]>()
-  const { store } = useQuery()
   const [bookmarked, setBookmarked] = React.useState(false)
   const topCard = React.useRef<SwipeHandler>(null)
-
-  React.useEffect(() => {
-    /**
-     * TODO
-     * This mostly works now in that it correctly chooses "Progress" joke as the top card joke
-     * but the react mapping isn't changing properly to reflect this
-     */
-    store.setDeepLinkJoke(route.params?.jokeId)
-    store.fetchInitialJokes(route.params?.jokeId)
-  }, [route.params?.jokeId, store.setDeepLinkJoke, store.fetchInitialJokes, store])
+  const query = useQuery()
+  const { store } = query
+  // React.useEffect(() => {
+  // add in logic to pull and set next joke as the top joke
+  //   setQuery((store) =>
+  //     store.queryJokes(
+  //       {
+  //         input: {
+  //           blockedCategoryIds: store.root.settings.blockedCategoryIds,
+  //           jokeLength: store.root.settings.jokeLengthMaxEnum,
+  //           deepLinkedJokeId: route.params?.jokeId,
+  //           profanityFilter: store.root.settings.profanityFilter,
+  //         },
+  //       },
+  //       (j) =>
+  //         j.nodes((n) =>
+  //           n.id.body.title.negativeRating.positiveRating.categories((c) => c.id.image.name),
+  //         ),
+  //       { fetchPolicy: "no-cache" },
+  //     ),
+  //   )
+  // }, [route.params?.jokeId, setQuery])
 
   const onSwipe = React.useCallback(
     (joke: JokeModelType, rating: RatingValue, bookmarked: boolean) => {
@@ -40,13 +51,9 @@ export const JokeScreen = observer(function JokeScreen() {
     [],
   )
 
-  const handleBookmarkPress = () => {
-    setBookmarked((c) => !c)
-  }
+  const handleBookmarkPress = () => setBookmarked((c) => !c)
 
-  const handleSkipPress = () => {
-    onSwipe(store.topOfDeckJoke, RatingValue.SKIP, bookmarked)
-  }
+  const handleSkipPress = () => onSwipe(store.topOfDeckJoke, RatingValue.SKIP, bookmarked)
 
   const handleDownVote = () => {
     onSwipe(store.topOfDeckJoke, RatingValue.BAD, bookmarked)
@@ -57,35 +64,6 @@ export const JokeScreen = observer(function JokeScreen() {
     onSwipe(store.topOfDeckJoke, RatingValue.GOOD, bookmarked)
     topCard.current?.swipeRight()
   }
-
-  // Build up a shareable link.
-  // const shareLinkContent: ShareLinkContent = {
-  //   contentType: "link",
-  //   contentUrl: "https://facebook.com",
-  //   contentDescription: "Wow, check out this great site!",
-  // }
-
-  // const handle = async () => {
-  //   // Share using the share API.
-  //   ShareDialog.canShow(shareLinkContent)
-  //     .then((canShare) => {
-  //       console.log("canShare: ", canShare)
-  //       if (canShare) {
-  //         ShareDialog.show(shareLinkContent)
-  //       }
-  //     })
-  //     .then(
-  //       function (result) {
-  //         console.log("Share with ShareApi success.", result)
-  //       },
-  //       function (error) {
-  //         console.log("Share with ShareApi failed with error: " + error)
-  //       },
-  //     )
-  //     .catch(() => {
-  //       console.log("z")
-  //     })
-  // }
 
   return (
     <>
@@ -100,13 +78,12 @@ export const JokeScreen = observer(function JokeScreen() {
             {store.topOfDeckJoke.title}
           </Text>
         </View>
-        {/* <Button onPress={handle} label="PRESS" /> */}
 
         <View style={CARDS_CONTAINER} key={store.deepLinkJokeId}>
           {store.nonViewedJokes.map((joke) => {
             const onTop = joke.id === store.topOfDeckJoke.id
             const ref = onTop ? topCard : null
-            return <Swipeable key={joke.id} {...{ onTop, joke, ref }} />
+            return <Swipeable key={joke.id} {...{ onTop, joke, ref, isLoading: query.loading }} />
           })}
         </View>
 
@@ -146,7 +123,7 @@ const HEADER: ViewStyle = {
 }
 
 const CARDS_CONTAINER: ViewStyle = {
-  height: heightPercentageToDP("50%"),
+  height: heightPercentageToDP("45%"),
   marginHorizontal: 16,
   zIndex: 100,
 }
@@ -180,13 +157,24 @@ export const Controls = (props: ButtonsProps) => {
       />
 
       <View style={SECONDARY_ACTION_BUTTONS}>
-        <Button
-          style={ACTION_BUTTON}
-          round
-          onPress={handleBookmarkPress}
-          activeOpacity={0.7}
-          iconSource={() => <BookmarkButton {...{ bookmarked }} size={28} />}
-        />
+        <View row marginB-s2>
+          <View marginR-s3>
+            <Button
+              style={ACTION_BUTTON}
+              round
+              onPress={handleSkipPress}
+              activeOpacity={0.7}
+              iconSource={() => <Skip />}
+            />
+          </View>
+          <Button
+            style={ACTION_BUTTON}
+            round
+            onPress={handleBookmarkPress}
+            activeOpacity={0.7}
+            iconSource={() => <BookmarkButton {...{ bookmarked }} size={24} />}
+          />
+        </View>
         <Button
           style={ACTION_BUTTON}
           round
@@ -195,14 +183,6 @@ export const Controls = (props: ButtonsProps) => {
           }}
           activeOpacity={0.7}
           iconSource={() => <ErrorReportIcon />}
-        />
-
-        <Button
-          style={ACTION_BUTTON}
-          round
-          onPress={handleSkipPress}
-          activeOpacity={0.7}
-          iconSource={() => <Skip />}
         />
       </View>
 
@@ -222,14 +202,16 @@ const BUTTONS: ViewStyle = {
   justifyContent: "space-between",
   height: "20%",
   width: "70%",
-  paddingVertical: 25,
+  paddingVertical: 10,
   alignSelf: "center",
+  alignItems: "center",
 }
 const SECONDARY_ACTION_BUTTONS: ViewStyle = {
   flexDirection: "column",
   justifyContent: "space-between",
   alignItems: "center",
   position: "relative",
+  // height: "100%",
 }
 export const ACTION_BUTTON: ViewStyle = {
   justifyContent: "center",
@@ -243,3 +225,32 @@ export const ACTION_BUTTON: ViewStyle = {
   alignItems: "center",
   padding: 5,
 }
+
+// Build up a shareable link.
+// const shareLinkContent: ShareLinkContent = {
+//   contentType: "link",
+//   contentUrl: "https://facebook.com",
+//   contentDescription: "Wow, check out this great site!",
+// }
+
+// const handle = async () => {
+//   // Share using the share API.
+//   ShareDialog.canShow(shareLinkContent)
+//     .then((canShare) => {
+//
+//       if (canShare) {
+//         ShareDialog.show(shareLinkContent)
+//       }
+//     })
+//     .then(
+//       function (result) {
+//
+//       },
+//       function (error) {
+//
+//       },
+//     )
+//     .catch(() => {
+//
+//     })
+// }

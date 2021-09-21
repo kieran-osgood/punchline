@@ -1,8 +1,8 @@
 import { createHttpClient } from "mst-gql"
-import { RootStore } from "./RootStore"
+import { ApiStore } from "./RootStore"
 
 test("can be created without any user", () => {
-  const store = RootStore.create(undefined, {
+  const store = ApiStore.create(undefined, {
     gqlHttpClient: createHttpClient(""),
   })
   expect(store).toMatchSnapshot()

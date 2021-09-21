@@ -1,4 +1,4 @@
-import { CategoryModel } from "app/graphql"
+import { ApiStoreType, CategoryModel } from "app/graphql"
 import { RootStore as RootStoreTree } from "app/models"
 import { getRoot, getSnapshot, Instance, SnapshotOut, types } from "mobx-state-tree"
 
@@ -7,15 +7,17 @@ import { getRoot, getSnapshot, Instance, SnapshotOut, types } from "mobx-state-t
  */
 export const OnboardingModel = types
   .model("Onboarding")
-  .props({})
   .views((self) => ({
     get root(): RootStoreTree {
       return getRoot(self)
     },
+    get api(): ApiStoreType {
+      return this.root.api
+    },
   }))
   .views((self) => ({
     get randomCategoriesBlocked() {
-      return [...self.root.api.categories.values()]
+      return [...self.api.categories.values()]
         .map((x) => {
           const category = CategoryModel.create(getSnapshot(x))
           category.update(Math.random() < 0.4)

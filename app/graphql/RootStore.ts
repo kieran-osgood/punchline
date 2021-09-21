@@ -1,17 +1,20 @@
 import { JokeModel } from "app/graphql"
-import { RootStore as RootStoreTree } from "app/models"
+import { RootStore, SettingsType } from "app/models"
 import { destroy, getEnv, getRoot, IAnyStateTreeNode, Instance, types } from "mobx-state-tree"
 import { RootStoreBase } from "./RootStore.base"
 
-export interface RootStoreType extends Instance<typeof RootStore.Type> {}
+export interface RootStoreType extends Instance<typeof ApiStore.Type> {}
 
-export const RootStore = RootStoreBase.props({
+export const ApiStore = RootStoreBase.props({
   accessToken: types.maybeNull(types.string),
   deepLinkJokeId: types.maybe(types.string),
 })
   .views((self) => ({
-    get root(): RootStoreTree {
+    get root(): RootStore {
       return getRoot(self)
+    },
+    get settings(): SettingsType {
+      return this.root.settings
     },
   }))
   .actions((self) => ({
@@ -24,40 +27,35 @@ export const RootStore = RootStoreBase.props({
     setDeepLinkJoke(deepLinkInitialJoke: string | undefined) {
       self.deepLinkJokeId = deepLinkInitialJoke
     },
-  }))
-  .actions((self) => ({
     setBearerToken(token: string) {
       self.accessToken = token
-      self.setAuthorizationHeader()
-    },
-    fetchInitialJokes(deepLinkInitialJoke?: string) {
-      const query = self.queryJokes(
-        {
-          input: {
-            blockedCategoryIds: self.root.settings.blockedCategoryIds,
-            jokeLength: self.root.settings.jokeLengthMaxEnum,
-            deepLinkedJokeId: deepLinkInitialJoke,
-            profanityFilter: self.root.settings.profanityFilter,
-          },
-        },
-        (j) =>
-          j.nodes((n) =>
-            n.id.body.title.negativeRating.positiveRating.categories((c) => c.id.image.name),
-          ),
-        { fetchPolicy: "no-cache" },
-      )
-      self.setDeepLinkJoke(deepLinkInitialJoke)
-
-      return query
+      this.setAuthorizationHeader()
     },
   }))
   .views((self) => ({
     get nonViewedJokes() {
-      return [...self.jokes.values()].filter((x) => !x.viewed)
+      return [...self.jokes.values()]
+        .filter((x) => !x.viewed)
+        .filter((x) => !(self.settings.profanityFilter && x.explicitContent))
+        .filter((x) => x.categories.some((y) => !y.isFiltered && self.categories.has(y.id)))
     },
     get topOfDeckJoke() {
       if (this.nonViewedJokes.length <= 10) {
-        self.fetchInitialJokes()
+        self.queryJokes(
+          {
+            input: {
+              blockedCategoryIds: self.root.settings.blockedCategoryIds,
+              jokeLength: self.root.settings.jokeLengthMaxEnum,
+              deepLinkedJokeId: self.deepLinkJokeId,
+              profanityFilter: self.root.settings.profanityFilter,
+            },
+          },
+          (j) =>
+            j.nodes((n) =>
+              n.id.body.title.negativeRating.positiveRating.categories((c) => c.id.image.name),
+            ),
+          { fetchPolicy: "no-cache" },
+        )
       }
       if (this.nonViewedJokes.length === 0) {
         return JokeModel.create({ id: "-1" })

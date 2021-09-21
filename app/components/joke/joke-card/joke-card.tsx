@@ -1,16 +1,19 @@
 /* eslint-disable react-native/no-unused-styles */
 /* eslint-disable react-native/no-color-literals */
+import { MotiTransitionProp } from "@motify/core"
+import { Skeleton } from "@motify/skeleton"
 import { JokeModelType } from "app/graphql"
 import * as React from "react"
-import { Dimensions, ScrollView, StyleSheet, View, ViewStyle } from "react-native"
+import { Dimensions, ScrollView, StyleSheet, ViewStyle } from "react-native"
 import Animated, {
   Extrapolate,
   interpolate,
+  interpolateColor,
   useAnimatedStyle,
   useDerivedValue,
   withTiming,
 } from "react-native-reanimated"
-import { Text } from "react-native-ui-lib"
+import { Text, ThemeManager, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
 const { width } = Dimensions.get("window")
@@ -22,10 +25,28 @@ interface JokeCardProps {
   translateY: Animated.SharedValue<number>
   scale: Animated.SharedValue<number>
   onTop: boolean
+  // loading?: Animated.SharedValue<number>
+  loading?: boolean
 }
+const skeletonColors = [color.primary, "#fdfdfd", ThemeManager.primaryColor]
+const transition: MotiTransitionProp = {}
+const colorMode = "light"
 
-const JokeCard = ({ joke, translateX, translateY, onTop, scale }: JokeCardProps) => {
+const JokeCard = ({
+  joke,
+  translateX,
+  translateY,
+  onTop,
+  scale,
+  loading: isLoading = false,
+}: JokeCardProps) => {
   const { body } = joke
+  const loadingAnimation = onTop && isLoading
+
+  const loading = useDerivedValue(() => {
+    return withTiming(isLoading ? 1 : 0)
+  }, [isLoading])
+
   const x = useDerivedValue(() => (onTop ? translateX.value : 0))
   const container = useAnimatedStyle(() => ({
     transform: [
@@ -45,16 +66,59 @@ const JokeCard = ({ joke, translateX, translateY, onTop, scale }: JokeCardProps)
 
   const color = React.useMemo(() => randomColor(), [])
 
+  const animatedPlaceholderStyles = useAnimatedStyle(() => ({
+    backgroundColor: loadingAnimation
+      ? interpolateColor(loading.value, [1, 0], ["#fff", color.background])
+      : color.background,
+  }))
+  const fadeout = useAnimatedStyle(
+    () => ({
+      opacity: loadingAnimation ? loading.value : 0,
+      height: loadingAnimation ? loading.value : 0,
+    }),
+    [loadingAnimation],
+  )
+  const fadein = useAnimatedStyle(
+    () => ({
+      opacity: loadingAnimation ? interpolate(loading.value, [1, 0], [0, 1]) : 1,
+    }),
+    [loadingAnimation],
+  )
+
   return (
     <Animated.View style={[StyleSheet.absoluteFill, container]}>
       <View style={styles.overlay}>
-        <View style={[CONTAINER, { backgroundColor: color.background }]}>
+        <Animated.View style={[CONTAINER, animatedPlaceholderStyles]}>
           <ScrollView showsVerticalScrollIndicator>
-            <Text text60BO color={color.text}>
-              {body}
-            </Text>
+            {loadingAnimation && (
+              <Animated.View style={fadeout}>
+                {Array(5)
+                  .fill(0)
+                  .map((_, idx) => (
+                    <React.Fragment key={idx}>
+                      {[1, 2].map((y, yIdx) => {
+                        return (
+                          <React.Fragment key={yIdx}>
+                            <Skeleton
+                              {...{ colors: skeletonColors, colorMode, transition }}
+                              width={y === 1 ? "100%" : "90%"}
+                              height={20}
+                            />
+                            <View height={y * 4} />
+                          </React.Fragment>
+                        )
+                      })}
+                    </React.Fragment>
+                  ))}
+              </Animated.View>
+            )}
+            <Animated.View style={loadingAnimation ? fadein : {}}>
+              <Text text60BO color={color.text}>
+                {body}
+              </Text>
+            </Animated.View>
           </ScrollView>
-        </View>
+        </Animated.View>
       </View>
     </Animated.View>
   )
@@ -133,7 +197,7 @@ const CONTAINER: ViewStyle = {
   justifyContent: "center",
   padding: spacing[3],
   borderRadius: spacing[3],
-  shadowColor: "#000000",
+  // shadowColor: "#000000",
   flex: 1,
   position: "relative",
   ...CARD_SHADOW,

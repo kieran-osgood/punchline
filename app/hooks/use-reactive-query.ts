@@ -1,10 +1,10 @@
-import * as React from "react"
 import { useQuery } from "app/graphql/reactUtils"
-import { RootStoreType } from "app/graphql/RootStore"
-import { RootStoreBaseMutations, RootStoreBaseQueries } from 'app/graphql/RootStore.base'
+import { ApiStoreType } from "app/graphql/RootStore"
+import { RootStoreBaseMutations, RootStoreBaseQueries } from "app/graphql/RootStore.base"
+import * as React from "react"
 
 type ActionNames = keyof typeof RootStoreBaseQueries | keyof typeof RootStoreBaseMutations
-type ActionReturnType <T extends ActionNames> = ReturnType<RootStoreType[T]>
+type ActionReturnType<T extends ActionNames> = ReturnType<ApiStoreType[T]>
 
 const useReactiveQuery = <ActionName extends ActionNames>(
   queryRequest: ActionReturnType<ActionName>,
