@@ -19,7 +19,7 @@ import {
 } from "react-native"
 import { WEB_URL } from "react-native-dotenv"
 import Toast from "react-native-toast-message"
-import { Button, Switch, Text, ThemeManager, View, ViewPropTypes } from "react-native-ui-lib"
+import { Button, Switch, Text, ThemeManager, View, ViewProps } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 import {
   AppleSignInButton,
@@ -161,7 +161,7 @@ type SectionProps = {
   children: React.ReactNode
   title?: string
   style?: ViewStyle | ViewStyle[]
-} & ViewPropTypes
+} & ViewProps
 const Section = ({ children, title, style, ...rest }: SectionProps) => {
   return (
     <View {...{ style }} {...rest}>

@@ -11,7 +11,6 @@ import { StoreContext as GraphQLStoreContext } from "app/graphql/reactUtils"
 import { RootStore, RootStoreProvider, setupRootStore, useStores } from "app/models"
 import { observer } from "mobx-react-lite"
 import React, { useEffect, useState } from "react"
-import RNBootSplash from "react-native-bootsplash"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import RNRestart from "react-native-restart"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
@@ -45,7 +44,7 @@ const App = observer(function App() {
     storage,
     NAVIGATION_PERSISTENCE_KEY,
   )
-
+  const [initted, setInnited] = useState(false)
   // Kick off initial async loading actions, like RootStore
   useEffect(() => {
     if (firstRender.current) {
@@ -59,13 +58,14 @@ const App = observer(function App() {
       }
 
       init().finally(() => {
-        RNBootSplash.hide({ fade: true })
+        // RNBootSplash.hide({ fade: true })
+        setInnited(true)
       })
     }
   }, [])
 
   // Wait for state to load from AsyncStorage
-  if (!rootStore) return null
+  if (!rootStore || !initted) return null
 
   return (
     <ToggleStorybook>

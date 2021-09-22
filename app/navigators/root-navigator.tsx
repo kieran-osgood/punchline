@@ -26,6 +26,7 @@ import {
 } from "app/navigators/main-navigator"
 import { observer } from "mobx-react-lite"
 import React from "react"
+import RNBootSplash from "react-native-bootsplash"
 import Toast from "react-native-toast-message"
 
 /**
@@ -66,8 +67,9 @@ export const RootNavigator = React.forwardRef<
   NavigationContainerRef<RootParamList>,
   Partial<React.ComponentProps<typeof NavigationContainer>>
 >((props, ref) => {
+  const onReady = () => RNBootSplash.hide({ fade: true })
   return (
-    <NavigationContainer {...props} {...{ ref, linking }}>
+    <NavigationContainer {...props} {...{ ref, linking, onReady }}>
       <RootStack />
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </NavigationContainer>
