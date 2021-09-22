@@ -81,17 +81,22 @@ const exitRoutes = [...authExitRoutes, ...mainExitRoutes]
 export const canExit = (routeName: AllRouteNames) => exitRoutes.includes(routeName)
 
 const linking: LinkingOptions<RootParamList> = {
-  prefixes: ["https://punch-line.co.uk", "punchline://"],
+  prefixes: [
+    "https://punch-line.co.uk/",
+    "https://api.punch-line.co.uk/",
+    "https://web.punch-line.co.uk/",
+    "punchline://",
+  ],
   config: {
     screens: {
-      // MainNavigator: {
-      //   screens: {
-      //     JokeScreen: {
-      //       path: "jokes/:jokeId",
-      //       parse: { jokeId: String },
-      //     },
-      //   },
-      // },
+      MainNavigator: {
+        screens: {
+          JokeScreen: {
+            path: "joke/:id",
+            parse: { id: String },
+          },
+        },
+      },
       // AuthNavigator: {
       //   screens: {
       //     LoginScreen: {

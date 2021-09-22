@@ -1,10 +1,11 @@
-import { Facebook, Share as ShareIcon, Twitter } from "images"
+import * as Sentry from "@sentry/react-native"
+import { Share as ShareIcon } from "images"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { StyleProp, ViewStyle } from "react-native"
+import { API_URL } from "react-native-dotenv"
 import Share from "react-native-share"
 import { TouchableOpacity, View } from "react-native-ui-lib"
-
 export interface ShareIconsProps {
   /**
    * An optional style override useful for padding & margin.
@@ -22,10 +23,10 @@ export const ShareIcons = observer(function ShareIcons(props: ShareIconsProps) {
   return (
     <View style={style} row center>
       <Link {...{ jokeId }} type="facebook">
-        <Facebook />
+        {/* <Facebook /> */}
       </Link>
       <Link {...{ jokeId }} type="twitter">
-        <Twitter />
+        {/* <Twitter /> */}
       </Link>
       <Link {...{ jokeId }}>
         <ShareIcon scale={1.1} />
@@ -48,37 +49,29 @@ type LinkProps = {
 type Type = "facebook" | "twitter" | "default"
 
 export const Link = ({ jokeId, children, style = {}, type = "default" }: LinkProps) => {
+  /**
+   * user clicks share button - we generate a url like: https://api.punch-line.co.uk/share/joke?id=46234623
+   * next user clicks link
+   * link is an associated domain in the android manifest and ios
+   * on clicking it will check for a file:
+   * ios: https://api.punch-line.co.uk/.well-known/apple-app-site-association
+   * android: https://api.punch-line.co.uk/.well-known/assetlinks.json
+   *
+   * these will either direct the user to the app or to the website
+   * the website should be an empty page with javascript to redirect to appstore
+   *
+   */
+
   const onPress = async () => {
     try {
-      const res = await Share.shareSingle({
-        title: "Share via",
-        message: "some message",
-        url: "https://web.punch-line.co.uk",
-        social: Share.Social.FACEBOOK,
-        subject: "gufy",
-        type: "asdf",
+      const res = await Share.open({
+        title: "",
+        url: `${API_URL}/share/joke?id=${jokeId}`,
       })
       console.log({ res })
     } catch (error) {
-      error && console.log(error)
+      Sentry.captureException(error)
     }
-    // try {
-    //   const result = await Share.share({
-    //     title: "Take a look at this joke!",
-    //     message: `/${jokeId}`,
-    //   })
-    //   if (result.action === Share.sharedAction) {
-    //     if (result.activityType) {
-    //       // shared with activity type of result.activityType
-    //     } else {
-    //       // shared
-    //     }
-    //   } else if (result.action === Share.dismissedAction) {
-    //     // dismissed
-    //   }
-    // } catch (error) {
-    //   // alert(error.message);
-    // }
   }
 
   return (

@@ -31,8 +31,10 @@ import { JokeScreen, OnboardingScreen, SettingsStack, UserProfileTabs } from "..
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
 export type MainRouteParamList = {
-  JokeScreen?: {
-    jokeId?: string
+  // ! This should be JokeScreen?: {} - bug in navigation: https://github.com/react-navigation/react-navigation/issues/9897
+  // PR should fix this: https://github.com/react-navigation/react-navigation/pull/9948
+  JokeScreen: {
+    id?: string
   }
   LoginScreen: undefined
   UserProfileTabs: undefined
