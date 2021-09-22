@@ -29,6 +29,25 @@ lane :generate_new_icons do
   )
 end
 
+desc "Builds a release and pushes to testflight"
+lane :beta do
+  # get_certificates           # invokes cert
+  # get_provisioning_profile   # invokes sigh
+  increment_build_number(xcodeproj: "punchline.xcodeproj")
+  # Get latest certs appstore
+  match(type: "appstore") # Set type of code signing required
+  gym(export_method: "app-store", output_directory: "output") # Directory where signed .ipa file will be placed
+  api_key = app_store_connect_api_key(
+    key_id: "LXL29858RV",
+    issuer_id: "d76715a4-757f-468f-9a52-7c0cc2b62b08",
+    key_filepath: "./fastlane/AuthKey_LXL29858RV.p8",
+    duration: 1200, # optional (maximum 1200)
+    in_house: false, # optional but may be required if using match/sigh
+  )
+
+  pilot(api_key: api_key)
+end
+
 desc "Run tests and build the app"
 lane :build_adhoc_ios do
   increment_build_number(xcodeproj: "punchline.xcodeproj")
@@ -43,9 +62,9 @@ lane :build_adhoc_ios do
   # end
 
   # Get latest certs appstore
-  match(type: "adhoc") # Set type of code signing required
+  match(type: "appstore", readonly: is_ci) # Set type of code signing required
   # Gym aliases build_app
-  gym(export_method: "ad-hoc", output_directory: "output") # Directory where signed .ipa file will be placed
+  gym(export_method: "appstore", output_directory: "output") # Directory where signed .ipa file will be placed
 end
 
 lane :e2e_release do

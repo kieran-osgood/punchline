@@ -20,6 +20,11 @@ or alternatively using `brew install fastlane`
 fastlane generate_new_icons
 ```
 
+### beta
+```
+fastlane beta
+```
+Builds a release and pushes to testflight
 ### build_adhoc_ios
 ```
 fastlane build_adhoc_ios
