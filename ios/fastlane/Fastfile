@@ -20,6 +20,16 @@ before_all do
   setup_circle_ci
 end
 
+private lane :bump_and_commit_version do
+  increment_build_number(xcodeproj: "punchline.xcodeproj")
+  commit_version_bump(
+    message: "Version Bump", # create a commit with a custom message
+  )
+  increment_version_number_in_plist(
+    version_number: $package["version"],
+  )
+end
+
 lane :generate_new_icons do
   ## Generates the app icons - splash screen icons are handled by bootsplash (`yarn bootsplash`)
   appicon(
@@ -33,7 +43,8 @@ desc "Builds a release and pushes to testflight"
 lane :beta do
   # get_certificates           # invokes cert
   # get_provisioning_profile   # invokes sigh
-  increment_build_number(xcodeproj: "punchline.xcodeproj")
+  bump_and_commit_versions
+
   # Get latest certs appstore
   match(type: "appstore") # Set type of code signing required
   gym(export_method: "app-store", output_directory: "output") # Directory where signed .ipa file will be placed
@@ -45,21 +56,18 @@ lane :beta do
     in_house: false, # optional but may be required if using match/sigh
   )
 
-  pilot(api_key: api_key)
-end
-
-desc "Run tests and build the app"
-lane :build_adhoc_ios do
-  increment_build_number(xcodeproj: "punchline.xcodeproj")
-  commit_version_bump(
-    message: "Version Bump", # create a commit with a custom message
-  )
-
   # if changelog
   #   upload_to_testflight(changelog: changelog)
   # else
   #   upload_to_testflight
   # end
+
+  pilot(api_key: api_key)
+end
+
+desc "Run tests and build the app"
+lane :build_appstore_ios do
+  bump_and_commit_versions
 
   # Get latest certs appstore
   match(type: "appstore", readonly: is_ci) # Set type of code signing required
