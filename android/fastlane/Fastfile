@@ -22,11 +22,9 @@ $gradle_flags = '--no-daemon --max-workers=2 -Dorg.gradle.daemon=false -Dorg.gra
 ## Retrieve version of my app in package.json (React Native case)
 $package = load_json(json_path: "../package.json")
 $slack_url = "https://hooks.slack.com/services/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"
+$symbols_zip = "app/build/symbols.zip"
 
 desc "Increments internal build number tracking (different than version)"
-lane :bump_build_number do
-  android_set_version_code(version_code: getVersionCode())
-end
 
 desc "Build debug android configuration"
 lane :build_debug do
@@ -61,6 +59,35 @@ lane :build_android_release_bundle do
   )
 end
 
+desc "Builds a release and pushes to beta track on play store"
+lane :beta do
+  ## Clean build folder
+  # gradle(
+  #   task: "clean",
+  # )
+
+  zip(
+    path: "app/build/outputs/",
+    output_path: $symbols_zip,
+  )
+
+  ## Bump android.defaultConfig.versionCode
+  # bump_build_number
+  increment_version_code
+
+  ## Do the bundle of the application
+  build_android_release_bundle
+
+  ## Upload Android App Bundle to PlayStore like Internal testing Release
+  upload_to_play_store(
+    track: "alpha",
+    # release_status: "draft", ## <http://docs.fastlane.tools/actions/upload_to_play_store/#parameters>
+    skip_upload_apk: true,
+    version_name: $package["version"],
+    mapping: $symbols_zip,
+  )
+end
+
 lane :generate_new_icons do
   ## Generates the app icons - splash screen icons are handled by bootsplash (`yarn bootsplash`)
   android_appicon(
@@ -91,7 +118,7 @@ lane :playstore do
   # bump_build_number
 
   ## Do the bundle of the application
-  build_android_release_build
+  build_android_release_bundle
 
   ## Upload Android App Bundle to PlayStore like Internal testing Release
   upload_to_play_store(

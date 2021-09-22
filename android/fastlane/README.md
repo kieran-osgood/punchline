@@ -15,15 +15,12 @@ Install _fastlane_ using
 or alternatively using `brew install fastlane`
 
 # Available Actions
-### bump_build_number
-```
-fastlane bump_build_number
-```
-Increments internal build number tracking (different than version)
 ### build_debug
 ```
 fastlane build_debug
 ```
+Increments internal build number tracking (different than version)
+
 Build debug android configuration
 ### e2e_debug
 ```
@@ -40,6 +37,11 @@ fastlane e2e_release
 fastlane build_android_release_bundle
 ```
 Build release android configuration
+### beta
+```
+fastlane beta
+```
+Builds a release and pushes to beta track on play store
 ### generate_new_icons
 ```
 fastlane generate_new_icons
