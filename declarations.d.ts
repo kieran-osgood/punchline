@@ -21,5 +21,6 @@ declare module "react-native-restart" {
   type RestartType = {
     Restart(): void
   }
-  export const Restart: RestartType
+  const Restart: RestartType
+  export default Restart
 }
