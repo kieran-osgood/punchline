@@ -9,7 +9,7 @@ export const ICON_BUTTON: ViewStyle = {
   paddingVertical: spacing[3],
 }
 export const ICON_BUTTON_LABEL: TextStyle = {
-  paddingLeft: spacing[5],
+  paddingLeft: spacing[4],
   color: ThemeManager.titleColor,
   fontWeight: "bold",
 }

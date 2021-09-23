@@ -4,7 +4,7 @@ import * as React from "react"
 import { ViewStyle } from "react-native"
 import { Text, View } from "react-native-ui-lib"
 
-const scale = 0.55
+const scale = 0.48
 export interface RatingsProps {
   /**
    * An optional style override useful for padding & margin.
@@ -23,7 +23,7 @@ export const Ratings = observer(function Ratings(props: RatingsProps) {
   return (
     <View {...{ style }} row>
       <Rating rating={likes}>
-        <LaughingEmoji {...{ scale }} />
+        <LaughingEmoji scale={0.65} />
       </Rating>
       <Rating rating={dislikes}>
         <CryingEmoji {...{ scale }} />

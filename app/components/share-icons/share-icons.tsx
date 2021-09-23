@@ -1,11 +1,12 @@
 import * as Sentry from "@sentry/react-native"
+import { ErrorReportIcon } from "assets/images/error-report"
 import { Share as ShareIcon } from "images"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { StyleProp, ViewStyle } from "react-native"
 import { API_URL } from "react-native-dotenv"
 import Share from "react-native-share"
-import { TouchableOpacity, View } from "react-native-ui-lib"
+import { Button, TouchableOpacity, View } from "react-native-ui-lib"
 export interface ShareIconsProps {
   /**
    * An optional style override useful for padding & margin.
@@ -28,6 +29,15 @@ export const ShareIcons = observer(function ShareIcons(props: ShareIconsProps) {
       <Link {...{ jokeId }} type="twitter">
         {/* <Twitter /> */}
       </Link>
+      <Button
+        round
+        backgroundColor="transparent"
+        onPress={() => {
+          // Open a modal to take the feedbacks!
+        }}
+        activeOpacity={0.7}
+        iconSource={() => <ErrorReportIcon height={28} width={28} />}
+      />
       <Link {...{ jokeId }}>
         <ShareIcon scale={1.1} />
       </Link>
