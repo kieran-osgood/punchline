@@ -44,7 +44,7 @@ export const SettingsStack = observer(function SettingsNavigator() {
     <Stack.Navigator
       initialRouteName="Main"
       screenOptions={{
-        header: ({ navigation }) => <Header {...{ navigation }} left="back" />,
+        header: (props) => <Header {...props} left="back" />,
         headerMode: "screen",
       }}
     >

@@ -73,16 +73,14 @@ export const MainNavigator = observer(function MainNavigator() {
             name="JokeScreen"
             component={withRateApp(JokeScreen)}
             options={{
-              header: ({ navigation }) => (
-                <Header {...{ navigation }} left="account" right="settings" />
-              ),
+              header: (props) => <Header {...props} left="account" right="settings" />,
             }}
           />
           <Stack.Screen
             name="UserProfileTabs"
             component={UserProfileTabs}
             options={{
-              header: ({ navigation }) => <Header {...{ navigation }} left="back" />,
+              header: (props) => <Header {...props} left="back" />,
               gestureDirection: "horizontal-inverted",
               cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
             }}
