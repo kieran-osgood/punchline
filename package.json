@@ -356,7 +356,10 @@
                 "View",
                 "Text",
                 "Image",
-                "Button"
+                "Button",
+                "Switch",
+                "TextInput",
+                "Modal"
               ],
               "message": "Prefer react-native-ui-lib imports instead"
             }
