@@ -3,7 +3,6 @@ import { useRoute } from "@react-navigation/native"
 import Swipeable from "app/components/swipeable/swipeable"
 import { JokeModelType, RatingValue, useQuery } from "app/graphql"
 import { NavigationProps } from "app/navigators/main-navigator"
-import { ErrorReportIcon } from "assets/images/error-report"
 import Skip from "assets/images/skip"
 import { AdBanner, BookmarkButton, Ratings, ShareIcons, SwipeHandler } from "components"
 import { CryingEmoji, LaughingEmoji } from "images"
@@ -157,25 +156,22 @@ export const Controls = (props: ButtonsProps) => {
       />
 
       <View style={SECONDARY_ACTION_BUTTONS}>
-        <View row marginB-s2>
-          <View marginR-s3>
-            <Button
-              style={ACTION_BUTTON}
-              round
-              onPress={handleSkipPress}
-              activeOpacity={0.7}
-              iconSource={() => <Skip />}
-            />
-          </View>
-          <Button
-            style={ACTION_BUTTON}
-            round
-            onPress={handleBookmarkPress}
-            activeOpacity={0.7}
-            iconSource={() => <BookmarkButton {...{ bookmarked }} size={24} />}
-          />
-        </View>
         <Button
+          style={ACTION_BUTTON}
+          round
+          onPress={handleSkipPress}
+          activeOpacity={0.7}
+          iconSource={() => <Skip />}
+          marginB-s2
+        />
+        <Button
+          style={ACTION_BUTTON}
+          round
+          onPress={handleBookmarkPress}
+          activeOpacity={0.7}
+          iconSource={() => <BookmarkButton {...{ bookmarked }} size={24} />}
+        />
+        {/* <Button
           style={ACTION_BUTTON}
           round
           onPress={() => {
@@ -183,7 +179,7 @@ export const Controls = (props: ButtonsProps) => {
           }}
           activeOpacity={0.7}
           iconSource={() => <ErrorReportIcon />}
-        />
+        /> */}
       </View>
 
       <Button

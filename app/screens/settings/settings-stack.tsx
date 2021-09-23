@@ -8,8 +8,7 @@
 import { RouteProp } from "@react-navigation/native"
 import { createStackNavigator, StackNavigationProp } from "@react-navigation/stack"
 import { BugReportScreen } from "app/screens"
-import CategorySettingScreen from "app/screens/settings/screens/category-setting"
-import JokeLengthScreen from "app/screens/settings/screens/joke-length-setting"
+import JokePreferencesScreen from "app/screens/settings/screens/joke-preferences"
 import { MainSettingsScreen } from "app/screens/settings/screens/main-settings"
 import { Header } from "components"
 import { observer } from "mobx-react-lite"
@@ -29,8 +28,7 @@ import React from "react"
  */
 export type SettingsRouteParamList = {
   Main: undefined
-  Category: undefined
-  JokeLength: undefined
+  JokePreferences: undefined
   BugReport: undefined
 }
 
@@ -51,9 +49,20 @@ export const SettingsStack = observer(function SettingsNavigator() {
       }}
     >
       <Stack.Screen name="Main" component={MainSettingsScreen} />
-      <Stack.Screen name="Category" component={CategorySettingScreen} />
-      <Stack.Screen name="JokeLength" component={JokeLengthScreen} />
-      <Stack.Screen name="BugReport" component={BugReportScreen} />
+      <Stack.Screen
+        name="JokePreferences"
+        component={JokePreferencesScreen}
+        options={{
+          headerTitle: "Joke Preferences",
+        }}
+      />
+      <Stack.Screen
+        name="BugReport"
+        component={BugReportScreen}
+        options={{
+          headerTitle: "Bug Report",
+        }}
+      />
     </Stack.Navigator>
   )
 })

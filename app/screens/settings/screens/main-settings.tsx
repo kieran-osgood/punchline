@@ -41,12 +41,8 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
       <StatusBar barStyle="dark-content" />
 
       <Section title="App Settings">
-        <Divider row arrow onPress={() => navigation.navigate("JokeLength")}>
-          <Text text90R>Joke Length</Text>
-        </Divider>
-
-        <Divider row arrow onPress={() => navigation.navigate("Category")}>
-          <Text text90R>Blocked Categories</Text>
+        <Divider row arrow onPress={() => navigation.navigate("JokePreferences")}>
+          <Text text90R>Joke Preferences</Text>
         </Divider>
 
         <Divider row>
@@ -56,9 +52,16 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
             value={settings.profanityFilter}
           />
         </Divider>
+        <Divider row>
+          <Text text90R>Notifications</Text>
+          <Switch
+            onValueChange={() => settings.setNotification("push", !settings.notifications.push)}
+            value={settings.notifications.push}
+          />
+        </Divider>
       </Section>
 
-      <Section title="Notifications">
+      {/* <Section title="Notifications">
         <Divider row>
           <Text text90R>Push Notifications</Text>
           <Switch
@@ -82,11 +85,32 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
             value={settings.notifications.team}
           />
         </Divider>
-      </Section>
+      </Section> */}
 
-      <Section title="Account">
+      <Section title="More Information">
         <Divider>
-          <LoginConversion />
+          <Link url={`/terms-of-service.html`}>Terms of Service</Link>
+        </Divider>
+        <Divider>
+          <Link url={`/privacy-policy.html`}>Privacy Policy</Link>
+        </Divider>
+        <Divider>
+          <Link
+            external
+            url={
+              Platform.OS === "ios"
+                ? "itms-apps://itunes.apple.com/us/app/imdb-movies-tv/id1567628239"
+                : "https://play.google.com/store/apps/details?id=com.ko.punchline&gl=GB"
+            }
+          >
+            Rate Us
+          </Link>
+        </Divider>
+        <Divider>
+          <Link url={Platform.OS === "ios" ? `app-store` : "play-store"} external>
+            {/* Not ideal - we have the in-app share pop up but thats not reliable so just link to store */}
+            Share Punchline
+          </Link>
         </Divider>
         <Divider>
           <Link
@@ -106,49 +130,21 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
             Clear Cache Data
           </Link>
         </Divider>
+        {/* <Divider>
+          <Link url={`/data-policy.html`}>Data Policy</Link>
+        </Divider> */}
         <Divider>
           <BugReport />
         </Divider>
       </Section>
 
-      <Section title="More Information">
-        <Divider>
-          <Link url={`/privacy-policy.html`}>Privacy Policy</Link>
-        </Divider>
-
-        <Divider>
-          <Link url={`${WEB_URL}/terms-of-service.html`}>Terms of Service</Link>
-        </Divider>
-
-        <Divider>
-          <Link url={`${WEB_URL}/data-policy.html`}>Data Policy</Link>
-        </Divider>
-      </Section>
-
-      <Section marginT-s5 marginH-s5>
-        <Link
-          url={
-            Platform.OS === "ios"
-              ? ""
-              : "https://play.google.com/store/apps/details?id=com.ko.punchline&gl=GB"
-          }
-        >
-          Rate Us
-        </Link>
-      </Section>
-
-      <Section marginT-s5 marginH-s5>
-        {/*
-          Not ideal - we have the in-app share pop up
-          but thats not reliable so just lik to store
-         */}
-        <Link url={Platform.OS === "ios" ? `app-store` : "play-store"} external>
-          Share Punchline
-        </Link>
-      </Section>
-
-      <Section marginT-s5 marginH-s5>
-        <LogoutButton />
+      <Section title="Account">
+        <View marginT-s5>
+          <Divider>
+            <LoginConversion />
+          </Divider>
+          <LogoutButton />
+        </View>
       </Section>
 
       <AppVersion />
@@ -162,7 +158,7 @@ type SectionProps = {
   title?: string
   style?: ViewStyle | ViewStyle[]
 } & ViewProps
-const Section = ({ children, title, style, ...rest }: SectionProps) => {
+export const Section = ({ children, title, style, ...rest }: SectionProps) => {
   return (
     <View {...{ style }} {...rest}>
       {!!title && <Title>{title}</Title>}
@@ -270,7 +266,17 @@ const SECTION: ViewStyle = {
 
 const LogoutButton = () => {
   const { resetStore } = useStores()
-  const onPress = () => resetStore()
+  const onPress = () => {
+    if (auth().currentUser?.isAnonymous) {
+      Alert.alert(
+        "Confirm Logout",
+        "Before signing out, link your guest account with a social provider?",
+        [{ text: "Cancel" }, { text: "Logout", onPress: resetStore }],
+      )
+    } else {
+      resetStore()
+    }
+  }
 
   return (
     <Button
@@ -310,7 +316,7 @@ const LoginConversion = () => {
   }
 
   return (
-    <View center marginV-s3>
+    <View>
       <View>
         <Text text60BO>Link Social Account</Text>
         <Text marginT-s2>
@@ -318,10 +324,12 @@ const LoginConversion = () => {
           preferences.
         </Text>
       </View>
-      <View paddingV-s6 spread width="80%">
-        <GoogleSignInButton isAnonymousConversion {...{ onSuccess, onError }} />
-        <FacebookSignInButton isAnonymousConversion {...{ onSuccess, onError }} />
-        <AppleSignInButton isAnonymousConversion {...{ onSuccess, onError }} />
+      <View paddingV-s6 flex-1 width="100%" center>
+        <View width="70%">
+          <GoogleSignInButton isAnonymousConversion {...{ onSuccess, onError }} />
+          <FacebookSignInButton isAnonymousConversion {...{ onSuccess, onError }} />
+          <AppleSignInButton isAnonymousConversion {...{ onSuccess, onError }} />
+        </View>
       </View>
     </View>
   )

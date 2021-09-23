@@ -65,16 +65,11 @@ export const CategoryMapping = observer(function CategoryMapping(props: Category
   const { style, categories, categoriesOnly = false } = props
 
   return (
-    <View style={[CONTAINER, style]} center>
+    <View style={[CONTAINER, style]}>
       {categoriesOnly === false && (
-        <>
-          <Text text60 bold center>
-            {"Category Filter"}
-          </Text>
-          <Text center marginV-s2 highlightString="don't" highlightStyle={HIGHLIGHT_STYLE}>
-            {"Select categories you don't wish to see"}
-          </Text>
-        </>
+        <Text marginV-s2 highlightString="don't" highlightStyle={HIGHLIGHT_STYLE}>
+          {"Select categories you don't wish to see"}
+        </Text>
       )}
 
       <View style={CATEGORIES}>

@@ -30,11 +30,13 @@ export const JokeLengthSetting = observer(function JokeLengthSetting(
   const { settings } = useStores()
 
   return (
-    <View {...{ style }} center paddingV-s9 paddingH-s5>
-      <Text text60 bold marginB-s7>
-        {"Joke Length"}
-      </Text>
-      <View row>
+    <View {...{ style }} paddingV-s4>
+      <View marginB-s4>
+        <Text>
+          Filter out the story jokes and keep it to one liners, or mix it up with a bit of both!
+        </Text>
+      </View>
+      <View row paddingH-s5>
         <JokePreview selected={settings.jokeLengthMax} />
         <VerticalCheckboxes
           data={settings.checkboxMap}
