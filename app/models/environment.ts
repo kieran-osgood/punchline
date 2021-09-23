@@ -24,7 +24,7 @@ export class Environment {
 
   async setup() {
     // allow each service to setup
-    this.gqlHttpClient = createHttpClient(API_URL)
+    this.gqlHttpClient = createHttpClient(`${API_URL}/graphql`)
 
     if (__DEV__) {
       await this.reactotron.setup()
