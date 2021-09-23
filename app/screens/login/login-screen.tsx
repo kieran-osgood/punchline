@@ -1,5 +1,6 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import * as Sentry from "@sentry/react-native"
+import { useQuery } from "app/graphql"
 import MeshBackground from "assets/images/mesh-background"
 import {
   AppleSignInButton,
@@ -24,8 +25,9 @@ export type SuccessCallback = (provider: string, user: FirebaseAuthTypes.User) =
 export type ErrorCallback = (error: Error) => void
 
 export const LoginScreen = observer(function LoginScreen() {
+  // pre-fetch for the onboarding screens
+  useQuery((store) => store.queryCategories({}, (c) => c.nodes((nodes) => nodes.id.image.name)))
   const [isLoading, setIsLoading] = React.useState(false)
-
   React.useEffect(() => {
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
       setIsLoading(false)
@@ -46,9 +48,7 @@ export const LoginScreen = observer(function LoginScreen() {
           <AppLogo width={widthPercentageToDP("95%")} height={widthPercentageToDP("95%") / 5} />
         </View>
         <View flex-2 center width="100%">
-          <Text color={ThemeManager.titleColor} text60BO center>
-            {"Create an account to save bookmarks & preferences"}
-          </Text>
+          <Text text70>{"Create an account to save\n bookmarks & preferences"}</Text>
 
           <View spread marginV-s4>
             <GoogleSignInButton {...{ setIsLoading, onError }} />

@@ -92,7 +92,8 @@ export const AppleSignInButton = observer(function AppleSigninButton(
           onPress={handlePress}
           enableShadow
           label="Sign in with Apple"
-          labelStyle={ICON_BUTTON_LABEL}
+          // eslint-disable-next-line react-native/no-inline-styles
+          labelStyle={[ICON_BUTTON_LABEL, { paddingLeft: 20 }]}
         />
       )}
     </>
