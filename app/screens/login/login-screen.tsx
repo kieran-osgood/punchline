@@ -1,6 +1,5 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import * as Sentry from "@sentry/react-native"
-import { useQuery } from "app/graphql"
 import MeshBackground from "assets/images/mesh-background"
 import {
   AppleSignInButton,
@@ -26,7 +25,7 @@ export type ErrorCallback = (error: Error) => void
 
 export const LoginScreen = observer(function LoginScreen() {
   // pre-fetch for the onboarding screens
-  useQuery((store) => store.queryCategories({}, (c) => c.nodes((nodes) => nodes.id.image.name)))
+  // useQuery((store) => store.queryCategories({}, (c) => c.nodes((nodes) => nodes.id.image.name)))
   const [isLoading, setIsLoading] = React.useState(false)
   React.useEffect(() => {
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {

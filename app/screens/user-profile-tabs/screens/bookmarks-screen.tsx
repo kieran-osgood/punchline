@@ -1,7 +1,5 @@
 import { SortEnumType, useQuery } from "app/graphql"
-import { UserJokeList } from "app/screens/user-profile-tabs/user-joke-list"
 import { observer } from "mobx-react-lite"
-import React from "react"
 
 export const BookmarksScreen = observer(function BookmarksScreen() {
   const query = useQuery((store) =>
@@ -16,5 +14,6 @@ export const BookmarksScreen = observer(function BookmarksScreen() {
 
   const type = "BOOKMARK"
 
-  return <UserJokeList {...{ type, query }} />
+  return null
+  // return <UserJokeList {...{ type, query }} />
 })

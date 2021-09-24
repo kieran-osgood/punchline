@@ -1,17 +1,11 @@
 import { useNavigation } from "@react-navigation/native"
-import {
-  ApiRootStoreType,
-  useQuery,
-  UserJokeHistoryByUserIdConnectionModelType,
-  UserJokeHistoryModelType,
-} from "app/graphql"
+import { useQuery, UserJokeHistoryModelType } from "app/graphql"
 import { useStores } from "app/models"
 import { ACTION_BUTTON } from "app/screens"
 import EmptyStateImage from "assets/images/empty-state-image"
 import { TrashCan } from "assets/images/trash-can"
 import { BookmarkButton, EmptyState, Link, Screen } from "components"
 import { observer } from "mobx-react-lite"
-import { UseQueryHookResult } from "mst-gql"
 import React from "react"
 import {
   Alert,
@@ -37,17 +31,12 @@ import { color, spacing } from "theme"
 
 export type UserJokeListProps = {
   type: "HISTORY" | "BOOKMARK"
-  query: UseQueryHookResult<
-    ApiRootStoreType,
-    {
-      userJokeHistoryByUserId: UserJokeHistoryByUserIdConnectionModelType
-    }
-  >
+  fetchMore: () => void
+  refetch: () => void
 }
 
 export const UserJokeList = observer(function JokeBookmarkHistoryList(props: UserJokeListProps) {
-  const { type } = props
-  const { query } = props.query
+  const { type, fetchMore, refetch } = props
   const navigation = useNavigation()
   const [refreshing, setRefreshing] = React.useState(false)
   const store = useStores()
@@ -59,7 +48,7 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true)
-    await query?.refetch()
+    refetch()
     setRefreshing(false)
   }, [])
 
@@ -75,7 +64,7 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
             <UserJoke key={bookmark.id} {...{ bookmark, type }} />
           )}
           onEndReachedThreshold={0.75}
-          // onEndReached={query.}
+          onEndReached={fetchMore}
         />
       ) : (
         <EmptyState

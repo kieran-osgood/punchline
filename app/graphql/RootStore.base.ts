@@ -7,12 +7,12 @@ import { MSTGQLStore, configureStoreMixin, QueryOptions, withTypedRefs } from "m
 
 import { JokeModel, JokeModelType } from "./JokeModel"
 import { jokeModelPrimitives, JokeModelSelector } from "./JokeModel.base"
+import { UserModel, UserModelType } from "./UserModel"
+import { userModelPrimitives, UserModelSelector } from "./UserModel.base"
 import { CategoryModel, CategoryModelType } from "./CategoryModel"
 import { categoryModelPrimitives, CategoryModelSelector } from "./CategoryModel.base"
 import { UserJokeHistoryModel, UserJokeHistoryModelType } from "./UserJokeHistoryModel"
 import { userJokeHistoryModelPrimitives, UserJokeHistoryModelSelector } from "./UserJokeHistoryModel.base"
-import { UserModel, UserModelType } from "./UserModel"
-import { userModelPrimitives, UserModelSelector } from "./UserModel.base"
 import { JokesConnectionModel, JokesConnectionModelType } from "./JokesConnectionModel"
 import { jokesConnectionModelPrimitives, JokesConnectionModelSelector } from "./JokesConnectionModel.base"
 import { CategoriesConnectionModel, CategoriesConnectionModelType } from "./CategoriesConnectionModel"
@@ -258,7 +258,7 @@ mutateCompleteOnboarding="mutateCompleteOnboarding"
 */
 export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
   .named("RootStore")
-  .extend(configureStoreMixin([['Joke', () => JokeModel], ['Category', () => CategoryModel], ['UserJokeHistory', () => UserJokeHistoryModel], ['User', () => UserModel], ['JokesConnection', () => JokesConnectionModel], ['CategoriesConnection', () => CategoriesConnectionModel], ['UserCategoriesConnection', () => UserCategoriesConnectionModel], ['UserJokeHistoryByUserIdConnection', () => UserJokeHistoryByUserIdConnectionModel], ['PageInfo', () => PageInfoModel], ['JokesEdge', () => JokesEdgeModel], ['CategoriesEdge', () => CategoriesEdgeModel], ['UserCategoriesEdge', () => UserCategoriesEdgeModel], ['UserJokeHistoryByUserIdEdge', () => UserJokeHistoryByUserIdEdgeModel], ['UserPayload', () => UserPayloadModel], ['MutateJokePayload', () => MutateJokePayloadModel], ['MutateUserJokeHistoryPayload', () => MutateUserJokeHistoryPayloadModel], ['UserError', () => UserErrorModel]], ['Joke', 'User', 'Category', 'UserJokeHistory'], "js"))
+  .extend(configureStoreMixin([['Joke', () => JokeModel], ['User', () => UserModel], ['Category', () => CategoryModel], ['UserJokeHistory', () => UserJokeHistoryModel], ['JokesConnection', () => JokesConnectionModel], ['CategoriesConnection', () => CategoriesConnectionModel], ['UserCategoriesConnection', () => UserCategoriesConnectionModel], ['UserJokeHistoryByUserIdConnection', () => UserJokeHistoryByUserIdConnectionModel], ['PageInfo', () => PageInfoModel], ['JokesEdge', () => JokesEdgeModel], ['CategoriesEdge', () => CategoriesEdgeModel], ['UserCategoriesEdge', () => UserCategoriesEdgeModel], ['UserJokeHistoryByUserIdEdge', () => UserJokeHistoryByUserIdEdgeModel], ['UserPayload', () => UserPayloadModel], ['MutateJokePayload', () => MutateJokePayloadModel], ['MutateUserJokeHistoryPayload', () => MutateUserJokeHistoryPayloadModel], ['UserError', () => UserErrorModel]], ['Joke', 'User', 'Category', 'UserJokeHistory'], "js"))
   .props({
     jokes: types.optional(types.map(types.late((): any => JokeModel)), {}),
     users: types.optional(types.map(types.late((): any => UserModel)), {}),

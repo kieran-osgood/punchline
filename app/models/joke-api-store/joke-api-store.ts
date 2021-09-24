@@ -1,4 +1,5 @@
-import { ApiRootStoreType, JokeModel } from "app/graphql"
+import { ApiRootStoreType } from "app/graphql"
+import { JokeModel } from "app/graphql/JokeModel"
 import { RootStore, SettingsType } from "app/models"
 import { getRoot, Instance, SnapshotOut, types } from "mobx-state-tree"
 
@@ -31,7 +32,7 @@ export const JokeApiStoreModel = types
       return [...self.api.jokes.values()]
         .filter((x) => !x.viewed)
         .filter((x) => !(self.settings.profanityFilter && x.explicitContent))
-        .filter((x) => x.categories.some((y) => !y.isFiltered && self.api.categories.has(y.id)))
+      // .filter((x) => x.categories.some((y) => !y.isFiltered && self.api.categories.has(y.id)))
     },
     get topOfDeckJoke() {
       if (this.nonViewedJokes.length <= 10) {
@@ -52,7 +53,7 @@ export const JokeApiStoreModel = types
         )
       }
       if (this.nonViewedJokes.length === 0) {
-        return JokeModel.create({ id: "-1" })
+        return JokeModel.create({ id: "unc9872q34hf8q2nbq24897" })
       }
       if (self.deepLinkJokeId) {
         const id = self.deepLinkJokeId

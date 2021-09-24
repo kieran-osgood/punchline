@@ -1,8 +1,8 @@
-import { FirebaseAuthTypes } from "@react-native-firebase/auth"
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import * as Sentry from "@sentry/react-native"
 import { categoryModelPrimitives, nodes, SortEnumType } from "app/graphql"
 import { RootStore } from "app/models"
-import { cast, flow, getRoot, Instance, SnapshotOut, types } from "mobx-state-tree"
+import { cast, getRoot, Instance, SnapshotOut, types } from "mobx-state-tree"
 import R from "ramda"
 import Toast from "react-native-toast-message"
 import { withEnvironment } from "../extensions/with-environment"
@@ -38,64 +38,81 @@ export const UserStoreModel = types
       }
       self.user = cast(R.pick(UserDataKeys, user))
     },
+    setOnboarding(value: boolean) {
+      self.onboardingComplete = value
+    },
   }))
   .actions((self) => ({
-    login: flow(function* (user: FirebaseAuthTypes.User | null) {
-      self.updateUser(user)
-      if (user === null) return
+    async login(user: FirebaseAuthTypes.User | null) {
+      if (user === null) {
+        self.updateUser(null)
+        return
+      }
 
-      const token = yield user.getIdToken()
-      self.root.apiStore.api.setBearerToken(token)
+      try {
+        const token = await user.getIdToken()
+        self.root.apiStore.api.setBearerToken(token)
 
-      // TODO: add error handling
-      // Creates a user on the backend and updates users LastLogin date if already exists
-      const loginPromise = self.root.apiStore.api.mutateLogin({
-        input: {
-          firebaseUid: user.uid,
-          username: user.displayName ?? "Guest",
-        },
-      }).promise
-
-      loginPromise
-        .then(() => {
-          self.root.apiStore.api.queryCategories(
-            {
-              order: [{ name: SortEnumType.ASC }],
+        // TODO: add error handling
+        // Creates a user on the backend and updates users LastLogin date if already exists
+        const loginResponse = await self.root.apiStore.api.mutateLogin(
+          {
+            input: {
+              firebaseUid: user.uid,
+              username: user.displayName ?? "Guest",
             },
-            nodes(categoryModelPrimitives),
-          )
+          },
+          (l) =>
+            l.user((u) => u.id.onboardingComplete.firebaseUid.categories((c) => c.id.image.name)),
+        ).promise
 
-          self.root.apiStore.api.queryJokes(
-            {
-              input: {
-                blockedCategoryIds: self.root.settings.blockedCategoryIds,
-                jokeLength: self.root.settings.jokeLengthMaxEnum,
-                deepLinkedJokeId: self.root.apiStore.api.deepLinkJokeId,
-                profanityFilter: self.root.settings.profanityFilter,
-              },
-              first: 5,
+        if (loginResponse.login.user.onboardingComplete) self.setOnboarding(true)
+
+        self.updateUser(user)
+
+        self.root.apiStore.api.queryCategories(
+          {
+            order: [{ name: SortEnumType.ASC }],
+          },
+          nodes(categoryModelPrimitives),
+        )
+
+        self.root.apiStore.api.queryJokes(
+          {
+            input: {
+              blockedCategoryIds: self.root.settings.blockedCategoryIds,
+              jokeLength: self.root.settings.jokeLengthMaxEnum,
+              deepLinkedJokeId: self.root.apiStore.jokeApi.deepLinkJokeId,
+              profanityFilter: self.root.settings.profanityFilter,
             },
-            (j) =>
-              j.nodes((n) =>
-                n.id.body.title.negativeRating.positiveRating.categories((c) => c.id.image.name),
-              ),
-            { fetchPolicy: "no-cache" },
-          )
-          self.root.apiStore.api.queryUserCategories({}, (c) => c.nodes((n) => n.id.image.name))
+            first: 5,
+          },
+          (j) =>
+            j.nodes((n) =>
+              n.id.body.title.negativeRating.positiveRating.categories((c) => c.id.image.name),
+            ),
+          { fetchPolicy: "no-cache" },
+        )
+      } catch (err) {
+        const { message, name, stack } = err as Error
+        console.log("message: ", message)
+        console.log("name: ", name)
+        console.log("stack: ", stack)
+
+        self.updateUser(null)
+        auth().signOut()
+        Sentry.captureException(err)
+        // Add a modal pop up
+        // self.root.resetStore()
+        Toast.show({
+          type: "error",
+          text1: "Sign-in Error",
+          text2:
+            "We're having trouble signing you in right now. Please try again, or contact support if the issue persists.",
+          position: "bottom",
         })
-        .catch((err) => {
-          Sentry.captureException(err)
-          // Add a modal pop up
-          self.root.resetStore()
-          Toast.show({
-            type: "error",
-            text1: "Sign-in Error",
-            text2:
-              "We're having trouble signing you in right now. Please try again, or contact support if the issue persists.",
-            position: "bottom",
-          })
-        })
-    }),
+      }
+    },
     completeOnboarding: () => {
       if (self.user?.uid) {
         self.root.apiStore.api.mutateCompleteOnboarding({}, undefined, () => {

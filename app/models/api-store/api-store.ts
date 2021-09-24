@@ -1,6 +1,7 @@
 import { createApiRootStoreDefaultModel } from "app/graphql"
-import { createJokeApiStoreDefaultModel } from "app/models/joke-api-store/joke-api-store"
-import { Instance, SnapshotOut, types } from "mobx-state-tree"
+import { types } from "mobx-state-tree"
+import { createJokeApiStoreDefaultModel } from "../joke-api-store/joke-api-store"
+import { createUserJokeHistoryApiStoreDefaultModel } from "../user-joke-history-api-store/user-joke-history-api-store"
 
 /**
  * Model description here for TypeScript hints.
@@ -10,6 +11,7 @@ export const ApiStoreModel = types
   .props({
     api: createApiRootStoreDefaultModel(),
     jokeApi: createJokeApiStoreDefaultModel(),
+    userJokeHistoryApi: createUserJokeHistoryApiStoreDefaultModel(),
   })
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -27,3 +29,4 @@ export interface ApiStore extends ApiStoreType {}
 type ApiStoreSnapshotType = SnapshotOut<typeof ApiStoreModel>
 export interface ApiStoreSnapshot extends ApiStoreSnapshotType {}
 export const createApiStoreDefaultModel = () => types.optional(ApiStoreModel, {})
+export const PAGINATION_START = "MA=="

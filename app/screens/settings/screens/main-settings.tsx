@@ -139,10 +139,12 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
       </Section>
 
       <Section title="Account">
-        <View marginT-s5>
-          <Divider>
-            <LoginConversion />
-          </Divider>
+        <View>
+          {auth().currentUser?.isAnonymous && (
+            <Divider>
+              <LoginConversion />
+            </Divider>
+          )}
           <LogoutButton />
         </View>
       </Section>
@@ -316,7 +318,7 @@ const LoginConversion = () => {
   }
 
   return (
-    <View>
+    <View marginT-s5>
       <View>
         <Text text60BO>Link Social Account</Text>
         <Text marginT-s2>

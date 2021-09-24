@@ -3,6 +3,7 @@ import { destroy, getEnv, getRoot, IAnyStateTreeNode, Instance, types } from "mo
 import { RootStoreBase } from "./RootStore.base"
 
 export interface ApiRootStoreType extends Instance<typeof ApiRootStore.Type> {}
+export interface RootStoreType extends Instance<typeof ApiRootStore.Type> {}
 
 export const ApiRootStore = RootStoreBase.props({
   accessToken: types.maybeNull(types.string),
@@ -25,8 +26,7 @@ export const ApiRootStore = RootStoreBase.props({
     },
   }))
 
-export const nodes = (val: any, ...rest: string[]) =>
-  `nodes {
+export const nodes = (val: any, ...rest: string[]) => `nodes {
     ${val}
     ${rest.join(" ")}
   } 
