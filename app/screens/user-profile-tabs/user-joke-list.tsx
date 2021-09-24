@@ -80,6 +80,7 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
           onPress={() =>
             navigation.navigate("MainNavigator", {
               screen: "JokeScreen",
+              params: {},
             })
           }
         />
