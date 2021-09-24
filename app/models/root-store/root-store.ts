@@ -1,6 +1,6 @@
 import auth from "@react-native-firebase/auth"
 import * as Sentry from "@sentry/react-native"
-import { ApiStore as ApiRootStore } from "app/graphql"
+import { ApiRootStore } from "app/graphql"
 import { AsyncStorage } from "app/utils/storage/async-storage"
 import { applySnapshot, flow, getSnapshot, Instance, SnapshotOut, types } from "mobx-state-tree"
 import { createOnboardingDefaultModel } from "../onboarding/onboarding"

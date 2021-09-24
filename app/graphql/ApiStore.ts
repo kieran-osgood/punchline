@@ -3,9 +3,9 @@ import { RootStore, SettingsType } from "app/models"
 import { destroy, getEnv, getRoot, IAnyStateTreeNode, Instance, types } from "mobx-state-tree"
 import { RootStoreBase } from "./RootStore.base"
 
-export interface ApiStoreType extends Instance<typeof ApiStore.Type> {}
+export interface ApiStoreType extends Instance<typeof ApiRootStore.Type> {}
 
-export const ApiStore = RootStoreBase.props({
+export const ApiRootStore = RootStoreBase.props({
   accessToken: types.maybeNull(types.string),
   deepLinkJokeId: types.maybe(types.string),
 })
