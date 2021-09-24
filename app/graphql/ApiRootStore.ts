@@ -80,3 +80,5 @@ export const nodes = (val: any, ...rest: string[]) =>
     ${rest.join(" ")}
   } 
   `
+
+export const createApiRootStoreDefaultModel = () => types.optional(ApiRootStore, {})
