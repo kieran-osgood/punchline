@@ -25,7 +25,7 @@ export const JokeApiStoreModel = types
     setDeepLinkJoke(deepLinkInitialJoke: string | undefined) {
       self.deepLinkJokeId = deepLinkInitialJoke
     },
-  })) // eslint-disable-line @typescript-eslint/no-unused-vars
+  }))
   .views((self) => ({
     get nonViewedJokes() {
       return [...self.api.jokes.values()]
@@ -66,7 +66,7 @@ export const JokeApiStoreModel = types
     get bookmarkedJokes() {
       return [...self.api.userJokeHistories.values()].filter((x) => x.bookmarked)
     },
-  })) // eslint-disable-line @typescript-eslint/no-unused-vars
+  }))
 
 /**
  * Un-comment the following to omit model attributes from your snapshots (and from async storage).

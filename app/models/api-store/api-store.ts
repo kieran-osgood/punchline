@@ -1,4 +1,4 @@
-import { ApiRootStore, createApiRootStoreDefaultModel } from "app/graphql"
+import { createApiRootStoreDefaultModel } from "app/graphql"
 import { createJokeApiStoreDefaultModel } from "app/models/joke-api-store/joke-api-store"
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
 
@@ -26,7 +26,4 @@ type ApiStoreType = Instance<typeof ApiStoreModel>
 export interface ApiStore extends ApiStoreType {}
 type ApiStoreSnapshotType = SnapshotOut<typeof ApiStoreModel>
 export interface ApiStoreSnapshot extends ApiStoreSnapshotType {}
-export const createApiStoreDefaultModel = () =>
-  types.optional(ApiStoreModel, {
-    api: ApiRootStore.create({}),
-  })
+export const createApiStoreDefaultModel = () => types.optional(ApiStoreModel, {})
