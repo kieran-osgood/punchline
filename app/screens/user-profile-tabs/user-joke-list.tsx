@@ -33,18 +33,19 @@ export type UserJokeListProps = {
   type: "HISTORY" | "BOOKMARK"
   fetchMore: () => void
   refetch: () => void
+  data: UserJokeHistoryModelType[]
 }
 
 export const UserJokeList = observer(function JokeBookmarkHistoryList(props: UserJokeListProps) {
-  const { type, fetchMore, refetch } = props
+  const { type, fetchMore, refetch, data } = props
   const navigation = useNavigation()
   const [refreshing, setRefreshing] = React.useState(false)
   const store = useStores()
 
-  const data =
-    type === "BOOKMARK"
-      ? store.apiStore.jokeApi.bookmarkedJokes
-      : [...store.apiStore.api.userJokeHistories.values()]
+  // const data =
+  //   type === "BOOKMARK"
+  //     ? store.apiStore.jokeApi.bookmarkedJokes
+  //     : store.apiStore.jokeApi.historyJokes
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true)
@@ -55,7 +56,7 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
   return (
     <Screen style={ROOT} preset="fixed" unsafe>
       <StatusBar barStyle="dark-content" />
-
+      {/* <Button label="Press ME" onPress={fetchMore} marginV-s5 /> */}
       {data.length > 0 ? (
         <FlatList
           refreshControl={<RefreshControl {...{ refreshing, onRefresh }} />}

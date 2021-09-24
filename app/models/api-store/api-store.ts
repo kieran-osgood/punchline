@@ -1,5 +1,5 @@
 import { createApiRootStoreDefaultModel } from "app/graphql"
-import { types } from "mobx-state-tree"
+import { Instance, SnapshotOut, types } from "mobx-state-tree"
 import { createJokeApiStoreDefaultModel } from "../joke-api-store/joke-api-store"
 import { createUserJokeHistoryApiStoreDefaultModel } from "../user-joke-history-api-store/user-joke-history-api-store"
 

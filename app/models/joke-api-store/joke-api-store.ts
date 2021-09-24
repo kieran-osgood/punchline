@@ -64,9 +64,6 @@ export const JokeApiStoreModel = types
 
       return this.nonViewedJokes[this.nonViewedJokes.length - 1]
     },
-    get bookmarkedJokes() {
-      return [...self.api.userJokeHistories.values()].filter((x) => x.bookmarked)
-    },
   }))
 
 /**

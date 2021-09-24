@@ -10,11 +10,12 @@ export const HistoryScreen = observer(function HistoryScreen() {
     apiStore: { userJokeHistoryApi },
   } = useStores()
 
-  const [query] = React.useState(userJokeHistoryApi.fetchInitialHistory)
+  const [query, setQuery] = React.useState(userJokeHistoryApi.fetchInitialHistory)
+
   React.useEffect(() => {
     let isSubscribed = true
     query.then((res) => {
-      if (isSubscribed) setPage(res.userJokeHistoryByUserId.pageInfo.endCursor)
+      if (isSubscribed) setPage(res.userJokeHistoryByUserId.pageInfo.startCursor)
     })
     return () => {
       isSubscribed = false
@@ -22,10 +23,16 @@ export const HistoryScreen = observer(function HistoryScreen() {
   }, [query, userJokeHistoryApi])
 
   const fetchMore = () => {
-    return userJokeHistoryApi.fetchMoreHistory(page)
+    setQuery(userJokeHistoryApi.fetchMoreHistory(page))
   }
 
   const type = "HISTORY"
 
-  return <UserJokeList {...{ type, fetchMore }} refetch={query.refetch} />
+  return (
+    <UserJokeList
+      {...{ type, fetchMore }}
+      data={userJokeHistoryApi.historyJokes}
+      refetch={query.refetch}
+    />
+  )
 })

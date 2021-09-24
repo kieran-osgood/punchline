@@ -16,14 +16,24 @@ export const UserJokeHistoryApiStoreModel = types
       return this.root.apiStore.api
     },
   }))
+  .views((self) => ({
+    get bookmarkedJokes() {
+      return [...self.api.userJokeHistories.values()].filter((x) => x.bookmarked)
+    },
+    get historyJokes() {
+      return [...self.api.userJokeHistories.values()]
+    },
+  }))
   .actions((self) => ({
-    fetchHistory(after: string) {
+    fetchHistory(after: string | undefined) {
       return self.api.queryUserJokeHistoryByUserId(
-        { after, order: [{ createdAt: SortEnumType.DESC }] },
+        { order: [{ createdAt: SortEnumType.DESC }], first: 8, after },
         (q) =>
           q
             .pageInfo((p) => p.hasNextPage.hasPreviousPage.startCursor.endCursor)
-            .nodes((n) => n.id.rating.bookmarked.joke((j) => j.id.title.body)),
+            .edges((e) =>
+              e.cursor.node((n) => n.id.rating.bookmarked.joke((j) => j.id.title.body)),
+            ),
       )
     },
     fetchBookmarks(after: string) {
@@ -43,7 +53,7 @@ export const UserJokeHistoryApiStoreModel = types
   }))
   .actions((self) => ({
     fetchInitialHistory() {
-      return self.fetchHistory(PAGINATION_START)
+      return self.fetchHistory(undefined)
     },
     fetchMoreHistory(after: string) {
       return self.fetchHistory(after)
