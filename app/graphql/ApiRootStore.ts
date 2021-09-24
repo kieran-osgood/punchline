@@ -34,10 +34,13 @@ export const ApiRootStore = RootStoreBase.props({
   }))
   .views((self) => ({
     get nonViewedJokes() {
-      return [...self.jokes.values()]
-        .filter((x) => !x.viewed)
-        .filter((x) => !(self.settings.profanityFilter && x.explicitContent))
-        .filter((x) => x.categories.some((y) => !y.isFiltered && self.categories.has(y.id)))
+      return (
+        [...self.jokes.values()]
+          .filter((x) => !x.viewed)
+          .filter((x) => !(self.settings.profanityFilter && x.explicitContent))
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          .filter((x) => x.categories?.some((y) => !y.isFiltered && self.categories.has(y.id)))
+      )
     },
     get topOfDeckJoke() {
       if (this.nonViewedJokes.length <= 10) {

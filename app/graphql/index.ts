@@ -2,7 +2,7 @@
 /* eslint-disable */
 /* tslint:disable */
 
-export * from "./ApiStore"
+export * from "./ApiRootStore"
 export * from "./ApplyPolicyEnum"
 export * from "./CategoriesConnectionModel"
 export * from "./CategoriesEdgeModel"
