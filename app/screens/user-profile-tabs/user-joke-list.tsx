@@ -72,6 +72,8 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
           renderItem={({ item: bookmark }) => (
             <UserJoke key={bookmark.id} {...{ bookmark, type }} />
           )}
+          onEndReachedThreshold={0.75}
+          // onEndReached={query.}
         />
       ) : (
         <EmptyState
