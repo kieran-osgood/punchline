@@ -45,11 +45,11 @@ export const UserStoreModel = types
       if (user === null) return
 
       const token = yield user.getIdToken()
-      self.root.api.setBearerToken(token)
+      self.root.apiStore.setBearerToken(token)
 
       // TODO: add error handling
       // Creates a user on the backend and updates users LastLogin date if already exists
-      const loginPromise = self.root.api.mutateLogin({
+      const loginPromise = self.root.apiStore.mutateLogin({
         input: {
           firebaseUid: user.uid,
           username: user.displayName ?? "Guest",
@@ -58,19 +58,19 @@ export const UserStoreModel = types
 
       loginPromise
         .then(() => {
-          self.root.api.queryCategories(
+          self.root.apiStore.queryCategories(
             {
               order: [{ name: SortEnumType.ASC }],
             },
             nodes(categoryModelPrimitives),
           )
 
-          self.root.api.queryJokes(
+          self.root.apiStore.queryJokes(
             {
               input: {
                 blockedCategoryIds: self.root.settings.blockedCategoryIds,
                 jokeLength: self.root.settings.jokeLengthMaxEnum,
-                deepLinkedJokeId: self.root.api.deepLinkJokeId,
+                deepLinkedJokeId: self.root.apiStore.deepLinkJokeId,
                 profanityFilter: self.root.settings.profanityFilter,
               },
               first: 5,
@@ -81,7 +81,7 @@ export const UserStoreModel = types
               ),
             { fetchPolicy: "no-cache" },
           )
-          self.root.api.queryUserCategories({}, (c) => c.nodes((n) => n.id.image.name))
+          self.root.apiStore.queryUserCategories({}, (c) => c.nodes((n) => n.id.image.name))
         })
         .catch((err) => {
           Sentry.captureException(err)
@@ -98,7 +98,7 @@ export const UserStoreModel = types
     }),
     completeOnboarding: () => {
       if (self.user?.uid) {
-        self.root.api.mutateCompleteOnboarding({}, undefined, () => {
+        self.root.apiStore.mutateCompleteOnboarding({}, undefined, () => {
           self.onboardingComplete = true
         })
       }

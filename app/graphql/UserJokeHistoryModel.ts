@@ -19,7 +19,7 @@ export const UserJokeHistoryModel = UserJokeHistoryModelBase.views((self) => ({
     return getRoot(self)
   },
   get api(): ApiStoreType {
-    return this.root.api
+    return this.root.apiStore
   },
 })).actions((self) => ({
   // This is an auto-generated example action.

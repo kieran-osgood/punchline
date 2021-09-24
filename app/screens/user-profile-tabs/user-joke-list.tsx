@@ -53,7 +53,9 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
   const store = useStores()
 
   const data =
-    type === "BOOKMARK" ? store.api.bookmarkedJokes : [...store.api.userJokeHistories.values()]
+    type === "BOOKMARK"
+      ? store.apiStore.bookmarkedJokes
+      : [...store.apiStore.userJokeHistories.values()]
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true)

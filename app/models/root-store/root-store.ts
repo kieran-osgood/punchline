@@ -14,7 +14,7 @@ export const RootStoreModelBase = types.model("RootStore").props({
   userStore: createUserStoreDefaultModel(),
   settings: createSettingsDefaultModel(),
   onboarding: createOnboardingDefaultModel(),
-  api: types.optional(ApiRootStore, {}),
+  apiStore: types.optional(ApiRootStore, {}),
 })
 
 export const RootStoreModel = RootStoreModelBase.actions((self) => {
