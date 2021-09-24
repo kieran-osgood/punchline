@@ -1,3 +1,4 @@
+import { ApiRootStore } from "app/graphql"
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
 
 /**
@@ -5,7 +6,9 @@ import { Instance, SnapshotOut, types } from "mobx-state-tree"
  */
 export const ApiStoreModel = types
   .model("ApiStore")
-  .props({})
+  .props({
+    api: types.optional(ApiRootStore, {}),
+  })
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
 
@@ -21,4 +24,7 @@ type ApiStoreType = Instance<typeof ApiStoreModel>
 export interface ApiStore extends ApiStoreType {}
 type ApiStoreSnapshotType = SnapshotOut<typeof ApiStoreModel>
 export interface ApiStoreSnapshot extends ApiStoreSnapshotType {}
-export const createApiStoreDefaultModel = () => types.optional(ApiStoreModel, {})
+export const createApiStoreDefaultModel = () =>
+  types.optional(ApiStoreModel, {
+    api: ApiRootStore.create({}),
+  })

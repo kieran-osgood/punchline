@@ -70,7 +70,7 @@ const App = observer(function App() {
   return (
     <ToggleStorybook>
       <RootStoreProvider value={rootStore}>
-        <GraphQLStoreContext.Provider value={rootStore.apiStore}>
+        <GraphQLStoreContext.Provider value={rootStore.apiStore.api}>
           <Authorization>
             <SafeAreaProvider initialMetrics={initialWindowMetrics}>
               <ConnectionStatusBar

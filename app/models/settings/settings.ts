@@ -33,7 +33,7 @@ export const SettingsModel = types
   }))
   .views((self) => ({
     get blockedCategoryIds(): string[] {
-      const root = [...self.root.apiStore.categories.values()]
+      const root = [...self.root.apiStore.api.categories.values()]
         .filter((x) => x.isFiltered)
         .map((x) => x.id)
       return root

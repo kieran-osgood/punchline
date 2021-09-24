@@ -21,7 +21,7 @@ export const JokeModel = JokeModelBase.props({
       return getRoot(self)
     },
     get api(): ApiStoreType {
-      return this.root.apiStore
+      return this.root.apiStore.api
     },
   }))
   .actions((self) => ({

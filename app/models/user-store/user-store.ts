@@ -45,11 +45,11 @@ export const UserStoreModel = types
       if (user === null) return
 
       const token = yield user.getIdToken()
-      self.root.apiStore.setBearerToken(token)
+      self.root.apiStore.api.setBearerToken(token)
 
       // TODO: add error handling
       // Creates a user on the backend and updates users LastLogin date if already exists
-      const loginPromise = self.root.apiStore.mutateLogin({
+      const loginPromise = self.root.apiStore.api.mutateLogin({
         input: {
           firebaseUid: user.uid,
           username: user.displayName ?? "Guest",
@@ -58,19 +58,19 @@ export const UserStoreModel = types
 
       loginPromise
         .then(() => {
-          self.root.apiStore.queryCategories(
+          self.root.apiStore.api.queryCategories(
             {
               order: [{ name: SortEnumType.ASC }],
             },
             nodes(categoryModelPrimitives),
           )
 
-          self.root.apiStore.queryJokes(
+          self.root.apiStore.api.queryJokes(
             {
               input: {
                 blockedCategoryIds: self.root.settings.blockedCategoryIds,
                 jokeLength: self.root.settings.jokeLengthMaxEnum,
-                deepLinkedJokeId: self.root.apiStore.deepLinkJokeId,
+                deepLinkedJokeId: self.root.apiStore.api.deepLinkJokeId,
                 profanityFilter: self.root.settings.profanityFilter,
               },
               first: 5,
@@ -81,7 +81,7 @@ export const UserStoreModel = types
               ),
             { fetchPolicy: "no-cache" },
           )
-          self.root.apiStore.queryUserCategories({}, (c) => c.nodes((n) => n.id.image.name))
+          self.root.apiStore.api.queryUserCategories({}, (c) => c.nodes((n) => n.id.image.name))
         })
         .catch((err) => {
           Sentry.captureException(err)
@@ -98,7 +98,7 @@ export const UserStoreModel = types
     }),
     completeOnboarding: () => {
       if (self.user?.uid) {
-        self.root.apiStore.mutateCompleteOnboarding({}, undefined, () => {
+        self.root.apiStore.api.mutateCompleteOnboarding({}, undefined, () => {
           self.onboardingComplete = true
         })
       }

@@ -1,8 +1,9 @@
 import auth from "@react-native-firebase/auth"
 import * as Sentry from "@sentry/react-native"
-import { ApiRootStore } from "app/graphql"
 import { AsyncStorage } from "app/utils/storage/async-storage"
 import { applySnapshot, flow, getSnapshot, Instance, SnapshotOut, types } from "mobx-state-tree"
+// ! FIGURE OUT WHY THIS DOESNT LIKE IMPORTING FROM APP/MODELS - INVARIANT VIOLATION
+import { createApiStoreDefaultModel } from "../api-store/api-store"
 import { createOnboardingDefaultModel } from "../onboarding/onboarding"
 import { createSettingsDefaultModel } from "../settings/settings"
 import { createUserStoreDefaultModel } from "../user-store/user-store"
@@ -14,7 +15,7 @@ export const RootStoreModelBase = types.model("RootStore").props({
   userStore: createUserStoreDefaultModel(),
   settings: createSettingsDefaultModel(),
   onboarding: createOnboardingDefaultModel(),
-  apiStore: types.optional(ApiRootStore, {}),
+  apiStore: createApiStoreDefaultModel(),
 })
 
 export const RootStoreModel = RootStoreModelBase.actions((self) => {

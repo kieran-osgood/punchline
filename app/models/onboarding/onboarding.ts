@@ -12,7 +12,7 @@ export const OnboardingModel = types
       return getRoot(self)
     },
     get api(): ApiStoreType {
-      return this.root.apiStore
+      return this.root.apiStore.api
     },
   }))
   .views((self) => ({

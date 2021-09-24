@@ -74,7 +74,7 @@ export const JokeScreen = observer(function JokeScreen() {
           </Text>
 
           <Text text40 bold>
-            {store.topOfDeckJoke.title}
+            {store.topOfDeckJoke?.title}
           </Text>
         </View>
 
