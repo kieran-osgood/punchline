@@ -5,7 +5,7 @@
 import { IObservableArray } from "mobx"
 import { types } from "mobx-state-tree"
 import { MSTGQLRef, QueryBuilder, withTypedRefs } from "mst-gql"
-import { ApiStoreType } from "./index"
+import { ApiRootStoreType } from "./index"
 import { ModelBase } from "./ModelBase"
 import { PageInfoModel } from "./PageInfoModel"
 import { PageInfoModelSelector } from "./PageInfoModel.base"
@@ -53,7 +53,7 @@ export const UserJokeHistoryByUserIdConnectionModelBase = withTypedRefs<Refs>()(
     })
     .views((self) => ({
       get store() {
-        return self.__getStore<ApiStoreType>()
+        return self.__getStore<ApiRootStoreType>()
       },
     })),
 )

@@ -2,6 +2,7 @@
 import { useRoute } from "@react-navigation/native"
 import Swipeable from "app/components/swipeable/swipeable"
 import { JokeModelType, RatingValue, useQuery } from "app/graphql"
+import { useStores } from "app/models"
 import { NavigationProps } from "app/navigators/main-navigator"
 import Skip from "assets/images/skip"
 import { AdBanner, BookmarkButton, Ratings, ShareIcons, SwipeHandler } from "components"
@@ -20,7 +21,7 @@ export const JokeScreen = observer(function JokeScreen() {
   const [bookmarked, setBookmarked] = React.useState(false)
   const topCard = React.useRef<SwipeHandler>(null)
   const query = useQuery()
-  const { store } = query
+  const store = useStores().apiStore.jokeApi
   // React.useEffect(() => {
   // add in logic to pull and set next joke as the top joke
   //   setQuery((store) =>

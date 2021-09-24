@@ -7,7 +7,7 @@ import { types } from "mobx-state-tree"
 import { MSTGQLRef, QueryBuilder, withTypedRefs } from "mst-gql"
 import { CategoryModel, CategoryModelType } from "./CategoryModel"
 import { CategoryModelSelector } from "./CategoryModel.base"
-import { ApiStoreType } from "./index"
+import { ApiRootStoreType } from "./index"
 import { JokeModel, JokeModelType } from "./JokeModel"
 import { JokeModelSelector } from "./JokeModel.base"
 import { ModelBase } from "./ModelBase"
@@ -48,7 +48,7 @@ export const UserModelBase = withTypedRefs<Refs>()(
     })
     .views((self) => ({
       get store() {
-        return self.__getStore<ApiStoreType>()
+        return self.__getStore<ApiRootStoreType>()
       },
     })),
 )

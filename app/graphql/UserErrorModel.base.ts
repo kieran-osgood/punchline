@@ -5,7 +5,7 @@
 import { types } from "mobx-state-tree"
 import { QueryBuilder } from "mst-gql"
 import { ErrorCodesEnumType } from "./ErrorCodesEnum"
-import { ApiStoreType } from "./index"
+import { ApiRootStoreType } from "./index"
 import { ModelBase } from "./ModelBase"
 
 /**
@@ -20,7 +20,7 @@ export const UserErrorModelBase = ModelBase.named("UserError")
   })
   .views((self) => ({
     get store() {
-      return self.__getStore<ApiStoreType>()
+      return self.__getStore<ApiRootStoreType>()
     },
   }))
 

@@ -9,7 +9,7 @@ import { CategoriesEdgeModel } from "./CategoriesEdgeModel"
 import { CategoriesEdgeModelSelector } from "./CategoriesEdgeModel.base"
 import { CategoryModel, CategoryModelType } from "./CategoryModel"
 import { CategoryModelSelector } from "./CategoryModel.base"
-import { ApiStoreType } from "./index"
+import { ApiRootStoreType } from "./index"
 import { ModelBase } from "./ModelBase"
 import { PageInfoModel } from "./PageInfoModel"
 import { PageInfoModelSelector } from "./PageInfoModel.base"
@@ -50,7 +50,7 @@ export const CategoriesConnectionModelBase = withTypedRefs<Refs>()(
     })
     .views((self) => ({
       get store() {
-        return self.__getStore<ApiStoreType>()
+        return self.__getStore<ApiRootStoreType>()
       },
     })),
 )

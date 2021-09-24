@@ -4,7 +4,7 @@
 
 import { types } from "mobx-state-tree"
 import { QueryBuilder } from "mst-gql"
-import { ApiStoreType } from "./index"
+import { ApiRootStoreType } from "./index"
 import { ModelBase } from "./ModelBase"
 
 /**
@@ -27,7 +27,7 @@ export const PageInfoModelBase = ModelBase.named("PageInfo")
   })
   .views((self) => ({
     get store() {
-      return self.__getStore<ApiStoreType>()
+      return self.__getStore<ApiRootStoreType>()
     },
   }))
 

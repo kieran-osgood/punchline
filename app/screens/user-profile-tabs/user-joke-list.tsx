@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native"
 import {
-  ApiStoreType,
+  ApiRootStoreType,
   useQuery,
   UserJokeHistoryByUserIdConnectionModelType,
   UserJokeHistoryModelType,
@@ -38,7 +38,7 @@ import { color, spacing } from "theme"
 export type UserJokeListProps = {
   type: "HISTORY" | "BOOKMARK"
   query: UseQueryHookResult<
-    ApiStoreType,
+    ApiRootStoreType,
     {
       userJokeHistoryByUserId: UserJokeHistoryByUserIdConnectionModelType
     }
@@ -54,7 +54,7 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
 
   const data =
     type === "BOOKMARK"
-      ? store.apiStore.api.bookmarkedJokes
+      ? store.apiStore.jokeApi.bookmarkedJokes
       : [...store.apiStore.api.userJokeHistories.values()]
 
   const onRefresh = React.useCallback(async () => {

@@ -1,4 +1,4 @@
-import { ApiStoreType, RatingValue } from "app/graphql"
+import { ApiRootStoreType, RatingValue } from "app/graphql"
 import { CategoryModelType } from "app/graphql/CategoryModel"
 import { RootStore as RootStoreTree } from "app/models"
 import { IObservableArray } from "mobx"
@@ -20,7 +20,7 @@ export const JokeModel = JokeModelBase.props({
     get root(): RootStoreTree {
       return getRoot(self)
     },
-    get api(): ApiStoreType {
+    get api(): ApiRootStoreType {
       return this.root.apiStore.api
     },
   }))

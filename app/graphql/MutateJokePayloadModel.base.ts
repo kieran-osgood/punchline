@@ -4,7 +4,7 @@
 
 import { types } from "mobx-state-tree"
 import { MSTGQLRef, QueryBuilder, withTypedRefs } from "mst-gql"
-import { ApiStoreType } from "./index"
+import { ApiRootStoreType } from "./index"
 import { JokeModel, JokeModelType } from "./JokeModel"
 import { JokeModelSelector } from "./JokeModel.base"
 import { ModelBase } from "./ModelBase"
@@ -33,7 +33,7 @@ export const MutateJokePayloadModelBase = withTypedRefs<Refs>()(
     })
     .views((self) => ({
       get store() {
-        return self.__getStore<ApiStoreType>()
+        return self.__getStore<ApiRootStoreType>()
       },
     })),
 )

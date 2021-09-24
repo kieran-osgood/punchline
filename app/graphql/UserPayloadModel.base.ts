@@ -4,7 +4,7 @@
 
 import { types } from "mobx-state-tree"
 import { MSTGQLRef, QueryBuilder, withTypedRefs } from "mst-gql"
-import { ApiStoreType } from "./index"
+import { ApiRootStoreType } from "./index"
 import { ModelBase } from "./ModelBase"
 import { UserErrorModel } from "./UserErrorModel"
 import { UserErrorModelSelector } from "./UserErrorModel.base"
@@ -33,7 +33,7 @@ export const UserPayloadModelBase = withTypedRefs<Refs>()(
     })
     .views((self) => ({
       get store() {
-        return self.__getStore<ApiStoreType>()
+        return self.__getStore<ApiRootStoreType>()
       },
     })),
 )
