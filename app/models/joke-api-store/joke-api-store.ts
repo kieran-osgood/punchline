@@ -29,10 +29,13 @@ export const JokeApiStoreModel = types
   }))
   .views((self) => ({
     get nonViewedJokes() {
-      return [...self.api.jokes.values()]
-        .filter((x) => !x.viewed)
-        .filter((x) => !(self.settings.profanityFilter && x.explicitContent))
-      // .filter((x) => x.categories.some((y) => !y.isFiltered && self.api.categories.has(y.id)))
+      return (
+        [...self.api.jokes.values()]
+          .filter((x) => !x.viewed)
+          .filter((x) => !(self.settings.profanityFilter && x.explicitContent))
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          .filter((x) => x?.categories?.some((y) => !y.isFiltered && self.api.categories.has(y.id)))
+      )
     },
     get topOfDeckJoke() {
       if (this.nonViewedJokes.length <= 10) {

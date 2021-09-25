@@ -1,6 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
 import { useQuery, UserJokeHistoryModelType } from "app/graphql"
-import { useStores } from "app/models"
 import { ACTION_BUTTON } from "app/screens"
 import EmptyStateImage from "assets/images/empty-state-image"
 import { TrashCan } from "assets/images/trash-can"
@@ -40,12 +39,6 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
   const { type, fetchMore, refetch, data } = props
   const navigation = useNavigation()
   const [refreshing, setRefreshing] = React.useState(false)
-  const store = useStores()
-
-  // const data =
-  //   type === "BOOKMARK"
-  //     ? store.apiStore.jokeApi.bookmarkedJokes
-  //     : store.apiStore.jokeApi.historyJokes
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true)
@@ -56,15 +49,12 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
   return (
     <Screen style={ROOT} preset="fixed" unsafe>
       <StatusBar barStyle="dark-content" />
-      {/* <Button label="Press ME" onPress={fetchMore} marginV-s5 /> */}
       {data.length > 0 ? (
         <FlatList
           refreshControl={<RefreshControl {...{ refreshing, onRefresh }} />}
           data={data}
-          renderItem={({ item: bookmark }) => (
-            <UserJoke key={bookmark.id} {...{ bookmark, type }} />
-          )}
-          onEndReachedThreshold={0.75}
+          renderItem={({ item: bookmark }) => <UserJoke key={bookmark.id} {...{ bookmark }} />}
+          onEndReachedThreshold={0.65}
           onEndReached={fetchMore}
         />
       ) : (
@@ -89,12 +79,11 @@ const ROOT: ViewStyle = {
   paddingHorizontal: spacing[3],
 }
 
-type BookmarkProps = {
+type UserJokeProps = {
   bookmark: UserJokeHistoryModelType
-  type: UserJokeListProps["type"]
 }
-export const UserJoke = observer(function Bookmark(props: BookmarkProps) {
-  const { bookmark, type } = props
+export const UserJoke = observer(function Bookmark(props: UserJokeProps) {
+  const { bookmark } = props
   const [expanded, setExpanded] = React.useState(false)
   const query = useQuery()
   const open = useSharedValue(false)

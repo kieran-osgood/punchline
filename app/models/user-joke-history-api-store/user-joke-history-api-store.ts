@@ -1,6 +1,6 @@
 import { RootStoreType, SortEnumType } from "app/graphql"
+import { UserJokeHistoryFilterInput } from "app/graphql/RootStore.base"
 import { getRoot, Instance, SnapshotOut, types } from "mobx-state-tree"
-import { PAGINATION_START } from "../api-store/api-store"
 import { RootStore } from "../root-store/root-store"
 
 /**
@@ -25,9 +25,17 @@ export const UserJokeHistoryApiStoreModel = types
     },
   }))
   .actions((self) => ({
-    fetchHistory(after: string | undefined) {
+    fetchUserJokeHistory({
+      after,
+      first = 25,
+      where,
+    }: {
+      after?: string | undefined
+      first?: number | undefined
+      where?: UserJokeHistoryFilterInput | undefined
+    }) {
       return self.api.queryUserJokeHistoryByUserId(
-        { order: [{ createdAt: SortEnumType.DESC }], first: 8, after },
+        { order: [{ createdAt: SortEnumType.DESC }], first, after, where },
         (q) =>
           q
             .pageInfo((p) => p.hasNextPage.hasPreviousPage.startCursor.endCursor)
@@ -36,33 +44,25 @@ export const UserJokeHistoryApiStoreModel = types
             ),
       )
     },
-    fetchBookmarks(after: string) {
-      return self.api.queryUserJokeHistoryByUserId(
-        {
-          after,
-          where: { bookmarked: { eq: true } },
-          order: [{ createdAt: SortEnumType.DESC }],
-          first: 5,
-        },
-        (q) =>
-          q
-            .pageInfo((p) => p.hasNextPage.hasPreviousPage.startCursor.endCursor)
-            .nodes((n) => n.id.rating.bookmarked.joke((j) => j.id.title.body)),
-      )
-    },
   }))
   .actions((self) => ({
     fetchInitialHistory() {
-      return self.fetchHistory(undefined)
+      return self.fetchUserJokeHistory({})
     },
     fetchMoreHistory(after: string) {
-      return self.fetchHistory(after)
+      return self.fetchUserJokeHistory({ after, first: 50 })
     },
     fetchInitialBookmarks() {
-      return self.fetchBookmarks(PAGINATION_START)
+      return self.fetchUserJokeHistory({
+        where: { bookmarked: { eq: true } },
+      })
     },
     fetchMoreBookmarks(after: string) {
-      return self.fetchHistory(after)
+      return self.fetchUserJokeHistory({
+        where: { bookmarked: { eq: true } },
+        after,
+        first: 50,
+      })
     },
   }))
 
