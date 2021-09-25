@@ -1,8 +1,5 @@
-import { RootParamList as MyRootParamList } from "app/navigators/root-navigator"
-import { SvgProps } from "react-native-svg"
-
 declare module "*.svg" {
-  const content: React.FC<SvgProps>
+  const content: React.FC<import("react-native-svg").SvgProps>
   export default content
 }
 
@@ -15,7 +12,7 @@ declare module "react-native-dotenv" {
 
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends MyRootParamList {}
+    interface RootParamList extends import("app/navigators/root-navigator").RootParamList {}
   }
 }
 declare module "react-native-restart" {
