@@ -39,12 +39,12 @@ import Toast from "react-native-toast-message"
  *   https://reactnavigation.org/docs/params/
  *   https://reactnavigation.org/docs/typescript#type-checking-the-navigator
  */
-export type RootParamList = {
+export type RootStackParamList = {
   AuthNavigator: NavigatorScreenParams<AuthRouteParamList>
   MainNavigator: NavigatorScreenParams<MainRouteParamList>
 }
 
-const Stack = createStackNavigator<RootParamList>()
+const Stack = createStackNavigator<RootStackParamList>()
 
 const RootStack = observer(function RootStack() {
   const { userStore } = useStores()
@@ -64,7 +64,7 @@ const RootStack = observer(function RootStack() {
 })
 
 export const RootNavigator = React.forwardRef<
-  NavigationContainerRef<RootParamList>,
+  NavigationContainerRef<RootStackParamList>,
   Partial<React.ComponentProps<typeof NavigationContainer>>
 >((props, ref) => {
   const onReady = () => RNBootSplash.hide({ fade: true })
@@ -82,7 +82,7 @@ export type AllRouteNames = MainRouteNames | AuthRouteNames
 const exitRoutes = [...authExitRoutes, ...mainExitRoutes]
 export const canExit = (routeName: AllRouteNames) => exitRoutes.includes(routeName)
 
-const linking: LinkingOptions<RootParamList> = {
+const linking: LinkingOptions<RootStackParamList> = {
   prefixes: [
     "https://punch-line.co.uk/",
     "https://api.punch-line.co.uk/",

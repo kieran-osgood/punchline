@@ -1,6 +1,7 @@
 import { createApiRootStoreDefaultModel } from "app/graphql"
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
 import { createJokeApiStoreDefaultModel } from "../joke-api-store/joke-api-store"
+import { createJokeReportStoreDefaultModel } from "../joke-report-store/joke-report-store"
 import { createUserJokeHistoryApiStoreDefaultModel } from "../user-joke-history-api-store/user-joke-history-api-store"
 
 /**
@@ -12,6 +13,7 @@ export const ApiStoreModel = types
     api: createApiRootStoreDefaultModel(),
     jokeApi: createJokeApiStoreDefaultModel(),
     userJokeHistoryApi: createUserJokeHistoryApiStoreDefaultModel(),
+    jokeReportApi: createJokeReportStoreDefaultModel(),
   })
   .views((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars
   .actions((self) => ({})) // eslint-disable-line @typescript-eslint/no-unused-vars

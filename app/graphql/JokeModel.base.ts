@@ -8,6 +8,8 @@ import { MSTGQLRef, QueryBuilder, withTypedRefs } from "mst-gql"
 import { ModelBase } from "./ModelBase"
 import { CategoryModel, CategoryModelType } from "./CategoryModel"
 import { CategoryModelSelector } from "./CategoryModel.base"
+import { JokeReportModel, JokeReportModelType } from "./JokeReportModel"
+import { JokeReportModelSelector } from "./JokeReportModel.base"
 import { UserJokeHistoryModel, UserJokeHistoryModelType } from "./UserJokeHistoryModel"
 import { UserJokeHistoryModelSelector } from "./UserJokeHistoryModel.base"
 import { UserModel, UserModelType } from "./UserModel"
@@ -41,6 +43,7 @@ export const JokeModelBase = withTypedRefs<Refs>()(ModelBase
     explicitContent: types.union(types.undefined, types.boolean),
     userJokeHistories: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => UserJokeHistoryModel)))),
     users: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => UserModel)))),
+    jokeReports: types.union(types.undefined, types.array(types.late((): any => JokeReportModel))),
   })
   .views(self => ({
     get store() {
@@ -60,6 +63,7 @@ export class JokeModelSelector extends QueryBuilder {
   categories(builder?: string | CategoryModelSelector | ((selector: CategoryModelSelector) => CategoryModelSelector)) { return this.__child(`categories`, CategoryModelSelector, builder) }
   userJokeHistories(builder?: string | UserJokeHistoryModelSelector | ((selector: UserJokeHistoryModelSelector) => UserJokeHistoryModelSelector)) { return this.__child(`userJokeHistories`, UserJokeHistoryModelSelector, builder) }
   users(builder?: string | UserModelSelector | ((selector: UserModelSelector) => UserModelSelector)) { return this.__child(`users`, UserModelSelector, builder) }
+  jokeReports(builder?: string | JokeReportModelSelector | ((selector: JokeReportModelSelector) => JokeReportModelSelector)) { return this.__child(`jokeReports`, JokeReportModelSelector, builder) }
 }
 export function selectFromJoke() {
   return new JokeModelSelector()

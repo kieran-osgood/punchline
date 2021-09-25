@@ -10,10 +10,10 @@ export { selectFromUser, userModelPrimitives, UserModelSelector } from "./UserMo
 /**
  * UserModel
  */
-export const UserModel = UserModelBase
-  .actions(self => ({
-    // This is an auto-generated example action.
-    log() {
-      console.log(JSON.stringify(self))
-    }
-  }))
+export const UserModel = UserModelBase.props({}).actions((self) => ({
+  // This is an auto-generated example action.
+  log() {
+    // self.createdOn
+    console.log(JSON.stringify(self))
+  },
+}))

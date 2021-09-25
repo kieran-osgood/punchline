@@ -10,6 +10,8 @@ import { CategoryModel, CategoryModelType } from "./CategoryModel"
 import { CategoryModelSelector } from "./CategoryModel.base"
 import { JokeModel, JokeModelType } from "./JokeModel"
 import { JokeModelSelector } from "./JokeModel.base"
+import { JokeReportModel, JokeReportModelType } from "./JokeReportModel"
+import { JokeReportModelSelector } from "./JokeReportModel.base"
 import { UserJokeHistoryModel, UserJokeHistoryModelType } from "./UserJokeHistoryModel"
 import { UserJokeHistoryModelSelector } from "./UserJokeHistoryModel.base"
 import { RootStoreType } from "./index"
@@ -40,6 +42,7 @@ export const UserModelBase = withTypedRefs<Refs>()(ModelBase
     onboardingComplete: types.union(types.undefined, types.boolean),
     userJokeHistories: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => UserJokeHistoryModel)))),
     jokes: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => JokeModel)))),
+    jokeReports: types.union(types.undefined, types.array(types.late((): any => JokeReportModel))),
   })
   .views(self => ({
     get store() {
@@ -58,6 +61,7 @@ export class UserModelSelector extends QueryBuilder {
   categories(builder?: string | CategoryModelSelector | ((selector: CategoryModelSelector) => CategoryModelSelector)) { return this.__child(`categories`, CategoryModelSelector, builder) }
   userJokeHistories(builder?: string | UserJokeHistoryModelSelector | ((selector: UserJokeHistoryModelSelector) => UserJokeHistoryModelSelector)) { return this.__child(`userJokeHistories`, UserJokeHistoryModelSelector, builder) }
   jokes(builder?: string | JokeModelSelector | ((selector: JokeModelSelector) => JokeModelSelector)) { return this.__child(`jokes`, JokeModelSelector, builder) }
+  jokeReports(builder?: string | JokeReportModelSelector | ((selector: JokeReportModelSelector) => JokeReportModelSelector)) { return this.__child(`jokeReports`, JokeReportModelSelector, builder) }
 }
 export function selectFromUser() {
   return new UserModelSelector()

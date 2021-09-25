@@ -20,7 +20,7 @@ import "./i18n"
 import {
   canExit,
   RootNavigator,
-  RootParamList,
+  RootStackParamList,
   setRootNavigation,
   useBackButtonHandler,
   useNavigationPersistence,
@@ -34,7 +34,7 @@ export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
  * This is the root component of our app.
  */
 const App = observer(function App() {
-  const navigationRef = useNavigationContainerRef<RootParamList>()
+  const navigationRef = useNavigationContainerRef<RootStackParamList>()
   useFlipper(navigationRef)
   const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
   const firstRender = React.useRef(true)
@@ -45,6 +45,8 @@ const App = observer(function App() {
     NAVIGATION_PERSISTENCE_KEY,
   )
   const [initted, setInnited] = useState(false)
+  const [connected, setConnected] = React.useState({ isConnected: false })
+
   // Kick off initial async loading actions, like RootStore
   useEffect(() => {
     if (firstRender.current) {
@@ -74,14 +76,10 @@ const App = observer(function App() {
           <Authorization>
             <SafeAreaProvider initialMetrics={initialWindowMetrics}>
               <ConnectionStatusBar
-              // onConnectionChange={(isConnected) => setConnected({ isConnected })}
+                useAbsolutePosition
+                onConnectionChange={(isConnected) => setConnected({ isConnected })}
               />
-              <Sentry.ErrorBoundary
-                fallback={ErrorFallback}
-                // beforeCapture={(scope) => {
-                //   scope.setTag("location", "app.tsx")
-                // }}
-              >
+              <Sentry.ErrorBoundary fallback={ErrorFallback}>
                 <RootNavigator
                   ref={navigationRef}
                   initialState={initialNavigationState}
@@ -99,15 +97,22 @@ const App = observer(function App() {
 export default App
 
 const Authorization = observer(function Authorization({ children }: { children: React.ReactNode }) {
-  const { userStore } = useStores()
+  const { apiStore, userStore } = useStores()
 
   React.useEffect(() => {
     const unsubscribe = auth().onAuthStateChanged(async (user) => {
       userStore.login(user)
     })
-
-    return () => unsubscribe()
-  }, [userStore])
+    const unsubscribe2 = auth().onIdTokenChanged(async (user) => {
+      const token = await user?.getIdToken()
+      if (!token) return
+      apiStore.api.setBearerToken(token)
+    })
+    return () => {
+      unsubscribe()
+      unsubscribe2()
+    }
+  }, [apiStore.api, userStore])
 
   return <>{children}</>
 })

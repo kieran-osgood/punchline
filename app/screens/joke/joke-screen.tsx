@@ -65,6 +65,8 @@ export const JokeScreen = observer(function JokeScreen() {
     topCard.current?.swipeRight()
   }
 
+  console.tron.log("joke", store.topOfDeckJoke)
+
   return (
     <>
       <SafeAreaView style={ROOT} testID="JokeScreen">

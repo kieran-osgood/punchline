@@ -39,7 +39,6 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
   const { type, fetchMore, refetch, data } = props
   const navigation = useNavigation()
   const [refreshing, setRefreshing] = React.useState(false)
-
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true)
     refetch()

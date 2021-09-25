@@ -3,6 +3,7 @@
 /* tslint:disable */
 
 export * from "./JokeModel"
+export * from "./JokeReportModel"
 export * from "./UserModel"
 export * from "./CategoryModel"
 export * from "./UserJokeHistoryModel"
@@ -20,7 +21,7 @@ export * from "./CategoriesEdgeModel"
 export * from "./UserCategoriesEdgeModel"
 export * from "./UserJokeHistoryByUserIdEdgeModel"
 export * from "./UserPayloadModel"
-export * from "./MutateJokePayloadModel"
+export * from "./MutateJokeReportPayloadModel"
 export * from "./MutateUserJokeHistoryPayloadModel"
 export * from "./JokeLengthEnum"
 export * from "./UserErrorModel"
