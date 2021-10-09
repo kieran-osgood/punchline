@@ -100,7 +100,7 @@ export const UserJoke = observer(function UserJoke(props: UserJokeProps) {
   const onPress = () => bookmark.toggleBookmark()
 
   return (
-    <Card collapsable={false} marginV-s2>
+    <Card collapsable={false} marginV-s1>
       <Swipeable
         friction={2}
         renderRightActions={(progressAnimatedValue, dragAnimatedValue) => (
@@ -112,7 +112,7 @@ export const UserJoke = observer(function UserJoke(props: UserJokeProps) {
           top={false}
           onPress={() => setExpanded((c) => !c)}
           sectionHeader={
-            <View style={CONTAINER} padding-s4 marginV-s3 row centerV spread>
+            <View style={CONTAINER} paddingV-s1 paddingH-s4 marginV-s3 row centerV spread>
               <View>
                 <Text style={TITLE} text70 bold numberOfLines={open.value ? undefined : 1}>
                   {bookmark.joke.title}
