@@ -35,7 +35,6 @@ export const JokeModelBase = withTypedRefs<Refs>()(ModelBase
     __typename: types.optional(types.literal("Joke"), "Joke"),
     id: types.identifier,
     categories: types.union(types.undefined, types.null, types.array(types.union(types.null, MSTGQLRef(types.late((): any => CategoryModel))))),
-    length: types.union(types.undefined, JokeLengthEnumType),
     title: types.union(types.undefined, types.string),
     body: types.union(types.undefined, types.string),
     positiveRating: types.union(types.undefined, types.integer),
@@ -43,6 +42,7 @@ export const JokeModelBase = withTypedRefs<Refs>()(ModelBase
     skipRating: types.union(types.undefined, types.integer),
     reportCount: types.union(types.undefined, types.integer),
     explicitContent: types.union(types.undefined, types.boolean),
+    length: types.union(types.undefined, JokeLengthEnumType),
     userJokeHistories: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => UserJokeHistoryModel)))),
     users: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => UserModel)))),
     jokeReports: types.union(types.undefined, types.array(types.late((): any => JokeReportModel))),
@@ -55,7 +55,6 @@ export const JokeModelBase = withTypedRefs<Refs>()(ModelBase
 
 export class JokeModelSelector extends QueryBuilder {
   get id() { return this.__attr(`id`) }
-  get length() { return this.__attr(`length`) }
   get title() { return this.__attr(`title`) }
   get body() { return this.__attr(`body`) }
   get positiveRating() { return this.__attr(`positiveRating`) }
@@ -63,6 +62,7 @@ export class JokeModelSelector extends QueryBuilder {
   get skipRating() { return this.__attr(`skipRating`) }
   get reportCount() { return this.__attr(`reportCount`) }
   get explicitContent() { return this.__attr(`explicitContent`) }
+  get length() { return this.__attr(`length`) }
   categories(builder?: string | CategoryModelSelector | ((selector: CategoryModelSelector) => CategoryModelSelector)) { return this.__child(`categories`, CategoryModelSelector, builder) }
   userJokeHistories(builder?: string | UserJokeHistoryModelSelector | ((selector: UserJokeHistoryModelSelector) => UserJokeHistoryModelSelector)) { return this.__child(`userJokeHistories`, UserJokeHistoryModelSelector, builder) }
   users(builder?: string | UserModelSelector | ((selector: UserModelSelector) => UserModelSelector)) { return this.__child(`users`, UserModelSelector, builder) }
@@ -72,4 +72,4 @@ export function selectFromJoke() {
   return new JokeModelSelector()
 }
 
-export const jokeModelPrimitives = selectFromJoke().length.title.body.positiveRating.negativeRating.skipRating.reportCount.explicitContent
+export const jokeModelPrimitives = selectFromJoke().title.body.positiveRating.negativeRating.skipRating.reportCount.explicitContent.length

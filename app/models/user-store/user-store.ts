@@ -81,7 +81,7 @@ export const UserStoreModel = types
           {
             input: {
               blockedCategoryIds: self.root.settings.blockedCategoryIds,
-              jokeLength: self.root.settings.jokeLengthMaxEnum,
+              jokeLengths: self.root.settings.jokeLengthsEnumArr,
               deepLinkedJokeId: self.root.apiStore.jokeApi.deepLinkJokeId,
               profanityFilter: self.root.settings.profanityFilter,
             },

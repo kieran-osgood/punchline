@@ -70,6 +70,15 @@ export const SettingsModel = types
 
       return JokeLength.SMALL
     },
+    get jokeLengthsEnumArr(): Array<JokeLength> {
+      const enumArr: Array<JokeLength> = []
+      self.jokeLengthPreferences.forEach((x, b) => {
+        if (!x) return
+
+        enumArr.push(b as JokeLength)
+      })
+      return enumArr
+    },
     get checkboxMap(): VerticalCheckboxesProps["data"] {
       return JokeLengths.map((x, idx) => ({
         label: x.slice(0, 1) + x.slice(1).toLowerCase(),

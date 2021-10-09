@@ -61,11 +61,11 @@ export type JokeFilterInput = {
   skipRating?: ComparableInt32OperationFilterInput
   reportCount?: ComparableInt32OperationFilterInput
   explicitContent?: BooleanOperationFilterInput
+  length?: JokeLengthOperationFilterInput
   userJokeHistories?: ListFilterInputTypeOfUserJokeHistoryFilterInput
   categories?: ListFilterInputTypeOfCategoryFilterInput
   users?: ListFilterInputTypeOfUserFilterInput
   jokeReports?: ListFilterInputTypeOfJokeReportFilterInput
-  length?: JokeLengthOperationFilterInput
 }
 export type JokeSortInput = {
   id?: SortEnumType
@@ -144,6 +144,12 @@ export type BooleanOperationFilterInput = {
   eq?: boolean
   neq?: boolean
 }
+export type JokeLengthOperationFilterInput = {
+  eq?: JokeLength
+  neq?: JokeLength
+  in?: JokeLength[]
+  nin?: JokeLength[]
+}
 export type ListFilterInputTypeOfUserJokeHistoryFilterInput = {
   all?: UserJokeHistoryFilterInput
   none?: UserJokeHistoryFilterInput
@@ -167,12 +173,6 @@ export type ListFilterInputTypeOfJokeReportFilterInput = {
   none?: JokeReportFilterInput
   some?: JokeReportFilterInput
   any?: boolean
-}
-export type JokeLengthOperationFilterInput = {
-  eq?: JokeLength
-  neq?: JokeLength
-  in?: JokeLength[]
-  nin?: JokeLength[]
 }
 export type ListFilterInputTypeOfJokeFilterInput = {
   all?: JokeFilterInput
@@ -254,7 +254,7 @@ export type RateJokeInput = {
 export type JokeQueryInput = {
   deepLinkedJokeId?: string
   blockedCategoryIds?: string[]
-  jokeLength: JokeLength
+  jokeLengths: JokeLength[]
   profanityFilter: boolean
 }
 /* The TypeScript type that explicits the refs to other models in order to prevent a circular refs issue */

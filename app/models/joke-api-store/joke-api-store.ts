@@ -46,7 +46,7 @@ export const JokeApiStoreModel = types
           {
             input: {
               blockedCategoryIds: self.root.settings.blockedCategoryIds,
-              jokeLength: self.root.settings.jokeLengthMaxEnum,
+              jokeLengths: self.root.settings.jokeLengthsEnumArr,
               deepLinkedJokeId: self.deepLinkJokeId,
               profanityFilter: self.root.settings.profanityFilter,
             },
