@@ -40,9 +40,9 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
     <Screen style={ROOT} preset="scroll" unsafe>
       <StatusBar barStyle="dark-content" />
 
-      <Section title="App Settings">
+      <Section title="Preferences">
         <Divider row arrow onPress={() => navigation.navigate("JokePreferences")}>
-          <Text text90R>Joke Preferences</Text>
+          <Text text90R>Content</Text>
         </Divider>
 
         <Divider row>
@@ -52,6 +52,7 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
             value={settings.profanityFilter}
           />
         </Divider>
+
         <Divider row>
           <Text text90R>Notifications</Text>
           <Switch

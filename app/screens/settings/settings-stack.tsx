@@ -53,7 +53,7 @@ export const SettingsStack = observer(function SettingsNavigator() {
         name="JokePreferences"
         component={JokePreferencesScreen}
         options={{
-          headerTitle: "Joke Preferences",
+          headerTitle: "Content Preferences",
         }}
       />
       <Stack.Screen
