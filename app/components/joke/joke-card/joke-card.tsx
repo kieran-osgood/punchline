@@ -112,7 +112,7 @@ const JokeCard = ({
                   ))}
               </Animated.View>
             )}
-            <Animated.View style={loadingAnimation ? fadein : {}}>
+            <Animated.View style={[loadingAnimation ? fadein : {}, { padding: spacing[3] }]}>
               <Text text60BO color={color.text}>
                 {body}
               </Text>
@@ -195,9 +195,7 @@ export const CARD_SHADOW = {
 
 const CONTAINER: ViewStyle = {
   justifyContent: "center",
-  padding: spacing[3],
   borderRadius: spacing[3],
-  // shadowColor: "#000000",
   flex: 1,
   position: "relative",
   ...CARD_SHADOW,
