@@ -1,18 +1,20 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import * as Sentry from "@sentry/react-native"
-import MeshBackground from "assets/images/mesh-background"
+import { Link } from "app/screens/settings/screens/main-settings"
 import {
   AppleSignInButton,
   AppLogo,
   FacebookSignInButton,
   GoogleSignInButton,
+  GradientBackground,
   GuestSignInButton,
   LoadingModal,
   Screen,
+  TroubleSigningInButton,
 } from "components"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { BackHandler, ViewStyle } from "react-native"
+import { BackHandler, StyleSheet, ViewStyle } from "react-native"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import Toast from "react-native-toast-message"
 import { Text, ThemeManager, View } from "react-native-ui-lib"
@@ -44,25 +46,41 @@ export const LoginScreen = observer(function LoginScreen() {
     <Screen style={ROOT} preset="fixed" testID="LoginScreen" unsafe>
       <View centerH spread flex-1 width={widthPercentageToDP("70%")}>
         <View flex-1 centerV>
-          <AppLogo width={widthPercentageToDP("95%")} height={widthPercentageToDP("95%") / 5} />
+          <AppLogo
+            width={widthPercentageToDP("100%")}
+            height={widthPercentageToDP("100%") / 5}
+            color="hsla(255, 71%, 98%, 1)"
+          />
         </View>
-        <View flex-2 center width="100%">
-          <Text text70>{"Create an account to save\n bookmarks & preferences"}</Text>
+        <View flex-1 center width="100%">
+          <Text white text90BO>
+            {"By signing in you give consent to our "}
+            <Link url={`/terms-of-service.html`} inlineText>
+              {"Terms of Service"}
+            </Link>
+            {" and "}
+            <Link url={`/privacy-policy.html`} inlineText>
+              {"Privacy Policy"}
+            </Link>
+            {"."}
+          </Text>
 
-          <View spread marginV-s4>
+          <View spread>
             <GoogleSignInButton {...{ setIsLoading, onError }} />
             <FacebookSignInButton {...{ setIsLoading, onError }} />
             <AppleSignInButton {...{ setIsLoading, onError }} />
           </View>
 
-          <View style={SPACER} marginV-s4 height-0 />
+          <View style={SPACER} marginV-s6 height-0 />
 
           <GuestSignInButton />
         </View>
 
-        <View marginV-s6>{/* <TroubleSigningInButton /> */}</View>
+        <View marginV-s6>
+          <TroubleSigningInButton {...{ onError }} />
+        </View>
       </View>
-      <MeshBackground />
+      <GradientBackground style={BACKGROUND} />
     </Screen>
   )
 })
@@ -75,11 +93,14 @@ const ROOT: ViewStyle = {
 const SPACER: ViewStyle = {
   borderBottomWidth: 1,
   borderBottomColor: ThemeManager.titleColor,
-  opacity: 0.5,
-  borderWidth: 1,
+  borderWidth: StyleSheet.hairlineWidth,
   width: 50,
 }
-
+const BACKGROUND: ViewStyle = {
+  ...StyleSheet.absoluteFillObject,
+  zIndex: -1,
+  height: "100%",
+}
 const onError: ErrorCallback = (error: Error) => {
   Sentry.captureException(error)
 

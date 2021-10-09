@@ -42,7 +42,8 @@ export const TroubleSigningInButton = observer(function TroubleSigningInButton(
       label="Trouble signing in?"
       text80BO
       link
-      marginB-s3
+      marginB-s5
+      linkColor="white"
       labelStyle={LABEL}
       onPress={() => handleTroubleLoggingIn()}
     />

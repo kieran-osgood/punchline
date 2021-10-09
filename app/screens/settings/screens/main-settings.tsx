@@ -175,8 +175,15 @@ type LinkProps = {
   onPress?: (...args: any[]) => any
   url?: string
   external?: boolean
+  inlineText?: boolean
 }
-const Link = ({ children, onPress: onPressCallback, url, external = false }: LinkProps) => {
+export const Link = ({
+  children,
+  onPress: onPressCallback,
+  url,
+  external = false,
+  inlineText = false,
+}: LinkProps) => {
   const onPress = () => {
     const fullUrl = `${external ? "" : WEB_URL}${url}`
     if (fullUrl) {
@@ -191,6 +198,13 @@ const Link = ({ children, onPress: onPressCallback, url, external = false }: Lin
     onPressCallback?.()
   }
 
+  if (inlineText) {
+    return (
+      <Text style={TEXT_LINK} {...{ onPress }}>
+        {children}
+      </Text>
+    )
+  }
   return <Button link style={LINK} label={children} {...{ onPress }} />
 }
 
@@ -241,6 +255,9 @@ const DIVIDER: ViewStyle = {
 
 const LINK: ViewStyle = {
   paddingVertical: spacing[3],
+}
+const TEXT_LINK: TextStyle = {
+  textDecorationLine: "underline",
 }
 
 const ROOT: ViewStyle = {
