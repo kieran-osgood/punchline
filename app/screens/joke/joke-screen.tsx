@@ -65,8 +65,6 @@ export const JokeScreen = observer(function JokeScreen() {
     topCard.current?.swipeRight()
   }
 
-  console.tron.log("joke", store.topOfDeckJoke)
-
   return (
     <>
       <SafeAreaView style={ROOT} testID="JokeScreen">
@@ -162,17 +160,17 @@ export const Controls = (props: ButtonsProps) => {
         <Button
           style={ACTION_BUTTON}
           round
-          onPress={handleSkipPress}
+          onPress={handleBookmarkPress}
           activeOpacity={0.7}
-          iconSource={() => <Skip />}
+          iconSource={() => <BookmarkButton {...{ bookmarked }} size={24} />}
           marginB-s2
         />
         <Button
           style={ACTION_BUTTON}
           round
-          onPress={handleBookmarkPress}
+          onPress={handleSkipPress}
           activeOpacity={0.7}
-          iconSource={() => <BookmarkButton {...{ bookmarked }} size={24} />}
+          iconSource={() => <Skip />}
         />
         {/* <Button
           style={ACTION_BUTTON}

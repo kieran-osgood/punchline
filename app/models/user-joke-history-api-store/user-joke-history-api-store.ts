@@ -3,6 +3,8 @@ import { UserJokeHistoryFilterInput } from "app/graphql/RootStore.base"
 import { getRoot, Instance, SnapshotOut, types } from "mobx-state-tree"
 import { RootStore } from "../root-store/root-store"
 
+const time = (value: string) => new Date(value).getTime()
+
 /**
  * Model description here for TypeScript hints.
  */
@@ -18,10 +20,14 @@ export const UserJokeHistoryApiStoreModel = types
   }))
   .views((self) => ({
     get bookmarkedJokes() {
-      return [...self.api.userJokeHistories.values()].filter((x) => x.bookmarked)
+      return [...self.api.userJokeHistories.values()]
+        .sort((a, b) => time(b.createdAt) - time(a.createdAt))
+        .filter((x) => x.bookmarked)
     },
     get historyJokes() {
-      return [...self.api.userJokeHistories.values()]
+      return [...self.api.userJokeHistories.values()].sort(
+        (a, b) => time(b.createdAt) - time(a.createdAt),
+      )
     },
   }))
   .actions((self) => ({

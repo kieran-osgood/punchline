@@ -25,7 +25,7 @@ import Animated, {
 } from "react-native-reanimated"
 import { mix, mixColor } from "react-native-redash"
 import Svg, { Path } from "react-native-svg"
-import { Button, Card, ExpandableSection, Text, View } from "react-native-ui-lib"
+import { Button, Card, ExpandableSection, Text, ThemeManager, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
 export type UserJokeListProps = {
@@ -39,6 +39,7 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
   const { type, fetchMore, refetch, data } = props
   const navigation = useNavigation()
   const [refreshing, setRefreshing] = React.useState(false)
+
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true)
     refetch()
@@ -81,7 +82,7 @@ const ROOT: ViewStyle = {
 type UserJokeProps = {
   bookmark: UserJokeHistoryModelType
 }
-export const UserJoke = observer(function Bookmark(props: UserJokeProps) {
+export const UserJoke = observer(function UserJoke(props: UserJokeProps) {
   const { bookmark } = props
   const [expanded, setExpanded] = React.useState(false)
   const query = useQuery()
@@ -123,7 +124,7 @@ export const UserJoke = observer(function Bookmark(props: UserJokeProps) {
           }
         >
           <View marginB-s4 paddingH-s4 centerV>
-            <Text bold style={JOKE_BODY}>
+            <Text color={ThemeManager.titleColor} text80R>
               {bookmark.joke.body}
             </Text>
             <View row centerV spread marginT-s3>
@@ -131,9 +132,7 @@ export const UserJoke = observer(function Bookmark(props: UserJokeProps) {
                 {...{ onPress }}
                 round
                 style={ACTION_BUTTON}
-                iconSource={() => (
-                  <BookmarkButton size={24} bookmarked={Boolean(bookmark.bookmarked)} />
-                )}
+                iconSource={() => <BookmarkButton size={24} {...{ bookmark }} />}
               />
               <Link jokeId={bookmark.joke.id} style={SHARE}>
                 <Text style={SHARE_TEXT}>{"Share"}</Text>
@@ -150,9 +149,6 @@ const CONTAINER: ViewStyle = {
   backgroundColor: "white",
   borderTopLeftRadius: 8,
   borderTopRightRadius: 8,
-}
-const JOKE_BODY: TextStyle = {
-  color: color.dim,
 }
 const SHARE: ViewStyle = {
   backgroundColor: "transparent",
