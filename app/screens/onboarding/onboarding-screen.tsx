@@ -41,8 +41,8 @@ interface Slide {
 export const slides: Slide[] = [
   {
     title: "Categories",
-    subtitle: "Block Categories",
-    description: "Filter out the jokes you don't like in the settings page.",
+    subtitle: "Personalise your experience",
+    description: "Filter out the types of jokes you don't like in the settings page.",
     color: "#BFEAF5",
     Picture: observer(function Picture() {
       return <OnboardingCategorySetting style={SLIDE_1} />
@@ -51,8 +51,7 @@ export const slides: Slide[] = [
   {
     title: "Bookmarks",
     subtitle: "Save the best for later!",
-    description:
-      "Save your favourites for sharing later in the home screen or from your history tab.",
+    description: "Save your favourites to share later from your history.",
     color: "#BEECC4",
 
     Picture: function Picture() {
@@ -61,7 +60,7 @@ export const slides: Slide[] = [
   },
   {
     title: "Coming Soon!",
-    subtitle: "Be the comedian",
+    subtitle: "Publish your own",
     description: "We're working on a user submission section, so stay tuned!",
     color: "#FFE4D9",
 
