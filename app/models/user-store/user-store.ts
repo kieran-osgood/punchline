@@ -89,7 +89,9 @@ export const UserStoreModel = types
           },
           (j) =>
             j.nodes((n) =>
-              n.id.body.title.negativeRating.positiveRating.categories((c) => c.id.image.name),
+              n.id.body.title.length.negativeRating.positiveRating.categories(
+                (c) => c.id.image.name,
+              ),
             ),
           { fetchPolicy: "no-cache" },
         )

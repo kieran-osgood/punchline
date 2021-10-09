@@ -45,9 +45,9 @@ import { userErrorModelPrimitives, UserErrorModelSelector } from "./UserErrorMod
 import { nodeModelPrimitives, NodeModelSelector , NodeUnion } from "./"
 
 import { ApplyPolicy } from "./ApplyPolicyEnum"
+import { JokeLength } from "./JokeLengthEnum"
 import { RatingValue } from "./RatingValueEnum"
 import { SortEnumType } from "./SortEnumTypeEnum"
-import { JokeLength } from "./JokeLengthEnum"
 import { ErrorCodes } from "./ErrorCodesEnum"
 
 export type JokeFilterInput = {
@@ -65,6 +65,7 @@ export type JokeFilterInput = {
   categories?: ListFilterInputTypeOfCategoryFilterInput
   users?: ListFilterInputTypeOfUserFilterInput
   jokeReports?: ListFilterInputTypeOfJokeReportFilterInput
+  length?: JokeLengthOperationFilterInput
 }
 export type JokeSortInput = {
   id?: SortEnumType
@@ -75,6 +76,7 @@ export type JokeSortInput = {
   skipRating?: SortEnumType
   reportCount?: SortEnumType
   explicitContent?: SortEnumType
+  length?: SortEnumType
 }
 export type CategoryFilterInput = {
   and?: CategoryFilterInput[]
@@ -165,6 +167,12 @@ export type ListFilterInputTypeOfJokeReportFilterInput = {
   none?: JokeReportFilterInput
   some?: JokeReportFilterInput
   any?: boolean
+}
+export type JokeLengthOperationFilterInput = {
+  eq?: JokeLength
+  neq?: JokeLength
+  in?: JokeLength[]
+  nin?: JokeLength[]
 }
 export type ListFilterInputTypeOfJokeFilterInput = {
   all?: JokeFilterInput

@@ -8,6 +8,7 @@ import { MSTGQLRef, QueryBuilder, withTypedRefs } from "mst-gql"
 import { ModelBase } from "./ModelBase"
 import { CategoryModel, CategoryModelType } from "./CategoryModel"
 import { CategoryModelSelector } from "./CategoryModel.base"
+import { JokeLengthEnumType } from "./JokeLengthEnum"
 import { JokeReportModel, JokeReportModelType } from "./JokeReportModel"
 import { JokeReportModelSelector } from "./JokeReportModel.base"
 import { UserJokeHistoryModel, UserJokeHistoryModelType } from "./UserJokeHistoryModel"
@@ -34,6 +35,7 @@ export const JokeModelBase = withTypedRefs<Refs>()(ModelBase
     __typename: types.optional(types.literal("Joke"), "Joke"),
     id: types.identifier,
     categories: types.union(types.undefined, types.null, types.array(types.union(types.null, MSTGQLRef(types.late((): any => CategoryModel))))),
+    length: types.union(types.undefined, JokeLengthEnumType),
     title: types.union(types.undefined, types.string),
     body: types.union(types.undefined, types.string),
     positiveRating: types.union(types.undefined, types.integer),
@@ -53,6 +55,7 @@ export const JokeModelBase = withTypedRefs<Refs>()(ModelBase
 
 export class JokeModelSelector extends QueryBuilder {
   get id() { return this.__attr(`id`) }
+  get length() { return this.__attr(`length`) }
   get title() { return this.__attr(`title`) }
   get body() { return this.__attr(`body`) }
   get positiveRating() { return this.__attr(`positiveRating`) }
@@ -69,4 +72,4 @@ export function selectFromJoke() {
   return new JokeModelSelector()
 }
 
-export const jokeModelPrimitives = selectFromJoke().title.body.positiveRating.negativeRating.skipRating.reportCount.explicitContent
+export const jokeModelPrimitives = selectFromJoke().length.title.body.positiveRating.negativeRating.skipRating.reportCount.explicitContent

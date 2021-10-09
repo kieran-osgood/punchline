@@ -29,9 +29,12 @@ export const JokeApiStoreModel = types
   }))
   .views((self) => ({
     get nonViewedJokes() {
+      const preferences = [...self.settings.jokeLengthPreferences.entries()]
       return (
         [...self.api.jokes.values()]
           .filter((x) => !x.viewed)
+          // y[0] is keyof JokeLength - so if it is of the j.length type and the value (y[1]) is true, return it
+          .filter((x) => preferences.some((y) => y[0] === x.length && y[1]))
           .filter((x) => !(self.settings.profanityFilter && x.explicitContent))
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           .filter((x) => x?.categories?.some((y) => !y.isFiltered && self.api.categories.has(y.id)))
@@ -50,7 +53,9 @@ export const JokeApiStoreModel = types
           },
           (j) =>
             j.nodes((n) =>
-              n.id.body.title.negativeRating.positiveRating.categories((c) => c.id.image.name),
+              n.id.body.title.length.negativeRating.positiveRating.categories(
+                (c) => c.id.image.name,
+              ),
             ),
           { fetchPolicy: "no-cache" },
         )
