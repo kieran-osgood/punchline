@@ -13,72 +13,64 @@ export type HeaderProps = {
   navigation: StackNavigationProp<ParamListBase>
   left?: "account" | "back"
   right?: "settings"
-  center?: "logo" | "title"
 } & StackHeaderProps
 
 /**
  * Header component
  */
-export const Header = observer(function Header({
-  navigation,
-  left,
-  right,
-  center = "logo",
-  ...rest
-}: HeaderProps) {
+export const Header = observer(function Header({ navigation, left, right, ...rest }: HeaderProps) {
   const insets = useSafeAreaInsets()
-  const style = { paddingTop: insets.top < 30 ? 30 : insets.top }
+  const style = { paddingTop: insets.top > 25 ? insets.top : 25 }
   return (
-    <View style={[CONTAINER, style]}>
-      <View style={COL}>
-        {left === "back" && (
-          <View>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+    <View style={[CONTAINER, style]} backgroundColor={color.background}>
+      <View height={40} row paddingB-s1>
+        <View flex-1 center>
+          {left === "back" && (
+            <TouchableOpacity style={BUTTON} onPress={() => navigation.goBack()}>
               <BackArrowIcon />
             </TouchableOpacity>
-          </View>
-        )}
-        {left === "account" && (
-          <TouchableOpacity onPress={() => navigation.navigate("UserProfileTabs")}>
-            <AccountIcon />
-          </TouchableOpacity>
-        )}
-      </View>
+          )}
+          {left === "account" && (
+            <TouchableOpacity style={BUTTON} onPress={() => navigation.navigate("UserProfileTabs")}>
+              <AccountIcon />
+            </TouchableOpacity>
+          )}
+        </View>
 
-      {typeof rest.options.headerTitle === "string" ? (
-        <Text text70BO>{rest.options.headerTitle}</Text>
-      ) : (
-        <AppLogo style={[COL, LOGO]} height={25} />
-      )}
+        <View flex-4 center>
+          {typeof rest.options.headerTitle === "string" ? (
+            <Text text70BO>{rest.options.headerTitle}</Text>
+          ) : (
+            <AppLogo style={LOGO} height={25} />
+          )}
+        </View>
 
-      <View style={COL}>
-        {right === "settings" && (
-          <TouchableOpacity style={SETTINGS} onPress={() => navigation.navigate("SettingsStack")}>
-            <SettingsIcon />
-          </TouchableOpacity>
-        )}
-        <View />
+        <View centerH flex-1>
+          {right === "settings" ? (
+            <TouchableOpacity style={BUTTON} onPress={() => navigation.navigate("SettingsStack")}>
+              <SettingsIcon />
+            </TouchableOpacity>
+          ) : (
+            <View />
+          )}
+        </View>
       </View>
     </View>
   )
 })
 
 const CONTAINER: ViewStyle = {
-  width: "100%",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  paddingHorizontal: 25,
-  paddingBottom: 15,
-  backgroundColor: color.background,
   borderBottomColor: color.line,
   borderBottomWidth: StyleSheet.hairlineWidth,
 }
 const LOGO: ViewStyle = {
   alignItems: "center",
 }
-const COL: ViewStyle = {
-  minWidth: 25,
-}
-const SETTINGS: ViewStyle = {
-  alignItems: "flex-end",
+const BUTTON: ViewStyle = {
+  flex: 1,
+  width: "100%",
+  height: "100%",
+  flexGrow: 1,
+  alignItems: "center",
+  justifyContent: "center",
 }
