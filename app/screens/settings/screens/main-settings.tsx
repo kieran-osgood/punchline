@@ -90,12 +90,6 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
 
       <Section title="More Information">
         <Divider>
-          <Link url={`/terms-of-service.html`}>Terms of Service</Link>
-        </Divider>
-        <Divider>
-          <Link url={`/privacy-policy.html`}>Privacy Policy</Link>
-        </Divider>
-        <Divider>
           <Link
             external
             url={
@@ -114,29 +108,14 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
           </Link>
         </Divider>
         <Divider>
-          <Link
-            onPress={() => {
-              Alert.alert("Clear Cache", "Confirm you wish you clear data saved to device.", [
-                {
-                  text: "Cancel",
-                  style: "cancel",
-                },
-                {
-                  text: "OK",
-                  onPress: () => AsyncStorage.clear(),
-                },
-              ])
-            }}
-          >
-            Clear Cache Data
-          </Link>
+          <Link url={`/terms-of-service.html`}>Terms of Service</Link>
+        </Divider>
+        <Divider>
+          <Link url={`/privacy-policy.html`}>Privacy Policy</Link>
         </Divider>
         {/* <Divider>
           <Link url={`/data-policy.html`}>Data Policy</Link>
         </Divider> */}
-        <Divider>
-          <BugReport />
-        </Divider>
       </Section>
 
       <Section title="Account">
@@ -146,6 +125,27 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
               <LoginConversion />
             </Divider>
           )}
+          <Divider>
+            <Link
+              onPress={() => {
+                Alert.alert("Clear Cache", "Confirm you wish you clear data saved to device.", [
+                  {
+                    text: "Cancel",
+                    style: "cancel",
+                  },
+                  {
+                    text: "OK",
+                    onPress: () => AsyncStorage.clear(),
+                  },
+                ])
+              }}
+            >
+              Clear Cache Data
+            </Link>
+          </Divider>
+          <Divider>
+            <BugReport />
+          </Divider>
           <LogoutButton />
         </View>
       </Section>

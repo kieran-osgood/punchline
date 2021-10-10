@@ -23,7 +23,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from "react-native-reanimated"
-import { mix, mixColor } from "react-native-redash"
+import { mix } from "react-native-redash"
 import Svg, { Path } from "react-native-svg"
 import { Button, Card, ExpandableSection, Text, ThemeManager, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
@@ -210,7 +210,7 @@ interface ChevronProps {
 }
 const Chevron = ({ progress }: ChevronProps) => {
   const style = useAnimatedStyle(() => ({
-    backgroundColor: mixColor(progress.value, "#525251", "#e45645") as string,
+    // backgroundColor: mixColor(progress.value, "#525251", "#e45645") as string,
     transform: [{ rotateZ: `${mix(progress.value, 0, Math.PI)}rad` }],
   }))
   return (
@@ -220,7 +220,7 @@ const Chevron = ({ progress }: ChevronProps) => {
         height={24}
         viewBox="0 0 24 24"
         fill="none"
-        stroke="white"
+        stroke={ThemeManager.titleColor}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -235,9 +235,6 @@ export default Chevron
 
 const ARROW_CONTAINER: ViewStyle = {
   alignItems: "center",
-  backgroundColor: "#525251",
-  borderRadius: size / 2,
-  borderWidth: 1,
   height: size,
   justifyContent: "center",
   width: size,

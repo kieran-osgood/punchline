@@ -6,6 +6,8 @@ import { Text, TouchableOpacity } from "react-native-ui-lib"
 
 const CONTAINER: ViewStyle = {
   overflow: "hidden",
+  justifyContent: "center",
+  alignSelf: "center",
 }
 
 export interface GradientButtonProps {
