@@ -247,6 +247,3 @@ const TITLE: TextStyle = {
   fontSize: 16,
   fontWeight: "bold",
 }
-const ITEMS: ViewStyle = {
-  overflow: "hidden",
-}

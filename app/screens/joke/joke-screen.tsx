@@ -172,15 +172,6 @@ export const Controls = (props: ButtonsProps) => {
           activeOpacity={0.7}
           iconSource={() => <Skip />}
         />
-        {/* <Button
-          style={ACTION_BUTTON}
-          round
-          onPress={() => {
-            // Open a modal to take the feedbacks!
-          }}
-          activeOpacity={0.7}
-          iconSource={() => <ErrorReportIcon />}
-        /> */}
       </View>
 
       <Button
@@ -212,7 +203,7 @@ const SECONDARY_ACTION_BUTTONS: ViewStyle = {
 }
 export const ACTION_BUTTON: ViewStyle = {
   justifyContent: "center",
-  backgroundColor: "hsl(0, 0%, 93%)",
+  backgroundColor: "hsl(0, 0%, 99%)",
   borderRadius: 75,
   shadowColor: "grey",
   shadowOpacity: 0.5,
