@@ -127,12 +127,13 @@ const JokeCard = ({
 export default JokeCard
 
 const colors = [
-  { background: "hsl(43, 100%, 54%)", text: color.palette.black },
-  { background: "hsl(337, 62%, 65%)", text: color.palette.black },
-  { background: "hsl(213, 100%, 50%)", text: color.line },
-  { background: "hsl(268, 100%, 54%)", text: color.line },
-  { background: "hsl(336, 100%, 45%)", text: color.line },
-  { background: "hsl(234, 89%, 60%)", text: color.line },
+  { background: "hsl(43, 100%, 100%)", text: color.palette.black },
+  // { background: "hsl(43, 100%, 54%)", text: color.palette.black },
+  // { background: "hsl(337, 62%, 65%)", text: color.palette.black },
+  // { background: "hsl(213, 100%, 50%)", text: color.line },
+  // { background: "hsl(268, 100%, 54%)", text: color.line },
+  // { background: "hsl(336, 100%, 45%)", text: color.line },
+  // { background: "hsl(234, 89%, 60%)", text: color.line },
 ]
 
 const randomColor = (): typeof colors[0] => colors[Math.floor(colors.length * Math.random())]
