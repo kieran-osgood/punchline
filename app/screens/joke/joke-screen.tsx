@@ -24,23 +24,27 @@ export const JokeScreen = observer(function JokeScreen() {
   const store = useStores().apiStore.jokeApi
   // React.useEffect(() => {
   // add in logic to pull and set next joke as the top joke
-  //   setQuery((store) =>
-  //     store.queryJokes(
-  //       {
-  //         input: {
-  //           blockedCategoryIds: store.root.settings.blockedCategoryIds,
-  //           jokeLength: store.root.settings.jokeLengthMaxEnum,
-  //           deepLinkedJokeId: route.params?.jokeId,
-  //           profanityFilter: store.root.settings.profanityFilter,
-  //         },
+  // if (!store.deck.get(route.params.jokeId).viewed &&
+  //   store.topOfDeckJoke.id !== route.params?.jokeId) {
+  //     store.setTopOfDeckJoke(route.params.jokeId)
+  //   }
+  // setQuery((store) =>
+  //   store.queryJokes(
+  //     {
+  //       input: {
+  //         blockedCategoryIds: store.root.settings.blockedCategoryIds,
+  //         jokeLength: store.root.settings.jokeLengthMaxEnum,
+  //         deepLinkedJokeId: route.params?.jokeId,
+  //         profanityFilter: store.root.settings.profanityFilter,
   //       },
-  //       (j) =>
-  //         j.nodes((n) =>
-  //           n.id.body.title.negativeRating.positiveRating.categories((c) => c.id.image.name),
-  //         ),
-  //       { fetchPolicy: "no-cache" },
-  //     ),
-  //   )
+  //     },
+  //     (j) =>
+  //       j.nodes((n) =>
+  //         n.id.body.title.negativeRating.positiveRating.categories((c) => c.id.image.name),
+  //       ),
+  //     { fetchPolicy: "no-cache" },
+  //   ),
+  // )
   // }, [route.params?.jokeId, setQuery])
 
   const onSwipe = React.useCallback(
