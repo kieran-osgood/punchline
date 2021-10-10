@@ -80,7 +80,7 @@ export const MainNavigator = observer(function MainNavigator() {
             name="UserProfileTabs"
             component={UserProfileTabs}
             options={{
-              header: (props) => <Header {...props} left="back" />,
+              header: (props) => <Header {...props} right="back" />,
               gestureDirection: "horizontal-inverted",
               cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
             }}

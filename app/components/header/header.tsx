@@ -3,16 +3,16 @@ import { StackHeaderProps, StackNavigationProp } from "@react-navigation/stack"
 import { AccountIcon, BackArrowIcon, SettingsIcon } from "images"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native"
+import { StyleSheet, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { Text, View } from "react-native-ui-lib"
+import { Text, TouchableOpacity, View } from "react-native-ui-lib"
 import { color } from "theme"
 import { AppLogo } from "../app-logo/app-logo"
 
 export type HeaderProps = {
   navigation: StackNavigationProp<ParamListBase>
   left?: "account" | "back"
-  right?: "settings"
+  right?: "settings" | "back"
 } & StackHeaderProps
 
 /**
@@ -21,15 +21,14 @@ export type HeaderProps = {
 export const Header = observer(function Header({ navigation, left, right, ...rest }: HeaderProps) {
   const insets = useSafeAreaInsets()
   const style = { paddingTop: insets.top > 25 ? insets.top : 25 }
+
+  const onPress = () => navigation.goBack()
+
   return (
     <View style={[CONTAINER, style]} backgroundColor={color.background}>
-      <View height={40} row paddingB-s1>
+      <View height={40} row paddingB-s1 marginH-s1>
         <View flex-1 center>
-          {left === "back" && (
-            <TouchableOpacity style={BUTTON} onPress={() => navigation.goBack()}>
-              <BackArrowIcon />
-            </TouchableOpacity>
-          )}
+          {left === "back" && <BackButton {...{ onPress }} />}
           {left === "account" && (
             <TouchableOpacity style={BUTTON} onPress={() => navigation.navigate("UserProfileTabs")}>
               <AccountIcon />
@@ -53,6 +52,8 @@ export const Header = observer(function Header({ navigation, left, right, ...res
           ) : (
             <View />
           )}
+
+          {right === "back" && <BackButton reverse {...{ onPress }} />}
         </View>
       </View>
     </View>
@@ -73,4 +74,14 @@ const BUTTON: ViewStyle = {
   flexGrow: 1,
   alignItems: "center",
   justifyContent: "center",
+}
+
+const BackButton = ({ reverse, onPress }: { reverse?: boolean; onPress: () => void }) => {
+  return (
+    <TouchableOpacity row style={BUTTON} {...{ onPress }}>
+      {reverse && <Text text80>Back</Text>}
+      <BackArrowIcon {...{ reverse }} />
+      {!reverse && <Text text80>Back</Text>}
+    </TouchableOpacity>
+  )
 }
