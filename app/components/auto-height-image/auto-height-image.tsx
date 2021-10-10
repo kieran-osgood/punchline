@@ -5,6 +5,7 @@ import RNAutoHeightImage, { AutoHeightImageProps } from "react-native-auto-heigh
 import { View } from "react-native-ui-lib"
 
 const CONTAINER: ViewStyle = {
+  width: "100%",
   justifyContent: "center",
 }
 
@@ -28,7 +29,7 @@ export const AutoHeightImage = observer(function AutoHeightImage(
 
   return (
     <View
-      style={[CONTAINER, { width: "100%" }, containerStyle]}
+      style={[CONTAINER, containerStyle]}
       onLayout={(event) => setWrapperWidth(event.nativeEvent.layout.width)}
     >
       <RNAutoHeightImage width={wrapperWidth} {...{ style }} {...rest} />

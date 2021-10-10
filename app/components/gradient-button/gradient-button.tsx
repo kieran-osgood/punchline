@@ -21,7 +21,7 @@ export interface GradientButtonProps {
  * Describe your component here
  */
 export const GradientButton = observer(function GradientButton(props: GradientButtonProps) {
-  const { style, onPress, label } = props
+  const { style, onPress, label, ...rest } = props
 
   return (
     <TouchableOpacity
@@ -31,6 +31,7 @@ export const GradientButton = observer(function GradientButton(props: GradientBu
       br10
       activeOpacity={0.7}
       {...{ onPress }}
+      {...rest}
     >
       <GradientBackground absolute />
       <Text white text70BO>

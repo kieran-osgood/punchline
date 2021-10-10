@@ -9,12 +9,13 @@ import * as Sentry from "@sentry/react-native"
 import { FallbackRender } from "@sentry/react/dist/errorboundary"
 import { StoreContext as GraphQLStoreContext } from "app/graphql/reactUtils"
 import { RootStore, RootStoreProvider, setupRootStore, useStores } from "app/models"
+import { AutoHeightImage, GradientButton } from "components"
 import { observer } from "mobx-react-lite"
 import React, { useEffect, useState } from "react"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import RNRestart from "react-native-restart"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
-import { Button, ConnectionStatusBar, Text, View } from "react-native-ui-lib"
+import { ConnectionStatusBar, Text, View } from "react-native-ui-lib"
 import { ToggleStorybook } from "../storybook/toggle-storybook"
 import "./i18n"
 import {
@@ -125,13 +126,17 @@ const ErrorFallback: FallbackRender = ({ resetError }) => {
 
   return (
     <View flex-1 center>
-      <View center width={widthPercentageToDP("70%")}>
-        <Text text20BO>{"Oops"}</Text>
-        <Text center marginT-s3>
-          {"Looks like that punchline flopped!\n"}
-          {"We've logged this to our team, so please try again.\n\n"}
+      <View flex-1 center width={widthPercentageToDP("90%")}>
+        <AutoHeightImage
+          source={require("assets/images/look-for-errors.png")}
+          containerStyle={{ borderWidth: 0, alignSelf: "flex-end" }}
+        />
+        <Text text30BO>{"Not all Punchlines are equal"}</Text>
+        <Text marginT-s3>
+          {"Looks like Kieran has some work to do!\n"}
+          {"This has been logged and we'll get it fixed soon."}
         </Text>
-        <Button label="Restart" marginT-s3 {...{ onPress }} />
+        <GradientButton label="Restart" marginT-s3 {...{ onPress }} />
       </View>
     </View>
   )
