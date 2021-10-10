@@ -150,25 +150,26 @@ workflows:
               only:
                 - develop
       # Analyze the Javascript using ESLint, and Jest
-      # - analyse_js:
-      #     requires:
-      #       - checkout_code
-      # Builds debug android apk
+      - analyse_js:
+          requires:
+            - checkout_code
+      # # Builds debug android apk
+      # Probably dont need this?
       # - build_android_debug:
       #     requires:
       #         - checkout_code
       #         - analyse_js
-      # - e2e_android_debug:
-      #     requires: 
-      #         - build_android_debug
-      # - decrypt_keystore:
-      #     requires:
-      #       - e2e_android_debug
+      - e2e_android_debug:
+          requires: 
+              - build_android_debug
+      - decrypt_keystore:
+          requires:
+            - e2e_android_debug
       # Builds android aab
-      # - build_android_release:
-      #     requires:
-      #         - decrypt_keystore
-      #         - e2e_android_debug
+      - build_android_release:
+          requires:
+              - decrypt_keystore
+              - e2e_android_debug
       # Build and test the iOS app in release mode
       - rn/ios_build_and_test:
           yarn_cache: true
@@ -183,7 +184,7 @@ workflows:
           detox_configuration: "ios.sim.release"
           requires:
             - checkout_code
-            # - analyse_js
+            - analyse_js
 
   # Only runs on the master branch 
   # master:
