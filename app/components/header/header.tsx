@@ -26,7 +26,7 @@ export const Header = observer(function Header({ navigation, left, right, ...res
 
   return (
     <View style={[CONTAINER, style]} backgroundColor={color.background}>
-      <View height={40} row paddingB-s1 marginH-s1>
+      <View height={40} row paddingB-s1>
         <View flex-1 center>
           {left === "back" && <BackButton {...{ onPress }} />}
           {left === "account" && (
@@ -78,7 +78,13 @@ const BUTTON: ViewStyle = {
 
 const BackButton = ({ reverse, onPress }: { reverse?: boolean; onPress: () => void }) => {
   return (
-    <TouchableOpacity row style={BUTTON} {...{ onPress }}>
+    <TouchableOpacity
+      row
+      style={BUTTON}
+      {...{ onPress }}
+      marginR-s3={reverse}
+      marginL-s3={!reverse}
+    >
       {reverse && <Text text80>Back</Text>}
       <BackArrowIcon {...{ reverse }} />
       {!reverse && <Text text80>Back</Text>}
