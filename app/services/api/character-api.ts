@@ -1,7 +1,7 @@
 import { ApiResponse } from "apisauce"
 import { Api } from "./api"
-import { GetCharactersResult } from "./api.types"
 import { getGeneralApiProblem } from "./api-problem"
+import { GetCharactersResult } from "./api.types"
 
 const API_PAGE_SIZE = 50
 
@@ -30,7 +30,6 @@ export class CharacterApi {
 
       return { kind: "ok", characters }
     } catch (e) {
-      __DEV__ && console.tron.log(e.message)
       return { kind: "bad-data" }
     }
   }

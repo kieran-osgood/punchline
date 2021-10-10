@@ -85,11 +85,10 @@ export const Link = ({ jokeId, children, style = {}, type = "default" }: LinkPro
 
   const onPress = async () => {
     try {
-      const res = await Share.open({
+      await Share.open({
         title: "",
         url: `${API_URL}/share/joke?id=${jokeId}`,
       })
-      console.log({ res })
     } catch (error) {
       Sentry.captureException(error)
     }

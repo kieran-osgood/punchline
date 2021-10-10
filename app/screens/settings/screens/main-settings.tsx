@@ -191,7 +191,7 @@ export const Link = ({
         if (supported) {
           Linking.openURL(fullUrl)
         } else {
-          console.log("Don't know how to open URI: " + fullUrl)
+          Sentry.captureMessage("Don't know how to open URI: " + fullUrl)
         }
       })
     }

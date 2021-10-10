@@ -96,11 +96,6 @@ export const UserStoreModel = types
           { fetchPolicy: "no-cache" },
         )
       } catch (err) {
-        const { message, name, stack } = err as Error
-        console.log("message: ", message)
-        console.log("name: ", name)
-        console.log("stack: ", stack)
-
         self.updateUser(null)
         auth().signOut()
         Sentry.captureException(err)
