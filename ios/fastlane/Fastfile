@@ -27,6 +27,8 @@ lane :bump_and_commit_versions do
   )
   commit_version_bump(
     message: "[fastlane] Version Bump", # create a commit with a custom message
+    xcodeproj: "punchline.xcodeproj", # optional, if you have multiple Xcode project files, you must specify your main project here
+
   )
 end
 

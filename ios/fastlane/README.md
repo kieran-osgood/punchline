@@ -15,6 +15,11 @@ Install _fastlane_ using
 or alternatively using `brew install fastlane`
 
 # Available Actions
+### bump_and_commit_versions
+```
+fastlane bump_and_commit_versions
+```
+
 ### generate_new_icons
 ```
 fastlane generate_new_icons
@@ -25,9 +30,9 @@ fastlane generate_new_icons
 fastlane beta
 ```
 Builds a release and pushes to testflight
-### build_adhoc_ios
+### build_appstore_ios
 ```
-fastlane build_adhoc_ios
+fastlane build_appstore_ios
 ```
 Run tests and build the app
 ### e2e_release
