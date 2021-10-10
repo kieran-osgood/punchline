@@ -1,3 +1,4 @@
+import { GradientButton } from "components"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { Button, Text, ThemeManager, View } from "react-native-ui-lib"
@@ -27,13 +28,17 @@ export const SubSlide = observer(function SubSlide(props: SubSlideProps) {
       <Text marginB-s8 center>
         {description}
       </Text>
-      <Button
-        label={last ? "Let's get started" : "Next"}
-        backgroundColor={last ? ThemeManager.primaryColor : color.line}
-        color={color.text}
-        labelStyle={{ color: last ? ThemeManager.CTATextColor : ThemeManager.titleColor }}
-        {...{ onPress }}
-      />
+      {last ? (
+        <GradientButton label="Let's get started" {...{ onPress }} />
+      ) : (
+        <Button
+          label={"Next"}
+          backgroundColor={color.line}
+          color={color.text}
+          labelStyle={{ color: ThemeManager.titleColor }}
+          {...{ onPress }}
+        />
+      )}
     </View>
   )
 })
