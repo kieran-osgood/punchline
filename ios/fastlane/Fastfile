@@ -20,13 +20,13 @@ before_all do
   setup_circle_ci
 end
 
-private lane :bump_and_commit_version do
+lane :bump_and_commit_versions do
   increment_build_number(xcodeproj: "punchline.xcodeproj")
-  commit_version_bump(
-    message: "Version Bump", # create a commit with a custom message
-  )
   increment_version_number_in_plist(
     version_number: $package["version"],
+  )
+  commit_version_bump(
+    message: "[fastlane] Version Bump", # create a commit with a custom message
   )
 end
 

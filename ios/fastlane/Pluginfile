@@ -5,3 +5,4 @@
 gem 'fastlane-plugin-sentry'
 gem 'fastlane-plugin-appicon'
 gem 'fastlane-plugin-load_json'
+gem 'fastlane-plugin-versioning'
