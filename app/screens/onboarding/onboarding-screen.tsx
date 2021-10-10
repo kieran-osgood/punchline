@@ -1,6 +1,4 @@
 import { useStores } from "app/models"
-import { OnboardingBookmarks } from "assets/images/onboarding-bookmarks"
-import { OnboardingUserPosts } from "assets/images/onboarding-user-posts"
 import { observer } from "mobx-react-lite"
 import React, { useRef } from "react"
 import { Dimensions, StyleSheet, ViewStyle } from "react-native"
@@ -13,10 +11,11 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
 } from "react-native-reanimated"
+import { widthPercentageToDP } from "react-native-responsive-screen"
 import { View } from "react-native-ui-lib"
 import {
+  AutoHeightImage,
   Dot,
-  OnboardingCategorySetting,
   Screen,
   Slide as SlideComponent,
   SLIDE_HEIGHT,
@@ -45,48 +44,56 @@ export const slides: Slide[] = [
     description: "Filter out the types of jokes you don't like in the settings page.",
     color: "#BFEAF5",
     Picture: observer(function Picture() {
-      return <OnboardingCategorySetting style={SLIDE_1} />
+      return (
+        <AutoHeightImage
+          containerStyle={SLIDE_1}
+          source={require("assets/images/onboarding-categories.png")}
+        />
+      )
     }),
   },
   {
     title: "Bookmarks",
     subtitle: "Save the best for later!",
     description: "Save your favourites to share later from your history.",
-    color: "#BEECC4",
+    color: "#FF7F50",
 
     Picture: function Picture() {
-      return <OnboardingBookmarks containerStyle={SLIDE_2} />
+      return (
+        <AutoHeightImage
+          containerStyle={SLIDE_2}
+          source={require("assets/images/onboarding-bookmarks.png")}
+        />
+      )
     },
   },
   {
     title: "Coming Soon!",
     subtitle: "Publish your own",
     description: "We're working on a user submission section, so stay tuned!",
-    color: "#FFE4D9",
+    color: "#3742FA",
 
     Picture: function Picture() {
-      return <OnboardingUserPosts containerStyle={SLIDE_3} />
+      return (
+        <AutoHeightImage
+          containerStyle={SLIDE_3}
+          source={require("assets/images/onboarding-userposts.png")}
+        />
+      )
     },
   },
 ]
 
 const SLIDE_1: ViewStyle = {
-  justifyContent: "center",
-  flex: 1,
-  marginLeft: 75,
-  marginRight: 10,
+  marginLeft: widthPercentageToDP("15%"),
 }
 const SLIDE_2: ViewStyle = {
-  marginRight: 75,
-  marginLeft: 20,
+  marginRight: widthPercentageToDP("20%"),
   justifyContent: "center",
   flex: 1,
 }
 const SLIDE_3: ViewStyle = {
-  marginRight: 30,
-  marginLeft: 100,
-  justifyContent: "center",
-  flex: 1,
+  marginLeft: widthPercentageToDP("5%"),
 }
 
 export const OnboardingScreen = observer(function OnboardingScreen() {

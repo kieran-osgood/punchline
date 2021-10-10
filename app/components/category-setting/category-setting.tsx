@@ -1,6 +1,5 @@
 import { categoryModelPrimitives, CategoryModelType, nodes, useQuery } from "app/graphql"
 import { SortEnumType } from "app/graphql/SortEnumTypeEnum"
-import { useStores } from "app/models"
 import { Blocked, SIZE } from "assets/images/blocked"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
@@ -29,26 +28,6 @@ export const CategorySetting = observer(function CategorySetting(props: Category
 
   return <CategoryMapping categories={[...data.categories.nodes.values()]} {...props} />
 })
-export interface OnboardingCategorySettingProps {
-  /**
-   * An optional style override useful for padding & margin.
-   */
-  style?: ViewStyle
-}
-export const OnboardingCategorySetting = observer(function OnboardingCategorySetting(
-  props: CategorySettingProps,
-) {
-  const stores = useStores()
-
-  if (stores.onboarding.randomCategoriesBlocked.length === 0) return null
-
-  return (
-    <View style={props.style}>
-      <CategoryMapping categories={stores.onboarding.randomCategoriesBlocked} categoriesOnly />
-    </View>
-  )
-})
-
 export interface CategoryMappingProps {
   /**
    * An optional style override useful for padding & margin.
