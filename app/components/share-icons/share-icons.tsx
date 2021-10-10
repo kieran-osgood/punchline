@@ -155,96 +155,110 @@ export const JokeReportModal = (props: JokeReportModalProps) => {
   }
 
   return (
-    <>
-      <Modal
-        isVisible={isModalVisible}
-        // add alert to confirm closing?
-        onBackdropPress={() => setModalVisible(false)}
-        onSwipeComplete={() => setModalVisible(false)}
-        avoidKeyboard
-      >
-        <View bg-white br40 height="60%">
-          <View paddingH-s5 paddingV-s5 flex-1>
-            <View row width="100%" spread top>
-              <View />
-              <Button
-                label="x"
-                onPress={toggleModal}
-                round
-                backgroundColor="transparent"
-                iconSource={() => <Cross />}
-                style={PADDING_0}
-              />
+    <Modal
+      isVisible={isModalVisible}
+      // add alert to confirm closing?
+      onBackdropPress={() => setModalVisible(false)}
+      avoidKeyboard
+      style={
+        {
+          // flex: 1,
+          //  height: heightPercentageToDP("70%")
+        }
+      }
+    >
+      <View bg-white br40>
+        <View paddingH-s5 paddingV-s5>
+          <View row width="100%" spread top>
+            <View />
+            <Button
+              label="x"
+              onPress={toggleModal}
+              round
+              backgroundColor="transparent"
+              iconSource={() => <Cross />}
+              style={PADDING_0}
+            />
+          </View>
+
+          {/* Initially displayed UI */}
+          <Animated.View style={style}>
+            <View>
+              <Text text40BO>Report</Text>
+              <Text
+                marginT-s2
+                text90L
+                black
+                highlightString={jokeApi.topOfDeckJoke.id}
+                highlightStyle={{
+                  color: Colors.grey20,
+                }}
+              >
+                Id: {jokeApi.topOfDeckJoke.id}
+              </Text>
+              <Text
+                text90L
+                black
+                highlightString={
+                  jokeApi.topOfDeckJoke.title ?? "NEVER GONNA GIVE YOU UP NEVER GONNA LET YOU DOWN"
+                }
+                highlightStyle={{
+                  color: Colors.grey20,
+                }}
+              >
+                Subject: {jokeApi.topOfDeckJoke.title}
+              </Text>
             </View>
 
-            {/* Initially displayed UI */}
-            <Animated.View style={style}>
-              <View>
-                <Text text40BO>Report</Text>
-                <Text
-                  marginT-s2
-                  text90L
-                  black
-                  highlightString={jokeApi.topOfDeckJoke.id}
-                  highlightStyle={{
-                    color: Colors.grey20,
-                  }}
-                >
-                  Id: {jokeApi.topOfDeckJoke.id}
-                </Text>
-                <Text
-                  text90L
-                  black
-                  highlightString={
-                    jokeApi.topOfDeckJoke.title ??
-                    "NEVER GONNA GIVE YOU UP NEVER GONNA LET YOU DOWN"
-                  }
-                  highlightStyle={{
-                    color: Colors.grey20,
-                  }}
-                >
-                  Subject: {jokeApi.topOfDeckJoke.title}
-                </Text>
+            <View marginT-s3>
+              <Text text80 marginB-s3>
+                Provide a description of what this report is regarding.
+              </Text>
+              <View style={TEXT_AREA_CONTAINER} paddingH-s2 marginB-s4 height={150}>
+                <TextArea
+                  placeholder="Describe the issue"
+                  value={text}
+                  onChangeText={setText}
+                  numberOfLines={3}
+                />
               </View>
+              <Text text90L marginB-s3>
+                Please note details provided here will be reviewed by moderators, you will not be
+                contacted of the result.
+              </Text>
 
-              <View marginT-s3>
-                <Text text80 marginB-s3>
-                  Provide a description of what this report is regarding.
-                </Text>
-                <View style={TEXT_AREA_CONTAINER} paddingH-s2 marginB-s4 height={150}>
-                  <TextArea
-                    placeholder="Describe the issue"
-                    value={text}
-                    onChangeText={setText}
-                    numberOfLines={3}
-                  />
-                </View>
-                <Text text90L marginB-s3>
-                  Please note details provided here will be reviewed by moderators, you will not be
-                  contacted of the result.
-                </Text>
-                <Button label="Submit" disabled={!text} onPress={submit} />
+              <View row spread>
+                <Button
+                  label="Cancel"
+                  onPress={() => setModalVisible(false)}
+                  outline
+                  br10
+                  outlineColor="black"
+                  color="black"
+                  flex-1
+                />
+                <Button label="Submit" disabled={!text} onPress={submit} br10 flex-1 marginL-s1 />
               </View>
-            </Animated.View>
-            {/* Only visible after submiting the form */}
-            <Animated.View style={[FORM_SUBMITTED, style2]}>
-              <View width="95%" centerH spread style={FORM_SUBMITTED_CONTAINER}>
-                <Success width="50%" />
-                <View center>
-                  <Text text50BO marginT-s5>
-                    Report Received
-                  </Text>
-                  <Text marginT-s3>
-                    Thank you for reporting this, and apologies for any inconvenience caused.
-                  </Text>
-                </View>
+            </View>
+          </Animated.View>
+          {/* Only visible after submiting the form */}
+          <Animated.View style={[FORM_SUBMITTED, style2]}>
+            <View width="95%" centerH spread style={FORM_SUBMITTED_CONTAINER}>
+              <Success width="50%" />
+              <View center>
+                <Text text50BO marginT-s5>
+                  Report Received
+                </Text>
+                <Text marginT-s3>
+                  Thank you for reporting this, and apologies for any inconvenience caused.
+                </Text>
               </View>
-              <Button label="Close" onPress={() => setModalVisible(false)} marginT-s5 />
-            </Animated.View>
-          </View>
+            </View>
+            <Button label="Close" onPress={() => setModalVisible(false)} marginT-s5 />
+          </Animated.View>
         </View>
-      </Modal>
-    </>
+      </View>
+    </Modal>
   )
 }
 
