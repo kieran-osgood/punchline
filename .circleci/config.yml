@@ -155,10 +155,10 @@ workflows:
             - checkout_code
       # # Builds debug android apk
       # Probably dont need this?
-      # - build_android_debug:
-      #     requires:
-      #         - checkout_code
-      #         - analyse_js
+      - build_android_debug:
+          requires:
+              - checkout_code
+              - analyse_js
       - e2e_android_debug:
           requires: 
               - build_android_debug
