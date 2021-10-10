@@ -116,8 +116,8 @@ export type SettingsType = Instance<typeof SettingsModel>
 export interface Settings extends SettingsType {}
 type SettingsSnapshotType = SnapshotOut<typeof SettingsModel>
 export interface SettingsSnapshot extends SettingsSnapshotType {}
-export const createSettingsDefaultModel = () =>
-  types.optional(SettingsModel, {
+export function createSettingsDefaultModel() {
+  return types.optional(SettingsModel, {
     blockedCategories: [],
     profanityFilter: true,
     notifications: {
@@ -131,3 +131,4 @@ export const createSettingsDefaultModel = () =>
       [JokeLength.LARGE]: true,
     },
   })
+}

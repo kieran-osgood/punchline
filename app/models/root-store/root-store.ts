@@ -12,10 +12,10 @@ import { createUserStoreDefaultModel } from "../user-store/user-store"
  * A RootStore model.
  */
 export const RootStoreModelBase = types.model("RootStore").props({
-  userStore: createUserStoreDefaultModel(),
-  settings: createSettingsDefaultModel(),
-  onboarding: createOnboardingDefaultModel(),
-  apiStore: createApiStoreDefaultModel(),
+  userStore: types.late(() => createUserStoreDefaultModel()),
+  settings: types.late(() => createSettingsDefaultModel()),
+  onboarding: types.late(() => createOnboardingDefaultModel()),
+  apiStore: types.late(() => createApiStoreDefaultModel()),
 })
 
 export const RootStoreModel = RootStoreModelBase.actions((self) => {

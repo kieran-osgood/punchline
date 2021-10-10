@@ -1,6 +1,5 @@
 // we always make sure 'react-native' gets included first
 import "react-native"
-
 // libraries to mock
 import "./mock-async-storage"
 import "./mock-i18n"
@@ -15,13 +14,13 @@ declare global {
 // global.window = {};
 // global.window = global;
 
-jest.mock('@react-native-firebase/admob', () => ({
+jest.mock("@react-native-firebase/admob", () => ({
   BannerAd: jest.fn(() => null),
   BannerAdSize: jest.fn(),
   TestIds: jest.fn(),
 }))
 
-jest.mock('@react-native-firebase/app', () => ({
+jest.mock("@react-native-firebase/app", () => ({
   __esModule: true, // this property makes it work
   getFirebaseRoot: jest.fn(),
   onAuthStateChanged: jest.fn(),
@@ -31,12 +30,12 @@ jest.mock('@react-native-firebase/app', () => ({
 }))
 
 // curried function fixes TypeError: (0 , _auth.default) is not a function
-jest.mock('@react-native-firebase/auth', () => () => ({
+jest.mock("@react-native-firebase/auth", () => () => ({
   onAuthStateChanged: jest.fn(),
   signOut: jest.fn(),
 }))
 
-jest.mock('@react-native-community/google-signin', () => ({
+jest.mock("@react-native-community/google-signin", () => ({
   GoogleSignin: {
     configure: jest.fn().mockImplementation(() => {
       return null
@@ -46,7 +45,7 @@ jest.mock('@react-native-community/google-signin', () => ({
 }))
 
 // Silence the warning: Animated: `useNativeDriver` is not supported because the native animated module is missing
-jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper')
+jest.mock("react-native/Libraries/Animated/NativeAnimatedHelper")
 
 // jest.mock('react-native-reanimated', () => {
 //   const Reanimated = require('react-native-reanimated/mock')
@@ -57,3 +56,5 @@ jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper')
 
 //   return Reanimated
 // })
+
+jest.mock("react-native-share", () => ({}))

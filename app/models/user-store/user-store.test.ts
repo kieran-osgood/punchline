@@ -2,14 +2,26 @@ import { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import { UserData, UserModel } from "app/models/user/user"
 import { UserStoreModel } from "./user-store"
 
+const constantDate = new Date("Sun Oct 23 1994 20:11:15 GMT+0100 (British Summer Time)")
+
 test("can be created without any user", () => {
-  const instance = UserStoreModel.create({})
+  const instance = UserStoreModel.create({
+    onboardingComplete: false,
+    goodJokeCount: 0,
+    lastDisplayedReviewPrompt: constantDate,
+    user: null,
+  })
   expect(instance).toMatchSnapshot()
 })
 
 test("can be created with user", () => {
   const user = UserModel.create(UserData)
-  const store = UserStoreModel.create({ user })
+  const store = UserStoreModel.create({
+    onboardingComplete: false,
+    goodJokeCount: 0,
+    lastDisplayedReviewPrompt: constantDate,
+    user,
+  })
 
   expect(store).toMatchSnapshot()
 })
@@ -46,7 +58,13 @@ const FirebaseUserCredential: FirebaseAuthTypes.User = {
 
 test("can updateUser with FirebaseAuthTypes.User object", () => {
   const user = UserModel.create(UserData)
-  const store = UserStoreModel.create({ user })
+  const store = UserStoreModel.create({
+    onboardingComplete: false,
+    goodJokeCount: 0,
+    lastDisplayedReviewPrompt: constantDate,
+    user,
+  })
+
   store.updateUser(FirebaseUserCredential)
   expect(store).toMatchSnapshot()
 })

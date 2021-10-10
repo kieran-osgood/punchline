@@ -34,6 +34,7 @@ module.exports = {
         app: "./app",
       }
     }],
+    '@babel/plugin-transform-modules-commonjs',
     // NOTE: REANIMATED HAS TO BE LAST
     'react-native-reanimated/plugin',
   ],

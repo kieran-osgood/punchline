@@ -1,7 +1,7 @@
-import { createSettingsDefaultModel } from "./settings"
+import { createSettingsDefaultModel } from "app/models/settings/settings"
 
 test("can be created", () => {
   const instance = createSettingsDefaultModel()
-
-  expect(instance).toBeTruthy()
+  const settings = instance.create()
+  expect(settings).toBeTruthy()
 })

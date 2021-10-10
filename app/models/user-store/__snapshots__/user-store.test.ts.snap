@@ -2,6 +2,9 @@
 
 exports[`can be created with user 1`] = `
 Object {
+  "goodJokeCount": 0,
+  "lastDisplayedReviewPrompt": 782939475000,
+  "onboardingComplete": false,
   "user": Object {
     "displayName": "",
     "email": "",
@@ -21,12 +24,18 @@ Object {
 
 exports[`can be created without any user 1`] = `
 Object {
+  "goodJokeCount": 0,
+  "lastDisplayedReviewPrompt": 782939475000,
+  "onboardingComplete": false,
   "user": null,
 }
 `;
 
 exports[`can updateUser with FirebaseAuthTypes.User object 1`] = `
 Object {
+  "goodJokeCount": 0,
+  "lastDisplayedReviewPrompt": 782939475000,
+  "onboardingComplete": false,
   "user": Object {
     "displayName": "display me",
     "email": "email@gmail.com",
