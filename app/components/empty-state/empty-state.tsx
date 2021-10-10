@@ -37,7 +37,7 @@ export const EmptyState = observer(function EmptyState(props: EmptyStateProps) {
       ) : (
         <Body {...{ type }} />
       )}
-      <Button marginT-s5 label={type ? EmptyStates[type].ctaText : ctaText} {...{ onPress }} />
+      <Button marginT-s5 br10 label={type ? EmptyStates[type].ctaText : ctaText} {...{ onPress }} />
     </View>
   )
 })
