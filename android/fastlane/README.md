@@ -15,12 +15,15 @@ Install _fastlane_ using
 or alternatively using `brew install fastlane`
 
 # Available Actions
+### bump_and_commit_versions
+```
+fastlane bump_and_commit_versions
+```
+Increments internal build number tracking (different than version)
 ### build_debug
 ```
 fastlane build_debug
 ```
-Increments internal build number tracking (different than version)
-
 Build debug android configuration
 ### e2e_debug
 ```

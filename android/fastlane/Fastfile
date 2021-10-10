@@ -31,6 +31,7 @@ lane :bump_and_commit_versions do
   increment_version_code
   commit_android_version_bump(
     app_folder_name: "app",
+    message: "[fastlane:android] Version Bump",
   )
 end
 
