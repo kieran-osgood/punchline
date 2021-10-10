@@ -25,6 +25,14 @@ $slack_url = "https://hooks.slack.com/services/T04UQUL7A/B022Q9HGPCG/ydBGPnrE965
 $symbols_zip = "app/build/symbols.zip"
 
 desc "Increments internal build number tracking (different than version)"
+lane :bump_and_commit_versions do
+  ## Bump android.defaultConfig.versionCode
+  # bump_build_number
+  increment_version_code
+  commit_android_version_bump(
+    app_folder_name: "app",
+  )
+end
 
 desc "Build debug android configuration"
 lane :build_debug do
@@ -61,21 +69,14 @@ end
 
 desc "Builds a release and pushes to beta track on play store"
 lane :beta do
-  ## Clean build folder
-  # gradle(
-  #   task: "clean",
-  # )
-
   zip(
     path: "app/build/outputs/",
     output_path: $symbols_zip,
   )
 
-  ## Bump android.defaultConfig.versionCode
-  # bump_build_number
-  increment_version_code
+  bump_and_commit_versions
 
-  ## Do the bundle of the application
+  # Do the bundle of the application
   build_android_release_bundle
 
   ## Upload Android App Bundle to PlayStore like Internal testing Release
