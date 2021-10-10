@@ -43,6 +43,7 @@ export const TroubleSigningInButton = observer(function TroubleSigningInButton(
       text80BO
       link
       marginB-s5
+      marginT-s3
       linkColor="white"
       labelStyle={LABEL}
       onPress={() => handleTroubleLoggingIn()}
