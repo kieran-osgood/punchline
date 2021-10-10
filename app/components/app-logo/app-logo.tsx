@@ -24,6 +24,4 @@ export const AppLogo = observer(function AppLogo(props: AppLogoProps) {
   )
 })
 
-const CONTAINER: ViewStyle = {
-  opacity: 0.75,
-}
+const CONTAINER: ViewStyle = {}

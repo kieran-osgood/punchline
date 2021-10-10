@@ -24,7 +24,7 @@ export function Punchline(props: SVGProps & { color: string }) {
           stroke={color}
           strokeWidth={2.197}
         />
-        <G opacity={0.5}>
+        <G opacity={color !== "#000" ? 0.9 : 0.5}>
           <G>
             <Ellipse
               cx={833.954}

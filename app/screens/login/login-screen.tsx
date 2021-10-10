@@ -49,10 +49,10 @@ export const LoginScreen = observer(function LoginScreen() {
           <AppLogo
             width={widthPercentageToDP("100%")}
             height={widthPercentageToDP("100%") / 5}
-            color="hsla(255, 71%, 98%, 1)"
+            color="hsla(355, 100%,100%, 1)"
           />
         </View>
-        <View flex-1 center width="100%">
+        <View flex-1 centerH width="100%">
           <Text white text90BO>
             {"By signing in you give consent to our "}
             <Link url={`/terms-of-service.html`} inlineText>
