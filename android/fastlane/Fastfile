@@ -82,8 +82,7 @@ lane :beta do
 
   ## Upload Android App Bundle to PlayStore like Internal testing Release
   upload_to_play_store(
-    # track: "alpha", # this goes through review process, is a public alpha
-    release_status: "draft", ## <http://docs.fastlane.tools/actions/upload_to_play_store/#parameters>
+    track: "internal",
     skip_upload_apk: true,
     version_name: $package["version"],
     mapping: $symbols_zip,
@@ -124,7 +123,6 @@ lane :playstore do
 
   ## Upload Android App Bundle to PlayStore like Internal testing Release
   upload_to_play_store(
-    track: "internal",
     release_status: "draft", ## <http://docs.fastlane.tools/actions/upload_to_play_store/#parameters>
     skip_upload_apk: true,
     version_name: $package["version"],
