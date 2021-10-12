@@ -12,6 +12,7 @@ import { RootStore, RootStoreProvider, setupRootStore, useStores } from "app/mod
 import { AutoHeightImage, GradientButton, Screen } from "components"
 import { observer } from "mobx-react-lite"
 import React, { useEffect, useState } from "react"
+import { ViewStyle } from "react-native"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import RNRestart from "react-native-restart"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
@@ -72,25 +73,25 @@ const App = observer(function App() {
 
   return (
     <ToggleStorybook>
-      <RootStoreProvider value={rootStore}>
-        <GraphQLStoreContext.Provider value={rootStore.apiStore.api}>
-          <Authorization>
-            <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-              <ConnectionStatusBar
-                useAbsolutePosition
-                onConnectionChange={(isConnected) => setConnected({ isConnected })}
-              />
-              <Sentry.ErrorBoundary fallback={ErrorFallback}>
+      <Sentry.ErrorBoundary fallback={ErrorFallback}>
+        <RootStoreProvider value={rootStore}>
+          <GraphQLStoreContext.Provider value={rootStore.apiStore.api}>
+            <Authorization>
+              <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+                <ConnectionStatusBar
+                  useAbsolutePosition
+                  onConnectionChange={(isConnected) => setConnected({ isConnected })}
+                />
                 <RootNavigator
                   ref={navigationRef}
                   initialState={initialNavigationState}
                   onStateChange={onNavigationStateChange}
                 />
-              </Sentry.ErrorBoundary>
-            </SafeAreaProvider>
-          </Authorization>
-        </GraphQLStoreContext.Provider>
-      </RootStoreProvider>
+              </SafeAreaProvider>
+            </Authorization>
+          </GraphQLStoreContext.Provider>
+        </RootStoreProvider>
+      </Sentry.ErrorBoundary>
     </ToggleStorybook>
   )
 })
@@ -130,7 +131,7 @@ const ErrorFallback: FallbackRender = ({ resetError }) => {
         <View flex-1 center width={widthPercentageToDP("90%")}>
           <AutoHeightImage
             source={require("assets/images/look-for-errors.png")}
-            containerStyle={{ borderWidth: 0, alignSelf: "flex-end" }}
+            containerStyle={CONTAINER_STYLE}
           />
           <Text text30BO>{"Not all Punchlines are created equally!"}</Text>
           <Text marginT-s3>
@@ -142,4 +143,8 @@ const ErrorFallback: FallbackRender = ({ resetError }) => {
       </View>
     </Screen>
   )
+}
+
+const CONTAINER_STYLE: ViewStyle = {
+  alignSelf: "flex-end",
 }
