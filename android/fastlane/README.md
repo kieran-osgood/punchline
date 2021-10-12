@@ -24,12 +24,17 @@ Increments internal build number tracking (different than version)
 ```
 fastlane build_debug_apk
 ```
-Build debug android configuration
+Build debug apk
+### build_release_apk
+```
+fastlane build_release_apk
+```
+Builds release apk - for local debugging
 ### build_release_aab
 ```
 fastlane build_release_aab
 ```
-Build release android configuration
+Build release aab
 ### e2e_debug
 ```
 fastlane e2e_debug

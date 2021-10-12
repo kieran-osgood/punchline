@@ -10,16 +10,19 @@
 #     https://docs.fastlane.tools/plugins/available-plugins
 #
 
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
+############## STATIC ##############
 default_platform(:ios)
 # Retrieve version of my app in package.json (React Native case)
 $package = load_json(json_path: "../package.json")
 $slack_url = "https://hooks.slack.com/services/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"
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
 before_all do
   setup_circle_ci
 end
 
+############## GIT ##############
 lane :bump_and_commit_versions do
   increment_build_number(xcodeproj: "punchline.xcodeproj")
   increment_version_number_in_plist(
@@ -32,15 +35,15 @@ lane :bump_and_commit_versions do
   )
 end
 
-lane :generate_new_icons do
-  ## Generates the app icons - splash screen icons are handled by bootsplash (`yarn bootsplash`)
-  appicon(
-    appicon_devices: [:iphone, :ipad],
-    appicon_path: "generated/app-icons.xcassets", # output path
-    # `appicon_image_file` defaults to "fastlane/metadata/app_icon.png"
-  )
+############## DETOX ##############
+lane :e2e_release do
+  Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed.
+    sh("detox build --configuration ios.sim.release")
+    sh("detox test --configuration ios.sim.release --cleanup")
+  end
 end
 
+############## BUILD TASKS ##############
 desc "Builds a release and pushes to testflight"
 lane :beta do
   # get_certificates           # invokes cert
@@ -58,6 +61,8 @@ lane :beta do
     in_house: false, # optional but may be required if using match/sigh
   )
 
+  changelog_from_git_commits
+
   if changelog
     upload_to_testflight(api_key: api_key, changelog: changelog)
   else
@@ -66,57 +71,33 @@ lane :beta do
 end
 
 desc "Run tests and build the app"
-lane :build_appstore_ios do
+lane :appstore do
   bump_and_commit_versions
+
+  changelog_from_git_commits
 
   # Get latest certs appstore
   match(type: "appstore", readonly: is_ci) # Set type of code signing required
   # Gym aliases build_app
   gym(export_method: "appstore", output_directory: "output") # Directory where signed .ipa file will be placed
+  # untested from https://gist.github.com/jogboms/a35b5cdf8eb584320832646e7b0480fc
+  # build_ios_app(workspace: "#{project_path}/ios/Runner.xcworkspace", scheme: "Runner")
+  # upload_to_app_store(
+  #   submit_for_review: true,
+  #   automatic_release: true,
+  #   skip_screenshots: true,
+  #   force: true,
+  #   skip_waiting_for_build_processing: true,
+  #   ipa: "#{project_path}/Runner.ipa",
+  #   username: username)
 end
 
-lane :e2e_release do
-  Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed.
-    sh("detox build --configuration ios.sim.release")
-    sh("detox test --configuration ios.sim.release --cleanup")
-  end
+############# MISC ##############
+lane :generate_new_icons do
+  ## Generates the app icons - splash screen icons are handled by bootsplash (`yarn bootsplash`)
+  appicon(
+    appicon_devices: [:iphone, :ipad],
+    appicon_path: "generated/app-icons.xcassets", # output path
+    # `appicon_image_file` defaults to "fastlane/metadata/app_icon.png"
+  )
 end
-
-# after_all do
-#   slack(
-#     slack_url: $slack_url,
-#     message: "App successfully built!",
-#     payload: {
-#       "Build Date" => Time.new.to_s,
-#       "Built by" => "KO",
-#     },
-#     default_payloads: [:git_branch, :git_author],
-#     attachment_properties: {
-#       fields: [{
-#         # title: "My Field",
-#         # value: "My Value",
-#         # short: true
-#       }]
-#     }
-#   )
-# end
-
-# error do
-#   slack(
-#     slack_url: $slack_url,
-#     success: false,
-#     message: "App build failed!",
-#     payload: {
-#       "Build Date" => Time.new.to_s,
-#       "Built by" => "KO",
-#     },
-#     default_payloads: [:git_branch, :git_author],
-#     attachment_properties: {
-#       fields: [{
-#         # title: "My Field",
-#         # value: "My Value",
-#         # short: true
-#       }]
-#     }
-#   )
-#   end

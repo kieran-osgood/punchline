@@ -38,10 +38,10 @@ lane :bump_and_commit_versions do
 end
 
 ############## GRADLE TASKS ##############
-desc "Build debug android configuration"
+desc "Build debug apk"
 lane :build_debug_apk do
   gradle(
-    task: "assemble",
+    task: "assemble", # apk
     build_type: "Debug",
     properties: {
       "vname" => $package["version"],
@@ -50,13 +50,25 @@ lane :build_debug_apk do
   )
 end
 
-desc "Build release android configuration"
+desc "Builds release apk - for local debugging"
+lane :build_release_apk do
+  gradle(
+    task: "assemble", # apk
+    build_type: "Release",
+    properties: {
+      "vname" => $package["version"],
+    },
+    flags: $gradle_flags,
+  )
+end
+
+desc "Build release aab"
 lane :build_release_aab do
   # Bump android.defaultConfig.versionCode
   bump_and_commit_versions
 
   gradle(
-    task: "bundle",
+    task: "bundle", # aab
     build_type: "Release",
     properties: {
       "vname" => $package["version"],
@@ -94,6 +106,8 @@ lane :beta do
   # Do the bundle of the application
   build_release_aab
 
+  changelog_from_git_commits
+
   ## Upload Android App Bundle to PlayStore like Internal testing Release
   upload_to_play_store(
     track: "internal",
@@ -107,6 +121,8 @@ desc "Build Release configuration and Google Play Store"
 lane :playstore do
   # Do the bundle of the application
   build_release_aab
+
+  changelog_from_git_commits
 
   # Upload Android App Bundle to PlayStore like Internal testing Release
   upload_to_play_store(
@@ -134,6 +150,7 @@ end
 #   )
 # end
 
+# TODO - Look into how to import lanes from top level
 # def sendSlack(message, success)
 #   slack(
 #     slack_url: $slack_url,
