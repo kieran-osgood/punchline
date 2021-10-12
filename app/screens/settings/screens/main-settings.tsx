@@ -35,7 +35,7 @@ const MARGINS = spacing[4]
 
 export const MainSettingsScreen = observer(function MainSettingsScreen() {
   const navigation = useNavigation<SettingsStackProps<"Main">["navigation"]>()
-  const { settings } = useStores()
+  const { settings, userStore } = useStores()
 
   const onSharePress = async (url: string) => {
     try {
@@ -48,6 +48,18 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
     }
   }
 
+  const onDeleteAccountPress = () => {
+    Alert.alert("Confirm Deletion", "Confirm you wish delete the currently logged in account.", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: userStore.deleteSelf,
+      },
+    ])
+  }
   return (
     <Screen style={ROOT} preset="scroll" unsafe>
       <StatusBar barStyle="dark-content" />
@@ -159,7 +171,14 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
       </Section>
 
       <AppVersion />
-      <Button label="Delete Account" br10 marginH backgroundColor="white" red10 labelStyle={{}} />
+      <Button
+        label="Delete Account"
+        br10
+        marginH
+        backgroundColor="white"
+        red10
+        onPress={onDeleteAccountPress}
+      />
     </Screen>
   )
 })

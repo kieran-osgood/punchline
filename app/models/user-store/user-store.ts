@@ -1,6 +1,6 @@
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import * as Sentry from "@sentry/react-native"
-import { categoryModelPrimitives, nodes, SortEnumType } from "app/graphql"
+import { categoryModelPrimitives, nodes, RootStoreType, SortEnumType } from "app/graphql"
 import { RootStore } from "app/models"
 import { cast, getRoot, Instance, SnapshotOut, types } from "mobx-state-tree"
 import R from "ramda"
@@ -19,6 +19,9 @@ export const UserStoreModel = types
   .views((self) => ({
     get root(): RootStore {
       return getRoot(self)
+    },
+    get api(): RootStoreType {
+      return this.root.apiStore.api
     },
   }))
   .actions((self) => ({
@@ -104,8 +107,7 @@ export const UserStoreModel = types
         Toast.show({
           type: "error",
           text1: "Sign-in Error",
-          text2:
-            "We're having trouble signing you in right now. Please try again, or contact support if the issue persists.",
+          text2: "Please try again, or contact support if the issue persists.",
           position: "bottom",
         })
       }
@@ -114,6 +116,19 @@ export const UserStoreModel = types
       if (self.user?.uid) {
         self.root.apiStore.api.mutateCompleteOnboarding({}, undefined, () => {
           self.onboardingComplete = true
+        })
+      }
+    },
+    deleteSelf: async () => {
+      const query = await self.api.mutateDeleteUser().promise
+      if (query.deleteUser) {
+        self.root.resetStore()
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Operation Failed.",
+          text2: "We're having a slight issue, please try again soon.",
+          position: "bottom",
         })
       }
     },

@@ -281,7 +281,8 @@ mutateDeleteUserJokeHistory="mutateDeleteUserJokeHistory",
 mutateUpdateUserJokeHistory="mutateUpdateUserJokeHistory",
 mutateAddJokeReport="mutateAddJokeReport",
 mutateLogin="mutateLogin",
-mutateCompleteOnboarding="mutateCompleteOnboarding"
+mutateCompleteOnboarding="mutateCompleteOnboarding",
+mutateDeleteUser="mutateDeleteUser"
 }
 
 /**
@@ -346,5 +347,8 @@ export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
       return self.mutate<{ completeOnboarding: UserPayloadModelType}>(`mutation completeOnboarding { completeOnboarding {
         ${typeof resultSelector === "function" ? resultSelector(new UserPayloadModelSelector()).toString() : resultSelector}
       } }`, variables, optimisticUpdate)
+    },
+    mutateDeleteUser(variables?: {  }, optimisticUpdate?: () => void) {
+      return self.mutate<{ deleteUser: boolean }>(`mutation deleteUser { deleteUser }`, variables, optimisticUpdate)
     },
   })))
