@@ -17,7 +17,8 @@ import {
   TouchableOpacity,
   ViewStyle,
 } from "react-native"
-import { WEB_URL } from "react-native-dotenv"
+import { APPSTORE_URL, PLAYSTORE_URL, WEB_URL } from "react-native-dotenv"
+import Share from "react-native-share"
 import Toast from "react-native-toast-message"
 import { Button, Switch, Text, ThemeManager, View, ViewProps } from "react-native-ui-lib"
 import { color, spacing } from "theme"
@@ -35,6 +36,17 @@ const MARGINS = spacing[4]
 export const MainSettingsScreen = observer(function MainSettingsScreen() {
   const navigation = useNavigation<SettingsStackProps<"Main">["navigation"]>()
   const { settings } = useStores()
+
+  const onSharePress = async (url: string) => {
+    try {
+      await Share.open({
+        title: "",
+        url,
+      })
+    } catch (error) {
+      Sentry.captureException(error)
+    }
+  }
 
   return (
     <Screen style={ROOT} preset="scroll" unsafe>
@@ -90,19 +102,15 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
 
       <Section title="More Information">
         <Divider>
-          <Link
-            external
-            url={
-              Platform.OS === "ios"
-                ? "itms-apps://itunes.apple.com/us/app/imdb-movies-tv/id1567628239"
-                : "https://play.google.com/store/apps/details?id=com.ko.punchline&gl=GB"
-            }
-          >
+          <Link external url={Platform.OS === "ios" ? APPSTORE_URL : PLAYSTORE_URL}>
             Rate Us
           </Link>
         </Divider>
         <Divider>
-          <Link url={Platform.OS === "ios" ? `app-store` : "play-store"} external>
+          <Link
+            onPress={() => onSharePress(Platform.OS === "ios" ? APPSTORE_URL : PLAYSTORE_URL)}
+            external
+          >
             {/* Not ideal - we have the in-app share pop up but thats not reliable so just link to store */}
             Share Punchline
           </Link>
@@ -185,16 +193,15 @@ export const Link = ({
   inlineText = false,
 }: LinkProps) => {
   const onPress = () => {
-    const fullUrl = `${external ? "" : WEB_URL}${url}`
-    if (fullUrl) {
-      Linking.canOpenURL(fullUrl).then((supported) => {
-        if (supported) {
-          Linking.openURL(fullUrl)
-        } else {
-          Sentry.captureMessage("Don't know how to open URI: " + fullUrl)
-        }
-      })
-    }
+    const fullUrl = external ? `${url}` : `${WEB_URL}${url}`
+
+    Linking.canOpenURL(fullUrl).then((supported) => {
+      if (supported) {
+        Linking.openURL(fullUrl)
+      } else {
+        Sentry.captureMessage("Don't know how to open URI: " + fullUrl)
+      }
+    })
     onPressCallback?.()
   }
 

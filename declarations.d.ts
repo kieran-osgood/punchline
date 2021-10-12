@@ -8,6 +8,8 @@ declare module "react-native-dotenv" {
   export const WEB_URL: string
   export const SENTRY_ORGANIZATION_SLUG: string
   export const SENTRY_PROJECT_SLUG: string
+  export const APPSTORE_URL: string
+  export const PLAYSTORE_URL: string
 }
 
 declare global {
