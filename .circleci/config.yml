@@ -65,7 +65,7 @@ jobs:
             export LANG=en_US.UTF-8
             gem install bundler
             bundle install
-            bundle exec fastlane build_android_debug
+            bundle exec fastlane build_debug_apk
       - store_artifacts:
           path: android/app/build/outputs/apk/debug
      
@@ -85,7 +85,7 @@ jobs:
             export LANG=en_US.UTF-8
             gem install bundler
             bundle install
-            bundle exec fastlane build_android_release_bundle
+            bundle exec fastlane build_release_aab
       - store_artifacts:
           path: android/app/build/outputs/bundle/release
 
