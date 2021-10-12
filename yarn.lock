@@ -16714,7 +16714,7 @@ react-native-fbsdk-next@^4.3.0:
   resolved "https://registry.yarnpkg.com/react-native-fbsdk-next/-/react-native-fbsdk-next-4.3.0.tgz#750952a9c2159a7eed830846a3814ab8ce03ba0c"
   integrity sha512-wJUSgM6hq/gImnp/HflTI5750GNADtxCEEhDD6lXJDPuNfAPfAXi54XcAVa5nbijJMCBr+z3wFZ/gF8PrqdxTQ==
 
-react-native-flipper@^0.110.0:
+react-native-flipper@0.110.0:
   version "0.110.0"
   resolved "https://registry.yarnpkg.com/react-native-flipper/-/react-native-flipper-0.110.0.tgz#d32975d1d2df3f55f234222a7f53b4d9ea70e450"
   integrity sha512-VhHodD04j3SQoPUxHoSHV4jHZyxsdRn7svgA2XteAmw03kF/GF1/ytrcelq9yR/VvWXeUtdrJJ99az0b1nXLjQ==
