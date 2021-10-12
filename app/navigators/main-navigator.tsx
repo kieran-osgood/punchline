@@ -90,6 +90,8 @@ export const MainNavigator = observer(function MainNavigator() {
             component={SettingsStack}
             options={{
               header: () => null,
+              gestureDirection: "horizontal",
+              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
             }}
           />
         </>
