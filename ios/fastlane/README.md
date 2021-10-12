@@ -20,9 +20,9 @@ or alternatively using `brew install fastlane`
 fastlane bump_and_commit_versions
 ```
 
-### generate_new_icons
+### e2e_release
 ```
-fastlane generate_new_icons
+fastlane e2e_release
 ```
 
 ### beta
@@ -30,14 +30,14 @@ fastlane generate_new_icons
 fastlane beta
 ```
 Builds a release and pushes to testflight
-### build_appstore_ios
+### appstore
 ```
-fastlane build_appstore_ios
+fastlane appstore
 ```
 Run tests and build the app
-### e2e_release
+### generate_new_icons
 ```
-fastlane e2e_release
+fastlane generate_new_icons
 ```
 
 
