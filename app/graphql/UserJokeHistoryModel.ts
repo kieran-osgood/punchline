@@ -36,7 +36,6 @@ export const UserJokeHistoryModel = UserJokeHistoryModelBase.views((self) => ({
       },
       (res) => res.userJokeHistory((ujh) => ujh.id.bookmarked.rating),
       () => {
-        console.log("self.bookmarked: ", self.bookmarked)
         self.bookmarked = !self.bookmarked
       },
     )

@@ -4,7 +4,7 @@ import { ACTION_BUTTON } from "app/screens"
 import EmptyStateImage from "assets/images/empty-state-image"
 import { TrashCan } from "assets/images/trash-can"
 import { BookmarkButton, EmptyState, Link, Screen } from "components"
-import { observer } from "mobx-react-lite"
+import { Observer, observer } from "mobx-react-lite"
 import React from "react"
 import {
   Alert,
@@ -84,10 +84,14 @@ type UserJokeProps = {
 }
 export const UserJoke = observer(function UserJoke(props: UserJokeProps) {
   const { bookmark } = props
+
   const [expanded, setExpanded] = React.useState(false)
   const query = useQuery()
   const open = useSharedValue(false)
   const progress = useDerivedValue(() => (expanded ? withSpring(1) : withTiming(0)), [expanded])
+
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (!bookmark || !bookmark.joke) return null
 
   const handleDelete = () => {
     query.setQuery((store) =>
@@ -132,8 +136,13 @@ export const UserJoke = observer(function UserJoke(props: UserJokeProps) {
                 {...{ onPress }}
                 round
                 style={ACTION_BUTTON}
-                iconSource={() => <BookmarkButton size={24} {...{ bookmark }} />}
+                iconSource={() => (
+                  <Observer>
+                    {() => <BookmarkButton size={24} bookmarked={bookmark.bookmarked} />}
+                  </Observer>
+                )}
               />
+
               <Link jokeId={bookmark.joke.id} style={SHARE}>
                 <Text style={SHARE_TEXT}>{"Share"}</Text>
               </Link>

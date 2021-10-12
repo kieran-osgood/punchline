@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import { useRoute } from "@react-navigation/native"
 import Swipeable from "app/components/swipeable/swipeable"
 import { JokeModelType, RatingValue, useQuery } from "app/graphql"
 import { useStores } from "app/models"
-import { NavigationProps } from "app/navigators/main-navigator"
 import Skip from "assets/images/skip"
 import { AdBanner, BookmarkButton, Ratings, ShareIcons, SwipeHandler } from "components"
 import { CryingEmoji, LaughingEmoji } from "images"
@@ -17,7 +15,7 @@ import { color, spacing } from "theme"
 const PAGE_GUTTERS = 15
 
 export const JokeScreen = observer(function JokeScreen() {
-  const route = useRoute<NavigationProps<"JokeScreen">["route"]>()
+  // const route = useRoute<NavigationProps<"JokeScreen">["route"]>()
   const [bookmarked, setBookmarked] = React.useState(false)
   const topCard = React.useRef<SwipeHandler>(null)
   const query = useQuery()
@@ -140,6 +138,7 @@ const JOKE_INFO: ViewStyle = {
   maxHeight: 35,
 }
 
+const ACTIVE_OPACITY = 0.4
 type ButtonsProps = {
   handleDownVote: () => void
   handleUpVote: () => void
@@ -156,7 +155,7 @@ export const Controls = (props: ButtonsProps) => {
         iconStyle={{ padding: spacing[4] }}
         round
         onPress={handleDownVote}
-        activeOpacity={0.7}
+        activeOpacity={ACTIVE_OPACITY}
         iconSource={() => <CryingEmoji scale={1.1} />}
       />
 
@@ -165,15 +164,15 @@ export const Controls = (props: ButtonsProps) => {
           style={ACTION_BUTTON}
           round
           onPress={handleBookmarkPress}
-          activeOpacity={0.7}
-          iconSource={() => <BookmarkButton {...{ bookmarked }} size={24} />}
+          activeOpacity={ACTIVE_OPACITY}
+          iconSource={() => <BookmarkButton bookmarked={bookmarked} size={24} />}
           marginB-s2
         />
         <Button
           style={ACTION_BUTTON}
           round
           onPress={handleSkipPress}
-          activeOpacity={0.7}
+          activeOpacity={ACTIVE_OPACITY}
           iconSource={() => <Skip />}
         />
       </View>
@@ -182,7 +181,7 @@ export const Controls = (props: ButtonsProps) => {
         style={ACTION_BUTTON}
         round
         onPress={handleUpVote}
-        activeOpacity={0.7}
+        activeOpacity={ACTIVE_OPACITY}
         iconSource={() => <LaughingEmoji scale={1.4} />}
       />
     </View>
