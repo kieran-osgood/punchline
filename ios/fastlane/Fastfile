@@ -65,7 +65,7 @@ lane :beta do
   # if lane_context[SharedValues::FL_CHANGELOG]
   # upload_to_testflight(api_key: api_key, changelog: lane_context[SharedValues::FL_CHANGELOG])
   # else
-  upload_to_testflight(api_key: api_key)
+  upload_to_testflight(api_key: api_key, skip_waiting_for_build_processing: true)
   # end
 end
 
