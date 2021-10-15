@@ -2,22 +2,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import auth from "@react-native-firebase/auth"
 import { useNavigation } from "@react-navigation/core"
 import * as Sentry from "@sentry/react-native"
+import { Link } from "app/components/link/link"
 import { useStores } from "app/models"
 import { SettingsStackProps } from "app/screens"
 import { Logout } from "assets/images/logout"
 import RightArrow from "assets/images/right-arrow"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import {
-  Alert,
-  Linking,
-  Platform,
-  StatusBar,
-  TextStyle,
-  TouchableOpacity,
-  ViewStyle,
-} from "react-native"
-import { APPSTORE_URL, PLAYSTORE_URL, WEB_URL } from "react-native-dotenv"
+import { Alert, Platform, StatusBar, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
+import { APPSTORE_URL, PLAYSTORE_URL } from "react-native-dotenv"
 import Share from "react-native-share"
 import Toast from "react-native-toast-message"
 import { Button, Switch, Text, ThemeManager, View, ViewProps } from "react-native-ui-lib"
@@ -197,43 +190,6 @@ export const Section = ({ children, title, style, ...rest }: SectionProps) => {
   )
 }
 
-type LinkProps = {
-  children: string
-  onPress?: (...args: any[]) => any
-  url?: string
-  external?: boolean
-  inlineText?: boolean
-}
-export const Link = ({
-  children,
-  onPress: onPressCallback,
-  url,
-  external = false,
-  inlineText = false,
-}: LinkProps) => {
-  const onPress = () => {
-    const fullUrl = external ? `${url}` : `${WEB_URL}${url}`
-
-    Linking.canOpenURL(fullUrl).then((supported) => {
-      if (supported) {
-        Linking.openURL(fullUrl)
-      } else {
-        Sentry.captureMessage("Don't know how to open URI: " + fullUrl)
-      }
-    })
-    onPressCallback?.()
-  }
-
-  if (inlineText) {
-    return (
-      <Text style={TEXT_LINK} {...{ onPress }}>
-        {children}
-      </Text>
-    )
-  }
-  return <Button link style={LINK} label={children} {...{ onPress }} />
-}
-
 type DividerProps = {
   children?: React.ReactNode
   style?: ViewStyle | ViewStyle[]
@@ -277,13 +233,6 @@ const Title = ({ children }: { children: string }) => {
 const DIVIDER: ViewStyle = {
   borderBottomColor: color.background,
   borderBottomWidth: 1,
-}
-
-const LINK: ViewStyle = {
-  paddingVertical: spacing[3],
-}
-const TEXT_LINK: TextStyle = {
-  textDecorationLine: "underline",
 }
 
 const ROOT: ViewStyle = {

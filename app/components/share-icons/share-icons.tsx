@@ -31,12 +31,12 @@ export const ShareIcons = observer(function ShareIcons(props: ShareIconsProps) {
 
   return (
     <View style={style} row center>
-      <Link {...{ jokeId }} type="facebook">
+      <ShareLink {...{ jokeId }} type="facebook">
         {/* <Facebook /> */}
-      </Link>
-      <Link {...{ jokeId }} type="twitter">
+      </ShareLink>
+      <ShareLink {...{ jokeId }} type="twitter">
         {/* <Twitter /> */}
-      </Link>
+      </ShareLink>
       <JokeReportModal {...{ isModalVisible, setModalVisible }} />
       <Button
         round
@@ -45,9 +45,9 @@ export const ShareIcons = observer(function ShareIcons(props: ShareIconsProps) {
         activeOpacity={0.7}
         iconSource={() => <ErrorReportIcon height={28} width={28} />}
       />
-      <Link {...{ jokeId }}>
+      <ShareLink {...{ jokeId }}>
         <ShareIcon scale={1.1} />
-      </Link>
+      </ShareLink>
     </View>
   )
 })
@@ -69,7 +69,7 @@ type LinkProps = {
 
 type Type = "facebook" | "twitter" | "default"
 
-export const Link = ({ jokeId, children, style = {}, type = "default" }: LinkProps) => {
+export const ShareLink = ({ jokeId, children, style = {}, type = "default" }: LinkProps) => {
   /**
    * user clicks share button - we generate a url like: https://api.punch-line.co.uk/share/joke?id=46234623
    * next user clicks link
@@ -101,7 +101,7 @@ export const Link = ({ jokeId, children, style = {}, type = "default" }: LinkPro
   )
 }
 
-export default Link
+export default ShareLink
 
 type JokeReportModalProps = {
   isModalVisible: boolean

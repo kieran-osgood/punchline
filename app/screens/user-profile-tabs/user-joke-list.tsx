@@ -3,7 +3,7 @@ import { useQuery, UserJokeHistoryModelType } from "app/graphql"
 import { ACTION_BUTTON } from "app/screens"
 import EmptyStateImage from "assets/images/empty-state-image"
 import { TrashCan } from "assets/images/trash-can"
-import { BookmarkButton, EmptyState, Link, Screen } from "components"
+import { BookmarkButton, EmptyState, Screen, ShareLink } from "components"
 import { Observer, observer } from "mobx-react-lite"
 import React from "react"
 import {
@@ -143,9 +143,9 @@ export const UserJoke = observer(function UserJoke(props: UserJokeProps) {
                 )}
               />
 
-              <Link jokeId={bookmark.joke.id} style={SHARE}>
+              <ShareLink jokeId={bookmark.joke.id} style={SHARE}>
                 <Text style={SHARE_TEXT}>{"Share"}</Text>
-              </Link>
+              </ShareLink>
             </View>
           </View>
         </ExpandableSection>
