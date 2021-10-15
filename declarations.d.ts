@@ -10,6 +10,7 @@ declare module "react-native-dotenv" {
   export const SENTRY_PROJECT_SLUG: string
   export const APPSTORE_URL: string
   export const PLAYSTORE_URL: string
+  export const ADMOB_HOME_FOOTER: string
 }
 
 declare global {

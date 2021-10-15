@@ -1,8 +1,12 @@
 import { BannerAd, BannerAdSize, TestIds } from "@react-native-firebase/admob"
+import { noop } from "app/utils"
 import { isProduction } from "app/utils/current-environment"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { View, ViewStyle } from "react-native"
+import { ViewStyle } from "react-native"
+import { ADMOB_HOME_FOOTER } from "react-native-dotenv"
+import { heightPercentageToDP } from "react-native-responsive-screen"
+import { View } from "react-native-ui-lib"
 
 export interface AdBannerProps {
   /**
@@ -15,19 +19,20 @@ export interface AdBannerProps {
  * Describe your component here
  */
 export const AdBanner = observer(function AdBanner(props: AdBannerProps) {
-  const unitId = isProduction ? "ca-app-pub-3681973098458031/3206308809" : TestIds.BANNER
+  const unitId = isProduction ? ADMOB_HOME_FOOTER : TestIds.BANNER
 
   return (
-    <View style={{ minHeight: 50 }}>
+    <View style={[{ height: heightPercentageToDP("10%") }, props.style]}>
+      {/* TODO: Give this a fixed height - it's currently causing layout shift and unmounting on each navigation */}
       <BannerAd
         {...{ unitId }}
         size={BannerAdSize.SMART_BANNER}
         // prop types require these to be added
-        onAdClosed={() => {}}
-        onAdFailedToLoad={() => {}}
-        onAdLeftApplication={() => {}}
-        onAdLoaded={() => {}}
-        onAdOpened={() => {}}
+        onAdClosed={noop}
+        onAdFailedToLoad={noop}
+        onAdLeftApplication={noop}
+        onAdLoaded={noop}
+        onAdOpened={noop}
       />
     </View>
   )
