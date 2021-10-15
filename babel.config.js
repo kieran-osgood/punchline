@@ -4,7 +4,9 @@ module.exports = {
   ],
   sourceMaps: true,
   env: {
-    production: {},
+    production: {
+      plugins: ["transform-remove-console"]
+    }
   },
   plugins: [
     ["module:react-native-dotenv", {
