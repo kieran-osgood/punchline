@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+import { LoadingJokeCard } from "app/components/joke/joke-card/joke-card"
 import Swipeable from "app/components/swipeable/swipeable"
 import { JokeModelType, RatingValue, useQuery } from "app/graphql"
 import { useStores } from "app/models"
@@ -21,31 +22,7 @@ export const JokeScreen = observer(function JokeScreen() {
   const [bookmarked, setBookmarked] = React.useState(false)
   const topCard = React.useRef<SwipeHandler>(null)
   const query = useQuery()
-  const store = useStores().apiStore.jokeApi
-  // React.useEffect(() => {
-  // add in logic to pull and set next joke as the top joke
-  // if (!store.deck.get(route.params.jokeId).viewed &&
-  //   store.topOfDeckJoke.id !== route.params?.jokeId) {
-  //     store.setTopOfDeckJoke(route.params.jokeId)
-  //   }
-  // setQuery((store) =>
-  //   store.queryJokes(
-  //     {
-  //       input: {
-  //         blockedCategoryIds: store.root.settings.blockedCategoryIds,
-  //         jokeLength: store.root.settings.jokeLengthMaxEnum,
-  //         deepLinkedJokeId: route.params?.jokeId,
-  //         profanityFilter: store.root.settings.profanityFilter,
-  //       },
-  //     },
-  //     (j) =>
-  //       j.nodes((n) =>
-  //         n.id.body.title.negativeRating.positiveRating.categories((c) => c.id.image.name),
-  //       ),
-  //     { fetchPolicy: "no-cache" },
-  //   ),
-  // )
-  // }, [route.params?.jokeId, setQuery])
+  const { apiStore } = useStores()
 
   const onSwipe = React.useCallback(
     (joke: JokeModelType, rating: RatingValue, bookmarked: boolean) => {
@@ -57,15 +34,16 @@ export const JokeScreen = observer(function JokeScreen() {
 
   const handleBookmarkPress = () => setBookmarked((c) => !c)
 
-  const handleSkipPress = () => onSwipe(store.topOfDeckJoke, RatingValue.SKIP, bookmarked)
+  const handleSkipPress = () =>
+    onSwipe(apiStore.jokeApi.topOfDeckJoke, RatingValue.SKIP, bookmarked)
 
   const handleDownVote = () => {
-    onSwipe(store.topOfDeckJoke, RatingValue.BAD, bookmarked)
+    onSwipe(apiStore.jokeApi.topOfDeckJoke, RatingValue.BAD, bookmarked)
     topCard.current?.swipeLeft()
   }
 
   const handleUpVote = () => {
-    onSwipe(store.topOfDeckJoke, RatingValue.GOOD, bookmarked)
+    onSwipe(apiStore.jokeApi.topOfDeckJoke, RatingValue.GOOD, bookmarked)
     topCard.current?.swipeRight()
   }
 
@@ -75,17 +53,18 @@ export const JokeScreen = observer(function JokeScreen() {
         <StatusBar barStyle="dark-content" />
         <View style={HEADER}>
           <Text grey30 bold>
-            {store.topOfDeckJoke?.categories?.[0].name}
+            {apiStore.jokeApi.topOfDeckJoke?.categories?.[0].name}
           </Text>
 
           <Text text40 bold center marginH-s3 numberOfLines={3}>
-            {store.topOfDeckJoke?.title}
+            {apiStore.jokeApi.topOfDeckJoke?.title}
           </Text>
         </View>
 
-        <View style={CARDS_CONTAINER} key={store.deepLinkJokeId}>
-          {store.nonViewedJokes.map((joke) => {
-            const onTop = joke.id === store.topOfDeckJoke.id
+        <View style={CARDS_CONTAINER}>
+          {(query.loading || apiStore.jokeApi.nonViewedJokes.length <= 0) && <LoadingJokeCard />}
+          {apiStore.jokeApi.nonViewedJokes.map((joke) => {
+            const onTop = joke.id === apiStore.jokeApi.topOfDeckJoke.id
             const ref = onTop ? topCard : null
             return <Swipeable key={joke.id} {...{ onTop, joke, ref, isLoading: query.loading }} />
           })}
@@ -93,10 +72,10 @@ export const JokeScreen = observer(function JokeScreen() {
 
         <View style={JOKE_INFO}>
           <Ratings
-            likes={store.topOfDeckJoke.positiveRating ?? 0}
-            dislikes={store.topOfDeckJoke.negativeRating ?? 0}
+            likes={apiStore.jokeApi.topOfDeckJoke.positiveRating ?? 0}
+            dislikes={apiStore.jokeApi.topOfDeckJoke.negativeRating ?? 0}
           />
-          <ShareIcons jokeId={store.topOfDeckJoke.id} />
+          <ShareIcons jokeId={apiStore.jokeApi.topOfDeckJoke.id} />
         </View>
 
         <Controls
@@ -212,7 +191,6 @@ const SECONDARY_ACTION_BUTTONS: ViewStyle = {
   justifyContent: "space-between",
   alignItems: "center",
   position: "relative",
-  // height: "100%",
 }
 export const ACTION_BUTTON: ViewStyle = {
   justifyContent: "center",
@@ -227,31 +205,40 @@ export const ACTION_BUTTON: ViewStyle = {
   padding: 5,
 }
 
-// Build up a shareable link.
-// const shareLinkContent: ShareLinkContent = {
-//   contentType: "link",
-//   contentUrl: "https://facebook.com",
-//   contentDescription: "Wow, check out this great site!",
-// }
+const DeepLinkJokeActionSheet = () => {
+  // const jokeId = route.params?.id
+  // const [jokeId, setJokeId] = useState<string | null>("Sm9rZQppMTM2OQ==")
 
-// const handle = async () => {
-//   // Share using the share API.
-//   ShareDialog.canShow(shareLinkContent)
-//     .then((canShare) => {
-//
-//       if (canShare) {
-//         ShareDialog.show(shareLinkContent)
-//       }
-//     })
-//     .then(
-//       function (result) {
-//
-//       },
-//       function (error) {
-//
-//       },
-//     )
-//     .catch(() => {
-//
-//     })
-// }
+  // React.useEffect(() => {
+  //   if (!jokeId) return
+
+  //   // add in logic to pull and set next joke as the top joke
+  //   if (
+  //     apiStore.api.jokes.has(jokeId) &&
+  //     !apiStore.api.jokes.get(jokeId)?.viewed &&
+  //     apiStore.jokeApi.topOfDeckJoke.id !== jokeId
+  //   ) {
+  //     apiStore.jokeApi.setDeepLinkJoke(jokeId)
+  //     setJokeId(null)
+  //   }
+
+  //   query.setQuery((store) =>
+  //     store.queryJokes(
+  //       {
+  //         input: {
+  //           blockedCategoryIds: store.root.settings.blockedCategoryIds,
+  //           jokeLengths: store.root.settings.jokeLengthsEnumArr,
+  //           deepLinkedJokeId: jokeId,
+  //           profanityFilter: store.root.settings.profanityFilter,
+  //         },
+  //       },
+  //       (j) =>
+  //         j.nodes((n) =>
+  //           n.id.body.title.negativeRating.positiveRating.categories((c) => c.id.image.name),
+  //         ),
+  //       { fetchPolicy: "no-cache" },
+  //     ),
+  //   )
+  // }, [apiStore.api.jokes, apiStore.jokeApi, jokeId])
+  return <></>
+}
