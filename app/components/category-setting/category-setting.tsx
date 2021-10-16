@@ -1,11 +1,12 @@
 import { categoryModelPrimitives, CategoryModelType, nodes, useQuery } from "app/graphql"
 import { SortEnumType } from "app/graphql/SortEnumTypeEnum"
+import { useStores } from "app/models"
 import { Blocked, SIZE } from "assets/images/blocked"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import { SvgUri } from "react-native-svg"
-import { Text, ThemeManager, View } from "react-native-ui-lib"
+import { Button, Text, ThemeManager, View } from "react-native-ui-lib"
 import { color, spacing, typography } from "../../theme"
 
 export interface CategorySettingProps {
@@ -42,9 +43,17 @@ export default CategorySetting
  */
 export const CategoryMapping = observer(function CategoryMapping(props: CategoryMappingProps) {
   const { style, categories, categoriesOnly = false } = props
+  const { settings } = useStores()
 
   return (
     <View style={[CONTAINER, style]}>
+      <Button
+        label="Unselect All"
+        link
+        onPress={() => settings.unselectAllBlockedCategories()}
+        text80
+        disabled={!settings.anySelected}
+      />
       {categoriesOnly === false && (
         <Text marginV-s2 highlightString="don't" highlightStyle={HIGHLIGHT_STYLE}>
           {"Select categories you don't wish to see"}

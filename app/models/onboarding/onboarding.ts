@@ -1,5 +1,5 @@
 import { ApiRootStoreType, CategoryModel } from "app/graphql"
-import { RootStore as RootStoreTree } from "app/models"
+import { RootStore } from "app/models"
 import { getRoot, getSnapshot, Instance, SnapshotOut, types } from "mobx-state-tree"
 
 /**
@@ -8,7 +8,7 @@ import { getRoot, getSnapshot, Instance, SnapshotOut, types } from "mobx-state-t
 export const OnboardingModel = types
   .model("Onboarding")
   .views((self) => ({
-    get root(): RootStoreTree {
+    get root(): RootStore {
       return getRoot(self)
     },
     get api(): ApiRootStoreType {

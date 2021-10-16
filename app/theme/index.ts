@@ -15,7 +15,8 @@ ThemeManager.setComponentTheme("Text", (props, context) => {
 })
 
 ThemeManager.setComponentTheme("Button", (props, context) => {
-  const labelStyle = props.link && !props.linkColor ? { color: "#2211C9" } : {}
+  const labelStyle =
+    props.link && !props.linkColor ? { color: props.disabled ? "grey" : "#2211C9" } : {}
   return {
     labelStyle: [labelStyle, props.labelStyle],
   }

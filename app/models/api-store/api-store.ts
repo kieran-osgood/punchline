@@ -26,7 +26,7 @@ export const ApiStoreModel = types
  *  .postProcessSnapshot(omit(["password", "socialSecurityNumber", "creditCardNumber"]))
  */
 
-type ApiStoreType = Instance<typeof ApiStoreModel>
+export type ApiStoreType = Instance<typeof ApiStoreModel>
 export interface ApiStore extends ApiStoreType {}
 type ApiStoreSnapshotType = SnapshotOut<typeof ApiStoreModel>
 export interface ApiStoreSnapshot extends ApiStoreSnapshotType {}

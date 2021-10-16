@@ -86,13 +86,15 @@ export const SettingsModel = types
         isChecked: self.jokeLengthPreferences.get(x) ?? idx === 0,
       }))
     },
+    get anySelected(): boolean {
+      return this.blockedCategoryIds.length > 0
+    },
   }))
   .actions((self) => ({
     toggleJokeLength: (value: JokeLength, isChecked?: boolean) => {
-      const oneJokeIsTrue =
+      const oneJokeLengthIsTrue =
         [...self.jokeLengthPreferences.values()].reduce((a, b) => Number(a) + Number(b), 0) === 1
-      if (oneJokeIsTrue && self.jokeLengthPreferences.get(value) === true) {
-        // Ensure at least 1 joke is true
+      if (oneJokeLengthIsTrue && self.jokeLengthPreferences.get(value) === true) {
         return Toast.show({
           type: "error",
           text1: "Woops!",
@@ -101,6 +103,9 @@ export const SettingsModel = types
         })
       }
       self.jokeLengthPreferences.set(value, isChecked ?? false)
+    },
+    unselectAllBlockedCategories() {
+      self.root.apiStore.api.categories.forEach((x) => x.update(false))
     },
   }))
 
@@ -112,7 +117,7 @@ export const SettingsModel = types
  *  .postProcessSnapshot(omit(["password", "socialSecurityNumber", "creditCardNumber"]))
  */
 
-export type SettingsType = Instance<typeof SettingsModel>
+export interface SettingsType extends Instance<typeof SettingsModel> {}
 export interface Settings extends SettingsType {}
 type SettingsSnapshotType = SnapshotOut<typeof SettingsModel>
 export interface SettingsSnapshot extends SettingsSnapshotType {}
