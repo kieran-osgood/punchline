@@ -143,6 +143,8 @@ const generateAppleAndroidToken = async (): Promise<AppleSignInResponse> => {
   // Configure the request
   appleAuthAndroid.configure({
     // The Service ID you registered with Apple
+    // this is a fake package identifier for apple sign in only as they need to have unique ids
+    // ios/android otherwise are just com.ko.punchline
     clientId: "com.ko.punchline-android",
 
     // Return URL added to your Apple dev console. We intercept this redirect, but it must still match
