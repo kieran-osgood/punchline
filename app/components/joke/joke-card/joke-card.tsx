@@ -2,7 +2,7 @@
 /* eslint-disable react-native/no-color-literals */
 import { MotiTransitionProp } from "@motify/core"
 import { Skeleton } from "@motify/skeleton"
-import { JokeModelType } from "app/graphql"
+import { JokeModel, JokeModelType } from "app/graphql"
 import * as React from "react"
 import { Dimensions, ScrollView, StyleSheet, ViewStyle } from "react-native"
 import Animated, {
@@ -11,6 +11,7 @@ import Animated, {
   interpolateColor,
   useAnimatedStyle,
   useDerivedValue,
+  useSharedValue,
   withTiming,
 } from "react-native-reanimated"
 import { Text, ThemeManager, View } from "react-native-ui-lib"
@@ -92,27 +93,30 @@ const JokeCard = ({
       <View style={styles.overlay}>
         <Animated.View style={[CONTAINER, animatedPlaceholderStyles]}>
           <ScrollView showsVerticalScrollIndicator>
+            {/* TODO: investigate why this is not showing loading animation when empty or loading */}
             {loadingAnimation && (
-              <Animated.View style={fadeout}>
-                {Array(5)
-                  .fill(0)
-                  .map((_, idx) => (
-                    <React.Fragment key={idx}>
-                      {[1, 2].map((y, yIdx) => {
-                        return (
-                          <React.Fragment key={yIdx}>
-                            <Skeleton
-                              {...{ colors: skeletonColors, colorMode, transition }}
-                              width={y === 1 ? "100%" : "90%"}
-                              height={20}
-                            />
-                            <View height={y * 4} />
-                          </React.Fragment>
-                        )
-                      })}
-                    </React.Fragment>
-                  ))}
-              </Animated.View>
+              <View padding-s4>
+                <Animated.View style={fadeout}>
+                  {Array(5)
+                    .fill(0)
+                    .map((_, idx) => (
+                      <React.Fragment key={idx}>
+                        {[1, 2].map((y, yIdx) => {
+                          return (
+                            <React.Fragment key={yIdx}>
+                              <Skeleton
+                                {...{ colors: skeletonColors, colorMode, transition }}
+                                width={y === 1 ? "100%" : "90%"}
+                                height={20}
+                              />
+                              <View height={y * 5} />
+                            </React.Fragment>
+                          )
+                        })}
+                      </React.Fragment>
+                    ))}
+                </Animated.View>
+              </View>
             )}
             <Animated.View style={[loadingAnimation ? fadein : {}, { padding: spacing[3] }]}>
               <Text text60BO color={color.text}>
@@ -202,4 +206,21 @@ const CONTAINER: ViewStyle = {
   flex: 1,
   position: "relative",
   ...CARD_SHADOW,
+}
+
+export const LoadingJokeCard = () => {
+  const translateX = useSharedValue(0)
+  const translateY = useSharedValue(0)
+  const scale = useDerivedValue(() => {
+    return interpolate(
+      translateX.value,
+      [-width / 4, 0, width / 4],
+      [1, 0.95, 1],
+      Extrapolate.CLAMP,
+    )
+  }, [translateX.value])
+
+  const joke = JokeModel.create({ id: "" })
+
+  return <JokeCard onTop {...{ scale, translateX, translateY, joke }} loading />
 }
