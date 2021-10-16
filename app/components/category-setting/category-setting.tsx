@@ -46,7 +46,7 @@ export const CategoryMapping = observer(function CategoryMapping(props: Category
   const { settings } = useStores()
 
   return (
-    <View style={[CONTAINER, style]}>
+    <View center style={[CONTAINER, style]}>
       <Button
         label="Unselect All"
         link
@@ -55,7 +55,7 @@ export const CategoryMapping = observer(function CategoryMapping(props: Category
         disabled={!settings.anySelected}
       />
       {categoriesOnly === false && (
-        <Text marginV-s2 highlightString="don't" highlightStyle={HIGHLIGHT_STYLE}>
+        <Text centerH marginV-s2 highlightString="don't" highlightStyle={HIGHLIGHT_STYLE}>
           {"Select categories you don't wish to see"}
         </Text>
       )}

@@ -31,7 +31,7 @@ export const JokeLengthSetting = observer(function JokeLengthSetting(
 
   return (
     <View {...{ style }} paddingV-s4>
-      <View marginB-s4>
+      <View marginB-s4 marginH-s4>
         <Text>
           Filter out the story jokes and keep it to one liners, or mix it up with a bit of both!
         </Text>
