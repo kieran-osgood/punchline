@@ -37,7 +37,7 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
         url,
       })
     } catch (error) {
-      Sentry.captureException(error)
+      // This is caught but not logged due to: https://github.com/react-native-share/react-native-share/issues/1112
     }
   }
 

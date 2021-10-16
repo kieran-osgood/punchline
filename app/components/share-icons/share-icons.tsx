@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/react-native"
 import { useStores } from "app/models"
 import { Cross } from "assets/images/cross"
 import { ErrorReportIcon } from "assets/images/error-report"
@@ -70,19 +69,6 @@ type LinkProps = {
 type Type = "facebook" | "twitter" | "default"
 
 export const ShareLink = ({ jokeId, children, style = {}, type = "default" }: LinkProps) => {
-  /**
-   * user clicks share button - we generate a url like: https://api.punch-line.co.uk/share/joke?id=46234623
-   * next user clicks link
-   * link is an associated domain in the android manifest and ios
-   * on clicking it will check for a file:
-   * ios: https://api.punch-line.co.uk/.well-known/apple-app-site-association
-   * android: https://api.punch-line.co.uk/.well-known/assetlinks.json
-   *
-   * these will either direct the user to the app or to the website
-   * the website should be an empty page with javascript to redirect to appstore
-   *
-   */
-
   const onPress = async () => {
     try {
       await Share.open({
@@ -90,12 +76,12 @@ export const ShareLink = ({ jokeId, children, style = {}, type = "default" }: Li
         url: `${API_URL}/share/joke?id=${jokeId}`,
       })
     } catch (error) {
-      Sentry.captureException(error)
+      // This is caught but not logged due to: https://github.com/react-native-share/react-native-share/issues/1112
     }
   }
 
   return (
-    <TouchableOpacity onPress={() => onPress()} style={style} padding-s2>
+    <TouchableOpacity onPress={onPress} style={style} padding-s2>
       {children}
     </TouchableOpacity>
   )
