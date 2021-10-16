@@ -1,6 +1,5 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import * as Sentry from "@sentry/react-native"
-import { Link } from "app/screens/settings/screens/main-settings"
 import {
   AppleSignInButton,
   AppLogo,
@@ -8,6 +7,7 @@ import {
   GoogleSignInButton,
   GradientBackground,
   GuestSignInButton,
+  Link,
   LoadingModal,
   Screen,
   TroubleSigningInButton,
