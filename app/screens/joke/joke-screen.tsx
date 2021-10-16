@@ -11,6 +11,8 @@ import { SafeAreaView, StatusBar, ViewStyle } from "react-native"
 import { heightPercentageToDP } from "react-native-responsive-screen"
 import { Button, Text, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
+import { useThrottledCallback } from "use-debounce/lib"
+import { CallOptions } from "use-debounce/lib/useDebouncedCallback"
 
 const PAGE_GUTTERS = 15
 
@@ -140,6 +142,9 @@ const JOKE_INFO: ViewStyle = {
 }
 
 const ACTIVE_OPACITY = 0.4
+const config: CallOptions = { trailing: false }
+const timeout = 800
+
 type ButtonsProps = {
   handleDownVote: () => void
   handleUpVote: () => void
@@ -149,13 +154,17 @@ type ButtonsProps = {
 }
 export const Controls = (props: ButtonsProps) => {
   const { bookmarked, handleBookmarkPress, handleDownVote, handleUpVote, handleSkipPress } = props
+  const throttledHandleDownVote = useThrottledCallback(handleDownVote, timeout, config)
+  const throttledHandleUpVote = useThrottledCallback(handleUpVote, timeout, config)
+  const throttledHandleSkipPress = useThrottledCallback(handleSkipPress, timeout, config)
+
   return (
     <View style={BUTTONS}>
       <Button
         style={[ACTION_BUTTON, { padding: spacing[4] }]}
         iconStyle={{ padding: spacing[4] }}
         round
-        onPress={handleDownVote}
+        onPress={throttledHandleDownVote}
         activeOpacity={ACTIVE_OPACITY}
         iconSource={() => <CryingEmoji scale={1.1} />}
       />
@@ -172,7 +181,7 @@ export const Controls = (props: ButtonsProps) => {
         <Button
           style={ACTION_BUTTON}
           round
-          onPress={handleSkipPress}
+          onPress={throttledHandleSkipPress}
           activeOpacity={ACTIVE_OPACITY}
           iconSource={() => <Skip />}
         />
@@ -181,7 +190,7 @@ export const Controls = (props: ButtonsProps) => {
       <Button
         style={ACTION_BUTTON}
         round
-        onPress={handleUpVote}
+        onPress={throttledHandleUpVote}
         activeOpacity={ACTIVE_OPACITY}
         iconSource={() => <LaughingEmoji scale={1.4} />}
       />
