@@ -2,14 +2,13 @@ import { Section } from "app/screens/settings/screens/main-settings"
 import { CategorySetting, JokeLengthSetting, Screen } from "components"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
+import { StatusBar } from "react-native"
 import { View } from "react-native-ui-lib"
 
-type JokePreferencesScreenProps = {}
-export const JokePreferencesScreen = observer(function JokePreferencesScreen(
-  props: JokePreferencesScreenProps,
-) {
+export const JokePreferencesScreen = observer(function JokePreferencesScreen() {
   return (
     <Screen preset="scroll" unsafe>
+      <StatusBar barStyle="dark-content" />
       <View paddingB-s5>
         {/* User the divider style in the main settings page
         make the title more prominent and reduce the current "filter out the story"
