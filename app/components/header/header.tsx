@@ -1,6 +1,7 @@
 import { ParamListBase } from "@react-navigation/native"
 import { StackHeaderProps, StackNavigationProp } from "@react-navigation/stack"
-import { AccountIcon, BackArrowIcon, SettingsIcon } from "images"
+import { BackButton } from "components"
+import { AccountIcon, SettingsIcon } from "images"
 import { observer } from "mobx-react-lite"
 import React from "react"
 import { StyleSheet, ViewStyle } from "react-native"
@@ -74,20 +75,4 @@ const BUTTON: ViewStyle = {
   flexGrow: 1,
   alignItems: "center",
   justifyContent: "center",
-}
-
-const BackButton = ({ reverse, onPress }: { reverse?: boolean; onPress: () => void }) => {
-  return (
-    <TouchableOpacity
-      row
-      style={BUTTON}
-      {...{ onPress }}
-      marginR-s3={reverse}
-      marginL-s3={!reverse}
-    >
-      {reverse && <Text text80>Back</Text>}
-      <BackArrowIcon {...{ reverse }} />
-      {!reverse && <Text text80>Back</Text>}
-    </TouchableOpacity>
-  )
 }
