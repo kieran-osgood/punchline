@@ -48,21 +48,23 @@ const JokeCard = ({
   }, [isLoading])
 
   const x = useDerivedValue(() => (onTop ? translateX.value : 0))
-  const container = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: translateX.value },
-      { translateY: translateY.value },
-      {
-        rotate: `${interpolate(
-          x.value,
-          [-width / 2, 0, width / 2],
-          [α, 0, -α],
-          Extrapolate.CLAMP,
-        )}rad`,
-      },
-      { scale: withTiming(onTop ? 1 : scale.value) },
-    ],
-  }))
+  const container = useAnimatedStyle(() => {
+    const rotate = `${interpolate(
+      x.value,
+      [-(width / 2), 0, width / 2],
+      [-α, 0, α],
+      Extrapolate.CLAMP,
+    )}rad`
+
+    return {
+      transform: [
+        { translateX: translateX.value },
+        { translateY: translateY.value },
+        { rotate },
+        { scale: withTiming(onTop ? 1 : scale.value) },
+      ],
+    }
+  })
 
   const color = React.useMemo(() => randomColor(), [])
 

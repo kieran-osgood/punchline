@@ -65,10 +65,10 @@ const SwiperJokeCard = ({ joke, onTop, isLoading }: SwiperProps, ref: Ref<SwipeH
 
   useImperativeHandle(ref, () => ({
     swipeLeft: () => {
-      if (onTop) swipe(translateX, -A, 5)
+      if (onTop) swipe(translateX, -A, 2)
     },
     swipeRight: () => {
-      if (onTop) swipe(translateX, A, 5)
+      if (onTop) swipe(translateX, A, 2)
     },
   }))
 
@@ -96,6 +96,8 @@ const SwiperJokeCard = ({ joke, onTop, isLoading }: SwiperProps, ref: Ref<SwipeH
   //     translateY.value = withSpring(0, { velocity: velocityY })
   //   },
   // })
+
+  if (joke.viewed) return null
 
   /* to re-enable swiping use: <PanGestureHandler {...{onGestureEvent}}> */
   return (
