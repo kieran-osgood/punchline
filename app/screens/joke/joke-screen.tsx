@@ -76,7 +76,7 @@ export const JokeScreen = observer(function JokeScreen() {
             {store.topOfDeckJoke?.categories?.[0].name}
           </Text>
 
-          <Text text40 bold>
+          <Text text40 bold center marginH-s3 numberOfLines={3}>
             {store.topOfDeckJoke?.title}
           </Text>
         </View>
@@ -107,6 +107,7 @@ export const JokeScreen = observer(function JokeScreen() {
           }}
         />
       </SafeAreaView>
+
       <AdBanner />
     </>
   )
