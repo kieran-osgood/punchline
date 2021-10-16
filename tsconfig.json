@@ -27,5 +27,5 @@
     }
   },
   "exclude": ["node_modules"],
-  "include": ["index.js", "app", "test", "storybook", "assets", "types.ts", "mst-gql.config.js", "react-native.config.js", "babel.config.js", "declarations.d.ts"]
+  "include": ["app", "test", "storybook", "assets", "./*.ts", "./*.js"]
 }
