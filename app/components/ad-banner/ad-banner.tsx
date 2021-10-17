@@ -8,6 +8,12 @@ import { ADMOB_HOME_FOOTER } from "react-native-dotenv"
 import { heightPercentageToDP } from "react-native-responsive-screen"
 import { View } from "react-native-ui-lib"
 
+const onAdClosed = noop
+const onAdFailedToLoad = noop
+const onAdLeftApplication = noop
+const onAdLoaded = noop
+const onAdOpened = noop
+const size = BannerAdSize.SMART_BANNER
 export interface AdBannerProps {
   /**
    * An optional style override useful for padding & margin.
@@ -23,16 +29,17 @@ export const AdBanner = observer(function AdBanner(props: AdBannerProps) {
 
   return (
     <View style={[{ height: heightPercentageToDP("10%") }, props.style]}>
-      {/* TODO: Give this a fixed height - it's currently causing layout shift and unmounting on each navigation */}
       <BannerAd
-        {...{ unitId }}
-        size={BannerAdSize.SMART_BANNER}
         // prop types require these to be added
-        onAdClosed={noop}
-        onAdFailedToLoad={noop}
-        onAdLeftApplication={noop}
-        onAdLoaded={noop}
-        onAdOpened={noop}
+        {...{
+          unitId,
+          onAdClosed,
+          onAdFailedToLoad,
+          onAdLeftApplication,
+          onAdLoaded,
+          onAdOpened,
+          size,
+        }}
       />
     </View>
   )
