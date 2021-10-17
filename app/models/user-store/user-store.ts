@@ -80,29 +80,11 @@ export const UserStoreModel = types
           nodes(categoryModelPrimitives),
         )
 
-        self.root.apiStore.api.queryJokes(
-          {
-            input: {
-              blockedCategoryIds: self.root.settings.blockedCategoryIds,
-              jokeLengths: self.root.settings.jokeLengthsEnumArr,
-              deepLinkedJokeId: self.root.apiStore.jokeApi.deepLinkJokeId,
-              profanityFilter: self.root.settings.profanityFilter,
-            },
-            first: 5,
-          },
-          (j) =>
-            j.nodes((n) =>
-              n.id.body.title.length.negativeRating.positiveRating.categories(
-                (c) => c.id.image.name,
-              ),
-            ),
-          { fetchPolicy: "no-cache" },
-        )
+        self.root.apiStore.jokeApi.fetchJokes()
       } catch (err) {
         self.updateUser(null)
         auth().signOut()
         Sentry.captureException(err)
-        // Add a modal pop up
         // self.root.resetStore()
         Toast.show({
           type: "error",
