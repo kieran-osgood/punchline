@@ -9,7 +9,7 @@ import { getRoot, Instance, SnapshotOut, types } from "mobx-state-tree"
 export const JokeApiStoreModel = types
   .model("JokeApiStore")
   .props({
-    deepLinkJokeId: types.maybe(types.string),
+    deepLinkJoke: types.maybe(types.reference(JokeModel)),
   })
   .views((self) => ({
     get root(): RootStore {
@@ -23,8 +23,23 @@ export const JokeApiStoreModel = types
     },
   }))
   .actions((self) => ({
-    setDeepLinkJoke(deepLinkInitialJoke: string | undefined) {
-      self.deepLinkJokeId = deepLinkInitialJoke
+    fetchJokes(deepLinkedJokeId?: string) {
+      const query = self.api.queryJokes(
+        {
+          input: {
+            blockedCategoryIds: self.root.settings.blockedCategoryIds,
+            jokeLengths: self.root.settings.jokeLengthsEnumArr,
+            profanityFilter: self.root.settings.profanityFilter,
+            deepLinkedJokeId,
+          },
+        },
+        (j) =>
+          j.nodes((n) =>
+            n.id.body.title.length.negativeRating.positiveRating.categories((c) => c.id.image.name),
+          ),
+        { fetchPolicy: "no-cache" },
+      )
+      return query
     },
   }))
   .views((self) => ({
@@ -42,44 +57,49 @@ export const JokeApiStoreModel = types
     },
     get topOfDeckJoke() {
       if (this.nonViewedJokes.length <= 10) {
-        self.api.queryJokes(
-          {
-            input: {
-              blockedCategoryIds: self.root.settings.blockedCategoryIds,
-              jokeLengths: self.root.settings.jokeLengthsEnumArr,
-              deepLinkedJokeId: self.deepLinkJokeId,
-              profanityFilter: self.root.settings.profanityFilter,
-            },
-          },
-          (j) =>
-            j.nodes((n) =>
-              n.id.body.title.length.negativeRating.positiveRating.categories(
-                (c) => c.id.image.name,
-              ),
-            ),
-          { fetchPolicy: "no-cache" },
-        )
+        self.fetchJokes()
       }
       if (this.nonViewedJokes.length === 0) {
         return JokeModel.create({ id: "unc9872q34hf8q2nbq24897" })
-      }
-      if (self.deepLinkJokeId) {
-        const id = self.deepLinkJokeId
-        self.setDeepLinkJoke(undefined)
-        const deepJoke = self.api.jokes.get(id)
-        return deepJoke ?? this.nonViewedJokes[this.nonViewedJokes.length - 1]
       }
 
       return this.nonViewedJokes[this.nonViewedJokes.length - 1]
     },
   }))
+  .actions((self) => ({
+    setDeepLinkJoke: async (deepLinkInitialJokeId: string): Promise<void> => {
+      console.log("setDeepLinkJoke")
+      if (!self.api.jokes.has(deepLinkInitialJokeId)) {
+        try {
+          console.log("has(deepLinkInitialJokeId)")
+          await self.fetchJokes(deepLinkInitialJokeId).promise
+        } catch (err) {}
+      }
+
+      if (
+        self.api.jokes.has(deepLinkInitialJokeId) &&
+        !self.api.jokes.get(deepLinkInitialJokeId)?.viewed
+      ) {
+        console.log("self.deepLinkJoke = self.api.jokes.get(deepLinkInitialJokeId)")
+        self.deepLinkJoke = self.api.jokes.get(deepLinkInitialJokeId)
+      }
+    },
+  }))
+
+types.snapshotProcessor(JokeApiStoreModel, {
+  postProcessor(snapshot: JokeApiStoreSnapshotType) {
+    return {
+      ...snapshot,
+      deepLinkJoke: false,
+    }
+  },
+})
 
 /**
  * Un-comment the following to omit model attributes from your snapshots (and from async storage).
  * Useful for sensitive data like passwords, or transitive state like whether a modal is open.
 
  * Note that you'll need to import `omit` from ramda, which is already included in the project!
- *  .postProcessSnapshot(omit(["password", "socialSecurityNumber", "creditCardNumber"]))
  */
 
 type JokeApiStoreType = Instance<typeof JokeApiStoreModel>

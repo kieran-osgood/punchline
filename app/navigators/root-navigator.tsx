@@ -26,7 +26,7 @@ import {
 } from "app/navigators/main-navigator"
 import { observer } from "mobx-react-lite"
 import React from "react"
-import RNBootSplash from "react-native-bootsplash"
+import * as RNBootSplash from "react-native-bootsplash"
 import Toast from "react-native-toast-message"
 
 /**
@@ -96,17 +96,18 @@ const linking: LinkingOptions<RootStackParamList> = {
           JokeScreen: {
             path: "joke/:id",
             parse: { id: String },
+            exact: true,
           },
         },
       },
-      // AuthNavigator: {
-      //   screens: {
-      //     LoginScreen: {
-      //       path: "login/:email",
-      //       parse: { email: String },
-      //     },
-      //   },
-      // },
+      AuthNavigator: {
+        screens: {
+          Login: {
+            path: "login/:email",
+            parse: { email: String },
+          },
+        },
+      },
     },
   },
 }
