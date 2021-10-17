@@ -81,7 +81,7 @@ export const ShareLink = ({ jokeId, children, style = {}, type = "default" }: Li
   }
 
   return (
-    <TouchableOpacity onPress={onPress} style={style} padding-s2>
+    <TouchableOpacity onPress={onPress} style={style}>
       {children}
     </TouchableOpacity>
   )
