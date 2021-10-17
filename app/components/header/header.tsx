@@ -21,7 +21,7 @@ export type HeaderProps = {
  */
 export const Header = observer(function Header({ navigation, left, right, ...rest }: HeaderProps) {
   const insets = useSafeAreaInsets()
-  const style = { paddingTop: insets.top > 25 ? insets.top : 25 }
+  const style = { paddingTop: insets.top > 15 ? insets.top : 15 }
 
   const onPress = () => navigation.goBack()
 
