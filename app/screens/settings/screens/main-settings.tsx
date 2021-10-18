@@ -197,7 +197,7 @@ type DividerProps = {
   row?: boolean
   arrow?: boolean
 }
-const Divider = ({
+export const Divider = ({
   children,
   style: styleProp,
   onPress,
@@ -222,13 +222,11 @@ const Divider = ({
   )
 }
 
-const Title = ({ children }: { children: string }) => {
-  return (
-    <Text style={TITLE} grey30 text90L>
-      {children}
-    </Text>
-  )
-}
+const Title = ({ children }: { children: string }) => (
+  <Text style={TITLE} grey30 text90L>
+    {children}
+  </Text>
+)
 
 const DIVIDER: ViewStyle = {
   borderBottomColor: color.background,
@@ -249,9 +247,9 @@ const ROW: ViewStyle = {
   flexDirection: "row",
   width: "100%",
   position: "relative",
-  justifyContent: "space-between",
   alignItems: "center",
   paddingVertical: spacing[2],
+  justifyContent: "space-between",
 }
 
 const SECTION: ViewStyle = {

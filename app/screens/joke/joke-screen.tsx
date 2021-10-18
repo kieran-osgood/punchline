@@ -1,19 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import BottomSheet from "@gorhom/bottom-sheet"
+import BottomSheet, { BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet"
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { LoadingJokeCard } from "app/components/joke/joke-card/joke-card"
 import Swipeable from "app/components/swipeable/swipeable"
 import { JokeModelType, RatingValue, useQuery } from "app/graphql"
 import { useStores } from "app/models"
 import { NavigationProps } from "app/navigators"
+import { Divider } from "app/screens/settings/screens/main-settings"
+import { Ellipsis } from "assets/images/ellipsis"
+import { ErrorReportIcon } from "assets/images/error-report"
 import Skip from "assets/images/skip"
-import { AdBanner, BookmarkButton, Ratings, ShareIcons, SwipeHandler } from "components"
-import { CryingEmoji, LaughingEmoji } from "images"
+import { AdBanner, BookmarkButton, Ratings, ShareLink, SwipeHandler } from "components"
+import { CryingEmoji, LaughingEmoji, Share as ShareIcon } from "images"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { Linking, SafeAreaView, StatusBar, ViewStyle } from "react-native"
-import { heightPercentageToDP } from "react-native-responsive-screen"
-import { Button, Text, View } from "react-native-ui-lib"
+import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen"
+import { Button, Text, TouchableOpacity, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 import { useThrottledCallback } from "use-debounce/lib"
 import { CallOptions } from "use-debounce/lib/useDebouncedCallback"
@@ -26,6 +29,7 @@ export const JokeScreen = observer(function JokeScreen() {
   const query = useQuery()
   const { apiStore } = useStores()
   const bottomSheetRef = React.useRef<BottomSheet>(null)
+  const optionsBottomSheetRef = React.useRef<OptionsBottomSheet>(null)
 
   const onSwipe = React.useCallback(
     (joke: JokeModelType, rating: RatingValue, bookmarked: boolean) => {
@@ -55,12 +59,6 @@ export const JokeScreen = observer(function JokeScreen() {
       <SafeAreaView style={ROOT} testID="JokeScreen">
         <StatusBar barStyle="dark-content" />
         <View style={HEADER}>
-          <Button
-            label="Press"
-            onPress={() => {
-              bottomSheetRef.current?.collapse()
-            }}
-          />
           <Text grey30 bold>
             {apiStore.jokeApi.topOfDeckJoke?.categories?.[0].name}
           </Text>
@@ -84,7 +82,13 @@ export const JokeScreen = observer(function JokeScreen() {
             likes={apiStore.jokeApi.topOfDeckJoke.positiveRating ?? 0}
             dislikes={apiStore.jokeApi.topOfDeckJoke.negativeRating ?? 0}
           />
-          <ShareIcons jokeId={apiStore.jokeApi.topOfDeckJoke.id} />
+          <TouchableOpacity
+            onPress={() => {
+              optionsBottomSheetRef.current.open()
+            }}
+          >
+            <Ellipsis />
+          </TouchableOpacity>
         </View>
 
         <Controls
@@ -99,6 +103,7 @@ export const JokeScreen = observer(function JokeScreen() {
       </SafeAreaView>
       <AdBanner />
       <DeepLinkJokeActionSheet ref={bottomSheetRef} />
+      <OptionsActionSheet ref={optionsBottomSheetRef} />
     </>
   )
 })
@@ -215,9 +220,7 @@ export const ACTION_BUTTON: ViewStyle = {
 }
 const NoRefDeepLinkJokeActionSheet = (props: unknown, ref: React.Ref<BottomSheet>) => {
   const route = useRoute<NavigationProps<"JokeScreen">["route"]>()
-  console.log("route: ", route)
   const jokeId = route.params?.id
-  console.log("jokeId: ", jokeId)
   const [index, setIndex] = React.useState(-1)
   const { apiStore } = useStores()
   const navigation = useNavigation<NavigationProps<"JokeScreen">["navigation"]>()
@@ -250,7 +253,6 @@ const NoRefDeepLinkJokeActionSheet = (props: unknown, ref: React.Ref<BottomSheet
   }, [handleDeepLink, navigation])
 
   React.useEffect(() => {
-    console.log("apiStore.jokeApi.deepLinkJoke: ", apiStore.jokeApi.deepLinkJoke?.id)
     if (apiStore.jokeApi.deepLinkJoke?.viewed) {
       return
     }
@@ -262,28 +264,101 @@ const NoRefDeepLinkJokeActionSheet = (props: unknown, ref: React.Ref<BottomSheet
       !apiStore.jokeApi.deepLinkJoke?.viewed &&
       apiStore.jokeApi.deepLinkJoke?.id === jokeId
     ) {
-      console.log("3")
       setIndex(0)
     }
   }, [apiStore.api.jokes, apiStore.jokeApi, jokeId])
 
-  const snapPoints = React.useMemo(() => ["100%"], [])
-
-  const onChange = React.useCallback((index: number) => {
-    console.log("handleSheetChanges", index)
-  }, [])
+  const initialSnapPoints = React.useMemo(() => ["CONTENT_HEIGHT"], [])
+  const {
+    animatedHandleHeight: handleHeight,
+    animatedSnapPoints: snapPoints,
+    animatedContentHeight: contentHeight,
+    handleContentLayout,
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints)
 
   return (
-    <BottomSheet {...{ ref, onChange, snapPoints, index }} enablePanDownToClose>
-      <View>
+    <BottomSheet
+      style={BOTTOM_SHEET}
+      enablePanDownToClose
+      {...{ ref, snapPoints, index, handleHeight, contentHeight }}
+    >
+      <BottomSheetView style={BOTTOM_SHEET_VIEW} onLayout={handleContentLayout}>
         <Text>Awesome 🎉</Text>
         <Button
           label={apiStore.jokeApi.deepLinkJoke?.title}
           onPress={() => apiStore.jokeApi.deepLinkJoke?.markViewed()}
         />
-      </View>
+      </BottomSheetView>
     </BottomSheet>
   )
 }
 
 const DeepLinkJokeActionSheet = React.forwardRef(NoRefDeepLinkJokeActionSheet)
+
+interface OptionsBottomSheet {
+  open: () => void
+}
+const NoRefOptionsActionSheet = (props: unknown, imperativeRef: React.Ref<OptionsBottomSheet>) => {
+  const { apiStore } = useStores()
+  const [index] = React.useState(-1)
+  const initialSnapPoints = React.useMemo(() => ["CONTENT_HEIGHT"], [])
+  const ref = React.useRef<BottomSheet>(null)
+  const {
+    animatedHandleHeight: handleHeight,
+    animatedSnapPoints: snapPoints,
+    animatedContentHeight: contentHeight,
+    handleContentLayout,
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints)
+
+  const callbackAndClose = (cb: () => void) => {
+    console.log("test")
+    ref.current?.close()
+    cb()
+  }
+  React.useImperativeHandle(imperativeRef, () => ({
+    open: () => ref.current?.collapse(),
+  }))
+  return (
+    <BottomSheet
+      style={BOTTOM_SHEET}
+      enablePanDownToClose
+      {...{ ref, snapPoints, index, handleHeight, contentHeight }}
+    >
+      <BottomSheetView style={BOTTOM_SHEET_VIEW} onLayout={handleContentLayout}>
+        <ShareLink jokeId={apiStore.jokeApi.topOfDeckJoke.id}>
+          <Divider row arrow>
+            <View row centerV>
+              <ShareIcon scale={1.1} />
+              <Text marginL-s2>Share Joke</Text>
+            </View>
+          </Divider>
+        </ShareLink>
+
+        <Divider row arrow onPress={() => callbackAndClose(() => console.log("he"))}>
+          <View row centerV>
+            <ErrorReportIcon />
+            <Text marginL-s2>Report Joke</Text>
+          </View>
+        </Divider>
+      </BottomSheetView>
+    </BottomSheet>
+  )
+}
+
+const OptionsActionSheet = React.forwardRef(NoRefOptionsActionSheet)
+
+const BOTTOM_SHEET: ViewStyle = {
+  shadowColor: "black",
+  shadowOffset: {
+    width: 0,
+    height: -4,
+  },
+  shadowOpacity: 0.23,
+  shadowRadius: 2.62,
+  elevation: 4,
+}
+
+const BOTTOM_SHEET_VIEW: ViewStyle = {
+  marginHorizontal: widthPercentageToDP("5%"),
+  paddingBottom: heightPercentageToDP("5%"),
+}
