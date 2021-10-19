@@ -49,11 +49,7 @@ const Stack = createStackNavigator<RootStackParamList>()
 const RootStack = observer(function RootStack() {
   const { userStore } = useStores()
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       {!userStore.user?.uid ? (
         <Stack.Screen name="AuthNavigator" component={AuthNavigator} />
       ) : (
@@ -103,8 +99,8 @@ const linking: LinkingOptions<RootStackParamList> = {
       AuthNavigator: {
         screens: {
           Login: {
-            path: "login/:email",
-            parse: { email: String },
+            path: "login/:token",
+            parse: { token: String },
           },
         },
       },
