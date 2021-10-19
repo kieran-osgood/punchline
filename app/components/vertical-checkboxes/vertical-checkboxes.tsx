@@ -46,7 +46,7 @@ export const VerticalCheckboxes = observer(function VerticalCheckboxes(
 
 const TEXT: TextStyle = {
   textDecorationLine: "none",
-  fontFamily: "Montserrat",
+  fontFamily: "AvenirNextLTPro-Regular",
   fontWeight: "300",
   color: ThemeManager.titleColor,
 }

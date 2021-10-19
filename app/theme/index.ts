@@ -3,8 +3,8 @@ import { ThemeManager } from "react-native-ui-lib"
 
 const fontFamily = (bold: boolean): TextStyle => ({
   fontFamily: Platform.select({
-    ios: !bold ? "Montserrat" : "Montserrat-Bold", // The font family name
-    android: !bold ? "Montserrat-Regular" : "Montserrat-Bold", // The file name
+    ios: !bold ? "AvenirNextLTPro-Regular" : "AvenirNextLTPro-Bold", // The font family name
+    android: !bold ? "AvenirNextLTPro-Regular" : "AvenirNextLTPro-Bold", // The file name
   }),
 })
 
