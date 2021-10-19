@@ -2006,6 +2006,11 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
+"@hookform/resolvers@^2.8.2":
+  version "2.8.2"
+  resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-2.8.2.tgz#590dcc23212a659bad08212138261c3950ef09f1"
+  integrity sha512-oDTGrm7yHxT4VIv4kJcfjvWvozCbdcL0/jrpbAkeo39FYn78XnKOrrGTNmrXdfu+EQVkNIdZ47IYRFManZ4jUA==
+
 "@hypnosphi/create-react-context@^0.3.1":
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/@hypnosphi/create-react-context/-/create-react-context-0.3.1.tgz#f8bfebdc7665f5d426cba3753e0e9c7d3154d7c6"
@@ -3499,9 +3504,9 @@
     tslib "^1.9.3"
 
 "@sentry/cli@^1.52.4":
-  version "1.69.1"
-  resolved "https://registry.yarnpkg.com/@sentry/cli/-/cli-1.69.1.tgz#0a6de12346c0f2347d610835a18ff554f2d65adc"
-  integrity sha512-HxO7vjqSvWfc9L5A/ib3UB1mXKFNiORY9BXwtYTo38jv4ROrKDFz36IzHsD6nPFuv8+6iDVyNlEujK/n9NvRyw==
+  version "1.70.0"
+  resolved "https://registry.yarnpkg.com/@sentry/cli/-/cli-1.70.0.tgz#a1d912aa64ebb7f13e544566575b6f6f774178b7"
+  integrity sha512-UlQTqVfu4qis+XMYPQGl3JZVKySYww+GIK+CNhnN0eBor3Du93xrkMQ7q0ilyBKTrmV3dmlnXM8ckKGu9673cg==
   dependencies:
     https-proxy-agent "^5.0.0"
     mkdirp "^0.5.5"
@@ -16708,6 +16713,11 @@ react-helmet-async@^1.0.2:
     react-fast-compare "^3.2.0"
     shallowequal "^1.1.0"
 
+react-hook-form@^7.17.4:
+  version "7.17.4"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.17.4.tgz#232b6aaccddb91eb4a228ac20b154abd90866fdb"
+  integrity sha512-7XhbCr7d9fDC1TgcK/BUbt7D3q0VJMu7jPErfsa0JrxVjv/nni41xWdJcy0Zb7R+Np8OsCkQ2lMyloAtE3DLiQ==
+
 react-hotkeys@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-hotkeys/-/react-hotkeys-2.0.0.tgz#a7719c7340cbba888b0e9184f806a9ec0ac2c53f"
@@ -16949,10 +16959,10 @@ react-native-toast-message@^1.4.9:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-ui-lib@6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-ui-lib/-/react-native-ui-lib-6.0.0.tgz#d82644a0696957070db87148b058685dc61fee92"
-  integrity sha512-2YpBgBodWp2yby05O6MD8Ua1Yeyqdq4jo1d6kcWOJnk9mheJB+4qRtlV+xTixpFNhKCXQwjKf3FON5fB8/STKg==
+react-native-ui-lib@6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-ui-lib/-/react-native-ui-lib-6.1.0.tgz#89d295fa2a96ad6483dd696d3ed5835b2b14e4a0"
+  integrity sha512-seZSvw6GpkwskmULhHgVqjQoVAM/7janANhD9PMXt/c8rf3X8F6Vp2fgLeSJxMJQ8t8cpAEfov49st7UCgOf4w==
   dependencies:
     babel-plugin-transform-inline-environment-variables "^0.0.2"
     color "^3.1.0"
@@ -20586,3 +20596,8 @@ zen-observable@^0.8.0:
   version "0.8.15"
   resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.8.15.tgz#96415c512d8e3ffd920afd3889604e30b9eaac15"
   integrity sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==
+
+zod@^3.10.0:
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.10.0.tgz#6885658e388e47d6d25c296b25987aad4c48aa2d"
+  integrity sha512-T5wUCAJ5Z0uh3Q+S5ZzsNBkoybd1nqgeGhNRnqt1e/Rwolxugkt4BNYqwq+wBAxb0zrLC5jA2maehpXixD+bFw==

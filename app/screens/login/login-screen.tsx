@@ -9,11 +9,13 @@ import {
   GuestSignInButton,
   Link,
   LoadingModal,
+  OptionsBottomSheet,
   Screen,
   TroubleSigningInButton,
+  TroubleSigningInSheet,
 } from "components"
 import { observer } from "mobx-react-lite"
-import React from "react"
+import * as React from "react"
 import { BackHandler, StyleSheet, ViewStyle } from "react-native"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import Toast from "react-native-toast-message"
@@ -28,6 +30,7 @@ export type ErrorCallback = (error: Error) => void
 export const LoginScreen = observer(function LoginScreen() {
   // pre-fetch for the onboarding screens
   // useQuery((store) => store.queryCategories({}, (c) => c.nodes((nodes) => nodes.id.image.name)))
+  const ref = React.useRef<OptionsBottomSheet | null>(null)
   const [isLoading, setIsLoading] = React.useState(false)
   React.useEffect(() => {
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
@@ -54,7 +57,7 @@ export const LoginScreen = observer(function LoginScreen() {
         </View>
         <View flex-1 centerH width="100%">
           <Text white text90BO>
-            {"By signing in you give consent to our "}
+            {"By signing in you give consent to our \n"}
             <Link url={`/terms-of-service.html`} inlineText>
               {"Terms of Service"}
             </Link>
@@ -77,10 +80,11 @@ export const LoginScreen = observer(function LoginScreen() {
         </View>
 
         <View marginV-s6>
-          <TroubleSigningInButton {...{ onError }} />
+          <TroubleSigningInButton {...{ onError }} onPress={() => ref.current?.open()} />
         </View>
       </View>
       <GradientBackground style={BACKGROUND} />
+      <TroubleSigningInSheet ref={ref} onError={onError} />
     </Screen>
   )
 })
@@ -101,6 +105,7 @@ const BACKGROUND: ViewStyle = {
   zIndex: -1,
   height: "100%",
 }
+
 const onError: ErrorCallback = (error: Error) => {
   Sentry.captureException(error)
 

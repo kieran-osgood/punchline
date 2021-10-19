@@ -1,5 +1,3 @@
-import auth from "@react-native-firebase/auth"
-import { ErrorCallback } from "app/screens"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { TextStyle, ViewStyle } from "react-native"
@@ -9,7 +7,7 @@ export interface TroubleSigningInButtonProps {
    * An optional style override useful for padding & margin.
    */
   style?: ViewStyle
-  onError: ErrorCallback
+  onPress?: () => void
 }
 
 /**
@@ -18,35 +16,16 @@ export interface TroubleSigningInButtonProps {
 export const TroubleSigningInButton = observer(function TroubleSigningInButton(
   props: TroubleSigningInButtonProps,
 ) {
-  const handleTroubleLoggingIn = async (email = "kieranbosgood@gmail.com") => {
-    try {
-      await auth().sendSignInLinkToEmail(email, {
-        handleCodeInApp: true,
-        url: "http://punchline-f9af3.firebaseapp.com",
-        iOS: {
-          bundleId: "com.ko.punchline",
-        },
-        android: {
-          packageName: "com.ko.punchline",
-          installApp: true,
-          minimumVersion: "12",
-        },
-      })
-    } catch (error) {
-      if (error instanceof Error) props.onError(error)
-    }
-  }
-
   return (
     <Button
       label="Trouble signing in?"
       text80BO
       link
-      marginB-s5
-      marginT-s3
+      paddingB-s5
+      paddingT-s3
       linkColor="white"
       labelStyle={LABEL}
-      onPress={() => handleTroubleLoggingIn()}
+      onPress={props.onPress}
     />
   )
 })
