@@ -13,6 +13,9 @@ PODS:
   - EXFileSystem (11.1.3):
     - ExpoModulesCore
     - UMCore
+  - EXFont (9.2.1):
+    - ExpoModulesCore
+    - UMCore
   - EXImageLoader (2.2.0):
     - ExpoModulesCore
     - React-Core
@@ -565,18 +568,18 @@ PODS:
   - RNScreens (3.7.2):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.1.0):
+  - RNSentry (2.4.2):
     - React-Core
-    - Sentry (= 7.2.6)
+    - Sentry (= 6.1.4)
   - RNShare (7.0.0):
     - React-Core
   - RNSVG (12.1.1):
     - React
   - RNVectorIcons (8.1.0):
     - React-Core
-  - Sentry (7.2.6):
-    - Sentry/Core (= 7.2.6)
-  - Sentry/Core (7.2.6)
+  - Sentry (6.1.4):
+    - Sentry/Core (= 6.1.4)
+  - Sentry/Core (6.1.4)
   - UMAppLoader (2.2.0)
   - UMCore (7.1.2)
   - UMReactNativeAdapter (6.3.7):
@@ -593,6 +596,7 @@ DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
+  - EXFont (from `../node_modules/expo-font/ios`)
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
   - EXLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
   - EXLocalization (from `../node_modules/expo-localization/ios`)
@@ -730,6 +734,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-constants/ios"
   EXFileSystem:
     :path: "../node_modules/expo-file-system/ios"
+  EXFont:
+    :path: "../node_modules/expo-font/ios"
   EXImageLoader:
     :path: "../node_modules/expo-image-loader/ios"
   EXLinearGradient:
@@ -868,6 +874,7 @@ SPEC CHECKSUMS:
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   EXConstants: 4cb52b6d8f636c767104a44bf7db3873e9c01a6f
   EXFileSystem: 0a04aba8da751b9ac954065911bcf166503f8267
+  EXFont: 9846ba1bb6f5f5aed44e20eea3ac70693323832d
   EXImageLoader: d3531a3fe530b22925c19977cb53bb43e3821fe6
   EXLinearGradient: f9ea3259f096b27008860ca50764184225dc71c9
   EXLocalization: 8b9463c81843da214476b541a27811dd885c9a76
@@ -955,11 +962,11 @@ SPEC CHECKSUMS:
   RNKeychain: b8e0711b959a19c5b057d1e970d3c83d159b6da5
   RNReanimated: d29057cf85e771be4f0180ba1d00a7185e423a7d
   RNScreens: 0591543e343c7444ea1756b6265d81a4295922c9
-  RNSentry: a3c522c9f17f191e4972c3e4d6065aba253b593e
+  RNSentry: e86fb2e2fec0365644f4b582938bf66be515acce
   RNShare: 00e7409201e3cab13e0febc41fd4465a83ae8225
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
-  Sentry: be2f8f7a63e5274cc83d0813e40c1680119c0153
+  Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
   UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
   UMCore: ce3a4faa010239063b8343895b29a6d97b01069d
   UMReactNativeAdapter: bb7922210cf6fdb5768f78685f3c3a2060299119

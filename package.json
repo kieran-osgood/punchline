@@ -66,6 +66,7 @@
     "babel-preset-expo": "^8.3.0",
     "date-fns": "^2.23.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "expo-font": "^9.2.1",
     "expo-linear-gradient": "^9.2.0",
     "expo-localization": "9.1.0",
     "graphql-request": "^3.4.0",

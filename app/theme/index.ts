@@ -1,16 +1,32 @@
-import { Platform, TextStyle } from "react-native"
+import { Platform } from "react-native"
 import { ThemeManager } from "react-native-ui-lib"
 
-const fontFamily = (bold: boolean): TextStyle => ({
-  fontFamily: Platform.select({
-    ios: !bold ? "Montserrat" : "Montserrat-Bold", // The font family name
-    android: !bold ? "Montserrat-Regular" : "Montserrat-Bold", // The file name
-  }),
-})
+const fonts = {
+  ultraLight: {
+    fontFamily: "AvenirNextLTPro-UltLt",
+    fontWeight: Platform.select({ ios: "200", android: undefined }),
+  },
+  regular: {
+    fontFamily: "AvenirNextLTPro-Regular",
+    fontWeight: Platform.select({ ios: "400", android: undefined }),
+  },
+  bold: {
+    fontFamily: "AvenirNextLTPro-Bold",
+    fontWeight: Platform.select({ ios: "700", android: undefined }),
+  },
+}
+const fontFamily = (light = false, bold = false) => {
+  let fontWeight: keyof typeof fonts = "regular"
+
+  if (light) fontWeight = "ultraLight"
+  if (bold) fontWeight = "bold"
+
+  return fonts[fontWeight]
+}
 
 ThemeManager.setComponentTheme("Text", (props, context) => {
   return {
-    style: [fontFamily(props.bold), props.style],
+    style: [fontFamily(props.light, props.bold), props.style],
   }
 })
 

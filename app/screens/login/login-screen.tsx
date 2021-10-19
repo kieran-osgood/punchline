@@ -56,7 +56,7 @@ export const LoginScreen = observer(function LoginScreen() {
           />
         </View>
         <View flex-1 centerH width="100%">
-          <Text white text90BO>
+          <Text white text90>
             {"By signing in you give consent to our \n"}
             <Link url={`/terms-of-service.html`} inlineText>
               {"Terms of Service"}
