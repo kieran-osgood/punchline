@@ -1,32 +1,31 @@
-import { Platform } from "react-native"
 import { ThemeManager } from "react-native-ui-lib"
 
 const fonts = {
   ultraLight: {
     fontFamily: "AvenirNextLTPro-UltLt",
-    fontWeight: Platform.select({ ios: "200", android: undefined }),
+    fontWeight: "200",
   },
   regular: {
     fontFamily: "AvenirNextLTPro-Regular",
-    fontWeight: Platform.select({ ios: "400", android: undefined }),
+    fontWeight: "400",
   },
   bold: {
     fontFamily: "AvenirNextLTPro-Bold",
-    fontWeight: Platform.select({ ios: "700", android: undefined }),
+    fontWeight: "700",
   },
-}
-const fontFamily = (light = false, bold = false) => {
+} as const
+export const fontFamily = (settings: { light?: boolean; bold?: boolean }) => {
   let fontWeight: keyof typeof fonts = "regular"
 
-  if (light) fontWeight = "ultraLight"
-  if (bold) fontWeight = "bold"
+  if (settings.light) fontWeight = "ultraLight"
+  if (settings.bold) fontWeight = "bold"
 
   return fonts[fontWeight]
 }
 
 ThemeManager.setComponentTheme("Text", (props, context) => {
   return {
-    style: [fontFamily(props.light, props.bold), props.style],
+    style: [fontFamily({ light: props.light, bold: props.bold }), props.style],
   }
 })
 

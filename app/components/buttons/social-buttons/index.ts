@@ -1,6 +1,6 @@
 import { TextStyle, ViewStyle } from "react-native"
 import { ThemeManager } from "react-native-ui-lib"
-import { spacing } from "theme"
+import { fontFamily, spacing } from "theme"
 
 export const ICON_BUTTON: ViewStyle = {
   backgroundColor: "white",
@@ -9,7 +9,7 @@ export const ICON_BUTTON: ViewStyle = {
   paddingVertical: spacing[3],
 }
 export const ICON_BUTTON_LABEL: TextStyle = {
+  ...fontFamily({ bold: true }),
   paddingLeft: spacing[4],
   color: ThemeManager.titleColor,
-  fontWeight: "bold",
 }

@@ -4,7 +4,7 @@ import * as React from "react"
 import { TextStyle, ViewStyle } from "react-native"
 import BouncyCheckbox from "react-native-bouncy-checkbox"
 import { ThemeManager, View } from "react-native-ui-lib"
-import { color } from "../../theme"
+import { color, fontFamily } from "../../theme"
 
 export interface VerticalCheckboxesProps {
   /**
@@ -45,9 +45,8 @@ export const VerticalCheckboxes = observer(function VerticalCheckboxes(
 })
 
 const TEXT: TextStyle = {
+  ...fontFamily({ light: true }),
   textDecorationLine: "none",
-  fontFamily: "AvenirNextLTPro-Regular",
-  fontWeight: "300",
   color: ThemeManager.titleColor,
 }
 const CHECKBOX: ViewStyle = {
