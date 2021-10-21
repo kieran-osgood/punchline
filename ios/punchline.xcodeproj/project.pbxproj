@@ -10,17 +10,19 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		98F466DF6ED94BF686FA4FDB /* AvenirNextLTPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E096C8AD355042BDAE9D3826 /* AvenirNextLTPro-Bold.otf */; };
+		9E78FFED6110410DA467D161 /* AvenirNextLTPro-UltLt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6136A5C77C284C3BB59749D3 /* AvenirNextLTPro-UltLt.otf */; };
 		A4B148D367B119F99EC2C2E5 /* libPods-punchline.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EADEA568884090C1B008E181 /* libPods-punchline.a */; };
 		E41867E52621B302004EC29E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E41867E42621B302004EC29E /* GoogleService-Info.plist */; };
 		E4A1FA6226DBEDC60020994F /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4A1FA6126DBEDC60020994F /* BootSplash.storyboard */; };
+		E4A49E6227209AF7004B25CB /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = E4A49E6127209AF6004B25CB /* Expo.plist */; };
 		E4CB847326A3069A00D5023F /* fbsdk-bridging.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4CB847226A3069A00D5023F /* fbsdk-bridging.swift */; };
-		98F466DF6ED94BF686FA4FDB /* AvenirNextLTPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E096C8AD355042BDAE9D3826 /* AvenirNextLTPro-Bold.otf */; };
 		F82F0E9776D54358B5CF3167 /* AvenirNextLTPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 03A34F02E18F49E1B1AB5632 /* AvenirNextLTPro-Regular.otf */; };
-		9E78FFED6110410DA467D161 /* AvenirNextLTPro-UltLt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6136A5C77C284C3BB59749D3 /* AvenirNextLTPro-UltLt.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		03A34F02E18F49E1B1AB5632 /* AvenirNextLTPro-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "AvenirNextLTPro-Regular.otf"; path = "../assets/fonts/AvenirNextLTPro-Regular.otf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* punchline.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = punchline.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = punchline/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = punchline/AppDelegate.m; sourceTree = "<group>"; };
@@ -31,20 +33,20 @@
 		32B04630CC446F19212E357A /* Pods-punchline-punchlineTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline-punchlineTests.release.xcconfig"; path = "Target Support Files/Pods-punchline-punchlineTests/Pods-punchline-punchlineTests.release.xcconfig"; sourceTree = "<group>"; };
 		3ECD546F3378FD459F4E82B0 /* Pods-punchline.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline.debug.xcconfig"; path = "Target Support Files/Pods-punchline/Pods-punchline.debug.xcconfig"; sourceTree = "<group>"; };
 		4D40708BE521DBE7DC6E68C8 /* Pods-punchline.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline.release.xcconfig"; path = "Target Support Files/Pods-punchline/Pods-punchline.release.xcconfig"; sourceTree = "<group>"; };
+		6136A5C77C284C3BB59749D3 /* AvenirNextLTPro-UltLt.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "AvenirNextLTPro-UltLt.otf"; path = "../assets/fonts/AvenirNextLTPro-UltLt.otf"; sourceTree = "<group>"; };
 		8D3D2E99D3814D73E5353ACB /* Pods-punchline-punchlineTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline-punchlineTests.debug.xcconfig"; path = "Target Support Files/Pods-punchline-punchlineTests/Pods-punchline-punchlineTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E096C8AD355042BDAE9D3826 /* AvenirNextLTPro-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "AvenirNextLTPro-Bold.otf"; path = "../assets/fonts/AvenirNextLTPro-Bold.otf"; sourceTree = "<group>"; };
 		E41867E42621B302004EC29E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E47821E526C7BCA100B8C710 /* punchlineDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = punchlineDebug.entitlements; path = punchline/punchlineDebug.entitlements; sourceTree = "<group>"; };
 		E47821E626C7BCAD00B8C710 /* punchlineRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = punchlineRelease.entitlements; path = punchline/punchlineRelease.entitlements; sourceTree = "<group>"; };
 		E4A1FA6126DBEDC60020994F /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = punchline/BootSplash.storyboard; sourceTree = "<group>"; };
+		E4A49E6127209AF6004B25CB /* Expo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		E4CB847126A3069900D5023F /* punchline-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "punchline-Bridging-Header.h"; sourceTree = "<group>"; };
 		E4CB847226A3069A00D5023F /* fbsdk-bridging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "fbsdk-bridging.swift"; sourceTree = "<group>"; };
 		E4CC6CE82623186A0035557C /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		E4CC6CE92623187F0035557C /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		EADEA568884090C1B008E181 /* libPods-punchline.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-punchline.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		E096C8AD355042BDAE9D3826 /* AvenirNextLTPro-Bold.otf */ = {isa = PBXFileReference; name = "AvenirNextLTPro-Bold.otf"; path = "../assets/fonts/AvenirNextLTPro-Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		03A34F02E18F49E1B1AB5632 /* AvenirNextLTPro-Regular.otf */ = {isa = PBXFileReference; name = "AvenirNextLTPro-Regular.otf"; path = "../assets/fonts/AvenirNextLTPro-Regular.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		6136A5C77C284C3BB59749D3 /* AvenirNextLTPro-UltLt.otf */ = {isa = PBXFileReference; name = "AvenirNextLTPro-UltLt.otf"; path = "../assets/fonts/AvenirNextLTPro-UltLt.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +119,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				E4A49E6027209AA6004B25CB /* Supporting */,
 				E4CB847226A3069A00D5023F /* fbsdk-bridging.swift */,
 				E41867E42621B302004EC29E /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* punchline */,
@@ -138,6 +141,14 @@
 				13B07F961A680F5B00A75B9A /* punchline.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E4A49E6027209AA6004B25CB /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				E4A49E6127209AF6004B25CB /* Expo.plist */,
+			);
+			path = Supporting;
 			sourceTree = "<group>";
 		};
 		E4CC6CE72623176A0035557C /* Fonts */ = {
@@ -219,6 +230,7 @@
 				E4A1FA6226DBEDC60020994F /* BootSplash.storyboard in Resources */,
 				98F466DF6ED94BF686FA4FDB /* AvenirNextLTPro-Bold.otf in Resources */,
 				F82F0E9776D54358B5CF3167 /* AvenirNextLTPro-Regular.otf in Resources */,
+				E4A49E6227209AF7004B25CB /* Expo.plist in Resources */,
 				9E78FFED6110410DA467D161 /* AvenirNextLTPro-UltLt.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -238,7 +250,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh\n`node --print \"require.resolve('expo-updates/package.json').slice(0, -13) + '/scripts/create-manifest-ios.sh'\"`\n";
 		};
 		105C9A386D6F7A14EE348052 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

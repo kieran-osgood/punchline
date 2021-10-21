@@ -14,6 +14,7 @@ import {
   TroubleSigningInButton,
   TroubleSigningInSheet,
 } from "components"
+import * as Updates from "expo-updates"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { BackHandler, StyleSheet, ViewStyle } from "react-native"
@@ -41,6 +42,20 @@ export const LoginScreen = observer(function LoginScreen() {
     return () => backHandler.remove()
   }, [])
 
+  const [updateAvailable, setUpdateAvailable] = React.useState(false)
+  const [updateManifest, setUpdateManifest] = React.useState({})
+
+  React.useEffect(() => {
+    const timer = setInterval(async () => {
+      const update = await Updates.checkForUpdateAsync()
+      if (update.isAvailable) {
+        setUpdateAvailable(true)
+        setUpdateManifest(update.manifest || {})
+      }
+    }, 3000)
+    return () => clearInterval(timer)
+  }, [])
+
   if (isLoading) {
     return <LoadingModal />
   }
@@ -55,6 +70,9 @@ export const LoginScreen = observer(function LoginScreen() {
             color="hsla(355, 100%,100%, 1)"
           />
         </View>
+        <Text>Expo update: {Updates.updateId}</Text>
+        <Text>Update available? {updateAvailable ? "true" : "false"}</Text>
+        <Text>Update manifest: {JSON.stringify(updateManifest || {})}</Text>
         <View flex-1 centerH width="100%">
           <Text white text90>
             {"By signing in you give consent to our \n"}

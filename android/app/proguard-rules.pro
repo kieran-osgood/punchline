@@ -9,3 +9,6 @@
 
 # Add any project specific keep options here:
 -keep class com.facebook.react.turbomodule.** { *; }
+-keepclassmembers class com.facebook.react.ReactInstanceManager {
+    private final com.facebook.react.bridge.JSBundleLoader mBundleLoader;
+}

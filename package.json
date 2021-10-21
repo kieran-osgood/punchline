@@ -34,7 +34,8 @@
     "uri:ios": "npx uri-scheme open punchline://joke/Sm9rZQppOA== --ios",
     "uri:android:npx": "npx uri-scheme open punchline://joke/Sm9rZQppOA== --android",
     "uri:android": "adb shell am start -W -a android.intent.action.VIEW -d \"punchline://joke/Sm9rZQppOA==\" com.ko.punchline/.MainActivity",
-    "ios:certificates": "cd ios && fl match development --force"
+    "ios:certificates": "cd ios && fl match development --force",
+    "nuke": "rm -rf node_modules && npm cache clean --force && yarn && watchman watch-del-all && rm -rf $TMPDIR/haste-map-* && rm -rf $TMPDIR/metro-cache && expo start --clear"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4",
@@ -69,6 +70,7 @@
     "expo-font": "^9.2.1",
     "expo-linear-gradient": "^9.2.0",
     "expo-localization": "9.1.0",
+    "expo-updates": "^0.8.5",
     "graphql-request": "^3.4.0",
     "i18n-js": "3.8.0",
     "jest-cli": "^26.6.3",

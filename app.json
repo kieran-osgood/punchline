@@ -1,24 +1,22 @@
 {
   "expo": {
+    "sdkVersion": "42.0.0",
     "name": "punchline",
     "slug": "punchline",
-    "version": "1.0.0",
+    "version": "2.2.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+    "icon": "./android/fastlane/metadata/app_icon.png",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "supportsTablet": true
+    "android": {
+      "package": "com.ko.punchline",
+      "jsEngine": "hermes"
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "ios": {
+      "bundleIdentifier": "com.ko.punchline",
+      "supportsTablet": true
     },
     "packagerOpts": {
       "config": "metro.config.js",
