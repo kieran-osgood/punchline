@@ -20,7 +20,7 @@ import * as React from "react"
 import { BackHandler, StyleSheet, ViewStyle } from "react-native"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import Toast from "react-native-toast-message"
-import { Text, ThemeManager, View } from "react-native-ui-lib"
+import { Button, Text, ThemeManager, View } from "react-native-ui-lib"
 import { color } from "theme"
 
 export type LoginResponse = Promise<FirebaseAuthTypes.User | null>
@@ -33,6 +33,8 @@ export const LoginScreen = observer(function LoginScreen() {
   // useQuery((store) => store.queryCategories({}, (c) => c.nodes((nodes) => nodes.id.image.name)))
   const ref = React.useRef<OptionsBottomSheet | null>(null)
   const [isLoading, setIsLoading] = React.useState(false)
+  const [state, setState] = React.useState({})
+  const forceUpdate = React.useCallback(() => setState({}), [])
   React.useEffect(() => {
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
       setIsLoading(false)
@@ -44,9 +46,10 @@ export const LoginScreen = observer(function LoginScreen() {
 
   const [updateAvailable, setUpdateAvailable] = React.useState(false)
   const [updateManifest, setUpdateManifest] = React.useState({})
-
+  const [check, setCheck] = React.useState(0)
   React.useEffect(() => {
     const timer = setInterval(async () => {
+      setCheck((c) => c + 1)
       const update = await Updates.checkForUpdateAsync()
       if (update.isAvailable) {
         setUpdateAvailable(true)
@@ -61,7 +64,7 @@ export const LoginScreen = observer(function LoginScreen() {
   }
 
   return (
-    <Screen style={ROOT} preset="fixed" testID="LoginScreen" unsafe>
+    <Screen style={ROOT} preset="scroll" testID="LoginScreen" unsafe>
       <View centerH spread flex-1 width={widthPercentageToDP("70%")}>
         <View flex-1 centerV>
           <AppLogo
@@ -70,9 +73,19 @@ export const LoginScreen = observer(function LoginScreen() {
             color="hsla(355, 100%,100%, 1)"
           />
         </View>
-        <Text>Expo update: {Updates.updateId}</Text>
-        <Text>Update available? {updateAvailable ? "true" : "false"}</Text>
-        <Text>Update manifest: {JSON.stringify(updateManifest || {})}</Text>
+        <Button onPress={forceUpdate} label="Update" />
+        <Text white>
+          <Text>Expo update: {Updates.updateId}</Text>
+          {"\n"}
+          <Text>Update available? {updateAvailable ? "true" : "false"}</Text>
+          {"\n"}
+          <Text>Commit Time: {updateManifest.commitTime}</Text>
+          {"\n"}
+          <Text>Checked: {String(check)}</Text>
+          {"\n"}
+          <Text>Update manifest: {JSON.stringify(updateManifest || {})}</Text>
+        </Text>
+
         <View flex-1 centerH width="100%">
           <Text white text90>
             {"By signing in you give consent to our \n"}
@@ -97,7 +110,7 @@ export const LoginScreen = observer(function LoginScreen() {
           <GuestSignInButton />
         </View>
 
-        <View marginV-s6>
+        <View paddingV-s6>
           <TroubleSigningInButton {...{ onError }} onPress={() => ref.current?.open()} />
         </View>
       </View>
