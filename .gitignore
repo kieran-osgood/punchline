@@ -75,7 +75,7 @@ coverage/*
 android/app/debug/*
 android/app/release/*
 Production
-
+dist
 # Fastlane
 android/fastlane/fastlane-service-account.json
 android/fastlane/metadata
