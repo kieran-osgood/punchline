@@ -10,6 +10,9 @@ export type CategorySettings = {
   isActive: boolean
 }
 
+export const getAccessibilityHint = (item: CategorySettings) =>
+  `Press to ${item.isActive ? "Enable" : "Disable"} ${item.name} Category`
+
 export interface SelectPillsProps {
   data: CategorySettings[]
   onValueChange: (data: CategorySettings) => void
@@ -24,7 +27,6 @@ export const SelectPills = observer(function SelectPills(props: SelectPillsProps
 
   const handlePress = (item: CategorySettings) => onValueChange(item)
   const activeStyle = (isActive: boolean) => (isActive ? ACTIVE_SELECT : INACTIVE_SELECT)
-
   return (
     <View style={CONTAINER} {...{ accessibilityLabel }}>
       {data.map((item, idx) => {
@@ -35,6 +37,7 @@ export const SelectPills = observer(function SelectPills(props: SelectPillsProps
             onPress={() => handlePress({ ...item, isActive: !item.isActive })}
             style={{ ...style, ...SELECT }}
             accessibilityLabel="category button"
+            accessibilityHint={getAccessibilityHint(item)}
           >
             <Text {...{ style }}>{item.name}</Text>
           </TouchableOpacity>

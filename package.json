@@ -125,7 +125,7 @@
     "@storybook/addon-storyshots": "6.1.10",
     "@storybook/react-native": "5.3.23",
     "@storybook/react-native-server": "5.3.23",
-    "@testing-library/jest-native": "^4.0.1",
+    "@testing-library/jest-native": "^4.0.2",
     "@testing-library/react-native": "^8.0.0-rc.0",
     "@types/faker": "^5.5.3",
     "@types/i18n-js": "3.0.3",
@@ -198,7 +198,7 @@
       "/e2e"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@storybook|@react-native-community|expo-localization|@unimodules|@sentry/react-native|@invertase/react-native-apple-authentication|expo-linear-gradient)"
+      "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@storybook|@react-native-community|expo-localization|@unimodules|@sentry/react-native|@invertase/react-native-apple-authentication|expo-linear-gradient|expo-updates)"
     ]
   },
   "prettier": {

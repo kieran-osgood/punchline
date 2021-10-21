@@ -32,7 +32,7 @@ export const SubSlide = observer(function SubSlide(props: SubSlideProps) {
         <GradientButton label="Let's get started" {...{ onPress }} />
       ) : (
         <Button
-          label={"Next"}
+          label="Next"
           backgroundColor={color.line}
           color={color.text}
           labelStyle={{ color: ThemeManager.titleColor }}

@@ -1,8 +1,7 @@
-import { SVGProps } from "app/types"
 import * as React from "react"
-import Svg, { Defs, Ellipse, G, Path } from "react-native-svg"
+import Svg, { Defs, Ellipse, G, Path, SvgProps } from "react-native-svg"
 
-export function Punchline(props: SVGProps & { color: string }) {
+export function Punchline(props: SvgProps & { color: string }) {
   const { color = "#000", ...rest } = props
   return (
     <Svg viewBox="0 0 1135 290" {...rest}>

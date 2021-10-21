@@ -2,16 +2,15 @@ import { CryingEmoji, LaughingEmoji } from "images"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { ViewStyle } from "react-native"
-import { Text, View } from "react-native-ui-lib"
+import { Text, View, ViewProps } from "react-native-ui-lib"
 
-const scale = 0.48
 export interface RatingsProps {
   /**
    * An optional style override useful for padding & margin.
    */
   style?: ViewStyle
-  likes: number
-  dislikes: number
+  likes: number | undefined
+  dislikes: number | undefined
 }
 
 /**
@@ -22,20 +21,21 @@ export const Ratings = observer(function Ratings(props: RatingsProps) {
 
   return (
     <View {...{ style }} row>
-      <Rating rating={likes}>
+      <Rating rating={likes} accessibilityLabel="Positive Reviews">
         <LaughingEmoji scale={0.65} />
       </Rating>
-      <Rating rating={dislikes}>
-        <CryingEmoji {...{ scale }} />
+      <Rating rating={dislikes} accessibilityLabel="Negative Reviews">
+        <CryingEmoji scale={0.48} />
       </Rating>
     </View>
   )
 })
 
-const Rating = ({ rating, children }: { rating: number; children: React.ReactNode }) => {
+type RatingProps = { rating: number | undefined; children: React.ReactNode } & ViewProps
+const Rating = ({ rating, children, ...rest }: RatingProps) => {
   return (
-    <View center row marginR-s3 width-20>
-      <Text text60BO>{String(rating)}</Text>
+    <View center row marginR-s3 width-20 {...rest}>
+      <Text text60BO>{String(rating ?? 0)}</Text>
       <View center marginL-s2>
         {children}
       </View>
