@@ -70,7 +70,7 @@ lane :beta do
 end
 
 desc "Run tests and build the app"
-lane :appstore do
+lane :release_appstore do
   bump_and_commit_versions
 
   changelog_from_git_commits
