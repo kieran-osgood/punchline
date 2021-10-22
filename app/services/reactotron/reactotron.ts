@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { isDevelopment } from "app/utils/current-environment"
 import { onSnapshot } from "mobx-state-tree"
 import { mst } from "reactotron-mst"
 import Tron from "reactotron-react-native"
@@ -21,10 +22,10 @@ declare global {
 const noop = () => undefined
 
 // in dev, we attach Reactotron, in prod we attach a interface-compatible mock.
-if (__DEV__) {
+if (isDevelopment) {
   console.tron = Tron // attach reactotron to `console.tron`
 } else {
-  // attach a mock so if things sneaky by our __DEV__ guards, we won't crash.
+  // attach a mock so if things sneaky by our isDevelopment guards, we won't crash.
   console.tron = {
     benchmark: noop,
     clear: noop,
@@ -83,7 +84,7 @@ export class Reactotron {
    * @param rootStore The root store
    */
   setRootStore(rootStore: any, initialData: any) {
-    if (__DEV__) {
+    if (isDevelopment) {
       rootStore = rootStore as RootStore // typescript hack
       this.rootStore = rootStore
 
@@ -110,7 +111,7 @@ export class Reactotron {
    */
   async setup() {
     // only run this in dev... metro bundler will ignore this block: 🎉
-    if (__DEV__) {
+    if (isDevelopment) {
       // configure reactotron
       Tron.configure({
         name: this.config.name || require("../../../package.json").name,

@@ -1,6 +1,7 @@
 import { GoogleSignin } from "@react-native-community/google-signin"
 import admob, { MaxAdContentRating } from "@react-native-firebase/admob"
 import * as Sentry from "@sentry/react-native"
+import { isDevelopment } from "app/utils/current-environment"
 import { onSnapshot } from "mobx-state-tree"
 import { enableScreens } from "react-native-screens"
 import * as storage from "../../utils/storage"
@@ -40,7 +41,6 @@ export async function setupRootStore() {
   try {
     // load data from storage
     data = (await storage.load(ROOT_STATE_STORAGE_KEY)) || {}
-    // data.apiStore.api = {}
     rootStore = RootStoreModel.create(data, env)
   } catch (e) {
     // if there's any problems loading, then let's at least fallback to an empty state
@@ -48,11 +48,11 @@ export async function setupRootStore() {
     rootStore = RootStoreModel.create({}, env)
 
     // but please inform us what happened
-    __DEV__ && console.tron.error(e.message, null)
+    isDevelopment && console.tron.error(e.message, null)
   }
 
   // reactotron logging
-  if (__DEV__) {
+  if (isDevelopment) {
     env.reactotron.setRootStore(rootStore, data)
   }
 

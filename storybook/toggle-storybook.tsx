@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react"
+import { isDevelopment } from "app/utils/current-environment"
+import React, { useEffect, useState } from "react"
 import { DevSettings } from "react-native"
 import { loadString, saveString } from "../app/utils/storage"
 
 /**
  * Toggle Storybook mode, in __DEV__ mode only.
  *
- * In non-__DEV__ mode, or when Storybook isn't toggled on,
+ * In non-isDevelopment mode, or when Storybook isn't toggled on,
  * renders its children.
  *
  * The mode flag is persisted in async storage, which means it
@@ -17,7 +18,7 @@ export function ToggleStorybook(props) {
   const [StorybookUIRoot, setStorybookUIRoot] = useState(null)
 
   useEffect(() => {
-    if (__DEV__) {
+    if (isDevelopment) {
       // Load the setting from storage if it's there
       loadString("devStorybook").then((storedSetting) => {
         // Set the initial value

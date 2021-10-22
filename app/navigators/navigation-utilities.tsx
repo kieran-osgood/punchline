@@ -1,5 +1,6 @@
 import { NavigationContainerRef, NavigationState, PartialState } from "@react-navigation/native"
 import { AllRouteNames } from "app/navigators"
+import { isDevelopment } from "app/utils/current-environment"
 import React, { useEffect, useRef, useState } from "react"
 import { BackHandler } from "react-native"
 
@@ -101,7 +102,7 @@ export function useNavigationPersistence(storage: any, persistenceKey: string) {
 
     if (previousRouteName !== currentRouteName) {
       // track screens.
-      __DEV__ && console.tron.log(currentRouteName)
+      isDevelopment && console.tron.log(currentRouteName)
     }
 
     // Save the current route name for later comparision

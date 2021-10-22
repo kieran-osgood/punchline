@@ -1,16 +1,12 @@
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable react/display-name */
 import * as Sentry from "@sentry/react-native"
 import { useStores } from "app/models"
-import { differenceInCalendarDays } from "date-fns"
 import * as React from "react"
 import InAppReview from "react-native-in-app-review"
-/**
- * Describe your component here
- */
 
-// eslint-disable-next-line react/display-name
-const withRateApp = (Component: any) => (props: any) => {
+const withRateApp = <T extends object>(Component: React.ComponentType<T>) => (props: T) => {
   const stores = useStores()
-
   React.useEffect(() => {
     let isSubscribed = true
 
@@ -19,9 +15,9 @@ const withRateApp = (Component: any) => (props: any) => {
     const available = InAppReview.isAvailable()
     if (!available) return
     if (stores.userStore.goodJokeCount < 30) return
-    if (differenceInCalendarDays(stores.userStore.lastDisplayedReviewPrompt, new Date()) > 15) {
-      return
-    }
+    // if (differenceInCalendarDays(stores.userStore.lastDisplayedReviewPrompt, new Date()) > 15) {
+    //   return
+    // }
 
     // trigger UI InAppreview
     InAppReview.RequestInAppReview()
@@ -66,9 +62,10 @@ const withRateApp = (Component: any) => (props: any) => {
     return () => {
       isSubscribed = false
     }
-  }, [stores.userStore])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stores.userStore.goodJokeCount, stores.userStore.lastDisplayedReviewPrompt])
 
-  return <Component {...props} />
+  return <Component {...(props as T)} />
 }
 
 export default withRateApp
