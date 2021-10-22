@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import auth from "@react-native-firebase/auth"
 import { useNavigation } from "@react-navigation/core"
 import * as Sentry from "@sentry/react-native"
+import { JokeLengthSettingSheet } from "app/components/joke-length-sheet/joke-length-setting-sheet"
 import { Link } from "app/components/link/link"
 import { useStores } from "app/models"
 import { SettingsStackProps } from "app/screens"
@@ -20,15 +21,35 @@ import {
   AppLogo,
   FacebookSignInButton,
   GoogleSignInButton,
+  OptionsBottomSheet,
   Screen,
 } from "../../../components"
 
 const packageJson = require("package.json")
 const MARGINS = spacing[4]
 
+const useSheetsManager = <T extends string[]>() => {
+  const refs = React.useRef<Map<T[number], OptionsBottomSheet | null>>(new Map())
+  const currentOpen = React.useRef<T[number] | null>(null)
+
+  const open = (refName: T[number]) => {
+    if (currentOpen.current) refs.current.get(currentOpen.current)?.close()
+    currentOpen.current = refName
+    refs.current.get(refName)?.open()
+  }
+
+  const close = () => {
+    if (currentOpen.current) refs.current.get(currentOpen.current)?.close()
+    currentOpen.current = null
+  }
+
+  return { refs, open, close }
+}
+
 export const MainSettingsScreen = observer(function MainSettingsScreen() {
-  const navigation = useNavigation<SettingsStackProps<"Main">["navigation"]>()
+  // const navigation = useNavigation<SettingsStackProps<"Main">["navigation"]>()
   const { settings, userStore } = useStores()
+  const { open, refs } = useSheetsManager<["jokeLength", "jokeCategoriesRef"]>()
 
   const onSharePress = async (url: string) => {
     try {
@@ -53,33 +74,39 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
       },
     ])
   }
+
   return (
-    <Screen style={ROOT} preset="scroll" unsafe>
-      <StatusBar barStyle="dark-content" />
+    <>
+      <Screen style={ROOT} preset="scroll" unsafe>
+        <StatusBar barStyle="dark-content" />
 
-      <Section title="Preferences">
-        <Divider row arrow onPress={() => navigation.navigate("JokePreferences")}>
-          <Text text90R>Content</Text>
-        </Divider>
+        <Section title="Preferences">
+          <Divider row arrow onPress={() => open("jokeCategoriesRef")}>
+            <Text text90R>Categories</Text>
+          </Divider>
 
-        <Divider row>
-          <Text text90R>Profanity Filter</Text>
-          <Switch
-            onValueChange={() => settings.setProfanityFilter(!settings.profanityFilter)}
-            value={settings.profanityFilter}
-          />
-        </Divider>
+          <Divider row arrow onPress={() => open("jokeLength")}>
+            <Text text90R>Length Filter</Text>
+          </Divider>
 
-        <Divider row>
-          <Text text90R>Notifications</Text>
-          <Switch
-            onValueChange={() => settings.setNotification("push", !settings.notifications.push)}
-            value={settings.notifications.push}
-          />
-        </Divider>
-      </Section>
+          <Divider row>
+            <Text text90R>Profanity Filter</Text>
+            <Switch
+              onValueChange={() => settings.setProfanityFilter(!settings.profanityFilter)}
+              value={settings.profanityFilter}
+            />
+          </Divider>
 
-      {/* <Section title="Notifications">
+          <Divider row>
+            <Text text90R>Notifications</Text>
+            <Switch
+              onValueChange={() => settings.setNotification("push", !settings.notifications.push)}
+              value={settings.notifications.push}
+            />
+          </Divider>
+        </Section>
+
+        {/* <Section title="Notifications">
         <Divider row>
           <Text text90R>Push Notifications</Text>
           <Switch
@@ -105,74 +132,78 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
         </Divider>
       </Section> */}
 
-      <Section title="More Information">
-        <Divider>
-          <Link external url={Platform.OS === "ios" ? APPSTORE_URL : PLAYSTORE_URL}>
-            Rate Us
-          </Link>
-        </Divider>
-        <Divider>
-          <Link
-            onPress={() => onSharePress(Platform.OS === "ios" ? APPSTORE_URL : PLAYSTORE_URL)}
-            external
-          >
-            {/* Not ideal - we have the in-app share pop up but thats not reliable so just link to store */}
-            Share Punchline
-          </Link>
-        </Divider>
-        <Divider>
-          <Link url={`/terms-of-service.html`}>Terms of Service</Link>
-        </Divider>
-        <Divider>
-          <Link url={`/privacy-policy.html`}>Privacy Policy</Link>
-        </Divider>
-        {/* <Divider>
-          <Link url={`/data-policy.html`}>Data Policy</Link>
-        </Divider> */}
-      </Section>
-
-      <Section title="Account">
-        <View>
-          {auth().currentUser?.isAnonymous && (
-            <Divider>
-              <LoginConversion />
-            </Divider>
-          )}
+        <Section title="More Information">
           <Divider>
-            <Link
-              onPress={() => {
-                Alert.alert("Clear Cache", "Confirm you wish you clear data saved to device.", [
-                  {
-                    text: "Cancel",
-                    style: "cancel",
-                  },
-                  {
-                    text: "OK",
-                    onPress: () => AsyncStorage.clear(),
-                  },
-                ])
-              }}
-            >
-              Clear Cache Data
+            <Link external url={Platform.OS === "ios" ? APPSTORE_URL : PLAYSTORE_URL}>
+              Rate Us
             </Link>
           </Divider>
           <Divider>
-            <BugReport />
+            <Link
+              onPress={() => onSharePress(Platform.OS === "ios" ? APPSTORE_URL : PLAYSTORE_URL)}
+              external
+            >
+              {/* Not ideal - we have the in-app share pop up but thats not reliable so just link to store */}
+              Share Punchline
+            </Link>
           </Divider>
-          <LogoutButton />
-        </View>
-      </Section>
+          <Divider>
+            <Link url={`/terms-of-service.html`}>Terms of Service</Link>
+          </Divider>
+          <Divider>
+            <Link url={`/privacy-policy.html`}>Privacy Policy</Link>
+          </Divider>
+          {/* <Divider>
+            <Link url={`/data-policy.html`}>Data Policy</Link>
+          </Divider> */}
+        </Section>
 
-      <AppVersion />
-      <Button
-        label="Delete Account"
-        br10
-        marginH
-        backgroundColor="white"
-        red10
-        onPress={onDeleteAccountPress}
-      />
-    </Screen>
+        <Section title="Account">
+          <View>
+            {auth().currentUser?.isAnonymous && (
+              <Divider>
+                <LoginConversion />
+              </Divider>
+            )}
+            <Divider>
+              <Link
+                onPress={() => {
+                  Alert.alert("Clear Cache", "Confirm you wish you clear data saved to device.", [
+                    {
+                      text: "Cancel",
+                      style: "cancel",
+                    },
+                    {
+                      text: "OK",
+                      onPress: () => AsyncStorage.clear(),
+                    },
+                  ])
+                }}
+              >
+                Clear Cache Data
+              </Link>
+            </Divider>
+            <Divider>
+              <BugReport />
+            </Divider>
+            <LogoutButton />
+          </View>
+        </Section>
+
+        <AppVersion />
+        <Button
+          label="Delete Account"
+          br10
+          marginH
+          backgroundColor="white"
+          red10
+          onPress={onDeleteAccountPress}
+        />
+      </Screen>
+      <JokeLengthSettingSheet ref={(el) => refs.current.set("jokeLength", el)} />
+      <JokeLengthSettingSheet ref={(el) => refs.current.set("jokeCategoriesRef", el)} />
+      {/* <JokeCategoriesSheet ref={jokeCategoriesRef} /> */}
+    </>
   )
 })
 

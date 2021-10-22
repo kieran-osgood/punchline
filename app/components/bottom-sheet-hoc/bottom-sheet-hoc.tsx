@@ -12,6 +12,7 @@ export interface ForwardBottomSheetHocProps {
 }
 export interface OptionsBottomSheet {
   open: () => void
+  close: () => void
 }
 
 /**
@@ -38,6 +39,7 @@ const ForwardBottomSheetHoc = (
 
   React.useImperativeHandle(imperativeRef, () => ({
     open: () => ref.current?.collapse(),
+    close: () => ref.current?.close(),
   }))
 
   return (

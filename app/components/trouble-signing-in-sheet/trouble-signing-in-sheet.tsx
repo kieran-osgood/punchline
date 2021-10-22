@@ -23,7 +23,7 @@ export interface TroubleSigningInSheetProps {}
 /**
  * Describe your component here
  */
-const ForwrdTroubleSigningInSheet = (
+const ForwardTroubleSigningInSheet = (
   { onError }: ForwardTroubleSigningInSheetProps,
   ref: React.Ref<OptionsBottomSheet>,
 ) => {
@@ -101,7 +101,7 @@ const ForwrdTroubleSigningInSheet = (
   )
 }
 
-export const TroubleSigningInSheet = observer(ForwrdTroubleSigningInSheet, { forwardRef: true })
+export const TroubleSigningInSheet = observer(ForwardTroubleSigningInSheet, { forwardRef: true })
 
 const BOTTOM_SHEET_VIEW: ViewStyle = {
   paddingHorizontal: widthPercentageToDP("5%"),
