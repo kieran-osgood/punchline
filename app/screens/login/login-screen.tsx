@@ -19,7 +19,7 @@ import * as React from "react"
 import { BackHandler, StyleSheet, ViewStyle } from "react-native"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import Toast from "react-native-toast-message"
-import { Text, ThemeManager, View } from "react-native-ui-lib"
+import { Text, View } from "react-native-ui-lib"
 import { color } from "theme"
 
 export type LoginResponse = Promise<FirebaseAuthTypes.User | null>
@@ -47,9 +47,9 @@ export const LoginScreen = observer(function LoginScreen() {
   }
 
   return (
-    <Screen style={ROOT} preset="scroll" testID="LoginScreen" unsafe>
+    <Screen style={ROOT} preset="fixed" testID="LoginScreen" unsafe>
       <View centerH spread flex-1 width={widthPercentageToDP("70%")}>
-        <View flex-1 centerV>
+        <View flex-2 centerV>
           <AppLogo
             width={widthPercentageToDP("100%")}
             height={widthPercentageToDP("100%") / 5}
@@ -57,7 +57,7 @@ export const LoginScreen = observer(function LoginScreen() {
           />
         </View>
 
-        <View flex-1 centerH width="100%">
+        <View flex-2 centerH width="100%">
           <Text white text90>
             {"By signing in you give consent to our \n"}
             <Link url={`/terms-of-service.html`} inlineText>
@@ -81,7 +81,7 @@ export const LoginScreen = observer(function LoginScreen() {
           <GuestSignInButton />
         </View>
 
-        <View paddingV-s6>
+        <View flex-1 center>
           <TroubleSigningInButton {...{ onError }} onPress={() => ref.current?.open()} />
         </View>
       </View>
@@ -98,7 +98,7 @@ const ROOT: ViewStyle = {
 }
 const SPACER: ViewStyle = {
   borderBottomWidth: 1,
-  borderBottomColor: ThemeManager.titleColor,
+  borderColor: "hsl(264, 66.85%, 62.5%)",
   borderWidth: StyleSheet.hairlineWidth,
   width: 50,
 }
