@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/core"
 import * as Sentry from "@sentry/react-native"
 import { JokeLengthSettingSheet } from "app/components/joke-length-sheet/joke-length-setting-sheet"
 import { Link } from "app/components/link/link"
+import useSheetsManager from "app/hooks/use-sheets-manager"
 import { useStores } from "app/models"
 import { SettingsStackProps } from "app/screens"
 import { Logout } from "assets/images/logout"
@@ -21,30 +22,11 @@ import {
   AppLogo,
   FacebookSignInButton,
   GoogleSignInButton,
-  OptionsBottomSheet,
   Screen,
 } from "../../../components"
 
 const packageJson = require("package.json")
 const MARGINS = spacing[4]
-
-const useSheetsManager = <T extends string[]>() => {
-  const refs = React.useRef<Map<T[number], OptionsBottomSheet | null>>(new Map())
-  const currentOpen = React.useRef<T[number] | null>(null)
-
-  const open = (refName: T[number]) => {
-    if (currentOpen.current) refs.current.get(currentOpen.current)?.close()
-    currentOpen.current = refName
-    refs.current.get(refName)?.open()
-  }
-
-  const close = () => {
-    if (currentOpen.current) refs.current.get(currentOpen.current)?.close()
-    currentOpen.current = null
-  }
-
-  return { refs, open, close }
-}
 
 export const MainSettingsScreen = observer(function MainSettingsScreen() {
   // const navigation = useNavigation<SettingsStackProps<"Main">["navigation"]>()
