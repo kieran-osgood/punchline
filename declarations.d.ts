@@ -1,4 +1,6 @@
-import "@testing-library/jest-native/extend-expect"
+declare global {
+  import "@testing-library/jest-native/extend-expect"
+}
 
 declare module "*.svg" {
   const content: React.FC<import("react-native-svg").SvgProps>
