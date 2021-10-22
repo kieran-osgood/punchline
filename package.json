@@ -35,7 +35,7 @@
     "uri:android:npx": "npx uri-scheme open punchline://joke/Sm9rZQppOA== --android",
     "uri:android": "adb shell am start -W -a android.intent.action.VIEW -d \"punchline://joke/Sm9rZQppOA==\" com.ko.punchline/.MainActivity",
     "ios:certificates": "cd ios && fl match development --force",
-    "nuke": "rm -rf node_modules && npm cache clean --force && yarn && watchman watch-del-all && rm -rf $TMPDIR/haste-map-* && rm -rf $TMPDIR/metro-cache && expo start --clear"
+    "nuke": "rm -rf node_modules && npm cache clean --force && yarn && watchman watch-del-all && rm -rf $TMPDIR/haste-map-* && rm -rf $TMPDIR/metro-cache && yarn start"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4",
