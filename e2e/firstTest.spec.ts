@@ -8,11 +8,23 @@ describe("Example", () => {
     await reloadApp()
   })
 
-
-  it("should have login screen", async () => {
-    await expect(element(by.id("Logo"))).toBeVisible()
+  it("Loading a new app will take you to the login screen", async () => {
+    await expect(element(by.label("App brand logo"))).toBeVisible()
   })
 
+  //  it('Opens trouble-signing-in sheet and renders content', async () => {})
+  //  it('trouble-signing-in-sheet accepts input and dispatches to send login link', async () => {})
+  //  it('social buttons open provider sign in and navigate to onboarding/joke-screen', async () => {})
+  //  it('Guest sign in always takes you to onboarding screen', async () => {})
+  //  it('', async () => {})
+
+  // SettingsScreen
+  // HistoryScreen
+  // JokeScreen
+  // Header
+
+  //  it('', async () => {})
+  it("Completing onboarding sends you to the home page", async () => {})
   // it("should have login screen", async () => {
   //   await expect(element(by.id("LoginScreen"))).toBeVisible()
   // })
