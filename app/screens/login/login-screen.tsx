@@ -14,13 +14,12 @@ import {
   TroubleSigningInButton,
   TroubleSigningInSheet,
 } from "components"
-import * as Updates from "expo-updates"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { BackHandler, StyleSheet, ViewStyle } from "react-native"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import Toast from "react-native-toast-message"
-import { Button, Text, ThemeManager, View } from "react-native-ui-lib"
+import { Text, ThemeManager, View } from "react-native-ui-lib"
 import { color } from "theme"
 
 export type LoginResponse = Promise<FirebaseAuthTypes.User | null>
@@ -33,8 +32,7 @@ export const LoginScreen = observer(function LoginScreen() {
   // useQuery((store) => store.queryCategories({}, (c) => c.nodes((nodes) => nodes.id.image.name)))
   const ref = React.useRef<OptionsBottomSheet | null>(null)
   const [isLoading, setIsLoading] = React.useState(false)
-  const [state, setState] = React.useState({})
-  const forceUpdate = React.useCallback(() => setState({}), [])
+
   React.useEffect(() => {
     const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
       setIsLoading(false)
@@ -42,21 +40,6 @@ export const LoginScreen = observer(function LoginScreen() {
     })
 
     return () => backHandler.remove()
-  }, [])
-
-  const [updateAvailable, setUpdateAvailable] = React.useState(false)
-  const [updateManifest, setUpdateManifest] = React.useState({})
-  const [check, setCheck] = React.useState(0)
-  React.useEffect(() => {
-    const timer = setInterval(async () => {
-      setCheck((c) => c + 1)
-      const update = await Updates.checkForUpdateAsync()
-      if (update.isAvailable) {
-        setUpdateAvailable(true)
-        setUpdateManifest(update.manifest || {})
-      }
-    }, 3000)
-    return () => clearInterval(timer)
   }, [])
 
   if (isLoading) {
@@ -73,18 +56,6 @@ export const LoginScreen = observer(function LoginScreen() {
             color="hsla(355, 100%,100%, 1)"
           />
         </View>
-        <Button onPress={forceUpdate} label="Update" />
-        <Text white>
-          <Text>Expo update: {Updates.updateId}</Text>
-          {"\n"}
-          <Text>Update available? {updateAvailable ? "true" : "false"}</Text>
-          {"\n"}
-          <Text>Commit Time: {updateManifest.commitTime}</Text>
-          {"\n"}
-          <Text>Checked: {String(check)}</Text>
-          {"\n"}
-          <Text>Update manifest: {JSON.stringify(updateManifest || {})}</Text>
-        </Text>
 
         <View flex-1 centerH width="100%">
           <Text white text90>
