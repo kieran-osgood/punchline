@@ -36,7 +36,6 @@ const ForwardSocialSigninConversionSheet = (
       position: "bottom",
     })
   }
-
   const onError = (error: Error) => {
     Sentry.captureException(error)
 
@@ -49,7 +48,7 @@ const ForwardSocialSigninConversionSheet = (
   }
 
   return (
-    <BottomSheetHoc ref={ref} viewStyle={BOTTOM_SHEET_VIEW}>
+    <BottomSheetHoc ref={ref} containerStyle={BOTTOM_SHEET_VIEW}>
       <View marginT-s5>
         <View center>
           <Text text50 bold>

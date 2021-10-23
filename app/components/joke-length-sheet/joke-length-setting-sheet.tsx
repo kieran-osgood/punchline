@@ -18,7 +18,7 @@ const ForwardJokeLengthSettingSheet = (
   ref: React.Ref<OptionsBottomSheet>,
 ) => {
   return (
-    <BottomSheetHoc ref={ref} viewStyle={BOTTOM_SHEET_VIEW}>
+    <BottomSheetHoc ref={ref} containerStyle={BOTTOM_SHEET_VIEW}>
       <JokeLengthSetting />
     </BottomSheetHoc>
   )
