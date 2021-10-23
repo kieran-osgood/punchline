@@ -50,7 +50,7 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
 
   return (
     <>
-      <Screen style={ROOT} preset="fixed" unsafe>
+      <Screen style={ROOT} preset="scroll" unsafe>
         <StatusBar barStyle="dark-content" />
 
         <Section title="App Preferences">
@@ -83,16 +83,16 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
           <Divider row arrow onPress={() => open("socialSigninConversion")}>
             <Text text80>Social Signin Conversion</Text>
           </Divider>
+          <Divider row arrow onPress={() => open("bugReport")}>
+            <View row>
+              {/* BugIcon */}
+              <Text>Bug Report</Text>
+            </View>
+          </Divider>
           <Divider row arrow onPress={resetCache}>
             <View row>
               {/* TrashIcon */}
               <Text red10>Clear Cache Data</Text>
-            </View>
-          </Divider>
-          <Divider row arrow onPress={() => open("bugReport")}>
-            <View row>
-              {/* BugIcon */}
-              <Text red10>Bug Report</Text>
             </View>
           </Divider>
         </Section>
@@ -149,12 +149,11 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
           red10
           onPress={onDeleteAccountPress}
         />
-
-        <JokeLengthSettingSheet ref={(el) => refs.current.set("jokeLength", el)} />
-        <SocialSigninConversionSheet ref={(el) => refs.current.set("socialSigninConversion", el)} />
-        <JokeCategoriesSettingSheet ref={(el) => refs.current.set("jokeCategoriesRef", el)} />
-        <BugReportSheet ref={(el) => refs.current.set("bugReport", el)} />
       </Screen>
+      <JokeLengthSettingSheet ref={(el) => refs.current.set("jokeLength", el)} />
+      <SocialSigninConversionSheet ref={(el) => refs.current.set("socialSigninConversion", el)} />
+      <JokeCategoriesSettingSheet ref={(el) => refs.current.set("jokeCategoriesRef", el)} />
+      <BugReportSheet ref={(el) => refs.current.set("bugReport", el)} />
     </>
   )
 })
