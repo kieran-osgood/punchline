@@ -1,12 +1,11 @@
 import { render, waitFor } from "@testing-library/react-native"
-import { RootStore, RootStoreModel, UserStoreModel } from "app/models"
-import { Environment } from "app/models/environment"
+import { RootStore, UserStoreModel } from "app/models"
 import { RootStoreProvider } from "app/models/root-store/root-store-context"
 import { advanceTo, clear } from "jest-date-mock"
 import { getSnapshot, types } from "mobx-state-tree"
 import * as React from "react"
 import InAppReview from "react-native-in-app-review"
-import { View, ViewProps } from "react-native-ui-lib"
+import { ViewProps } from "react-native-ui-lib"
 import withRateApp from "./with-rate-app"
 
 // to avoid race conditions between expected and actual date values
@@ -17,11 +16,6 @@ beforeAll(() => {
 afterAll(() => {
   clear()
 })
-
-const createRootStore = (initialData: any = {}): RootStore =>
-  RootStoreModel.create(initialData, new Environment())
-
-const TestChildComponent = (props: ViewProps) => <View {...props} />
 
 const TestWithRateAppComponent = withRateApp<ViewProps>(TestChildComponent)
 

@@ -4,8 +4,9 @@ import "./mock-async-storage"
 import "./mock-i18n"
 import "./mock-reactotron"
 // import 'react-native-gesture-handler/jestSetup'
+
 declare global {
-  let __TEST__
+  let __TEST__: boolean
 }
 
 // global.window = {};
@@ -44,14 +45,33 @@ jest.mock("@react-native-community/google-signin", () => ({
 // Silence the warning: Animated: `useNativeDriver` is not supported because the native animated module is missing
 jest.mock("react-native/Libraries/Animated/NativeAnimatedHelper")
 
-// jest.mock('react-native-reanimated', () => {
-//   const Reanimated = require('react-native-reanimated/mock')
-
-//   // The mock for `call` immediately calls the callback which is incorrect
-//   // So we override it with a no-op
-//   Reanimated.default.call = () => {}
-
-//   return Reanimated
-// })
-
 jest.mock("react-native-share", () => ({}))
+
+require("react-native-reanimated/lib/reanimated2/jestUtils").setUpTests()
+
+global.__reanimatedWorkletInit = function (worklet) {
+  worklet.__worklet = true
+}
+
+jest.mock("react-native-reanimated", () => ({
+  ...jest.requireActual("react-native-reanimated/mock"),
+  makeMutable: (f) => f,
+  useWorkletCallback: (f) => f,
+  useAnimatedProps: (style) => style,
+}))
+
+jest.mock("@gorhom/bottom-sheet", () => {
+  const react = require("react-native")
+  return {
+    __esModule: true,
+    default: react.View,
+    BottomSheetView: react.View,
+    BottomSheetScrollView: react.ScrollView,
+    useBottomSheetDynamicSnapPoints: jest.fn(() => ({
+      animatedHandleHeight: 0,
+      animatedSnapPoints: [0],
+      animatedContentHeight: 0,
+      handleContentLayout: jest.fn,
+    })),
+  }
+})

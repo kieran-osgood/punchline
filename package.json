@@ -182,7 +182,8 @@
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/assetsTransformer.js",
-      "\\.(css|less)$": "<rootDir>/assetsTransformer.js"
+      "\\.(css|less)$": "<rootDir>/assetsTransformer.js",
+      "test/(.*)": "<rootDir>/test/$1"
     },
     "setupFilesAfterEnv": [
       "@testing-library/jest-native/extend-expect",
@@ -190,7 +191,7 @@
     ],
     "setupFiles": [
       "<rootDir>/node_modules/react-native/jest/setup.js",
-      "<rootDir>/test/setup.ts"
+      "<rootDir>/test/setup.tsx"
     ],
     "transform": {
       "^.+\\.js$": "babel-jest"

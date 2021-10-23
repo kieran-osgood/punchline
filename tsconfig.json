@@ -18,6 +18,7 @@
     "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
+      "test/*": ["test/*"],
       "theme": ["app/theme"], // import {padding} from 'theme'
       "images": ["assets/images"],
       "assets/*": ["assets/*"],
