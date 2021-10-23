@@ -4,6 +4,7 @@ import { handleOpenLink, Link } from "app/components/link/link"
 import { SocialSigninConversionSheet } from "app/components/social-signin-conversion-sheet/social-signin-conversion-sheet"
 import useSheetsManager from "app/hooks/use-sheets-manager"
 import { useStores } from "app/models"
+import { Logout } from "assets/images/logout"
 import RightArrow from "assets/images/right-arrow"
 import { observer } from "mobx-react-lite"
 import React from "react"
@@ -144,6 +145,11 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
             </View>
           </Divider>
         </Section>
+
+        <Section title=" ">
+          <LogoutButton onCancel={() => open("socialSigninConversion")} />
+        </Section>
+
         <AppVersion />
 
         <Button
@@ -243,5 +249,36 @@ const AppVersion = () => {
         App Version: {packageJson.version}, {process.env.NODE_ENV}
       </Text>
     </View>
+  )
+}
+
+const LogoutButton = ({ onCancel }: { onCancel: () => void }) => {
+  const { resetStore } = useStores()
+  const onPress = () => {
+    if (auth().currentUser?.isAnonymous) {
+      Alert.alert(
+        "Confirm Logout",
+        "Before signing out, link your guest account with a social provider?",
+        [
+          { text: "Cancel", onPress: onCancel },
+          { text: "Logout", onPress: resetStore },
+        ],
+      )
+    } else {
+      resetStore()
+    }
+  }
+
+  return (
+    <Button
+      label="Logout"
+      text70BO
+      enableShadow
+      backgroundColor="transparent"
+      labelStyle={{}}
+      color={ThemeManager.titleColor}
+      iconSource={() => <Logout scale={1} />}
+      {...{ onPress }}
+    />
   )
 }
