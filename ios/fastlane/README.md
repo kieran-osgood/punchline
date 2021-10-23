@@ -30,9 +30,9 @@ fastlane e2e_release
 fastlane beta
 ```
 Builds a release and pushes to testflight
-### appstore
+### release_appstore
 ```
-fastlane appstore
+fastlane release_appstore
 ```
 Run tests and build the app
 ### generate_new_icons

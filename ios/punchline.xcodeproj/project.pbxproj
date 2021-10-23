@@ -462,7 +462,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ko.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = punchline;
-				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc com.ko.punchline";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.ko.punchline";
 				SWIFT_OBJC_BRIDGING_HEADER = "punchline-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
