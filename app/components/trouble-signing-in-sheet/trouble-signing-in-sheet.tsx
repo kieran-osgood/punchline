@@ -60,7 +60,7 @@ const ForwardTroubleSigningInSheet = (
   }
   return (
     <BottomSheetHoc ref={ref} containerStyle={BOTTOM_SHEET_VIEW}>
-      <Text text50 marginB-s3>
+      <Text text50 marginB-s3 bold>
         Request Login
       </Text>
       <Text marginB-s3>
