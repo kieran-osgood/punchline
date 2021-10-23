@@ -35,10 +35,14 @@ import { UserJokeHistoryByUserIdEdgeModel, UserJokeHistoryByUserIdEdgeModelType 
 import { userJokeHistoryByUserIdEdgeModelPrimitives, UserJokeHistoryByUserIdEdgeModelSelector } from "./UserJokeHistoryByUserIdEdgeModel.base"
 import { UserPayloadModel, UserPayloadModelType } from "./UserPayloadModel"
 import { userPayloadModelPrimitives, UserPayloadModelSelector } from "./UserPayloadModel.base"
+import { MutateBugReportPayloadModel, MutateBugReportPayloadModelType } from "./MutateBugReportPayloadModel"
+import { mutateBugReportPayloadModelPrimitives, MutateBugReportPayloadModelSelector } from "./MutateBugReportPayloadModel.base"
 import { MutateJokeReportPayloadModel, MutateJokeReportPayloadModelType } from "./MutateJokeReportPayloadModel"
 import { mutateJokeReportPayloadModelPrimitives, MutateJokeReportPayloadModelSelector } from "./MutateJokeReportPayloadModel.base"
 import { MutateUserJokeHistoryPayloadModel, MutateUserJokeHistoryPayloadModelType } from "./MutateUserJokeHistoryPayloadModel"
 import { mutateUserJokeHistoryPayloadModelPrimitives, MutateUserJokeHistoryPayloadModelSelector } from "./MutateUserJokeHistoryPayloadModel.base"
+import { BugReportModel, BugReportModelType } from "./BugReportModel"
+import { bugReportModelPrimitives, BugReportModelSelector } from "./BugReportModel.base"
 import { UserErrorModel, UserErrorModelType } from "./UserErrorModel"
 import { userErrorModelPrimitives, UserErrorModelSelector } from "./UserErrorModel.base"
 
@@ -237,6 +241,9 @@ export type UserLoginInput = {
   firebaseUid: string
   username: string
 }
+export type BugReportInput = {
+  description: string
+}
 export type JokeReportInput = {
   id: string
   description: string
@@ -280,6 +287,7 @@ mutateRateJoke="mutateRateJoke",
 mutateDeleteUserJokeHistory="mutateDeleteUserJokeHistory",
 mutateUpdateUserJokeHistory="mutateUpdateUserJokeHistory",
 mutateAddJokeReport="mutateAddJokeReport",
+mutateAddBugReport="mutateAddBugReport",
 mutateLogin="mutateLogin",
 mutateCompleteOnboarding="mutateCompleteOnboarding",
 mutateDeleteUser="mutateDeleteUser"
@@ -290,7 +298,7 @@ mutateDeleteUser="mutateDeleteUser"
 */
 export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
   .named("RootStore")
-  .extend(configureStoreMixin([['Joke', () => JokeModel], ['JokeReport', () => JokeReportModel], ['User', () => UserModel], ['Category', () => CategoryModel], ['UserJokeHistory', () => UserJokeHistoryModel], ['JokesConnection', () => JokesConnectionModel], ['CategoriesConnection', () => CategoriesConnectionModel], ['UserCategoriesConnection', () => UserCategoriesConnectionModel], ['UserJokeHistoryByUserIdConnection', () => UserJokeHistoryByUserIdConnectionModel], ['PageInfo', () => PageInfoModel], ['JokesEdge', () => JokesEdgeModel], ['CategoriesEdge', () => CategoriesEdgeModel], ['UserCategoriesEdge', () => UserCategoriesEdgeModel], ['UserJokeHistoryByUserIdEdge', () => UserJokeHistoryByUserIdEdgeModel], ['UserPayload', () => UserPayloadModel], ['MutateJokeReportPayload', () => MutateJokeReportPayloadModel], ['MutateUserJokeHistoryPayload', () => MutateUserJokeHistoryPayloadModel], ['UserError', () => UserErrorModel]], ['Joke', 'User', 'Category', 'UserJokeHistory'], "js"))
+  .extend(configureStoreMixin([['Joke', () => JokeModel], ['JokeReport', () => JokeReportModel], ['User', () => UserModel], ['Category', () => CategoryModel], ['UserJokeHistory', () => UserJokeHistoryModel], ['JokesConnection', () => JokesConnectionModel], ['CategoriesConnection', () => CategoriesConnectionModel], ['UserCategoriesConnection', () => UserCategoriesConnectionModel], ['UserJokeHistoryByUserIdConnection', () => UserJokeHistoryByUserIdConnectionModel], ['PageInfo', () => PageInfoModel], ['JokesEdge', () => JokesEdgeModel], ['CategoriesEdge', () => CategoriesEdgeModel], ['UserCategoriesEdge', () => UserCategoriesEdgeModel], ['UserJokeHistoryByUserIdEdge', () => UserJokeHistoryByUserIdEdgeModel], ['UserPayload', () => UserPayloadModel], ['MutateBugReportPayload', () => MutateBugReportPayloadModel], ['MutateJokeReportPayload', () => MutateJokeReportPayloadModel], ['MutateUserJokeHistoryPayload', () => MutateUserJokeHistoryPayloadModel], ['BugReport', () => BugReportModel], ['UserError', () => UserErrorModel]], ['Joke', 'User', 'Category', 'UserJokeHistory'], "js"))
   .props({
     jokes: types.optional(types.map(types.late((): any => JokeModel)), {}),
     users: types.optional(types.map(types.late((): any => UserModel)), {}),
@@ -336,6 +344,11 @@ export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
     mutateAddJokeReport(variables: { input: JokeReportInput }, resultSelector: string | ((qb: MutateJokeReportPayloadModelSelector) => MutateJokeReportPayloadModelSelector) = mutateJokeReportPayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {
       return self.mutate<{ addJokeReport: MutateJokeReportPayloadModelType}>(`mutation addJokeReport($input: JokeReportInput!) { addJokeReport(input: $input) {
         ${typeof resultSelector === "function" ? resultSelector(new MutateJokeReportPayloadModelSelector()).toString() : resultSelector}
+      } }`, variables, optimisticUpdate)
+    },
+    mutateAddBugReport(variables: { input: BugReportInput }, resultSelector: string | ((qb: MutateBugReportPayloadModelSelector) => MutateBugReportPayloadModelSelector) = mutateBugReportPayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {
+      return self.mutate<{ addBugReport: MutateBugReportPayloadModelType}>(`mutation addBugReport($input: BugReportInput!) { addBugReport(input: $input) {
+        ${typeof resultSelector === "function" ? resultSelector(new MutateBugReportPayloadModelSelector()).toString() : resultSelector}
       } }`, variables, optimisticUpdate)
     },
     mutateLogin(variables: { input: UserLoginInput }, resultSelector: string | ((qb: UserPayloadModelSelector) => UserPayloadModelSelector) = userPayloadModelPrimitives.toString(), optimisticUpdate?: () => void) {

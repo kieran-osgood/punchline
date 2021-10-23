@@ -1,17 +1,25 @@
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as Sentry from "@sentry/react-native"
 import BottomSheetHoc, {
   OptionsBottomSheet,
 } from "app/components/bottom-sheet-hoc/bottom-sheet-hoc"
+import { useStores } from "app/models"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { ViewStyle } from "react-native"
-import { widthPercentageToDP } from "react-native-responsive-screen"
-import { Text } from "react-native-ui-lib"
+import { Controller, useForm } from "react-hook-form"
+import { TextStyle, ViewStyle } from "react-native"
+import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen"
+import { Button, Incubator, Text } from "react-native-ui-lib"
+import { z } from "zod"
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-type ForwardBugReportSheetProps = {}
+const schema = z.object({
+  description: z.string(),
+})
+type Inputs = z.infer<typeof schema>
 
-export interface BugReportSheetProps {}
-
+type ForwardBugReportSheetProps = {
+  close?: () => void
+}
 /**
  * Describe your component here
  */
@@ -19,9 +27,68 @@ const ForwardBugReportSheet = (
   props: ForwardBugReportSheetProps,
   ref: React.Ref<OptionsBottomSheet>,
 ) => {
+  const form = useForm<Inputs>({ resolver: zodResolver(schema) })
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = form
+  const { apiStore } = useStores()
+
+  const submit = (data: Inputs) => {
+    console.log("data: ", data)
+    // Seemingly no longer available?
+    // const lastEventId = Sentry.lastEventId()
+    // If we can hook into the event listener maybe leave it in asyncstorage until we need it?
+    // for now just post description to backend
+    apiStore.api
+      .mutateAddBugReport(
+        {
+          input: data,
+        },
+        (c) => c.bugReport((b) => b.id.description),
+      )
+      .then(
+        () => {
+          props.close?.()
+        },
+        (error) => {
+          Sentry.captureException(error)
+        },
+      )
+  }
+
   return (
     <BottomSheetHoc ref={ref} containerStyle={BOTTOM_SHEET_VIEW}>
-      <Text>hello</Text>
+      <Text text50 bold marginB-s3>
+        Bug Report
+      </Text>
+      <Text marginB-s3>
+        We'll try to collect information on the last crash. {"\n"}
+        If you have any more details to provide of what occurred, and what was being used at the
+        time, this will help us track down the issue.
+      </Text>
+
+      <Controller
+        name="description"
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <Incubator.TextField
+            label="Description"
+            onChangeText={onChange}
+            marginT-s2
+            keyboardShouldPersistTaps
+            multiline
+            numberOfLines={4}
+            labelStyle={LABEL_STYLE}
+            fieldStyle={FIELD_STYLE}
+            maxLength={500}
+            {...{ value, onBlur }}
+          />
+        )}
+      />
+      <Text>errors?: {errors.description?.message}</Text>
+      <Button label="Submit" onPress={handleSubmit(submit)} marginT-s3 />
     </BottomSheetHoc>
   )
 }
@@ -33,4 +100,16 @@ export const BugReportSheet = observer(ForwardBugReportSheet, {
 const BOTTOM_SHEET_VIEW: ViewStyle = {
   paddingHorizontal: widthPercentageToDP("5%"),
   paddingVertical: 20,
+}
+const FIELD_STYLE: ViewStyle = {
+  padding: 12,
+  borderWidth: 1,
+  borderColor: "hsl(30, 4.5%, 82.7%)",
+  borderRadius: 4,
+  minHeight: heightPercentageToDP("15%"),
+  maxHeight: heightPercentageToDP("15%"),
+  flexWrap: "wrap",
+}
+const LABEL_STYLE: TextStyle = {
+  fontWeight: "500",
 }

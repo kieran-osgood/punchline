@@ -21,7 +21,7 @@ const MARGINS = spacing[4]
 
 export const MainSettingsScreen = observer(function MainSettingsScreen() {
   const { settings, userStore } = useStores()
-  const { open, refs } = useSheetsManager<
+  const { open, close, refs } = useSheetsManager<
     ["jokeLength", "jokeCategoriesRef", "socialSigninConversion", "bugReport"]
   >()
 
@@ -153,7 +153,7 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
       <JokeLengthSettingSheet ref={(el) => refs.current.set("jokeLength", el)} />
       <SocialSigninConversionSheet ref={(el) => refs.current.set("socialSigninConversion", el)} />
       <JokeCategoriesSettingSheet ref={(el) => refs.current.set("jokeCategoriesRef", el)} />
-      <BugReportSheet ref={(el) => refs.current.set("bugReport", el)} />
+      <BugReportSheet ref={(el) => refs.current.set("bugReport", el)} close={() => close()} />
     </>
   )
 })
