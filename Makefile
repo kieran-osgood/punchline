@@ -27,3 +27,8 @@ ios_release:
 	
 create_avd:
 	echo "no" | avdmanager --verbose create avd -n "android_29_avd" -k "system-images;android-29;default;x86" 
+publish_patch:
+# TODO: implement patch make command
+# get last tagged commit
+# increment the patch version number and commit
+# run expo publish 
