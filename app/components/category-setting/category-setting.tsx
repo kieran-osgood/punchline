@@ -46,21 +46,24 @@ export const CategoryMapping = observer(function CategoryMapping(props: Category
   const { settings } = useStores()
 
   return (
-    <View center style={[CONTAINER, style]}>
-      <Button
-        label="Unselect All"
-        link
-        onPress={() => settings.unselectAllBlockedCategories()}
-        text80
-        disabled={!settings.anySelected}
-      />
-      {categoriesOnly === false && (
-        <Text centerH marginV-s2 highlightString="don't" highlightStyle={HIGHLIGHT_STYLE}>
-          {"Select categories you don't wish to see"}
-        </Text>
-      )}
+    <View style={style} paddingV-s3>
+      <View flex-1>
+        <Button
+          label="Unselect All"
+          link
+          text80
+          onPress={() => settings.unselectAllBlockedCategories()}
+          disabled={!settings.anySelected}
+          style={{ justifyContent: "flex-end" }}
+        />
+        {categoriesOnly === false && (
+          <Text center marginT-s3 highlightString="don't" highlightStyle={HIGHLIGHT_STYLE}>
+            {"Select categories you don't wish to see"}
+          </Text>
+        )}
+      </View>
 
-      <View style={CATEGORIES}>
+      <View style={ITEMS_CONTAINER}>
         {categories?.map((category) => (
           <Category key={category.id} {...{ category }} />
         ))}
@@ -69,18 +72,13 @@ export const CategoryMapping = observer(function CategoryMapping(props: Category
   )
 })
 
+const ITEMS_CONTAINER: ViewStyle = {
+  flexWrap: "wrap",
+  flexDirection: "row",
+}
 const HIGHLIGHT_STYLE: TextStyle = {
   fontWeight: "bold",
   color: ThemeManager.titleColor,
-}
-const CONTAINER: ViewStyle = {
-  justifyContent: "center",
-  paddingTop: spacing[3],
-}
-
-const CATEGORIES: ViewStyle = {
-  flexDirection: "row",
-  flexWrap: "wrap",
 }
 
 const SVG_SIZE = 40

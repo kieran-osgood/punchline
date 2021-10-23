@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import auth from "@react-native-firebase/auth"
 import { JokeLengthSettingSheet } from "app/components/joke-length-sheet/joke-length-setting-sheet"
 import { handleOpenLink, Link } from "app/components/link/link"
 import { SocialSigninConversionSheet } from "app/components/social-signin-conversion-sheet/social-signin-conversion-sheet"
@@ -11,9 +12,9 @@ import React from "react"
 import { Alert, Platform, StatusBar, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import { APPSTORE_URL, PLAYSTORE_URL } from "react-native-dotenv"
 import Share from "react-native-share"
-import { Button, Switch, Text, View, ViewProps } from "react-native-ui-lib"
+import { Button, Switch, Text, ThemeManager, View, ViewProps } from "react-native-ui-lib"
 import { color, spacing } from "theme"
-import { AppLogo, Screen } from "../../../components"
+import { AppLogo, BugReportSheet, JokeCategoriesSettingSheet, Screen } from "../../../components"
 
 const packageJson = require("package.json")
 const MARGINS = spacing[4]
@@ -37,31 +38,19 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
 
   const onDeleteAccountPress = () => {
     Alert.alert("Confirm Deletion", "Confirm you wish delete the currently logged in account.", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "OK",
-        onPress: userStore.deleteSelf,
-      },
+      { text: "Cancel", style: "cancel" },
+      { text: "OK", onPress: userStore.deleteSelf },
     ])
   }
   const resetCache = () =>
     Alert.alert("Clear Cache", "Confirm you wish you clear data saved to device.", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "OK",
-        onPress: () => AsyncStorage.clear(),
-      },
+      { text: "Cancel", style: "cancel" },
+      { text: "OK", onPress: () => AsyncStorage.clear() },
     ])
 
   return (
     <>
-      <Screen style={ROOT} preset="scroll" unsafe>
+      <Screen style={ROOT} preset="fixed" unsafe>
         <StatusBar barStyle="dark-content" />
 
         <Section title="App Preferences">
@@ -160,11 +149,12 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
           red10
           onPress={onDeleteAccountPress}
         />
+
+        <JokeLengthSettingSheet ref={(el) => refs.current.set("jokeLength", el)} />
+        <SocialSigninConversionSheet ref={(el) => refs.current.set("socialSigninConversion", el)} />
+        <JokeCategoriesSettingSheet ref={(el) => refs.current.set("jokeCategoriesRef", el)} />
+        <BugReportSheet ref={(el) => refs.current.set("bugReport", el)} />
       </Screen>
-      <JokeLengthSettingSheet ref={(el) => refs.current.set("jokeLength", el)} />
-      <SocialSigninConversionSheet ref={(el) => refs.current.set("socialSigninConversion", el)} />
-      {/* <JokeCategoriesSheet ref={(el) => refs.current.set("jokeCategoriesRef", el)} /> */}
-      {/* <BugReport ref={(el) => refs.current.set("bugReport", el)} /> */}
     </>
   )
 })
@@ -174,14 +164,12 @@ type SectionProps = {
   title?: string
   style?: ViewStyle | ViewStyle[]
 } & ViewProps
-export const Section = ({ children, title, style, ...rest }: SectionProps) => {
-  return (
-    <View {...{ style }} {...rest}>
-      {!!title && <Title>{title}</Title>}
-      <View style={SECTION}>{children}</View>
-    </View>
-  )
-}
+export const Section = ({ children, title, style, ...rest }: SectionProps) => (
+  <View {...{ style }} {...rest}>
+    {!!title && <Title>{title}</Title>}
+    <View style={SECTION}>{children}</View>
+  </View>
+)
 
 type DividerProps = {
   children?: React.ReactNode
