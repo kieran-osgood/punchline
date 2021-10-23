@@ -3,33 +3,32 @@ import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { Linking, TextStyle, ViewStyle } from "react-native"
 import { WEB_URL } from "react-native-dotenv"
-import { Button, Text } from "react-native-ui-lib"
-import { spacing } from "../../theme"
+import { ButtonProps, Text, TouchableOpacity } from "react-native-ui-lib"
 
 export type LinkProps = {
+  style?: ViewStyle
   children: string
   onPress?: (...args: any[]) => any
   url?: string
   external?: boolean
   inlineText?: boolean
-}
+} & ButtonProps
 /**
  * Describe your component here
  */
 export const Link = observer(function Link(props: LinkProps) {
-  const { children, onPress: onPressCallback, url, external = false, inlineText = false } = props
-  // TODO: Break this out into a separate file component
-  // TODO: reduce the font size so that it doesn't look so drastically different to preferences section
+  const {
+    style,
+    children,
+    onPress: onPressCallback,
+    url,
+    external = false,
+    inlineText = false,
+    ...rest
+  } = props
   const onPress = () => {
     if (url) {
-      const fullUrl = external ? url : `${WEB_URL}${url}`
-      Linking.canOpenURL(fullUrl).then((supported) => {
-        if (supported) {
-          Linking.openURL(fullUrl)
-        } else {
-          Sentry.captureMessage("Don't know how to open URI: " + fullUrl)
-        }
-      })
+      handleOpenLink(url, external)
     }
     onPressCallback?.()
   }
@@ -41,13 +40,25 @@ export const Link = observer(function Link(props: LinkProps) {
       </Text>
     )
   }
-  return <Button link style={LINK} label={children} {...{ onPress }} />
-})
 
-const LINK: ViewStyle = {
-  paddingVertical: spacing[3],
-}
+  return (
+    <TouchableOpacity style={style} {...{ onPress }} {...rest}>
+      <Text text80>{children}</Text>
+    </TouchableOpacity>
+  )
+})
 
 const TEXT_LINK: TextStyle = {
   textDecorationLine: "underline",
+}
+
+export const handleOpenLink = (url: string, external = false) => {
+  const fullUrl = external ? url : `${WEB_URL}${url}`
+  Linking.canOpenURL(fullUrl).then((supported) => {
+    if (supported) {
+      Linking.openURL(fullUrl)
+    } else {
+      Sentry.captureMessage("Don't know how to open URI: " + fullUrl)
+    }
+  })
 }

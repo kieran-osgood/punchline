@@ -7,7 +7,6 @@
  */
 import { RouteProp } from "@react-navigation/native"
 import { createStackNavigator, StackNavigationProp } from "@react-navigation/stack"
-import { BugReportScreen } from "app/screens"
 import { MainSettingsScreen } from "app/screens/settings/screens/main-settings"
 import { Header } from "components"
 import { observer } from "mobx-react-lite"
@@ -27,7 +26,6 @@ import React from "react"
  */
 export type SettingsRouteParamList = {
   Main: undefined
-  BugReport: undefined
 }
 
 export type SettingsStackProps<T extends keyof SettingsRouteParamList> = {
@@ -42,18 +40,11 @@ export const SettingsStack = observer(function SettingsNavigator() {
     <Stack.Navigator
       initialRouteName="Main"
       screenOptions={{
-        header: (props) => <Header {...props} left="back" />,
+        header: (props) => <Header {...props} left="back" right="logout" />,
         headerMode: "screen",
       }}
     >
       <Stack.Screen name="Main" component={MainSettingsScreen} />
-      <Stack.Screen
-        name="BugReport"
-        component={BugReportScreen}
-        options={{
-          headerTitle: "Bug Report",
-        }}
-      />
     </Stack.Navigator>
   )
 })
