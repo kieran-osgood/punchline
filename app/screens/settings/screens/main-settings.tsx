@@ -28,7 +28,7 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
   const onSharePress = async (url: string) => {
     try {
       await Share.open({
-        title: "",
+        title: "Share Joke",
         url,
       })
     } catch (error) {
@@ -42,6 +42,7 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
       { text: "OK", onPress: userStore.deleteSelf },
     ])
   }
+
   const resetCache = () =>
     Alert.alert("Clear Cache", "Confirm you wish you clear data saved to device.", [
       { text: "Cancel", style: "cancel" },
@@ -81,7 +82,7 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
 
         <Section title="Account">
           <Divider row arrow onPress={() => open("socialSigninConversion")}>
-            <Text text80>Social Signin Conversion</Text>
+            <Text text80>Social Login Conversion</Text>
           </Divider>
           <Divider row arrow onPress={() => open("bugReport")}>
             <View row>
