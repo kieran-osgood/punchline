@@ -6,7 +6,7 @@ import * as React from "react"
 import { ViewStyle } from "react-native"
 import { ADMOB_HOME_FOOTER } from "react-native-dotenv"
 import { heightPercentageToDP } from "react-native-responsive-screen"
-import { View } from "react-native-ui-lib"
+import { Text, View } from "react-native-ui-lib"
 
 const onAdClosed = noop
 const onAdFailedToLoad = noop
@@ -28,7 +28,8 @@ export const AdBanner = observer(function AdBanner(props: AdBannerProps) {
   const unitId = isProduction ? ADMOB_HOME_FOOTER : TestIds.BANNER
 
   return (
-    <View style={[{ height: heightPercentageToDP("10%") }, props.style]}>
+    <View style={[style, props.style]}>
+      <Text>{unitId}</Text>
       <BannerAd
         // prop types require these to be added
         {...{
@@ -44,3 +45,7 @@ export const AdBanner = observer(function AdBanner(props: AdBannerProps) {
     </View>
   )
 })
+const style: ViewStyle = {
+  height: heightPercentageToDP("10%"),
+  justifyContent: "flex-end",
+}
