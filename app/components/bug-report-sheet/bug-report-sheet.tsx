@@ -87,7 +87,6 @@ const ForwardBugReportSheet = (
           />
         )}
       />
-      <Text>errors?: {errors.description?.message}</Text>
       <Button label="Submit" onPress={handleSubmit(submit)} marginT-s3 />
     </BottomSheetHoc>
   )
