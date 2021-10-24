@@ -23,8 +23,8 @@ export const RootStoreModel = RootStoreModelBase.actions((self) => {
   return {
     resetStore: flow(function* () {
       applySnapshot(self, initialState)
-      yield AsyncStorage.clear().catch((err) => Sentry.captureException(err))
-      yield auth()
+      AsyncStorage.clear().catch((err) => Sentry.captureException(err))
+      auth()
         .signOut()
         .catch((err) => Sentry.captureException(err))
     }),
@@ -40,25 +40,3 @@ export interface RootStore extends Instance<typeof RootStoreModel> {}
  * The data of a RootStore.
  */
 export interface RootStoreSnapshot extends SnapshotOut<typeof RootStoreModel> {}
-
-// .actions(self => {
-//   let initialState = {};
-//   const afterCreate = () => {
-//     initialState = getSnapshot(self);
-//   };
-//   const reset = () => {
-//     applySnapshot(self, initialState);
-//   }
-// }
-
-// export const resetStore = self => {
-//   let initialState;
-//   return {
-//     afterCreate() {
-//       initialState = getSnapshot(self);
-//     },
-//     resetStore() {
-//       applySnapshot(self, initialState);
-//     },
-//   };
-// };

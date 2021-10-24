@@ -85,7 +85,7 @@ export const UserStoreModel = types
         self.updateUser(null)
         auth().signOut()
         Sentry.captureException(err)
-        // self.root.resetStore()
+        self.root.resetStore()
         Toast.show({
           type: "error",
           text1: "Sign-in Error",
