@@ -66,7 +66,10 @@ const ForwardBottomSheetHoc = (
       ? { handleHeight, snapPoints, contentHeight }
       : { snapPoints: _initialSnapPoints ?? ["50%"] }
 
-  const containerStyle = [{ paddingBottom: insets.bottom }, _containerStyle]
+  const containerStyle = [
+    { paddingBottom: insets.bottom !== 0 ? insets.bottom : 20 },
+    _containerStyle,
+  ]
 
   return (
     <BottomSheet
