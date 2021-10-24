@@ -28,11 +28,7 @@ const ForwardBugReportSheet = (
   ref: React.Ref<OptionsBottomSheet>,
 ) => {
   const form = useForm<Inputs>({ resolver: zodResolver(schema) })
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = form
+  const { handleSubmit, control } = form
   const { apiStore } = useStores()
 
   const submit = (data: Inputs) => {

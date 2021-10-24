@@ -1,21 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
-import BottomSheet, { BottomSheetView, useBottomSheetDynamicSnapPoints } from "@gorhom/bottom-sheet"
-import { useNavigation, useRoute } from "@react-navigation/native"
+import { DeepLinkJokeSheet } from "app/components/deep-link-joke-sheet/deep-link-joke-sheet"
+import { JokeOptionsSheet } from "app/components/joke-options-sheet/joke-options-sheet"
 import { LoadingJokeCard } from "app/components/joke/joke-card/joke-card"
+import { ReportJokeSheet } from "app/components/report-joke-sheet/report-joke-sheet"
 import Swipeable from "app/components/swipeable/swipeable"
 import { JokeModelType, RatingValue, useQuery } from "app/graphql"
+import useSheetsManager from "app/hooks/use-sheets-manager"
 import { useStores } from "app/models"
-import { NavigationProps } from "app/navigators"
-import { Divider } from "app/screens/settings/screens/main-settings"
 import { Ellipsis } from "assets/images/ellipsis"
-import { ErrorReportIcon } from "assets/images/error-report"
 import Skip from "assets/images/skip"
-import { AdBanner, BookmarkButton, Ratings, ShareLink, SwipeHandler } from "components"
-import { CryingEmoji, LaughingEmoji, Share as ShareIcon } from "images"
+import { AdBanner, BookmarkButton, Ratings, SwipeHandler } from "components"
+import { CryingEmoji, LaughingEmoji } from "images"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { Linking, SafeAreaView, StatusBar, ViewStyle } from "react-native"
-import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen"
+import { SafeAreaView, StatusBar, ViewStyle } from "react-native"
+import { heightPercentageToDP } from "react-native-responsive-screen"
 import { Button, Text, TouchableOpacity, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 import { useThrottledCallback } from "use-debounce/lib"
@@ -28,8 +27,7 @@ export const JokeScreen = observer(function JokeScreen() {
   const topCard = React.useRef<SwipeHandler>(null)
   const query = useQuery()
   const { apiStore } = useStores()
-  const bottomSheetRef = React.useRef<BottomSheet>(null)
-  const optionsBottomSheetRef = React.useRef<OptionsBottomSheet>(null)
+  const { open, close, refs } = useSheetsManager<["jokeOptions", "reportJoke", "deepLinkJoke"]>()
 
   const onSwipe = React.useCallback(
     (joke: JokeModelType, rating: RatingValue, bookmarked: boolean) => {
@@ -82,11 +80,7 @@ export const JokeScreen = observer(function JokeScreen() {
             likes={apiStore.jokeApi.topOfDeckJoke.positiveRating ?? 0}
             dislikes={apiStore.jokeApi.topOfDeckJoke.negativeRating ?? 0}
           />
-          <TouchableOpacity
-            onPress={() => {
-              optionsBottomSheetRef.current.open()
-            }}
-          >
+          <TouchableOpacity onPress={() => open("jokeOptions")}>
             <Ellipsis />
           </TouchableOpacity>
         </View>
@@ -101,9 +95,24 @@ export const JokeScreen = observer(function JokeScreen() {
           }}
         />
       </SafeAreaView>
+
       <AdBanner />
-      <DeepLinkJokeActionSheet ref={bottomSheetRef} />
-      <OptionsActionSheet ref={optionsBottomSheetRef} />
+
+      <JokeOptionsSheet
+        ref={(el) => refs.current.set("jokeOptions", el)}
+        openReportJoke={() => open("reportJoke")}
+        close={() => close()}
+      />
+      <ReportJokeSheet
+        ref={(el) => refs.current.set("reportJoke", el)}
+        // open={() => open("deepLinkJoke")}
+        close={() => close()}
+      />
+      <DeepLinkJokeSheet
+        ref={(el) => refs.current.set("deepLinkJoke", el)}
+        open={() => open("deepLinkJoke")}
+        close={() => close()}
+      />
     </>
   )
 })
@@ -217,148 +226,4 @@ export const ACTION_BUTTON: ViewStyle = {
   position: "relative",
   alignItems: "center",
   padding: 5,
-}
-const NoRefDeepLinkJokeActionSheet = (props: unknown, ref: React.Ref<BottomSheet>) => {
-  const route = useRoute<NavigationProps<"JokeScreen">["route"]>()
-  const jokeId = route.params?.id
-  const [index, setIndex] = React.useState(-1)
-  const { apiStore } = useStores()
-  const navigation = useNavigation<NavigationProps<"JokeScreen">["navigation"]>()
-
-  /* Temporary fix due to issues with linking:
-    - https://github.com/facebook/react-native/issues/25675
-    - https://github.com/facebook/react-native/pull/32123
-  */
-  const extractDeepLinkId = (url: string): string => url.replace("punchline://joke/", "")
-  const handleDeepLink = React.useCallback(
-    (url) => {
-      if (url) {
-        if (extractDeepLinkId(url) !== route.params?.id) {
-          navigation.setParams({
-            id: extractDeepLinkId(url),
-          })
-        }
-      }
-    },
-    [navigation, route.params?.id],
-  )
-
-  React.useEffect(() => {
-    Linking.addEventListener("url", (e) => {
-      if (e.url) handleDeepLink(e.url)
-    })
-    Linking.getInitialURL().then((url) => {
-      if (url) handleDeepLink(url)
-    })
-  }, [handleDeepLink, navigation])
-
-  React.useEffect(() => {
-    if (apiStore.jokeApi.deepLinkJoke?.viewed) {
-      return
-    }
-    if (jokeId && !apiStore.jokeApi.deepLinkJoke) {
-      apiStore.jokeApi.setDeepLinkJoke(jokeId)
-    }
-    if (
-      jokeId &&
-      !apiStore.jokeApi.deepLinkJoke?.viewed &&
-      apiStore.jokeApi.deepLinkJoke?.id === jokeId
-    ) {
-      setIndex(0)
-    }
-  }, [apiStore.api.jokes, apiStore.jokeApi, jokeId])
-
-  const initialSnapPoints = React.useMemo(() => ["CONTENT_HEIGHT"], [])
-  const {
-    animatedHandleHeight: handleHeight,
-    animatedSnapPoints: snapPoints,
-    animatedContentHeight: contentHeight,
-    handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints)
-
-  return (
-    <BottomSheet
-      style={BOTTOM_SHEET}
-      enablePanDownToClose
-      {...{ ref, snapPoints, index, handleHeight, contentHeight }}
-    >
-      <BottomSheetView style={BOTTOM_SHEET_VIEW} onLayout={handleContentLayout}>
-        <Text>Awesome 🎉</Text>
-        <Button
-          label={apiStore.jokeApi.deepLinkJoke?.title}
-          onPress={() => apiStore.jokeApi.deepLinkJoke?.markViewed()}
-        />
-      </BottomSheetView>
-    </BottomSheet>
-  )
-}
-
-const DeepLinkJokeActionSheet = React.forwardRef(NoRefDeepLinkJokeActionSheet)
-
-interface OptionsBottomSheet {
-  open: () => void
-}
-const NoRefOptionsActionSheet = (props: unknown, imperativeRef: React.Ref<OptionsBottomSheet>) => {
-  const { apiStore } = useStores()
-  const [index] = React.useState(-1)
-  const initialSnapPoints = React.useMemo(() => ["CONTENT_HEIGHT"], [])
-  const ref = React.useRef<BottomSheet>(null)
-  const {
-    animatedHandleHeight: handleHeight,
-    animatedSnapPoints: snapPoints,
-    animatedContentHeight: contentHeight,
-    handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints)
-
-  const callbackAndClose = (cb: () => void) => {
-    console.log("test")
-    ref.current?.close()
-    cb()
-  }
-  React.useImperativeHandle(imperativeRef, () => ({
-    open: () => ref.current?.collapse(),
-  }))
-  return (
-    <BottomSheet
-      style={BOTTOM_SHEET}
-      enablePanDownToClose
-      {...{ ref, snapPoints, index, handleHeight, contentHeight }}
-    >
-      <BottomSheetView style={BOTTOM_SHEET_VIEW} onLayout={handleContentLayout}>
-        <ShareLink jokeId={apiStore.jokeApi.topOfDeckJoke.id}>
-          <Divider row arrow>
-            <View row centerV>
-              <ShareIcon scale={1.1} />
-              <Text marginL-s2>Share Joke</Text>
-            </View>
-          </Divider>
-        </ShareLink>
-
-        <Divider row arrow onPress={() => callbackAndClose(() => console.log("he"))}>
-          <View row centerV>
-            <ErrorReportIcon />
-            <Text marginL-s2>Report Joke</Text>
-          </View>
-        </Divider>
-      </BottomSheetView>
-    </BottomSheet>
-  )
-}
-
-const OptionsActionSheet = React.forwardRef(NoRefOptionsActionSheet)
-
-const BOTTOM_SHEET: ViewStyle = {
-  shadowColor: "black",
-  shadowOffset: {
-    width: 0,
-    height: -4,
-  },
-  shadowOpacity: 0.23,
-  shadowRadius: 2.62,
-  elevation: 4,
-}
-
-const BOTTOM_SHEET_VIEW: ViewStyle = {
-  marginHorizontal: widthPercentageToDP("5%"),
-  paddingBottom: heightPercentageToDP("5%"),
 }
