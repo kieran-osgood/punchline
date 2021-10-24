@@ -32,7 +32,6 @@ const ForwardBugReportSheet = (
   const { apiStore } = useStores()
 
   const submit = (data: Inputs) => {
-    console.log("data: ", data)
     // Seemingly no longer available?
     // const lastEventId = Sentry.lastEventId()
     // If we can hook into the event listener maybe leave it in asyncstorage until we need it?

@@ -103,11 +103,7 @@ export const JokeScreen = observer(function JokeScreen() {
         openReportJoke={() => open("reportJoke")}
         close={() => close()}
       />
-      <ReportJokeSheet
-        ref={(el) => refs.current.set("reportJoke", el)}
-        // open={() => open("deepLinkJoke")}
-        close={() => close()}
-      />
+      <ReportJokeSheet ref={(el) => refs.current.set("reportJoke", el)} close={() => close()} />
       <DeepLinkJokeSheet
         ref={(el) => refs.current.set("deepLinkJoke", el)}
         open={() => open("deepLinkJoke")}
