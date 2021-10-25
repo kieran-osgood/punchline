@@ -22,10 +22,10 @@ export const SubSlide = observer(function SubSlide(props: SubSlideProps) {
 
   return (
     <View center padding-s9 flex-1>
-      <Text text50 marginB-s3 center>
+      <Text text40 bold marginB-s3 center>
         {subtitle}
       </Text>
-      <Text marginB-s8 center>
+      <Text text70 marginB-s5 center>
         {description}
       </Text>
       {last ? (

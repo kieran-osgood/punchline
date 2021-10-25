@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { Dimensions, StyleSheet, View } from "react-native"
-import { Text } from "react-native-ui-lib"
+import { Dimensions, StyleSheet } from "react-native"
+import { Text, View } from "react-native-ui-lib"
 import { color } from "theme"
 
 const { width, height } = Dimensions.get("window")
@@ -41,7 +41,7 @@ export const Slide = observer(function Slide(props: SlideProps) {
   return (
     <View style={styles.container}>
       <View style={[styles.titleContainer, { transform }]}>
-        <Text text20 style={styles.text}>
+        <Text text20 bold style={styles.text}>
           {title}
         </Text>
       </View>
