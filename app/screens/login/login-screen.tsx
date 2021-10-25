@@ -11,7 +11,6 @@ import {
   Link,
   LoadingModal,
   Screen,
-  TroubleSigningInButton,
   TroubleSigningInSheet,
 } from "components"
 import { observer } from "mobx-react-lite"
@@ -49,7 +48,7 @@ export const LoginScreen = observer(function LoginScreen() {
   return (
     <Screen style={ROOT} preset="fixed" testID="LoginScreen" unsafe>
       <View centerH spread flex-1 width={widthPercentageToDP("70%")}>
-        <View flex-2 centerV>
+        <View flex-3 centerV>
           <AppLogo
             width={widthPercentageToDP("100%")}
             height={widthPercentageToDP("100%") / 5}
@@ -76,13 +75,13 @@ export const LoginScreen = observer(function LoginScreen() {
             <AppleSignInButton {...{ setIsLoading, onError }} />
           </View>
 
-          <View style={SPACER} marginV-s6 height-0 />
+          <View style={SPACER} height={30} />
 
           <GuestSignInButton />
         </View>
 
         <View flex-1 center>
-          <TroubleSigningInButton {...{ onError }} onPress={() => ref.current?.open()} />
+          {/* <TroubleSigningInButton {...{ onError }} onPress={() => ref.current?.open()} /> */}
         </View>
       </View>
       <GradientBackground style={BACKGROUND} />
@@ -97,9 +96,8 @@ const ROOT: ViewStyle = {
   alignItems: "center",
 }
 const SPACER: ViewStyle = {
-  borderBottomWidth: 1,
-  borderColor: "hsl(264, 66.85%, 62.5%)",
-  borderWidth: StyleSheet.hairlineWidth,
+  borderBottomColor: "hsl(264, 66.85%, 62.5%)",
+  borderBottomWidth: StyleSheet.hairlineWidth,
   width: 50,
 }
 const BACKGROUND: ViewStyle = {
