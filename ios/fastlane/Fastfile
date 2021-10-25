@@ -94,24 +94,23 @@ desc "Run tests and build the app"
 lane :release_appstore do
   bump_and_commit_versions
 
-  changelog_from_git_commits
+  # changelog_from_git_commits
   
   # Get latest certs appstore
   match(type: "appstore", readonly: is_ci) # Set type of code signing required
   
   # Gym aliases build_app
-  gym(export_method: "app-store", output_directory: "output/release") # Directory where signed .ipa file will be placed
+  # gym(export_method: "app-store", output_directory: "output/release") # Directory where signed .ipa file will be placed
   # generate_screenshots
-  
-  # untested from https://gist.github.com/jogboms/a35b5cdf8eb584320832646e7b0480fc
-  # build_ios_app(workspace: "#{project_path}/ios/Runner.xcworkspace", scheme: "Runner")
-  
+  ENV["DELIVER_SKIP_WAIT_FOR_SCREENSHOT_PROCESSING"] = false
+ 
   upload_to_app_store(
     submit_for_review: false,
     automatic_release: false,
     skip_screenshots: false,
     force: true,
     ipa: Actions.lane_context[SharedValues::IPA_OUTPUT_PATH],
+    username: 'kieranbosgood@gmail.com'
 )
 end
 
