@@ -21,8 +21,6 @@ export const TroubleSigningInButton = observer(function TroubleSigningInButton(
       label="Trouble signing in?"
       text80BO
       link
-      paddingB-s5
-      paddingT-s3
       linkColor="white"
       labelStyle={LABEL}
       onPress={props.onPress}

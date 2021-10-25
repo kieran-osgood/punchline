@@ -7,9 +7,12 @@ import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { Controller, useForm } from "react-hook-form"
 import { TextStyle, ViewStyle } from "react-native"
+import { API_URL } from "react-native-dotenv"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import { Button, Incubator, Text } from "react-native-ui-lib"
 import { z } from "zod"
+
+const appJson = require("app.json")
 
 const schema = z.object({
   email: z.string().email(),
@@ -41,15 +44,12 @@ const ForwardTroubleSigningInSheet = (
     try {
       await auth().sendSignInLinkToEmail(data.email, {
         handleCodeInApp: true,
-        // TODO: get this from env
-        url: "http://punchline-f9af3.firebaseapp.com",
+        url: `${API_URL}/login?email=${data.email}`,
         iOS: {
-          // TODO: get this from package json
-          bundleId: "com.ko.punchline",
+          bundleId: appJson.expo.ios.bundleIdentifier,
         },
         android: {
-          // TODO: get this from package json
-          packageName: "com.ko.punchline",
+          packageName: appJson.expo.android.package,
           installApp: true,
           minimumVersion: "12",
         },
@@ -58,6 +58,7 @@ const ForwardTroubleSigningInSheet = (
       if (error instanceof Error) onError(error)
     }
   }
+
   return (
     <BottomSheetHoc ref={ref} containerStyle={BOTTOM_SHEET_VIEW}>
       <Text text50 marginB-s3 bold>
