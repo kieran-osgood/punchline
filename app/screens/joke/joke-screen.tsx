@@ -27,7 +27,9 @@ export const JokeScreen = observer(function JokeScreen() {
   const topCard = React.useRef<SwipeHandler>(null)
   const query = useQuery()
   const { apiStore } = useStores()
-  const { open, close, refs } = useSheetsManager<["jokeOptions", "reportJoke", "deepLinkJoke"]>()
+  const { open, close, refs, currentOpen } = useSheetsManager<
+    ["jokeOptions", "reportJoke", "deepLinkJoke"]
+  >()
 
   const onSwipe = React.useCallback(
     (joke: JokeModelType, rating: RatingValue, bookmarked: boolean) => {
@@ -56,16 +58,8 @@ export const JokeScreen = observer(function JokeScreen() {
     <>
       <SafeAreaView style={ROOT} testID="JokeScreen">
         <StatusBar barStyle="dark-content" />
-        <View style={HEADER}>
-          <Text grey30 bold>
-            {apiStore.jokeApi.topOfDeckJoke?.categories?.[0].name}
-          </Text>
 
-          <Text text40 bold center marginH-s3 numberOfLines={3}>
-            {apiStore.jokeApi.topOfDeckJoke?.title}
-          </Text>
-        </View>
-
+        <JokeTitle />
         <View style={CARDS_CONTAINER}>
           {(query.loading || apiStore.jokeApi.nonViewedJokes.length <= 0) && <LoadingJokeCard />}
           {apiStore.jokeApi.nonViewedJokes.map((joke) => {
@@ -125,10 +119,10 @@ const HEADER: ViewStyle = {
   height: heightPercentageToDP("15%"),
 }
 
-const CARDS_CONTAINER: ViewStyle = {
+export const CARDS_CONTAINER: ViewStyle = {
   height: heightPercentageToDP("45%"),
   marginHorizontal: 16,
-  zIndex: 100,
+  //   zIndex: 100,
 }
 
 const JOKE_INFO: ViewStyle = {
@@ -223,3 +217,17 @@ export const ACTION_BUTTON: ViewStyle = {
   alignItems: "center",
   padding: 5,
 }
+
+export const JokeTitle = observer(() => {
+  const { apiStore } = useStores()
+  return (
+    <View style={HEADER}>
+      <Text grey30 bold>
+        {apiStore.jokeApi.topOfDeckJoke?.categories?.[0].name}
+      </Text>
+      <Text text40 bold center marginH-s3 numberOfLines={3}>
+        {apiStore.jokeApi.topOfDeckJoke?.title}
+      </Text>
+    </View>
+  )
+})
