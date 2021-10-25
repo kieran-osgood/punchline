@@ -35,7 +35,9 @@
     "uri:android:npx": "npx uri-scheme open punchline://share/joke/Sm9rZQppOA== --android",
     "uri:android": "adb shell am start -W -a android.intent.action.VIEW -d \"punchline://joke/Sm9rZQppOA==\" com.ko.punchline/.MainActivity",
     "ios:certificates": "cd ios && fl match development --force",
-    "nuke": "rm -rf node_modules && npm cache clean --force && yarn && watchman watch-del-all && rm -rf $TMPDIR/haste-map-* && rm -rf $TMPDIR/metro-cache && yarn start"
+    "nuke": "rm -rf node_modules && npm cache clean --force && yarn && watchman watch-del-all && rm -rf $TMPDIR/haste-map-* && rm -rf $TMPDIR/metro-cache && yarn start",
+    "detox:recorder": "detox recorder --configuration \"ios.sim.release\" --outputTestFile \"./e2e/recorded.js\" --testName \"My Recorded Test\" --record",
+    "detox:recorder:installed": "detox recorder --bundleId \"com.ko.punchline\" --simulatorId booted --outputTestFile \"./e2e/recorded.js\" --testName \"My Recorded Test\" --record"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4",
@@ -144,6 +146,7 @@
     "bufferutil": "4.0.2",
     "canvas": "2.6.1",
     "detox": "^18.23.1",
+    "detox-recorder": "^1.0.151",
     "eslint": "7.15.0",
     "eslint-config-prettier": "7.0.0",
     "eslint-config-standard": "16.0.2",
