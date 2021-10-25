@@ -90,7 +90,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       MainNavigator: {
         screens: {
           JokeScreen: {
-            path: "joke/:id",
+            path: "share/joke/:id",
             parse: { id: String },
             exact: true,
           },

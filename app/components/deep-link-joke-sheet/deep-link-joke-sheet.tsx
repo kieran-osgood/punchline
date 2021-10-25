@@ -1,19 +1,24 @@
 import { useNavigation, useRoute } from "@react-navigation/native"
 import BottomSheetHoc from "app/components/bottom-sheet-hoc/bottom-sheet-hoc"
+import JokeCard from "app/components/joke/joke-card/joke-card"
+import { JokeModelType, RatingValue } from "app/graphql"
 import { useStores } from "app/models"
 import { NavigationProps } from "app/navigators"
+import { CARDS_CONTAINER, Controls, JokeTitle } from "app/screens/joke/joke-screen"
 import { OptionsBottomSheet } from "components"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { Linking, ViewStyle } from "react-native"
+import { Linking, StyleSheet, ViewStyle } from "react-native"
+import { useSharedValue } from "react-native-reanimated"
 import { widthPercentageToDP } from "react-native-responsive-screen"
-import { Button, Text } from "react-native-ui-lib"
+import { View } from "react-native-ui-lib"
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 type ForwardDeepLinkJokeSheetProps = {
   close?: () => void
   open?: () => void
 }
+
+const extractDeepLinkId = (url: string): string => url.replace("punchline://share/joke/", "")
 
 /**
  * Describe your component here
@@ -22,60 +27,102 @@ const ForwardDeepLinkJokeSheet = (
   props: ForwardDeepLinkJokeSheetProps,
   ref: React.Ref<OptionsBottomSheet>,
 ) => {
+  const [bookmarked, setBookmarked] = React.useState(false)
+  const { open, close } = props
   const route = useRoute<NavigationProps<"JokeScreen">["route"]>()
-  const jokeId = route.params?.id
   const { apiStore } = useStores()
   const navigation = useNavigation<NavigationProps<"JokeScreen">["navigation"]>()
+  const dummyValue = useSharedValue(0)
 
   /* Temporary fix due to issues with linking:
     - https://github.com/facebook/react-native/issues/25675
     - https://github.com/facebook/react-native/pull/32123
   */
-  const extractDeepLinkId = (url: string): string => url.replace("punchline://joke/", "")
   const handleDeepLink = React.useCallback(
-    (url) => {
-      if (url) {
-        if (extractDeepLinkId(url) !== route.params?.id) {
-          navigation.setParams({
-            id: extractDeepLinkId(url),
-          })
-        }
+    async (e: { url: string } | string | null) => {
+      const url = typeof e === "object" ? e?.url : e
+      if (!url) return
+
+      const id = extractDeepLinkId(url)
+      if (id === route.params?.id) return
+
+      navigation.setParams({ id })
+
+      if (id && id !== apiStore.jokeApi.deepLinkJoke?.id) {
+        await apiStore.jokeApi.setDeepLinkJoke(id)
       }
     },
-    [navigation, route.params?.id],
+    [apiStore.jokeApi, navigation, route.params?.id],
   )
 
   React.useEffect(() => {
-    Linking.addEventListener("url", (e) => {
-      if (e.url) handleDeepLink(e.url)
-    })
-    Linking.getInitialURL().then((url) => {
-      if (url) handleDeepLink(url)
-    })
+    Linking.getInitialURL().then(handleDeepLink)
+    Linking.addEventListener("url", handleDeepLink)
   }, [handleDeepLink, navigation])
 
   React.useEffect(() => {
-    if (apiStore.jokeApi.deepLinkJoke?.viewed) {
-      return
-    }
-    if (jokeId && !apiStore.jokeApi.deepLinkJoke) {
-      apiStore.jokeApi.setDeepLinkJoke(jokeId)
-    }
-    if (
-      jokeId &&
-      !apiStore.jokeApi.deepLinkJoke?.viewed &&
-      apiStore.jokeApi.deepLinkJoke?.id === jokeId
-    ) {
-      props.open?.()
-    }
-  }, [apiStore.api.jokes, apiStore.jokeApi, jokeId])
+    setTimeout(() => {
+      if (route.params?.id) {
+        handleDeepLink(route.params.id)
+        open?.()
+      }
+    }, 500)
+  }, [handleDeepLink, open, route.params?.id])
+
+  const onSwipe = React.useCallback(
+    (joke: JokeModelType, rating: RatingValue, bookmarked: boolean) => {
+      joke.rate(joke, rating, bookmarked)
+      setBookmarked(false)
+      close?.()
+      navigation.setParams({})
+    },
+    [close, navigation],
+  )
+
+  const handleBookmarkPress = () => setBookmarked((c) => !c)
+
+  const handleSkipPress = () =>
+    onSwipe(apiStore.jokeApi.topOfDeckJoke, RatingValue.SKIP, bookmarked)
+
+  const handleDownVote = () => {
+    onSwipe(apiStore.jokeApi.topOfDeckJoke, RatingValue.BAD, bookmarked)
+  }
+
+  const handleUpVote = () => {
+    onSwipe(apiStore.jokeApi.topOfDeckJoke, RatingValue.GOOD, bookmarked)
+  }
+  if (!apiStore.jokeApi.deepLinkJoke) {
+    close?.()
+    return null
+  }
 
   return (
-    <BottomSheetHoc ref={ref} containerStyle={BOTTOM_SHEET_VIEW}>
-      <Text>Awesome 🎉</Text>
-      <Button
-        label={apiStore.jokeApi.deepLinkJoke?.title}
-        onPress={() => apiStore.jokeApi.deepLinkJoke?.markViewed()}
+    <BottomSheetHoc
+      ref={ref}
+      containerStyle={BOTTOM_SHEET_VIEW}
+      initialSnapPoints={["90%"]}
+      onClose={() => navigation.setParams({})}
+    >
+      <JokeTitle />
+      <View style={CARDS_CONTAINER}>
+        <View style={StyleSheet.absoluteFill}>
+          <JokeCard
+            joke={apiStore.jokeApi.deepLinkJoke}
+            onTop
+            translateX={dummyValue}
+            translateY={dummyValue}
+            scale={dummyValue}
+          />
+        </View>
+      </View>
+      <Controls
+        {...{
+          bookmarked,
+          handleDownVote,
+          handleUpVote,
+          handleSkipPress,
+          handleBookmarkPress,
+        }}
       />
     </BottomSheetHoc>
   )

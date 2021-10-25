@@ -31,8 +31,8 @@
     "build-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "mst-gql": "mst-gql",
     "bootsplash": "yarn react-native generate-bootsplash assets/bootsplash/splash.png --background-color=FFF --logo-width=300 --assets-path=assets/bootsplash --flavor=main",
-    "uri:ios": "npx uri-scheme open punchline://joke/Sm9rZQppOA== --ios",
-    "uri:android:npx": "npx uri-scheme open punchline://joke/Sm9rZQppOA== --android",
+    "uri:ios": "npx uri-scheme open punchline://share/joke/Sm9rZQppOA== --ios",
+    "uri:android:npx": "npx uri-scheme open punchline://share/joke/Sm9rZQppOA== --android",
     "uri:android": "adb shell am start -W -a android.intent.action.VIEW -d \"punchline://joke/Sm9rZQppOA==\" com.ko.punchline/.MainActivity",
     "ios:certificates": "cd ios && fl match development --force",
     "nuke": "rm -rf node_modules && npm cache clean --force && yarn && watchman watch-del-all && rm -rf $TMPDIR/haste-map-* && rm -rf $TMPDIR/metro-cache && yarn start"

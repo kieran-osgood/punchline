@@ -14,6 +14,7 @@ export interface ForwardBottomSheetHocProps {
   style?: ViewStyle | ViewStyle[]
   containerStyle?: ViewStyle | ViewStyle[]
   container?: "view" | "scroll"
+  onClose?: () => void
 }
 export interface OptionsBottomSheet {
   open: () => void
@@ -33,6 +34,7 @@ const ForwardBottomSheetHoc = (
     style,
     initialSnapPoints: _initialSnapPoints,
     containerStyle: _containerStyle,
+    onClose,
   } = props
   const insets = useSafeAreaInsets()
   const ref = React.useRef<BottomSheet>(null)
@@ -75,7 +77,7 @@ const ForwardBottomSheetHoc = (
     <BottomSheet
       style={[BOTTOM_SHEET, style]}
       enablePanDownToClose
-      {...{ ref, index }}
+      {...{ ref, index, onClose }}
       {...bottomSheetProps}
     >
       {container === "scroll" && (
