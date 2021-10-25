@@ -68,10 +68,8 @@ export const JokeApiStoreModel = types
   }))
   .actions((self) => ({
     setDeepLinkJoke: async (deepLinkInitialJokeId: string): Promise<void> => {
-      console.log("setDeepLinkJoke")
       if (!self.api.jokes.has(deepLinkInitialJokeId)) {
         try {
-          console.log("has(deepLinkInitialJokeId)")
           await self.fetchJokes(deepLinkInitialJokeId).promise
         } catch (err) {}
       }
@@ -80,7 +78,6 @@ export const JokeApiStoreModel = types
         self.api.jokes.has(deepLinkInitialJokeId) &&
         !self.api.jokes.get(deepLinkInitialJokeId)?.viewed
       ) {
-        console.log("self.deepLinkJoke = self.api.jokes.get(deepLinkInitialJokeId)")
         self.deepLinkJoke = self.api.jokes.get(deepLinkInitialJokeId)
       }
     },
