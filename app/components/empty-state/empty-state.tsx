@@ -56,26 +56,28 @@ export const EmptyStates: Record<UserJokeListProps["type"], { title: string; cta
 const Body = ({ type }: { type?: UserJokeListProps["type"] }) => {
   return (
     <>
-      {type === "BOOKMARK" && (
-        <Text style={BODY} text70 center>
-          {"It appears you've not bookmarked any jokes.\n Make sure to press  "}
-          <Button
-            round
-            style={ACTION_BUTTON}
-            activeOpacity={0.7}
-            iconSource={() => <BookmarkButton bookmarked size={13} />}
-            disabled
-          />
-          {"  to save them here!"}
-        </Text>
-      )}
-      {type === "HISTORY" && (
-        <Text>
-          {
-            "There doesn't seem to be any jokes in your history. Check back after you've rated some jokes!"
-          }
-        </Text>
-      )}
+      <Text style={BODY} text70 center>
+        {type === "BOOKMARK" && (
+          <>
+            {"It appears you've not bookmarked any jokes.\n Make sure to press  "}
+            <Button
+              round
+              style={ACTION_BUTTON}
+              activeOpacity={0.7}
+              iconSource={() => <BookmarkButton bookmarked size={13} />}
+              disabled
+            />
+            {"  to save them here!"}
+          </>
+        )}
+        {type === "HISTORY" && (
+          <>
+            {
+              "There doesn't seem to be any jokes in your history. Check back after you've rated some jokes!"
+            }
+          </>
+        )}
+      </Text>
     </>
   )
 }
