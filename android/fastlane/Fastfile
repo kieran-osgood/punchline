@@ -88,7 +88,7 @@ lane :e2e_debug do
   Dir.chdir "../.." do ## Navigate to the root of the project where the Detox files are placed
     sh("npm i -g detox-cli@#{$package["devDependencies"]["detox"]}")
     sh("detox build --configuration android.emu.debug")
-    sh("detox test --configuration android.emu.debug --cleanup")
+    sh("detox test --configuration android.emu.debug --cleanup --loglevel trace")
   end
 end
 
@@ -96,7 +96,7 @@ lane :e2e_release do
   Dir.chdir "../.." do ## Navigate to the root of the project where the Detox files are placed
     sh("npm i -g detox-cli@#{package["devDependencies"]["detox"]}")
     sh("detox build --configuration android.emu.release")
-    sh("detox test --configuration android.emu.release --cleanup")
+    sh("detox test --configuration android.emu.release --cleanup --loglevel trace")
   end
 end
 
