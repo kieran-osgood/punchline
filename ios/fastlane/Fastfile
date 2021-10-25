@@ -101,7 +101,7 @@ lane :release_appstore do
   
   # Gym aliases build_app
   gym(export_method: "app-store", output_directory: "output/release") # Directory where signed .ipa file will be placed
-  generate_screenshots
+  # generate_screenshots
   
   # untested from https://gist.github.com/jogboms/a35b5cdf8eb584320832646e7b0480fc
   # build_ios_app(workspace: "#{project_path}/ios/Runner.xcworkspace", scheme: "Runner")
@@ -110,8 +110,7 @@ lane :release_appstore do
     submit_for_review: false,
     automatic_release: false,
     skip_screenshots: false,
-    force: false,
-    skip_waiting_for_build_processing: true,
+    force: true,
     ipa: Actions.lane_context[SharedValues::IPA_OUTPUT_PATH],
 )
 end
