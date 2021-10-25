@@ -13,7 +13,24 @@ beforeAll(async () => {
   // TODO: might need to manually start the metro bundler?
   await device.uninstallApp()
   await device.installApp()
-  await d.device.launchApp({ newInstance: true })
+  await d.device.launchApp({
+    newInstance: true,
+    permissions: {
+      calendar: "YES",
+      camera: "YES",
+      contacts: "YES",
+      health: "YES",
+      homekit: "YES",
+      location: "always",
+      medialibrary: "YES",
+      microphone: "YES",
+      motion: "YES",
+      notifications: "YES",
+      photos: "YES",
+      reminders: "YES",
+      siri: "YES",
+    },
+  })
 })
 
 beforeEach(async () => {
