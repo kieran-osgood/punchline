@@ -15,6 +15,11 @@ Install _fastlane_ using
 or alternatively using `brew install fastlane`
 
 # Available Actions
+### generate_screenshots
+```
+fastlane generate_screenshots
+```
+
 ### bump_and_commit_versions
 ```
 fastlane bump_and_commit_versions
