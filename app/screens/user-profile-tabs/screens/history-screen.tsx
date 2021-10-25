@@ -1,5 +1,5 @@
+import { useStores } from "app/models"
 import { PAGINATION_START } from "app/models/api-store/api-store"
-import { useStores } from "app/models/root-store/root-store-context"
 import { UserJokeList } from "app/screens/user-profile-tabs/user-joke-list"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
