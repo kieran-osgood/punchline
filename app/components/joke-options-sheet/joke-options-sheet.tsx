@@ -1,10 +1,10 @@
 import BottomSheetHoc, {
   BottomSheetImperativeHandle,
 } from "app/components/bottom-sheet-hoc/bottom-sheet-hoc"
-import { useStores } from "app/models"
+// import { useStores } from "app/models"
 import { Divider } from "app/screens/settings/screens/main-settings"
 import { ErrorReportIcon } from "assets/images/error-report"
-import { Share as ShareIcon } from "images"
+// import { Share as ShareIcon } from "images"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { StyleProp, TouchableOpacity, ViewStyle } from "react-native"
@@ -21,7 +21,7 @@ const ForwardJokeOptionsSheet = (
   props: ForwardJokeOptionsSheetProps,
   ref: React.Ref<BottomSheetImperativeHandle>,
 ) => {
-  const { apiStore } = useStores()
+  // const { apiStore } = useStores()
 
   const callbackAndClose = (cb: () => void) => {
     cb()
@@ -31,14 +31,14 @@ const ForwardJokeOptionsSheet = (
 
   return (
     <BottomSheetHoc ref={ref} containerStyle={BOTTOM_SHEET_VIEW}>
-      <ShareLink jokeId={apiStore.jokeApi.topOfDeckJoke.id}>
+      {/* <ShareLink jokeId={apiStore.jokeApi.topOfDeckJoke.id}>
         <Divider row arrow>
           <View row centerV>
             <ShareIcon scale={1.1} />
             <Text marginL-s2>Share Joke</Text>
           </View>
         </Divider>
-      </ShareLink>
+      </ShareLink> */}
 
       <Divider row arrow onPress={() => callbackAndClose(() => props.openReportJoke?.())}>
         <View row centerV>
