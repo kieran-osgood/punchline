@@ -109,7 +109,8 @@ lane :release_appstore do
     automatic_release: false,
     skip_screenshots: false,
     force: true,
-    ipa: Actions.lane_context[SharedValues::IPA_OUTPUT_PATH],
+    ipa: "#{project_path}/release/punchline.ipa",
+    # ipa: Actions.lane_context[SharedValues::IPA_OUTPUT_PATH],
     username: 'kieranbosgood@gmail.com'
 )
 end
