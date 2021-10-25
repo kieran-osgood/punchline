@@ -3,13 +3,13 @@ import * as Sentry from "@sentry/react-native"
 import {
   AppleSignInButton,
   AppLogo,
+  BottomSheetImperativeHandle,
   FacebookSignInButton,
   GoogleSignInButton,
   GradientBackground,
   GuestSignInButton,
   Link,
   LoadingModal,
-  OptionsBottomSheet,
   Screen,
   TroubleSigningInButton,
   TroubleSigningInSheet,
@@ -30,7 +30,7 @@ export type ErrorCallback = (error: Error) => void
 export const LoginScreen = observer(function LoginScreen() {
   // pre-fetch for the onboarding screens
   // useQuery((store) => store.queryCategories({}, (c) => c.nodes((nodes) => nodes.id.image.name)))
-  const ref = React.useRef<OptionsBottomSheet | null>(null)
+  const ref = React.useRef<BottomSheetImperativeHandle | null>(null)
   const [isLoading, setIsLoading] = React.useState(false)
 
   React.useEffect(() => {

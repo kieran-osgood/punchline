@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import auth from "@react-native-firebase/auth"
 import BottomSheetHoc from "app/components/bottom-sheet-hoc/bottom-sheet-hoc"
 import { ErrorCallback } from "app/screens"
-import { OptionsBottomSheet } from "components"
+import { BottomSheetImperativeHandle } from "components"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { Controller, useForm } from "react-hook-form"
@@ -25,7 +25,7 @@ export interface TroubleSigningInSheetProps {}
  */
 const ForwardTroubleSigningInSheet = (
   { onError }: ForwardTroubleSigningInSheetProps,
-  ref: React.Ref<OptionsBottomSheet>,
+  ref: React.Ref<BottomSheetImperativeHandle>,
 ) => {
   const form = useForm<Inputs>({
     resolver: zodResolver(schema),

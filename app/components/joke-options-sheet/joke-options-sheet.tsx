@@ -1,5 +1,5 @@
 import BottomSheetHoc, {
-  OptionsBottomSheet,
+  BottomSheetImperativeHandle,
 } from "app/components/bottom-sheet-hoc/bottom-sheet-hoc"
 import { useStores } from "app/models"
 import { Divider } from "app/screens/settings/screens/main-settings"
@@ -19,7 +19,7 @@ type ForwardJokeOptionsSheetProps = {
 }
 const ForwardJokeOptionsSheet = (
   props: ForwardJokeOptionsSheetProps,
-  ref: React.Ref<OptionsBottomSheet>,
+  ref: React.Ref<BottomSheetImperativeHandle>,
 ) => {
   const { apiStore } = useStores()
 

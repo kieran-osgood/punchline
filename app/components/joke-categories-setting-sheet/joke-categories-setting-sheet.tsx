@@ -1,5 +1,5 @@
 import BottomSheetHoc from "app/components/bottom-sheet-hoc/bottom-sheet-hoc"
-import { CategorySetting, OptionsBottomSheet } from "components"
+import { BottomSheetImperativeHandle, CategorySetting } from "components"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { ViewStyle } from "react-native"
@@ -15,7 +15,7 @@ export interface JokeCategoriesSettingSheetProps {}
  */
 const ForwardJokeCategoriesSettingSheet = (
   props: ForwardJokeCategoriesSettingSheetProps,
-  ref: React.Ref<OptionsBottomSheet>,
+  ref: React.Ref<BottomSheetImperativeHandle>,
 ) => {
   return (
     <BottomSheetHoc

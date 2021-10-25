@@ -16,7 +16,7 @@ export interface ForwardBottomSheetHocProps {
   container?: "view" | "scroll"
   onClose?: () => void
 }
-export interface OptionsBottomSheet {
+export interface BottomSheetImperativeHandle {
   open: () => void
   close: () => void
 }
@@ -26,7 +26,7 @@ export interface OptionsBottomSheet {
  */
 const ForwardBottomSheetHoc = (
   props: ForwardBottomSheetHocProps,
-  imperativeRef: React.Ref<OptionsBottomSheet>,
+  imperativeRef: React.Ref<BottomSheetImperativeHandle>,
 ) => {
   const {
     container = "view",
@@ -59,7 +59,7 @@ const ForwardBottomSheetHoc = (
   } = useBottomSheetDynamicSnapPoints(initialSnapPoints)
 
   React.useImperativeHandle(imperativeRef, () => ({
-    open: () => ref.current?.collapse(),
+    open: () => ref.current?.expand(),
     close: () => ref.current?.close(),
   }))
 

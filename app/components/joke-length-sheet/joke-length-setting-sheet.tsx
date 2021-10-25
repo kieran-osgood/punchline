@@ -1,5 +1,5 @@
 import BottomSheetHoc from "app/components/bottom-sheet-hoc/bottom-sheet-hoc"
-import { JokeLengthSetting, OptionsBottomSheet } from "components"
+import { BottomSheetImperativeHandle, JokeLengthSetting } from "components"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { ViewStyle } from "react-native"
@@ -15,7 +15,7 @@ export interface JokeLengthSettingSheetProps {}
  */
 const ForwardJokeLengthSettingSheet = (
   props: ForwardJokeLengthSettingSheetProps,
-  ref: React.Ref<OptionsBottomSheet>,
+  ref: React.Ref<BottomSheetImperativeHandle>,
 ) => {
   return (
     <BottomSheetHoc ref={ref} containerStyle={BOTTOM_SHEET_VIEW}>

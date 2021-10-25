@@ -5,7 +5,7 @@ import { JokeModelType, RatingValue } from "app/graphql"
 import { useStores } from "app/models"
 import { NavigationProps } from "app/navigators"
 import { CARDS_CONTAINER, Controls, JokeTitle } from "app/screens/joke/joke-screen"
-import { OptionsBottomSheet } from "components"
+import { BottomSheetImperativeHandle } from "components"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { Linking, StyleSheet, ViewStyle } from "react-native"
@@ -25,7 +25,7 @@ const extractDeepLinkId = (url: string): string => url.replace("punchline://shar
  */
 const ForwardDeepLinkJokeSheet = (
   props: ForwardDeepLinkJokeSheetProps,
-  ref: React.Ref<OptionsBottomSheet>,
+  ref: React.Ref<BottomSheetImperativeHandle>,
 ) => {
   const [bookmarked, setBookmarked] = React.useState(false)
   const { open, close } = props

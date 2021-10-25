@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as Sentry from "@sentry/react-native"
 import BottomSheetHoc, {
-  OptionsBottomSheet,
+  BottomSheetImperativeHandle,
 } from "app/components/bottom-sheet-hoc/bottom-sheet-hoc"
 import { useStores } from "app/models"
 import { observer } from "mobx-react-lite"
@@ -25,7 +25,7 @@ type ForwardBugReportSheetProps = {
  */
 const ForwardBugReportSheet = (
   props: ForwardBugReportSheetProps,
-  ref: React.Ref<OptionsBottomSheet>,
+  ref: React.Ref<BottomSheetImperativeHandle>,
 ) => {
   const form = useForm<Inputs>({ resolver: zodResolver(schema) })
   const { handleSubmit, control } = form

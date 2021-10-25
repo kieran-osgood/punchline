@@ -3,9 +3,9 @@ import * as Sentry from "@sentry/react-native"
 import BottomSheetHoc from "app/components/bottom-sheet-hoc/bottom-sheet-hoc"
 import {
   AppleSignInButton,
+  BottomSheetImperativeHandle,
   FacebookSignInButton,
   GoogleSignInButton,
-  OptionsBottomSheet,
 } from "components"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
@@ -24,7 +24,7 @@ export interface SocialSigninConversionSheetProps {}
  */
 const ForwardSocialSigninConversionSheet = (
   props: ForwardSocialSigninConversionSheetProps,
-  ref: React.Ref<OptionsBottomSheet>,
+  ref: React.Ref<BottomSheetImperativeHandle>,
 ) => {
   if (!auth().currentUser?.isAnonymous) return null
 

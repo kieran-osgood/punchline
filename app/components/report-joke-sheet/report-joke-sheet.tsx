@@ -1,7 +1,7 @@
 import BottomSheetHoc from "app/components/bottom-sheet-hoc/bottom-sheet-hoc"
 import { useStores } from "app/models"
 import { Success } from "assets/images/success"
-import { OptionsBottomSheet } from "components"
+import { BottomSheetImperativeHandle } from "components"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { ViewStyle } from "react-native"
@@ -24,7 +24,7 @@ type ForwardReportJokeSheetProps = {
 
 const ForwardReportJokeSheet = (
   props: ForwardReportJokeSheetProps,
-  ref: React.Ref<OptionsBottomSheet>,
+  ref: React.Ref<BottomSheetImperativeHandle>,
 ) => {
   const { close } = props
   const [text, setText] = React.useState("")
