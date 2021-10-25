@@ -35,6 +35,19 @@ lane :bump_and_commit_versions do
 end
 
 ############## DETOX ##############
+
+lane :e2e_debug_build do
+  Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed.
+    sh("detox build --configuration ios.sim.release")
+  end
+end
+
+lane :e2e_debug_test do
+  Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed.
+    sh("detox test --configuration ios.sim.debug --cleanup")
+  end
+end
+
 lane :e2e_release do
   Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed.
     sh("detox build --configuration ios.sim.release")

@@ -20,6 +20,16 @@ or alternatively using `brew install fastlane`
 fastlane bump_and_commit_versions
 ```
 
+### e2e_debug_build
+```
+fastlane e2e_debug_build
+```
+
+### e2e_debug_test
+```
+fastlane e2e_debug_test
+```
+
 ### e2e_release
 ```
 fastlane e2e_release
