@@ -28,5 +28,5 @@
     }
   },
   "exclude": ["node_modules"],
-  "include": ["app", "test", "storybook", "assets", "./*.ts", "./*.js"]
+  "include": ["app", "test", "e2e/*.ts", "storybook", "assets", "./*.ts", "./*.js"]
 }
