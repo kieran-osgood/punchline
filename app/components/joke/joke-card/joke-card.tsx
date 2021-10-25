@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable react-native/no-unused-styles */
 /* eslint-disable react-native/no-color-literals */
 import { MotiTransitionProp } from "@motify/core"
 import { Skeleton } from "@motify/skeleton"
 import { JokeModel, JokeModelType } from "app/graphql"
+import { useStores } from "app/models"
+import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { Dimensions, ScrollView, StyleSheet, ViewStyle } from "react-native"
 import Animated, {
@@ -14,7 +17,8 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated"
-import { Text, ThemeManager, View } from "react-native-ui-lib"
+import { heightPercentageToDP } from "react-native-responsive-screen"
+import { Text, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
 const { width } = Dimensions.get("window")
@@ -29,9 +33,19 @@ interface JokeCardProps {
   // loading?: Animated.SharedValue<number>
   loading?: boolean
 }
-const skeletonColors = [color.primary, "#fdfdfd", ThemeManager.primaryColor]
-const transition: MotiTransitionProp = {}
-const colorMode = "light"
+export const skeletonColors = [
+  "#D3D3D3",
+  "#D3D3D3",
+  "#D3D3D3",
+  "#D3D3D3",
+  "#fdfdfd",
+  "#D3D3D3",
+  "#D3D3D3",
+  "#D3D3D3",
+  "#D3D3D3",
+]
+export const transition: MotiTransitionProp = {}
+export const colorMode = "light"
 
 const JokeCard = ({
   joke,
@@ -223,4 +237,47 @@ export const LoadingJokeCard = () => {
   const joke = JokeModel.create({ id: "" })
 
   return <JokeCard onTop {...{ scale, translateX, translateY, joke }} loading />
+}
+
+export const JokeTitle = observer(({ loading }: { loading: boolean }) => {
+  const { apiStore } = useStores()
+  if (loading) {
+    return (
+      <>
+        {Array(2)
+          .fill(0)
+          .map((_, idx) => (
+            <View key={idx} center>
+              {[1, 2].map((y, yIdx) => {
+                return (
+                  <React.Fragment key={yIdx}>
+                    <Skeleton
+                      {...{ colors: skeletonColors, colorMode, transition }}
+                      width={y === 0 ? "40%" : "100%"}
+                      height={20}
+                    />
+                    <View height={y * 5} />
+                  </React.Fragment>
+                )
+              })}
+            </View>
+          ))}
+      </>
+    )
+  }
+  return (
+    <View style={HEADER}>
+      <Text grey30 bold>
+        {apiStore.jokeApi.topOfDeckJoke.categories?.[0].name}
+      </Text>
+      <Text text40 bold center marginH-s3 numberOfLines={3}>
+        {apiStore.jokeApi.topOfDeckJoke.title}
+      </Text>
+    </View>
+  )
+})
+const HEADER: ViewStyle = {
+  alignItems: "center",
+  justifyContent: "center",
+  height: heightPercentageToDP("15%"),
 }

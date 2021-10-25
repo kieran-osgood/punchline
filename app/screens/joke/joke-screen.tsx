@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { DeepLinkJokeSheet } from "app/components/deep-link-joke-sheet/deep-link-joke-sheet"
 import { JokeOptionsSheet } from "app/components/joke-options-sheet/joke-options-sheet"
-import { LoadingJokeCard } from "app/components/joke/joke-card/joke-card"
+import { JokeTitle, LoadingJokeCard } from "app/components/joke/joke-card/joke-card"
 import { ReportJokeSheet } from "app/components/report-joke-sheet/report-joke-sheet"
 import Swipeable from "app/components/swipeable/swipeable"
 import { JokeModelType, RatingValue, useQuery } from "app/graphql"
@@ -15,7 +15,7 @@ import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { SafeAreaView, StatusBar, ViewStyle } from "react-native"
 import { heightPercentageToDP } from "react-native-responsive-screen"
-import { Button, Text, TouchableOpacity, View } from "react-native-ui-lib"
+import { Button, TouchableOpacity, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 import { useThrottledCallback } from "use-debounce/lib"
 import { CallOptions } from "use-debounce/lib/useDebouncedCallback"
@@ -59,7 +59,7 @@ export const JokeScreen = observer(function JokeScreen() {
       <SafeAreaView style={ROOT} testID="JokeScreen">
         <StatusBar barStyle="dark-content" />
 
-        <JokeTitle />
+        <JokeTitle loading={query.loading} />
         <View style={CARDS_CONTAINER}>
           {(query.loading || apiStore.jokeApi.nonViewedJokes.length <= 0) && <LoadingJokeCard />}
           {apiStore.jokeApi.nonViewedJokes.map((joke) => {
@@ -113,16 +113,9 @@ const ROOT: ViewStyle = {
   justifyContent: "space-between",
 }
 
-const HEADER: ViewStyle = {
-  alignItems: "center",
-  justifyContent: "center",
-  height: heightPercentageToDP("15%"),
-}
-
 export const CARDS_CONTAINER: ViewStyle = {
   height: heightPercentageToDP("45%"),
   marginHorizontal: 16,
-  //   zIndex: 100,
 }
 
 const JOKE_INFO: ViewStyle = {
@@ -217,17 +210,3 @@ export const ACTION_BUTTON: ViewStyle = {
   alignItems: "center",
   padding: 5,
 }
-
-export const JokeTitle = observer(() => {
-  const { apiStore } = useStores()
-  return (
-    <View style={HEADER}>
-      <Text grey30 bold>
-        {apiStore.jokeApi.topOfDeckJoke?.categories?.[0].name}
-      </Text>
-      <Text text40 bold center marginH-s3 numberOfLines={3}>
-        {apiStore.jokeApi.topOfDeckJoke?.title}
-      </Text>
-    </View>
-  )
-})
