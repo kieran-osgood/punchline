@@ -36,7 +36,7 @@ export const GradientButton = observer(function GradientButton(props: GradientBu
       {...rest}
     >
       <GradientBackground absolute />
-      <Text white text70BO>
+      <Text white text70 bold>
         {label}
       </Text>
     </TouchableOpacity>
