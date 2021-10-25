@@ -100,7 +100,7 @@ lane :release_appstore do
   match(type: "appstore", readonly: is_ci) # Set type of code signing required
   
   # Gym aliases build_app
-  # gym(export_method: "app-store", output_directory: "output/release") # Directory where signed .ipa file will be placed
+  gym(export_method: "app-store", output_directory: "output/release") # Directory where signed .ipa file will be placed
   # generate_screenshots
   ENV["DELIVER_SKIP_WAIT_FOR_SCREENSHOT_PROCESSING"] = false
  
@@ -109,8 +109,7 @@ lane :release_appstore do
     automatic_release: false,
     skip_screenshots: false,
     force: true,
-    ipa: "#{project_path}/release/punchline.ipa",
-    # ipa: Actions.lane_context[SharedValues::IPA_OUTPUT_PATH],
+    ipa: Actions.lane_context[SharedValues::IPA_OUTPUT_PATH],
     username: 'kieranbosgood@gmail.com'
 )
 end
