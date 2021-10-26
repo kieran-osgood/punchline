@@ -1,9 +1,10 @@
 import { useNavigation } from "@react-navigation/native"
+import { ShareLink } from "app/components/joke-options-sheet/joke-options-sheet"
 import { useQuery, UserJokeHistoryModelType } from "app/graphql"
 import { ACTION_BUTTON } from "app/screens"
 import EmptyStateImage from "assets/images/empty-state-image"
 import { TrashCan } from "assets/images/trash-can"
-import { BookmarkButton, EmptyState, Screen, ShareLink } from "components"
+import { BookmarkButton, EmptyState, Screen } from "components"
 import { Observer, observer } from "mobx-react-lite"
 import React from "react"
 import {
