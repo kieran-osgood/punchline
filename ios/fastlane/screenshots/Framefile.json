@@ -11,6 +11,12 @@
 	},
 	"data": [
 		{
+			"filter": "onboarding-screen-3",
+			"title": {
+				"text": "New features inbound!"
+			}
+		},
+		{
 			"filter": "onboarding-screen-1",
 			"title": {
 				"text": "Personalise the experience!"
