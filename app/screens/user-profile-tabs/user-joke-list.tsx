@@ -167,6 +167,7 @@ const SHARE: ViewStyle = {
   borderRadius: 5,
   width: "50%",
   alignSelf: "flex-end",
+  paddingVertical: 8,
 }
 const SHARE_TEXT: TextStyle = {
   color: "#000",
