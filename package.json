@@ -377,9 +377,13 @@
               "name": "react-native",
               "importNames": [
                 "View",
+                "ViewProps",
                 "Text",
+                "TextProps",
                 "Image",
+                "ImageProps",
                 "Button",
+                "ButtonProps",
                 "Switch",
                 "TextInput",
                 "Modal"

@@ -6,6 +6,7 @@ import { getSnapshot, types } from "mobx-state-tree"
 import * as React from "react"
 import InAppReview from "react-native-in-app-review"
 import { ViewProps } from "react-native-ui-lib"
+import { createRootStore, TestChildComponent } from "test/utils"
 import withRateApp from "./with-rate-app"
 
 // to avoid race conditions between expected and actual date values

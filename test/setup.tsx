@@ -31,6 +31,7 @@ jest.mock("@react-native-firebase/app", () => ({
 jest.mock("@react-native-firebase/auth", () => () => ({
   onAuthStateChanged: jest.fn(),
   signOut: jest.fn(),
+  onIdTokenChanged: jest.fn(),
 }))
 
 jest.mock("@react-native-community/google-signin", () => ({

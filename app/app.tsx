@@ -98,7 +98,11 @@ const App = observer(function App() {
 
 export default App
 
-const Authorization = observer(function Authorization({ children }: { children: React.ReactNode }) {
+export const Authorization = observer(function Authorization({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const { apiStore, userStore } = useStores()
 
   React.useEffect(() => {
