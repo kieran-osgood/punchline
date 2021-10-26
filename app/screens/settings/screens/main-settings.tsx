@@ -81,9 +81,11 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
         </Section>
 
         <Section title="Account">
-          <Divider row arrow onPress={() => open("socialSigninConversion")}>
-            <Text text80>Social Login Conversion</Text>
-          </Divider>
+          {auth().currentUser?.isAnonymous && (
+            <Divider row arrow onPress={() => open("socialSigninConversion")}>
+              <Text text80>Social Login Conversion</Text>
+            </Divider>
+          )}
           <Divider row arrow onPress={() => open("bugReport")}>
             <View row>
               {/* BugIcon */}
