@@ -14,7 +14,7 @@
 default_platform(:android)
 $gradle_flags = '--no-daemon --max-workers=2 -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-XX:+UnlockExperimentalVMOptions -XX:+HeapDumpOnOutOfMemoryError"'
 # Retrieve version of my app in package.json (React Native case)
-$package = load_json(json_path: "../package.json")
+$package = load_json(json_path: "../app.json")
 # $slack_url = "https://hooks.slack.com/services/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"
 $symbols_zip = "app/build/symbols.zip"
 
@@ -44,7 +44,7 @@ lane :build_debug_apk do
     task: "assemble", # apk
     build_type: "Debug",
     properties: {
-      "vname" => $package["version"],
+      "vname" => $package["expo"]["version"],
     },
     flags: $gradle_flags,
   )
@@ -56,7 +56,7 @@ lane :build_release_apk do
     task: "assemble", # apk
     build_type: "Release",
     properties: {
-      "vname" => $package["version"],
+      "vname" => $package["expo"]["version"],
     },
     flags: $gradle_flags,
   )
@@ -71,7 +71,7 @@ lane :build_release_aab do
     task: "bundle", # aab
     build_type: "Release",
     properties: {
-      "vname" => $package["version"],
+      "vname" => $package["expo"]["version"],
     },
     flags: $gradle_flags,
   )
@@ -112,7 +112,7 @@ lane :beta do
   upload_to_play_store(
     track: "internal",
     skip_upload_apk: true,
-    version_name: $package["version"],
+    version_name: $package["expo"]["version"],
     mapping: $symbols_zip,
   )
 end
@@ -128,7 +128,7 @@ lane :playstore do
   upload_to_play_store(
     release_status: "draft", ## <http://docs.fastlane.tools/actions/upload_to_play_store/#parameters>
     skip_upload_apk: true,
-    version_name: $package["version"],
+    version_name: $package["expo"]["version"],
   )
 end
 
