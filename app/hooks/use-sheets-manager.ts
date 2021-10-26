@@ -6,7 +6,8 @@ export default function useSheetsManager<T extends string[]>() {
   const currentOpen = React.useRef<T[number] | null>(null)
 
   const open = (refName: T[number]) => {
-    if (currentOpen.current === refName) return
+    // Re-enable this when onClose context is wrapping
+    // if (currentOpen.current === refName) return
     if (currentOpen.current) {
       refs.current.get(currentOpen.current)?.close()
     }
