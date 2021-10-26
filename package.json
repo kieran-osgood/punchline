@@ -131,7 +131,6 @@
     "@types/detox": "^17.14.3",
     "@types/faker": "^5.5.3",
     "@types/i18n-js": "3.0.3",
-    "@types/jasmine": "^3.10.1",
     "@types/jest": "^27.0.2",
     "@types/ramda": "0.27.32",
     "@types/react": "16.14.0",
