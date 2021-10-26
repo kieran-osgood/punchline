@@ -101,16 +101,17 @@ lane :release_appstore do
   
   # Gym aliases build_app
   gym(export_method: "app-store", output_directory: "output/release") # Directory where signed .ipa file will be placed
-  # generate_screenshots
-  ENV["DELIVER_SKIP_WAIT_FOR_SCREENSHOT_PROCESSING"] = false
+  generate_screenshots
  
   upload_to_app_store(
     submit_for_review: false,
     automatic_release: false,
-    skip_screenshots: false,
     force: true,
     ipa: Actions.lane_context[SharedValues::IPA_OUTPUT_PATH],
-    username: 'kieranbosgood@gmail.com'
+    username: 'kieranbosgood@gmail.com',
+    app_identifier: 'com.ko.punchline',
+    precheck_include_in_app_purchases: false,
+    overwrite_screenshots: true
 )
 end
 
