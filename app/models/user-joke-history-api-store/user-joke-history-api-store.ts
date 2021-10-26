@@ -46,7 +46,11 @@ export const UserJokeHistoryApiStoreModel = types
           q
             .pageInfo((p) => p.hasNextPage.hasPreviousPage.startCursor.endCursor)
             .edges((e) =>
-              e.cursor.node((n) => n.id.createdAt.rating.bookmarked.joke((j) => j.id.title.body)),
+              e.cursor.node((n) =>
+                n.id.createdAt.rating.bookmarked.joke((j) =>
+                  j.id.title.body.categories((c) => c.id.image.name),
+                ),
+              ),
             ),
       )
     },
