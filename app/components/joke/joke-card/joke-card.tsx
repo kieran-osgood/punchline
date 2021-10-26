@@ -239,32 +239,27 @@ export const LoadingJokeCard = () => {
   return <JokeCard onTop {...{ scale, translateX, translateY, joke }} loading />
 }
 
-export const JokeTitle = observer(({ loading }: { loading: boolean }) => {
+export const JokeTitle = observer(({ loading = false }: { loading?: boolean }) => {
   const { apiStore } = useStores()
   if (loading) {
     return (
-      <>
-        {Array(2)
-          .fill(0)
-          .map((_, idx) => (
-            <View key={idx} center>
-              {[1, 2].map((y, yIdx) => {
-                return (
-                  <React.Fragment key={yIdx}>
-                    <Skeleton
-                      {...{ colors: skeletonColors, colorMode, transition }}
-                      width={y === 0 ? "40%" : "100%"}
-                      height={20}
-                    />
-                    <View height={y * 5} />
-                  </React.Fragment>
-                )
-              })}
-            </View>
-          ))}
-      </>
+      <View style={HEADER} center width="100%">
+        {[1, 2].map((x, idx) => {
+          return (
+            <React.Fragment key={idx}>
+              <Skeleton
+                {...{ colors: skeletonColors, colorMode, transition }}
+                width={idx === 0 ? "25%" : "80%"}
+                height={20 * x}
+              />
+              <View height={10} />
+            </React.Fragment>
+          )
+        })}
+      </View>
     )
   }
+
   return (
     <View style={HEADER}>
       <Text grey30 bold>

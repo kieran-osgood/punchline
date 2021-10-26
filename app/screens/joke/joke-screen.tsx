@@ -53,19 +53,20 @@ export const JokeScreen = observer(function JokeScreen() {
     onSwipe(apiStore.jokeApi.topOfDeckJoke, RatingValue.GOOD, bookmarked)
     topCard.current?.swipeRight()
   }
+  const isLoading = query.loading || apiStore.jokeApi.nonViewedJokes.length <= 0
 
   return (
     <>
       <SafeAreaView style={ROOT} testID="JokeScreen">
         <StatusBar barStyle="dark-content" />
 
-        <JokeTitle loading={query.loading} />
+        <JokeTitle loading={isLoading} />
         <View style={CARDS_CONTAINER}>
-          {(query.loading || apiStore.jokeApi.nonViewedJokes.length <= 0) && <LoadingJokeCard />}
+          {isLoading && <LoadingJokeCard />}
           {apiStore.jokeApi.nonViewedJokes.map((joke) => {
             const onTop = joke.id === apiStore.jokeApi.topOfDeckJoke.id
             const ref = onTop ? topCard : null
-            return <Swipeable key={joke.id} {...{ onTop, joke, ref, isLoading: query.loading }} />
+            return <Swipeable key={joke.id} {...{ onTop, joke, ref, isLoading }} />
           })}
         </View>
 
