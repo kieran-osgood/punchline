@@ -4,6 +4,8 @@ import { UserJokeList } from "app/screens/user-profile-tabs/components/user-joke
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 
+const type = "BOOKMARK"
+
 export const BookmarksScreen = observer(function BookmarksScreen() {
   const [page, setPage] = React.useState(PAGINATION_START)
   const {
@@ -27,11 +29,9 @@ export const BookmarksScreen = observer(function BookmarksScreen() {
     }
   }, [query, userJokeHistoryApi])
 
-  const fetchMore = () => {
+  const fetchMore = React.useCallback(() => {
     setQuery(userJokeHistoryApi.fetchMoreHistory(page))
-  }
-
-  const type = "BOOKMARK"
+  }, [page, userJokeHistoryApi])
 
   return (
     <UserJokeList

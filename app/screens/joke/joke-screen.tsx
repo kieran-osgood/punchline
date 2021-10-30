@@ -39,20 +39,22 @@ export const JokeScreen = observer(function JokeScreen() {
     [],
   )
 
-  const handleBookmarkPress = () => setBookmarked((c) => !c)
+  const handlers = React.useMemo(
+    () => ({
+      handleBookmarkPress: () => setBookmarked((c) => !c),
+      handleSkipPress: () => onSwipe(apiStore.jokeApi.topOfDeckJoke, RatingValue.SKIP, bookmarked),
+      handleDownVote: () => {
+        onSwipe(apiStore.jokeApi.topOfDeckJoke, RatingValue.BAD, bookmarked)
+        topCard.current?.swipeLeft()
+      },
+      handleUpVote: () => {
+        onSwipe(apiStore.jokeApi.topOfDeckJoke, RatingValue.GOOD, bookmarked)
+        topCard.current?.swipeRight()
+      },
+    }),
+    [apiStore.jokeApi.topOfDeckJoke, bookmarked, onSwipe],
+  )
 
-  const handleSkipPress = () =>
-    onSwipe(apiStore.jokeApi.topOfDeckJoke, RatingValue.SKIP, bookmarked)
-
-  const handleDownVote = () => {
-    onSwipe(apiStore.jokeApi.topOfDeckJoke, RatingValue.BAD, bookmarked)
-    topCard.current?.swipeLeft()
-  }
-
-  const handleUpVote = () => {
-    onSwipe(apiStore.jokeApi.topOfDeckJoke, RatingValue.GOOD, bookmarked)
-    topCard.current?.swipeRight()
-  }
   const isLoading = query.loading || apiStore.jokeApi.nonViewedJokes.length <= 0
 
   return (
@@ -80,15 +82,7 @@ export const JokeScreen = observer(function JokeScreen() {
           </TouchableOpacity>
         </View>
 
-        <Controls
-          {...{
-            bookmarked,
-            handleDownVote,
-            handleUpVote,
-            handleSkipPress,
-            handleBookmarkPress,
-          }}
-        />
+        <Controls {...{ bookmarked }} {...handlers} />
       </SafeAreaView>
 
       <AdBanner />

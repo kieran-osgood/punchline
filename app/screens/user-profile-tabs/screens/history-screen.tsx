@@ -4,6 +4,8 @@ import { UserJokeList } from "app/screens/user-profile-tabs/components/user-joke
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 
+const type = "HISTORY"
+
 export const HistoryScreen = observer(function HistoryScreen() {
   const [page, setPage] = React.useState(PAGINATION_START)
   const {
@@ -22,11 +24,9 @@ export const HistoryScreen = observer(function HistoryScreen() {
     }
   }, [query, userJokeHistoryApi])
 
-  const fetchMore = () => {
+  const fetchMore = React.useCallback(() => {
     setQuery(userJokeHistoryApi.fetchMoreHistory(page))
-  }
-
-  const type = "HISTORY"
+  }, [page, userJokeHistoryApi])
 
   return (
     <UserJokeList

@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native"
 import { ShareLink } from "app/components/joke-options-sheet/joke-options-sheet"
 import { useQuery, UserJokeHistoryModelType } from "app/graphql"
+import { NavigationProps } from "app/navigators"
 import { ACTION_BUTTON } from "app/screens"
 import { EmptyStateImage, TrashCan } from "assets/images"
 import { BookmarkButton, EmptyState, Screen } from "components"
@@ -13,7 +14,7 @@ import {
   RefreshControl,
   StatusBar,
   TextStyle,
-  ViewStyle,
+  ViewStyle
 } from "react-native"
 import { RectButton, Swipeable } from "react-native-gesture-handler"
 import Animated, {
@@ -21,7 +22,7 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
   withSpring,
-  withTiming,
+  withTiming
 } from "react-native-reanimated"
 import { mix } from "react-native-redash"
 import Svg, { Path } from "react-native-svg"
@@ -37,7 +38,7 @@ export type UserJokeListProps = {
 
 export const UserJokeList = observer(function JokeBookmarkHistoryList(props: UserJokeListProps) {
   const { type, fetchMore, refetch, data } = props
-  const navigation = useNavigation()
+  const navigation = useNavigation<NavigationProps<"UserProfileTabs">["navigation"]>()
   const [refreshing, setRefreshing] = React.useState(false)
 
   const onRefresh = React.useCallback(async () => {
@@ -61,12 +62,7 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
         <EmptyState
           {...{ type }}
           image={<EmptyStateImage />}
-          onPress={() =>
-            navigation.navigate("MainNavigator", {
-              screen: "JokeScreen",
-              params: {},
-            })
-          }
+          onPress={() => navigation.navigate("JokeScreen")}
         />
       )}
     </Screen>
