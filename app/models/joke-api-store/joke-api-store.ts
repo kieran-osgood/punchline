@@ -65,6 +65,9 @@ export const JokeApiStoreModel = types
 
       return this.nonViewedJokes[this.nonViewedJokes.length - 1]
     },
+    get deck() {
+      return [...this.nonViewedJokes.slice(0, 1), this.topOfDeckJoke]
+    },
   }))
   .actions((self) => ({
     setDeepLinkJoke: async (deepLinkInitialJokeId: string): Promise<void> => {
