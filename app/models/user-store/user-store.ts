@@ -102,6 +102,8 @@ export const UserStoreModel = types
       }
     },
     deleteSelf: async () => {
+      // FIXME: add trycatch - or use flow after finished unit tests
+      // FIXME: add assertion that bearer token is there
       const query = await self.api.mutateDeleteUser().promise
       if (query.deleteUser) {
         self.root.resetStore()

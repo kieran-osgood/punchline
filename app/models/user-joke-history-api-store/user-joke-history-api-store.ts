@@ -20,12 +20,18 @@ export const UserJokeHistoryApiStoreModel = types
   }))
   .views((self) => ({
     get bookmarkedJokes() {
-      return [...self.api.userJokeHistories.values()]
-        .sort((a, b) => time(b.createdAt) - time(a.createdAt))
-        .filter((x) => x.bookmarked)
+      return (
+        [...self.api.userJokeHistories.values()]
+          // FIXME: Re-order ? should be more efficient
+          // replace this with a for loop, faster
+          .sort((a, b) => time(b.createdAt) - time(a.createdAt))
+          .filter((x) => x.bookmarked)
+      )
     },
     get historyJokes() {
       return [...self.api.userJokeHistories.values()].sort(
+        // FIXME: Re-order ? should be more efficient
+        // replace this with a for loop, faster
         (a, b) => time(b.createdAt) - time(a.createdAt),
       )
     },
