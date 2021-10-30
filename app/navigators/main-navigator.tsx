@@ -47,38 +47,35 @@ export type NavigationProps<T extends keyof MainRouteParamList> = {
   navigation: StackNavigationProp<MainRouteParamList, T>
 }
 
+const MemoWithRateAppJokeScreen = React.memo(withRateApp(JokeScreen))
+const MemoMainSettingsScreen = React.memo(MainSettingsScreen)
+const MemoUserProfileTabs = React.memo(UserProfileTabs)
+
 const Stack = createStackNavigator<MainRouteParamList>()
 
 export const MainNavigator = observer(function MainNavigator() {
   const store = useStores()
 
   return (
-    <Stack.Navigator
-      initialRouteName="JokeScreen"
-      screenOptions={{
-        headerMode: "screen",
-      }}
-    >
+    <Stack.Navigator initialRouteName="JokeScreen" screenOptions={{ headerMode: "screen" }}>
       {!store.userStore.onboardingComplete ? (
         <Stack.Screen
           name="OnboardingScreen"
           component={OnboardingScreen}
-          options={{
-            header: () => null,
-          }}
+          options={{ header: () => null }}
         />
       ) : (
         <>
           <Stack.Screen
             name="JokeScreen"
-            component={withRateApp(JokeScreen)}
+            component={MemoWithRateAppJokeScreen}
             options={{
               header: (props) => <Header {...props} left="account" right="settings" />,
             }}
           />
           <Stack.Screen
             name="UserProfileTabs"
-            component={UserProfileTabs}
+            component={MemoUserProfileTabs}
             options={{
               header: (props) => <Header {...props} right="back" />,
               gestureDirection: "horizontal-inverted",
@@ -87,7 +84,7 @@ export const MainNavigator = observer(function MainNavigator() {
           />
           <Stack.Screen
             name="MainSettingsScreen"
-            component={MainSettingsScreen}
+            component={MemoMainSettingsScreen}
             options={{
               header: (props) => <Header {...props} left="back" />,
               gestureDirection: "horizontal",
