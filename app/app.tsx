@@ -8,10 +8,10 @@ import { useNavigationContainerRef } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
 import { FallbackRender } from "@sentry/react/dist/errorboundary"
 import { StoreContext as GraphQLStoreContext } from "app/graphql/reactUtils"
-import { RootStore, RootStoreProvider, setupRootStore, useStores } from "app/models"
+import { RootStore, RootStoreProvider, setupRootStore } from "app/models"
 import { AutoHeightImage, GradientButton, Screen } from "components"
 import { observer } from "mobx-react-lite"
-import React, { useEffect, useState } from "react"
+import * as React from "react"
 import { ViewStyle } from "react-native"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import RNRestart from "react-native-restart"
@@ -36,21 +36,22 @@ export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
  * This is the root component of our app.
  */
 const App = observer(function App() {
-  const navigationRef = useNavigationContainerRef<RootStackParamList>()
-  useFlipper(navigationRef)
-  const [rootStore, setRootStore] = useState<RootStore | undefined>(undefined)
+  const [initialized, setInitialized] = React.useState(false)
+  const [rootStore, setRootStore] = React.useState<RootStore>()
+  const [, setConnected] = React.useState({ isConnected: false })
   const firstRender = React.useRef(true)
+  const navigationRef = useNavigationContainerRef<RootStackParamList>()
+
+  useFlipper(navigationRef)
   setRootNavigation(navigationRef)
   useBackButtonHandler(navigationRef, canExit)
   const { initialNavigationState, onNavigationStateChange } = useNavigationPersistence(
     storage,
     NAVIGATION_PERSISTENCE_KEY,
   )
-  const [initted, setInnited] = useState(false)
-  const [connected, setConnected] = React.useState({ isConnected: false })
 
-  // Kick off initial async loading actions, like RootStore
-  useEffect(() => {
+  React.useEffect(() => {
+    // Kick off initial async loading actions, like RootStore
     if (firstRender.current) {
       firstRender.current = false
 
@@ -63,32 +64,30 @@ const App = observer(function App() {
 
       init().finally(() => {
         // RNBootSplash.hide({ fade: true })
-        setInnited(true)
+        setInitialized(true)
       })
     }
   }, [])
 
   // Wait for state to load from AsyncStorage
-  if (!rootStore || !initted) return null
+  if (!rootStore || !initialized) return null
 
   return (
     <ToggleStorybook>
       <Sentry.ErrorBoundary fallback={ErrorFallback}>
         <RootStoreProvider value={rootStore}>
           <GraphQLStoreContext.Provider value={rootStore.apiStore.api}>
-            <Authorization>
-              <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-                <ConnectionStatusBar
-                  useAbsolutePosition
-                  onConnectionChange={(isConnected) => setConnected({ isConnected })}
-                />
-                <RootNavigator
-                  ref={navigationRef}
-                  initialState={initialNavigationState}
-                  onStateChange={onNavigationStateChange}
-                />
-              </SafeAreaProvider>
-            </Authorization>
+            <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+              <ConnectionStatusBar
+                useAbsolutePosition
+                onConnectionChange={(isConnected) => setConnected({ isConnected })}
+              />
+              <RootNavigator
+                ref={navigationRef}
+                initialState={initialNavigationState}
+                onStateChange={onNavigationStateChange}
+              />
+            </SafeAreaProvider>
           </GraphQLStoreContext.Provider>
         </RootStoreProvider>
       </Sentry.ErrorBoundary>
@@ -97,31 +96,6 @@ const App = observer(function App() {
 })
 
 export default App
-
-export const Authorization = observer(function Authorization({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const { apiStore, userStore } = useStores()
-
-  React.useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged(async (user) => {
-      userStore.login(user)
-    })
-    const unsubscribe2 = auth().onIdTokenChanged(async (user) => {
-      const token = await user?.getIdToken()
-      if (!token) return
-      apiStore.api.setBearerToken(token)
-    })
-    return () => {
-      unsubscribe()
-      unsubscribe2()
-    }
-  }, [apiStore.api, userStore])
-
-  return <>{children}</>
-})
 
 const ErrorFallback: FallbackRender = ({ resetError }) => {
   const onPress = () => {

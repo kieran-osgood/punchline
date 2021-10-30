@@ -11,6 +11,7 @@ import {
   NavigatorScreenParams,
 } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
+import useAuthorization from "app/hooks/use-authorization"
 import { useStores } from "app/models"
 import {
   authExitRoutes,
@@ -28,7 +29,6 @@ import { observer } from "mobx-react-lite"
 import React from "react"
 import * as RNBootSplash from "react-native-bootsplash"
 import Toast from "react-native-toast-message"
-
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
  * as well as what properties (if any) they might take when navigating to them.
@@ -63,6 +63,8 @@ export const RootNavigator = React.forwardRef<
   NavigationContainerRef<RootStackParamList>,
   Partial<React.ComponentProps<typeof NavigationContainer>>
 >((props, ref) => {
+  useAuthorization()
+
   const onReady = () => RNBootSplash.hide({ fade: true })
   return (
     <NavigationContainer {...props} {...{ ref, linking, onReady }}>
