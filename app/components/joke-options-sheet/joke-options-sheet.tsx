@@ -2,7 +2,7 @@ import BottomSheetHoc, {
   BottomSheetImperativeHandle,
 } from "app/components/bottom-sheet-hoc/bottom-sheet-hoc"
 // import { useStores } from "app/models"
-import { Divider } from "app/screens/settings/screens/main-settings"
+import { Divider } from "app/screens/settings/main-settings"
 import { ErrorReportIcon } from "assets/images/error-report"
 // import { Share as ShareIcon } from "images"
 import { observer } from "mobx-react-lite"

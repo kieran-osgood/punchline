@@ -47,7 +47,10 @@ export const Header = observer(function Header({ navigation, left, right, ...res
 
         <View centerH flex-1>
           {right === "settings" ? (
-            <TouchableOpacity style={BUTTON} onPress={() => navigation.navigate("SettingsStack")}>
+            <TouchableOpacity
+              style={BUTTON}
+              onPress={() => navigation.navigate("MainSettingsScreen")}
+            >
               <SettingsIcon />
             </TouchableOpacity>
           ) : (

@@ -1,6 +1,6 @@
 import auth from "@react-native-firebase/auth"
 import { PAGINATION_START, useStores } from "app/models"
-import { UserJokeList } from "app/screens/user-profile-tabs/user-joke-list"
+import { UserJokeList } from "app/screens/user-profile-tabs/components/user-joke-list"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 
