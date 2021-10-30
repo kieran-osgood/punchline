@@ -2,7 +2,7 @@ import { SVGProps } from "app/types"
 import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 
-export const SIZE = 20
+const SIZE = 20
 
 export function Google(props: { scale?: number } & SVGProps) {
   const { scale = 0 } = props

@@ -1,6 +1,7 @@
 import * as React from "react"
 import Svg, { SvgProps, Path } from "react-native-svg"
 
+// FIXME move all svgs to subdir
 export function AccountIcon(props: SvgProps) {
   return (
     <Svg

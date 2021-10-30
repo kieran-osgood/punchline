@@ -5,7 +5,7 @@ import { ThemeManager } from "react-native-ui-lib"
 
 const SIZE = 20
 
-function RightArrow(props: SvgProps) {
+export function RightArrow(props: SvgProps) {
   return (
     <Svg
       width={SIZE}
@@ -19,8 +19,6 @@ function RightArrow(props: SvgProps) {
     </Svg>
   )
 }
-
-export default RightArrow
 
 const STYLE: ViewStyle = {
   aspectRatio: 1,

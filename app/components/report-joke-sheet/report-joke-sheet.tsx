@@ -1,6 +1,6 @@
 import BottomSheetHoc from "app/components/bottom-sheet-hoc/bottom-sheet-hoc"
 import { useStores } from "app/models"
-import { Success } from "assets/images/success"
+import { Success } from "assets/images"
 import { BottomSheetImperativeHandle } from "components"
 import { observer } from "mobx-react-lite"
 import * as React from "react"

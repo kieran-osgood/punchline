@@ -1,7 +1,7 @@
 import * as React from "react"
 import Svg, { Path, SvgProps } from "react-native-svg"
 
-function Skip(props: SvgProps) {
+export function Skip(props: SvgProps) {
   return (
     <Svg aria-hidden="true" viewBox="0 0 24 24" {...props} width={24} height={24}>
       <Path
@@ -11,5 +11,3 @@ function Skip(props: SvgProps) {
     </Svg>
   )
 }
-
-export default Skip

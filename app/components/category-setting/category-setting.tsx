@@ -1,7 +1,7 @@
 import { categoryModelPrimitives, CategoryModelType, nodes, useQuery } from "app/graphql"
 import { SortEnumType } from "app/graphql/SortEnumTypeEnum"
 import { useStores } from "app/models"
-import { Blocked, SIZE } from "assets/images/blocked"
+import { Blocked, SIZE } from "assets/images"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { TextStyle, TouchableOpacity, ViewStyle } from "react-native"

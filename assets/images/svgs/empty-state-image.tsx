@@ -3,7 +3,7 @@ import { ViewStyle } from "react-native"
 import Svg, { ClipPath, Defs, G, LinearGradient, Path, Stop, SvgProps } from "react-native-svg"
 import { View } from "react-native-ui-lib"
 
-function EmptyStateImage(props: SvgProps) {
+export function EmptyStateImage(props: SvgProps) {
   return (
     <View style={CONTAINER}>
       <Svg viewBox="0 0 1010 790" preserveAspectRatio="xMidYMid" {...props}>
@@ -273,8 +273,6 @@ function EmptyStateImage(props: SvgProps) {
     </View>
   )
 }
-
-export default EmptyStateImage
 
 const CONTAINER: ViewStyle = {
   aspectRatio: 1,
