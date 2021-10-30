@@ -33,7 +33,7 @@ export const JokeScreen = observer(function JokeScreen() {
 
   const onSwipe = React.useCallback(
     (joke: JokeModelType, rating: RatingValue, bookmarked: boolean) => {
-      joke.rate(joke, rating, bookmarked)
+      joke.rate(rating, bookmarked)
       setBookmarked(false)
     },
     [],

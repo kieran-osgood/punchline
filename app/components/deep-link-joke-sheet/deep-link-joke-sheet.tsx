@@ -71,7 +71,7 @@ const ForwardDeepLinkJokeSheet = (
 
   const onSwipe = React.useCallback(
     (joke: JokeModelType, rating: RatingValue, bookmarked: boolean) => {
-      joke.rate(joke, rating, bookmarked)
+      joke.rate(rating, bookmarked)
       setBookmarked(false)
       close?.()
       navigation.setParams({})

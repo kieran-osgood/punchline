@@ -37,7 +37,7 @@ export const JokeModel = JokeModelBase.props({
     },
   }))
   .actions((self) => ({
-    rate(joke: JokeModelType, rating: RatingValue, bookmarked: boolean) {
+    rate(rating: RatingValue, bookmarked: boolean) {
       setTimeout(() => {
         // Allows time for the swipeable.translateX animation to occur
         self.markViewed()
@@ -46,7 +46,7 @@ export const JokeModel = JokeModelBase.props({
         {
           input: {
             // joke.id not needed to pass in? self.joke.id
-            jokeId: joke.id,
+            jokeId: self.id,
             rating: rating,
             bookmarked,
           },
