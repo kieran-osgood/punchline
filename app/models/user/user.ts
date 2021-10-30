@@ -1,8 +1,8 @@
 import { FirebaseAuthTypes } from "@react-native-firebase/auth"
 import { Instance, SnapshotOut, types } from "mobx-state-tree"
-import { NonArrayProperties, NonFunctionProperties } from "types"
-
-type UserDataType = NonArrayProperties<NonFunctionProperties<FirebaseAuthTypes.User>>
+import { NonFunctionProperties } from "types"
+// FIXME: rename this to firebase user to match what the intent is
+type UserDataType = NonFunctionProperties<FirebaseAuthTypes.User>
 export const UserData: UserDataType = {
   displayName: "",
   email: "",
@@ -14,9 +14,11 @@ export const UserData: UserDataType = {
   },
   phoneNumber: "",
   photoURL: "",
+  providerData: [],
   providerId: "",
   uid: "",
 }
+
 // Used for R.pick to extract properties from the FirebaseAuthTypes.UserCredential
 export const UserDataKeys = Object.keys(UserData)
 
@@ -36,6 +38,7 @@ export const UserModel = types
     }),
     phoneNumber: types.maybeNull(types.string),
     photoURL: types.maybeNull(types.string),
+    providerData: types.frozen(),
     providerId: types.string,
     uid: types.string,
   })
