@@ -8,6 +8,7 @@ import { useStores } from "app/models"
 import { Logout, RightArrow } from "assets/images"
 import { observer } from "mobx-react-lite"
 import React from "react"
+import { Freeze } from "react-freeze"
 import { Alert, Platform, StatusBar, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
 import { APPSTORE_URL, PLAYSTORE_URL } from "react-native-dotenv"
 import Share from "react-native-share"
@@ -20,7 +21,7 @@ const MARGINS = spacing[4]
 
 export const MainSettingsScreen = observer(function MainSettingsScreen() {
   const { settings, userStore } = useStores()
-  const { open, close, refs } = useSheetsManager<
+  const { open, close, refs, freeze } = useSheetsManager<
     ["jokeLength", "jokeCategoriesRef", "socialSigninConversion", "bugReport"]
   >()
 
@@ -152,10 +153,13 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
           onPress={onDeleteAccountPress}
         />
       </Screen>
-      <JokeLengthSettingSheet ref={(el) => refs.current.set("jokeLength", el)} />
-      <SocialSigninConversionSheet ref={(el) => refs.current.set("socialSigninConversion", el)} />
-      <JokeCategoriesSettingSheet ref={(el) => refs.current.set("jokeCategoriesRef", el)} />
-      <BugReportSheet ref={(el) => refs.current.set("bugReport", el)} close={() => close()} />
+
+      <Freeze {...{ freeze }}>
+        <JokeLengthSettingSheet ref={(el) => refs.current.set("jokeLength", el)} />
+        <SocialSigninConversionSheet ref={(el) => refs.current.set("socialSigninConversion", el)} />
+        <JokeCategoriesSettingSheet ref={(el) => refs.current.set("jokeCategoriesRef", el)} />
+        <BugReportSheet ref={(el) => refs.current.set("bugReport", el)} close={() => close()} />
+      </Freeze>
     </>
   )
 })

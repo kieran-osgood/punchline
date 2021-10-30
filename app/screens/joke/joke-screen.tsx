@@ -12,6 +12,7 @@ import { AdBanner, BookmarkButton, Ratings, SwipeHandler } from "components"
 import { CryingEmoji, LaughingEmoji } from "images"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
+import { Freeze } from "react-freeze"
 import { SafeAreaView, StatusBar, ViewStyle } from "react-native"
 import { heightPercentageToDP } from "react-native-responsive-screen"
 import { Button, TouchableOpacity, View } from "react-native-ui-lib"
@@ -26,7 +27,7 @@ export const JokeScreen = observer(function JokeScreen() {
   const topCard = React.useRef<SwipeHandler>(null)
   const query = useQuery()
   const { apiStore } = useStores()
-  const { open, close, refs, currentOpen } = useSheetsManager<
+  const { open, close, refs, freeze } = useSheetsManager<
     ["jokeOptions", "reportJoke", "deepLinkJoke"]
   >()
 
@@ -91,18 +92,19 @@ export const JokeScreen = observer(function JokeScreen() {
       </SafeAreaView>
 
       <AdBanner />
-
-      <JokeOptionsSheet
-        ref={(el) => refs.current.set("jokeOptions", el)}
-        openReportJoke={() => open("reportJoke")}
-        close={() => close()}
-      />
-      <ReportJokeSheet ref={(el) => refs.current.set("reportJoke", el)} close={() => close()} />
-      <DeepLinkJokeSheet
-        ref={(el) => refs.current.set("deepLinkJoke", el)}
-        open={() => open("deepLinkJoke")}
-        close={() => close()}
-      />
+      <Freeze {...{ freeze }}>
+        <JokeOptionsSheet
+          ref={(el) => refs.current.set("jokeOptions", el)}
+          openReportJoke={() => open("reportJoke")}
+          close={close}
+        />
+        <ReportJokeSheet ref={(el) => refs.current.set("reportJoke", el)} close={close} />
+        <DeepLinkJokeSheet
+          ref={(el) => refs.current.set("deepLinkJoke", el)}
+          open={() => open("deepLinkJoke")}
+          close={close}
+        />
+      </Freeze>
     </>
   )
 })

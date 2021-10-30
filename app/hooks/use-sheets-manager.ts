@@ -4,23 +4,37 @@ import * as React from "react"
 export default function useSheetsManager<T extends string[]>() {
   const refs = React.useRef<Map<T[number], BottomSheetImperativeHandle | null>>(new Map())
   const currentOpen = React.useRef<T[number] | null>(null)
+  const [freeze, setFreeze] = React.useState(true)
+  const firstRender = React.useRef(true)
 
-  const open = (refName: T[number]) => {
-    // Re-enable this when onClose context is wrapping
-    // if (currentOpen.current === refName) return
-    if (currentOpen.current) {
-      refs.current.get(currentOpen.current)?.close()
-    }
-    currentOpen.current = refName
-    refs.current.get(refName)?.open()
-  }
+  React.useEffect(() => {
+    if (!firstRender.current) return
+    setTimeout(() => {
+      setFreeze(false)
+    }, 75)
+  }, [])
 
-  const close = () => {
-    if (currentOpen.current) refs.current.get(currentOpen.current)?.close()
-    currentOpen.current = null
-  }
+  const handlers = React.useMemo(
+    () => ({
+      open: (refName: T[number]) => {
+        // Re-enable this when onClose context is wrapping
+        // if (currentOpen.current === refName) return
+        if (currentOpen.current) {
+          refs.current.get(currentOpen.current)?.close()
+        }
+        currentOpen.current = refName
+        refs.current.get(refName)?.open()
+      },
 
-  return { refs, open, close, currentOpen }
+      close: () => {
+        if (currentOpen.current) refs.current.get(currentOpen.current)?.close()
+        currentOpen.current = null
+      },
+    }),
+    [],
+  )
+
+  return { ...handlers, refs, currentOpen, freeze }
 }
 
 /**

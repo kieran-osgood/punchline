@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/react-native'
 import 'expo-asset'
 import { AppRegistry } from "react-native"
 import 'react-native-gesture-handler'
+import { enableFreeze } from "react-native-screens"
 // This is the first file that ReactNative will run when it starts up.
 //
 // We jump out of here immediately and into our main entry point instead.
@@ -12,6 +13,8 @@ import 'react-native-gesture-handler'
 //
 // It's easier just to leave it here.
 import App from "./app/app.tsx"
+
+enableFreeze(true)
 
 AppRegistry.registerComponent("punchline", () => Sentry.withTouchEventBoundary(App))
 export default App
