@@ -8,7 +8,7 @@ import * as storage from "../../utils/storage"
 import { Environment } from "../environment"
 import { RootStore, RootStoreModel } from "./root-store"
 
-const packageJson = require("package.json")
+const appVersion = require("app.json").expo.version
 
 /**
  * The key we'll be saving our state as within async storage.
@@ -87,7 +87,7 @@ function initialiseVoidServices() {
 
   Sentry.init({
     dsn: "https://14d48ec94bab4f1fa583a3b6ab7f7a3b@o577022.ingest.sentry.io/5731300",
-    release: "com.ko.punchline@" + packageJson.version,
+    release: "com.ko.punchline@" + appVersion,
     environment: process.env.NODE_ENV,
     attachStacktrace: true,
     autoSessionTracking: true,
