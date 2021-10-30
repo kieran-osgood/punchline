@@ -57,6 +57,7 @@ const swipe = (
 const SwiperJokeCard = ({ joke, onTop, isLoading }: SwiperProps, ref: Ref<SwipeHandler>) => {
   const translateX = useSharedValue(0)
   const translateY = useSharedValue(0)
+
   const scale = useDerivedValue(() => {
     return interpolate(
       translateX.value,
@@ -68,10 +69,10 @@ const SwiperJokeCard = ({ joke, onTop, isLoading }: SwiperProps, ref: Ref<SwipeH
 
   useImperativeHandle(ref, () => ({
     swipeLeft: () => {
-      if (onTop) swipe(translateX, -A, 2)
+      if (onTop) swipe(translateX, -A, 1)
     },
     swipeRight: () => {
-      if (onTop) swipe(translateX, A, 2)
+      if (onTop) swipe(translateX, A, 1)
     },
   }))
 
@@ -132,7 +133,7 @@ export const GestureSwiperJokeCard = (
     },
     onEnd: ({ velocityX, velocityY }) => {
       const dest = snapPoint(translateX.value, velocityX, snapPoints)
-      swipe(translateX, dest, 5)
+      swipe(translateX, dest, 1)
       translateY.value = withSpring(0, { velocity: velocityY })
     },
   })

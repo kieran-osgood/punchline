@@ -66,7 +66,8 @@ export const JokeApiStoreModel = types
       return this.nonViewedJokes[this.nonViewedJokes.length - 1]
     },
     get deck() {
-      return [...this.nonViewedJokes.slice(0, 1), this.topOfDeckJoke]
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      return [this.nonViewedJokes?.[this.nonViewedJokes.length - 2], this.topOfDeckJoke]
     },
   }))
   .actions((self) => ({

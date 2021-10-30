@@ -38,6 +38,10 @@ export const JokeModel = JokeModelBase.props({
   }))
   .actions((self) => ({
     rate(joke: JokeModelType, rating: RatingValue, bookmarked: boolean) {
+      setTimeout(() => {
+        // Allows time for the swipeable.translateX animation to occur
+        self.markViewed()
+      }, 300)
       const query = self.api.mutateRateJoke(
         {
           input: {
@@ -48,9 +52,6 @@ export const JokeModel = JokeModelBase.props({
           },
         },
         undefined,
-        () => {
-          self.markViewed()
-        },
       )
       return query
     },
