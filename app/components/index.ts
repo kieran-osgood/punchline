@@ -11,7 +11,6 @@ export * from "./buttons/social-buttons/apple-sign-in-button/apple-sign-in-butto
 export * from "./buttons/social-buttons/facebook-sign-in-button/facebook-sign-in-button"
 export * from "./buttons/social-buttons/google-sign-in-button/google-sign-in-button"
 export * from "./category-setting/category-setting"
-export * from "./center-view/center-view"
 export * from "./chat-bubble/chat-bubble"
 export * from "./checkbox/checkbox"
 export * from "./dot/dot"
