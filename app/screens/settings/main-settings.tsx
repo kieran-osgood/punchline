@@ -14,9 +14,9 @@ import { APPSTORE_URL, PLAYSTORE_URL } from "react-native-dotenv"
 import Share from "react-native-share"
 import { Button, Switch, Text, ThemeManager, View, ViewProps } from "react-native-ui-lib"
 import { color, spacing } from "theme"
-import { AppLogo, BugReportSheet, JokeCategoriesSettingSheet, Screen } from "../../../components"
+import { AppLogo, BugReportSheet, JokeCategoriesSettingSheet, Screen } from "../../components"
 
-const packageJson = require("package.json")
+const appVersion = require("app.json").expo.version
 const MARGINS = spacing[4]
 
 export const MainSettingsScreen = observer(function MainSettingsScreen() {
@@ -236,7 +236,7 @@ const AppVersion = () => {
     <View paddingV-s10>
       <AppLogo />
       <Text center grey40 marginT-s2 text90 bold>
-        App Version: {packageJson.version}, {process.env.NODE_ENV}
+        App Version: {appVersion}, {process.env.NODE_ENV}
       </Text>
     </View>
   )

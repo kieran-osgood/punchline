@@ -16,7 +16,7 @@ import { useStores } from "app/models"
 import { Header } from "components"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { JokeScreen, OnboardingScreen, SettingsStack, UserProfileTabs } from "../screens"
+import { JokeScreen, MainSettingsScreen, OnboardingScreen, UserProfileTabs } from "../screens"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -39,7 +39,7 @@ export type MainRouteParamList = {
   LoginScreen: undefined
   UserProfileTabs: undefined
   OnboardingScreen: undefined
-  SettingsStack: undefined
+  MainSettingsScreen: undefined
 }
 
 export type NavigationProps<T extends keyof MainRouteParamList> = {
@@ -86,10 +86,10 @@ export const MainNavigator = observer(function MainNavigator() {
             }}
           />
           <Stack.Screen
-            name="SettingsStack"
-            component={SettingsStack}
+            name="MainSettingsScreen"
+            component={MainSettingsScreen}
             options={{
-              header: () => null,
+              header: (props) => <Header {...props} left="back" />,
               gestureDirection: "horizontal",
               cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
             }}
