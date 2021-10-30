@@ -1,7 +1,6 @@
 import { isDevelopment } from "app/utils/current-environment"
 import { createHttpClient } from "mst-gql"
 import { API_URL } from "react-native-dotenv"
-import { Api } from "../services/api"
 
 let ReactotronDev
 if (isDevelopment) {
@@ -20,7 +19,6 @@ export class Environment {
       // dev-only services
       this.reactotron = new ReactotronDev()
     }
-    this.api = new Api()
     this.gqlHttpClient = createHttpClient(`${API_URL}/graphql`)
   }
 
@@ -30,7 +28,6 @@ export class Environment {
     if (isDevelopment) {
       await this.reactotron.setup()
     }
-    await this.api.setup()
   }
 
   /**
@@ -38,8 +35,4 @@ export class Environment {
    */
   reactotron: typeof ReactotronDev
   gqlHttpClient: GraphQLClient
-  /**
-   * Our api.
-   */
-  api: Api
 }
