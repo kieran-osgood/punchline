@@ -91,7 +91,7 @@ end
 
 desc "Run tests and build the app"
 lane :release_appstore do
-  generate_screenshots
+  # generate_screenshots
 
   bump_and_commit_versions
 
