@@ -5,3 +5,4 @@ test("can be created", () => {
 
   expect(instance).toBeTruthy()
 })
+test("properly sends request for joke report", () => {})
