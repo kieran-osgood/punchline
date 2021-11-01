@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native"
-import { Authorization } from "app/app"
 import { StoreContext as GraphQLStoreContext } from "app/graphql/reactUtils"
+import useAuthorization from "app/hooks/use-authorization"
 import { RootStore, RootStoreModel, RootStoreProvider } from "app/models"
 import { Environment } from "app/models/environment"
 import React from "react"
@@ -17,17 +17,15 @@ type RenderDefaultAppProps = {
 }
 const RenderDefaultApp = ({ children, propRootStore }: RenderDefaultAppProps) => {
   const rootStore = propRootStore || createRootStore()
+  useAuthorization()
+
   return (
     <>
       <SafeAreaProvider initialSafeAreaInsets={{ top: 1, left: 2, right: 3, bottom: 4 }}>
         <NavigationContainer>
           <RootStoreProvider value={rootStore}>
             <GraphQLStoreContext.Provider value={rootStore.apiStore.api}>
-              <Authorization>
-                <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-                  {children}
-                </SafeAreaProvider>
-              </Authorization>
+              <SafeAreaProvider initialMetrics={initialWindowMetrics}>{children}</SafeAreaProvider>
             </GraphQLStoreContext.Provider>
           </RootStoreProvider>
         </NavigationContainer>
