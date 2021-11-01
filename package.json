@@ -36,7 +36,8 @@
     "ios:certificates": "cd ios && fl match development --force",
     "nuke": "rm -rf node_modules && npm cache clean --force && yarn && watchman watch-del-all && rm -rf $TMPDIR/haste-map-* && rm -rf $TMPDIR/metro-cache && yarn start",
     "detox:recorder": "detox recorder --configuration \"ios.sim.release\" --outputTestFile \"./e2e/recorded.js\" --testName \"My Recorded Test\" --record",
-    "detox:recorder:installed": "detox recorder --bundleId \"com.ko.punchline\" --simulatorId booted --outputTestFile \"./e2e/recorded.js\" --testName \"My Recorded Test\" --record"
+    "detox:recorder:installed": "detox recorder --bundleId \"com.ko.punchline\" --simulatorId booted --outputTestFile \"./e2e/recorded.js\" --testName \"My Recorded Test\" --record",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4",
@@ -153,11 +154,13 @@
     "eslint-plugin-react": "7.21.5",
     "eslint-plugin-react-native": "3.10.0",
     "faker": "^5.5.3",
+    "husky": ">=6",
     "jest": "^27.3.1",
     "jest-circus": "25.5.4",
     "jest-date-mock": "^1.0.8",
     "jest-expo": "40.0.1",
     "jetifier": "1.6.6",
+    "lint-staged": ">=10",
     "metro-react-native-babel-preset": "0.66.0",
     "mocha": "8.2.1",
     "npm-run-all": "4.1.5",
@@ -174,6 +177,7 @@
     "rimraf": "3.0.2",
     "solidarity": "2.3.1",
     "ts-jest": "^27.0.7",
+    "tsc-files": "^1.1.2",
     "typescript": "^4.4.4",
     "utf-8-validate": "5.0.3"
   },
@@ -392,5 +396,10 @@
         }
       ]
     }
+  },
+  "lint-staged": {
+    "**/*.ts": "tsc-files --noEmit",
+    "*.{js,ts,tsx}": "eslint --cache --fix",
+    "*.format:*": "prettier --write"
   }
 }
