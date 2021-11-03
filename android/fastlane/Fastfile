@@ -45,6 +45,7 @@ lane :build_debug_apk do
     build_type: "Debug",
     properties: {
       "vname" => $package["expo"]["version"],
+      "android.injected.version.name" => $package["expo"]["version"],
     },
     flags: $gradle_flags,
   )
@@ -57,6 +58,7 @@ lane :build_release_apk do
     build_type: "Release",
     properties: {
       "vname" => $package["expo"]["version"],
+      "android.injected.version.name" => $package["expo"]["version"],
     },
     flags: $gradle_flags,
   )
