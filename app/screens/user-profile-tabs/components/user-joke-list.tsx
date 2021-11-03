@@ -14,7 +14,7 @@ import {
   RefreshControl,
   StatusBar,
   TextStyle,
-  ViewStyle
+  ViewStyle,
 } from "react-native"
 import { RectButton, Swipeable } from "react-native-gesture-handler"
 import Animated, {
@@ -22,12 +22,16 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
   withSpring,
-  withTiming
+  withTiming,
 } from "react-native-reanimated"
 import { mix } from "react-native-redash"
 import Svg, { Path } from "react-native-svg"
 import { Button, Card, ExpandableSection, Text, ThemeManager, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
+
+const renderItem = ({ item: bookmark }: { item: UserJokeHistoryModelType }) => (
+  <UserJoke key={bookmark.id} {...{ bookmark }} />
+)
 
 export type UserJokeListProps = {
   type: "HISTORY" | "BOOKMARK"
@@ -35,7 +39,6 @@ export type UserJokeListProps = {
   refetch: () => void
   data: UserJokeHistoryModelType[]
 }
-
 export const UserJokeList = observer(function JokeBookmarkHistoryList(props: UserJokeListProps) {
   const { type, fetchMore, refetch, data } = props
   const navigation = useNavigation<NavigationProps<"UserProfileTabs">["navigation"]>()
@@ -54,9 +57,10 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
         <FlatList
           refreshControl={<RefreshControl {...{ refreshing, onRefresh }} />}
           data={data}
-          renderItem={({ item: bookmark }) => <UserJoke key={bookmark.id} {...{ bookmark }} />}
+          renderItem={renderItem}
           onEndReachedThreshold={0.65}
           onEndReached={fetchMore}
+          initialNumToRender={15}
         />
       ) : (
         <EmptyState
