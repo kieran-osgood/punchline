@@ -37,7 +37,8 @@
     "nuke": "rm -rf node_modules && npm cache clean --force && yarn && watchman watch-del-all && rm -rf $TMPDIR/haste-map-* && rm -rf $TMPDIR/metro-cache && yarn start",
     "detox:recorder": "detox recorder --configuration \"ios.sim.release\" --outputTestFile \"./e2e/recorded.js\" --testName \"My Recorded Test\" --record",
     "detox:recorder:installed": "detox recorder --bundleId \"com.ko.punchline\" --simulatorId booted --outputTestFile \"./e2e/recorded.js\" --testName \"My Recorded Test\" --record",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "tsc-check": "npx tsc --noEmit --watch"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4",
@@ -254,13 +255,13 @@
       "emulator": {
         "type": "android.emulator",
         "device": {
-          "avdName": "android_29_avd"
+          "avdName": "android_30_avd"
         }
       },
       "simulator": {
         "type": "ios.simulator",
         "device": {
-          "type": "iPhone 12 Pro Max"
+          "type": "iPhone 13 Pro Max"
         }
       }
     },
@@ -398,8 +399,10 @@
     }
   },
   "lint-staged": {
-    "**/*.{ts,tsx}": "tsc-files --noEmit",
-    "*.{js,ts,tsx}": "eslint --cache --fix",
-    "*.format:*": "prettier --write"
+    "**/*.{ts,tsx}": "npm run tsc-check",
+    "*.{js,ts,tsx}": [
+      "npm run lint",
+      "npm run format"
+    ]
   }
 }
