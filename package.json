@@ -399,10 +399,8 @@
     }
   },
   "lint-staged": {
-    "**/*.{ts,tsx}": "npm run tsc-check",
-    "*.{js,ts,tsx}": [
-      "npm run lint",
-      "npm run format"
-    ]
+    "**/*.{ts,tsx}": "tsc-files --noEmit",
+    "*.{js,ts,tsx}": "eslint --cache --fix",
+    "*.format:*": "prettier --write"
   }
 }
