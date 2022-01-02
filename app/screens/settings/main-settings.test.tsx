@@ -14,7 +14,7 @@ const RenderDefaultMainSettingsScreen = () => {
 it("Buttons will open their respective sheets", () => {
   const { getByText } = render(<RenderDefaultMainSettingsScreen />)
   const text = getByText(/categories/i).parent
-  // expect(text).not.toBeNull()
+  expect(text).not.toBeNull()
   // fireEvent.press(text)
   // TODO: need to add mocks for the ref to ref.current?.collapse(),
 })

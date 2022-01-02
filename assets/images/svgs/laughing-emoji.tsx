@@ -3,7 +3,7 @@ import Svg, { Path } from "react-native-svg"
 import { SVGProps } from "app/types"
 
 type LaughingEmojiProps = {
-  scale?:number
+  scale?: number
 } & SVGProps
 export function LaughingEmoji(props: LaughingEmojiProps) {
   const { scale = 0 } = props

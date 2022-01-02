@@ -5,7 +5,7 @@ import { NavigationProps } from "app/navigators"
 import { ACTION_BUTTON } from "app/screens"
 import { EmptyStateImage, TrashCan } from "assets/images"
 import { BookmarkButton, EmptyState, Screen } from "components"
-import { Observer, observer } from "mobx-react-lite"
+import { observer, Observer } from "mobx-react-lite"
 import React from "react"
 import {
   Alert,

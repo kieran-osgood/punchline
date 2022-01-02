@@ -1,6 +1,6 @@
-import { withStatus } from "./with-status"
+import { isObservableProp, reaction } from "mobx"
 import { types } from "mobx-state-tree"
-import { reaction, isObservableProp } from "mobx"
+import { withStatus } from "./with-status"
 
 const ThingModel = types
   .model("Thing")
@@ -41,6 +41,8 @@ it("can be synchronously observed", () => {
     },
   )
   thing.setStatus("done")
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   expect(changed).toBe("done")
   expect(thing.status).toBe("done")
 })

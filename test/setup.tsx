@@ -50,15 +50,17 @@ jest.mock("react-native-share", () => ({}))
 
 require("react-native-reanimated/lib/reanimated2/jestUtils").setUpTests()
 
-global.__reanimatedWorkletInit = function (worklet) {
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+global.__reanimatedWorkletInit = function (worklet: { __worklet: boolean }) {
   worklet.__worklet = true
 }
 
 jest.mock("react-native-reanimated", () => ({
   ...jest.requireActual("react-native-reanimated/mock"),
-  makeMutable: (f) => f,
-  useWorkletCallback: (f) => f,
-  useAnimatedProps: (style) => style,
+  makeMutable: (f: any) => f,
+  useWorkletCallback: (f: any) => f,
+  useAnimatedProps: (style: any) => style,
 }))
 
 jest.mock("@gorhom/bottom-sheet", () => {

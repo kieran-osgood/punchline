@@ -9,10 +9,9 @@ import { CategoryModel, CategoryModelType } from "./CategoryModel"
 import { CategoryModelSelector } from "./CategoryModel.base"
 import { RootStoreType } from "./index"
 
-
 /* The TypeScript type that explicits the refs to other models in order to prevent a circular refs issue */
 type Refs = {
-  node: CategoryModelType;
+  node: CategoryModelType
 }
 
 /**
@@ -21,24 +20,34 @@ type Refs = {
  *
  * An edge in a connection.
  */
-export const UserCategoriesEdgeModelBase = withTypedRefs<Refs>()(ModelBase
-  .named('UserCategoriesEdge')
-  .props({
-    __typename: types.optional(types.literal("UserCategoriesEdge"), "UserCategoriesEdge"),
-    /** A cursor for use in pagination. */
-    cursor: types.union(types.undefined, types.string),
-    /** The item at the end of the edge. */
-    node: types.union(types.undefined, MSTGQLRef(types.late((): any => CategoryModel))),
-  })
-  .views(self => ({
-    get store() {
-      return self.__getStore<RootStoreType>()
-    }
-  })))
+export const UserCategoriesEdgeModelBase = withTypedRefs<Refs>()(
+  ModelBase.named("UserCategoriesEdge")
+    .props({
+      __typename: types.optional(types.literal("UserCategoriesEdge"), "UserCategoriesEdge"),
+      /** A cursor for use in pagination. */
+      cursor: types.union(types.undefined, types.string),
+      /** The item at the end of the edge. */
+      node: types.union(types.undefined, MSTGQLRef(types.late((): any => CategoryModel))),
+    })
+    .views((self) => ({
+      get store() {
+        return self.__getStore<RootStoreType>()
+      },
+    })),
+)
 
 export class UserCategoriesEdgeModelSelector extends QueryBuilder {
-  get cursor() { return this.__attr(`cursor`) }
-  node(builder?: string | CategoryModelSelector | ((selector: CategoryModelSelector) => CategoryModelSelector)) { return this.__child(`node`, CategoryModelSelector, builder) }
+  get cursor() {
+    return this.__attr(`cursor`)
+  }
+  node(
+    builder?:
+      | string
+      | CategoryModelSelector
+      | ((selector: CategoryModelSelector) => CategoryModelSelector),
+  ) {
+    return this.__child(`node`, CategoryModelSelector, builder)
+  }
 }
 export function selectFromUserCategoriesEdge() {
   return new UserCategoriesEdgeModelSelector()

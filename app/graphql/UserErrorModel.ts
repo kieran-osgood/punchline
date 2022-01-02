@@ -5,15 +5,18 @@ import { UserErrorModelBase } from "./UserErrorModel.base"
 export interface UserErrorModelType extends Instance<typeof UserErrorModel.Type> {}
 
 /* A graphql query fragment builders for UserErrorModel */
-export { selectFromUserError, userErrorModelPrimitives, UserErrorModelSelector } from "./UserErrorModel.base"
+export {
+  selectFromUserError,
+  userErrorModelPrimitives,
+  UserErrorModelSelector,
+} from "./UserErrorModel.base"
 
 /**
  * UserErrorModel
  */
-export const UserErrorModel = UserErrorModelBase
-  .actions(self => ({
-    // This is an auto-generated example action.
-    log() {
-      console.log(JSON.stringify(self))
-    }
-  }))
+export const UserErrorModel = UserErrorModelBase.actions((self) => ({
+  // This is an auto-generated example action.
+  log() {
+    console.log(JSON.stringify(self))
+  },
+}))

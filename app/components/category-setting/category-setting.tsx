@@ -54,7 +54,7 @@ export const CategoryMapping = observer(function CategoryMapping(props: Category
           text80
           onPress={() => settings.unselectAllBlockedCategories()}
           disabled={!settings.anySelected}
-          style={{ justifyContent: "flex-end" }}
+          style={BUTTON}
         />
         {categoriesOnly === false && (
           <Text center marginT-s3 highlightString="don't" highlightStyle={HIGHLIGHT_STYLE}>
@@ -72,6 +72,9 @@ export const CategoryMapping = observer(function CategoryMapping(props: Category
   )
 })
 
+const BUTTON: ViewStyle = {
+  justifyContent: "flex-end",
+}
 const ITEMS_CONTAINER: ViewStyle = {
   flexWrap: "wrap",
   flexDirection: "row",

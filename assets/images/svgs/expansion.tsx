@@ -1,6 +1,6 @@
-import * as React from "react"
-import Svg, { G, Path, Circle } from "react-native-svg"
 import { SVGProps } from "app/types"
+import * as React from "react"
+import Svg, { Circle, Path } from "react-native-svg"
 
 export function Expansion(props: { scale?: number } & SVGProps) {
   const { scale = 0 } = props

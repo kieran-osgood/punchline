@@ -1,6 +1,6 @@
-import * as React from 'react'
-import Svg, { G, Path, Ellipse, Defs } from 'react-native-svg'
-import { SVGProps } from 'app/types'
+import * as React from "react"
+import Svg, { G, Path, Ellipse, Defs } from "react-native-svg"
+import { SVGProps } from "app/types"
 
 export function Microphone(props: SVGProps) {
   return (

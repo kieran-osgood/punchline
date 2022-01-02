@@ -5,15 +5,18 @@ import { JokeReportModelBase } from "./JokeReportModel.base"
 export interface JokeReportModelType extends Instance<typeof JokeReportModel.Type> {}
 
 /* A graphql query fragment builders for JokeReportModel */
-export { selectFromJokeReport, jokeReportModelPrimitives, JokeReportModelSelector } from "./JokeReportModel.base"
+export {
+  selectFromJokeReport,
+  jokeReportModelPrimitives,
+  JokeReportModelSelector,
+} from "./JokeReportModel.base"
 
 /**
  * JokeReportModel
  */
-export const JokeReportModel = JokeReportModelBase
-  .actions(self => ({
-    // This is an auto-generated example action.
-    log() {
-      console.log(JSON.stringify(self))
-    }
-  }))
+export const JokeReportModel = JokeReportModelBase.actions((self) => ({
+  // This is an auto-generated example action.
+  log() {
+    console.log(JSON.stringify(self))
+  },
+}))

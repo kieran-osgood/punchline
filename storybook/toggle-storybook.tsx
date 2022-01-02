@@ -1,3 +1,4 @@
+import { getStorybookUI } from "@storybook/react-native"
 import { isDevelopment } from "app/utils/current-environment"
 import React, { useEffect, useState } from "react"
 import { DevSettings } from "react-native"
@@ -13,9 +14,11 @@ import { loadString, saveString } from "../app/utils/storage"
  * persists across reloads/restarts - this is handy when developing
  * new components in Storybook.
  */
-export function ToggleStorybook(props) {
+export function ToggleStorybook(props: { children: any }) {
   const [showStorybook, setShowStorybook] = useState(false)
-  const [StorybookUIRoot, setStorybookUIRoot] = useState(null)
+  const [StorybookUIRoot, setStorybookUIRoot] = useState<ReturnType<typeof getStorybookUI> | null>(
+    null,
+  )
 
   useEffect(() => {
     if (isDevelopment) {
@@ -42,7 +45,7 @@ export function ToggleStorybook(props) {
         setStorybookUIRoot(() => require("./storybook").StorybookUIRoot)
       })
     }
-  }, [])
+  }, [showStorybook])
 
   if (showStorybook) {
     return StorybookUIRoot ? <StorybookUIRoot /> : null

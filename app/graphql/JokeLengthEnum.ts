@@ -8,16 +8,12 @@ import { types } from "mobx-state-tree"
  */
 
 export enum JokeLength {
-  SMALL="SMALL",
-MEDIUM="MEDIUM",
-LARGE="LARGE"
+  SMALL = "SMALL",
+  MEDIUM = "MEDIUM",
+  LARGE = "LARGE",
 }
 
 /**
-* JokeLength
-*/
-export const JokeLengthEnumType = types.enumeration("JokeLength", [
-        "SMALL",
-  "MEDIUM",
-  "LARGE",
-      ])
+ * JokeLength
+ */
+export const JokeLengthEnumType = types.enumeration("JokeLength", ["SMALL", "MEDIUM", "LARGE"])

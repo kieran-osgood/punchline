@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { NavigationContainerRef, NavigationState, PartialState } from "@react-navigation/native"
 import { AllRouteNames } from "app/navigators"
 import { isDevelopment } from "app/utils/current-environment"
@@ -15,7 +17,9 @@ export const RootNavigation = {
   },
 }
 
-export const setRootNavigation = (ref: React.RefObject<NavigationContainerRef>) => {
+export const setRootNavigation = (
+  ref: React.RefObject<NavigationContainerRef<Record<string, unknown>>>,
+) => {
   for (const method in RootNavigation) {
     RootNavigation[method] = (...args: any) => {
       if (ref.current) {
@@ -43,7 +47,7 @@ export function getActiveRouteName(state: NavigationState | PartialState<Navigat
  * the navigation or allows exiting the app.
  */
 export function useBackButtonHandler(
-  ref: React.RefObject<NavigationContainerRef>,
+  ref: React.RefObject<NavigationContainerRef<Record<string, unknown>>>,
   canExit: (routeName: AllRouteNames) => boolean,
 ) {
   const canExitRef = useRef(canExit)
@@ -96,13 +100,13 @@ export function useNavigationPersistence(storage: any, persistenceKey: string) {
   const [isRestoringNavigationState, setIsRestoringNavigationState] = useState(false)
 
   const routeNameRef = useRef()
-  const onNavigationStateChange = (state) => {
+  const onNavigationStateChange = (state: any) => {
     const previousRouteName = routeNameRef.current
     const currentRouteName = getActiveRouteName(state)
 
     if (previousRouteName !== currentRouteName) {
       // track screens.
-      isDevelopment && console.tron.log(currentRouteName)
+      isDevelopment && console.tron.log?.(currentRouteName)
     }
 
     // Save the current route name for later comparision
@@ -123,6 +127,7 @@ export function useNavigationPersistence(storage: any, persistenceKey: string) {
 
   useEffect(() => {
     if (isRestoringNavigationState) restoreState()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRestoringNavigationState])
 
   return { onNavigationStateChange, restoreState, initialNavigationState }

@@ -7,5 +7,6 @@ import { TxKeyPath } from "./i18n"
  * @param key The i18n key.
  */
 export function translate(key: TxKeyPath, options?: I18n.TranslateOptions) {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return key ? i18n.t(key, options) : null
 }

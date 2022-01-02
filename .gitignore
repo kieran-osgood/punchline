@@ -86,3 +86,6 @@ android/fastlane/.env
 
 # Detox
 .artifacts
+
+# eslint
+.eslintcache

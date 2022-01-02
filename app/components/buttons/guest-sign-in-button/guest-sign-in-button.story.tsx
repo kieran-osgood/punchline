@@ -1,7 +1,6 @@
 import { storiesOf } from "@storybook/react-native"
 import * as React from "react"
 import { Story, StoryScreen, UseCase } from "../../../../storybook/views"
-import { color } from "../../../theme"
 import { GuestSignInButton } from "./guest-sign-in-button"
 
 storiesOf("GuestSignInButton", module)
@@ -9,7 +8,7 @@ storiesOf("GuestSignInButton", module)
   .add("Style Presets", () => (
     <Story>
       <UseCase text="Primary" usage="The primary.">
-        <GuestSignInButton style={{ backgroundColor: color.error }} />
+        <GuestSignInButton />
       </UseCase>
     </Story>
   ))

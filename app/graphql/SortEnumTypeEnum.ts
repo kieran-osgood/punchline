@@ -8,14 +8,11 @@ import { types } from "mobx-state-tree"
  */
 
 export enum SortEnumType {
-  ASC="ASC",
-DESC="DESC"
+  ASC = "ASC",
+  DESC = "DESC",
 }
 
 /**
-* SortEnumType
-*/
-export const SortEnumTypeEnumType = types.enumeration("SortEnumType", [
-        "ASC",
-  "DESC",
-      ])
+ * SortEnumType
+ */
+export const SortEnumTypeEnumType = types.enumeration("SortEnumType", ["ASC", "DESC"])

@@ -8,14 +8,14 @@ import { types } from "mobx-state-tree"
  */
 
 export enum ApplyPolicy {
-  BEFORE_RESOLVER="BEFORE_RESOLVER",
-AFTER_RESOLVER="AFTER_RESOLVER"
+  BEFORE_RESOLVER = "BEFORE_RESOLVER",
+  AFTER_RESOLVER = "AFTER_RESOLVER",
 }
 
 /**
-* ApplyPolicy
-*/
+ * ApplyPolicy
+ */
 export const ApplyPolicyEnumType = types.enumeration("ApplyPolicy", [
-        "BEFORE_RESOLVER",
+  "BEFORE_RESOLVER",
   "AFTER_RESOLVER",
-      ])
+])

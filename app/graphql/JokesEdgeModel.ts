@@ -5,17 +5,20 @@ import { JokesEdgeModelBase } from "./JokesEdgeModel.base"
 export interface JokesEdgeModelType extends Instance<typeof JokesEdgeModel.Type> {}
 
 /* A graphql query fragment builders for JokesEdgeModel */
-export { selectFromJokesEdge, jokesEdgeModelPrimitives, JokesEdgeModelSelector } from "./JokesEdgeModel.base"
+export {
+  selectFromJokesEdge,
+  jokesEdgeModelPrimitives,
+  JokesEdgeModelSelector,
+} from "./JokesEdgeModel.base"
 
 /**
  * JokesEdgeModel
  *
  * An edge in a connection.
  */
-export const JokesEdgeModel = JokesEdgeModelBase
-  .actions(self => ({
-    // This is an auto-generated example action.
-    log() {
-      console.log(JSON.stringify(self))
-    }
-  }))
+export const JokesEdgeModel = JokesEdgeModelBase.actions((self) => ({
+  // This is an auto-generated example action.
+  log() {
+    console.log(JSON.stringify(self))
+  },
+}))

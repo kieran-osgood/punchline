@@ -5,17 +5,20 @@ import { PageInfoModelBase } from "./PageInfoModel.base"
 export interface PageInfoModelType extends Instance<typeof PageInfoModel.Type> {}
 
 /* A graphql query fragment builders for PageInfoModel */
-export { selectFromPageInfo, pageInfoModelPrimitives, PageInfoModelSelector } from "./PageInfoModel.base"
+export {
+  selectFromPageInfo,
+  pageInfoModelPrimitives,
+  PageInfoModelSelector,
+} from "./PageInfoModel.base"
 
 /**
  * PageInfoModel
  *
  * Information about pagination in a connection.
  */
-export const PageInfoModel = PageInfoModelBase
-  .actions(self => ({
-    // This is an auto-generated example action.
-    log() {
-      console.log(JSON.stringify(self))
-    }
-  }))
+export const PageInfoModel = PageInfoModelBase.actions((self) => ({
+  // This is an auto-generated example action.
+  log() {
+    console.log(JSON.stringify(self))
+  },
+}))

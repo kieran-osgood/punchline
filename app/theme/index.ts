@@ -23,19 +23,22 @@ export const fontFamily = (settings: { light?: boolean; bold?: boolean }) => {
   return fonts[fontWeight]
 }
 
-ThemeManager.setComponentTheme("Text", (props, context) => {
+ThemeManager.setComponentTheme("Text", (props: { light: any; bold: any; style: any }) => {
   return {
     style: [fontFamily({ light: props.light, bold: props.bold }), props.style],
   }
 })
 
-ThemeManager.setComponentTheme("Button", (props, context) => {
-  const labelStyle =
-    props.link && !props.linkColor ? { color: props.disabled ? "grey" : "#2211C9" } : {}
-  return {
-    labelStyle: [labelStyle, props.labelStyle],
-  }
-})
+ThemeManager.setComponentTheme(
+  "Button",
+  (props: { link: any; linkColor: any; disabled: any; labelStyle: any }) => {
+    const labelStyle =
+      props.link && !props.linkColor ? { color: props.disabled ? "grey" : "#2211C9" } : {}
+    return {
+      labelStyle: [labelStyle, props.labelStyle],
+    }
+  },
+)
 
 export * from "./color"
 export * from "./spacing"

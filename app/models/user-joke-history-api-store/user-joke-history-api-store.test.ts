@@ -31,10 +31,10 @@ describe("", () => {
   })
 
   test("history sorts by date", () => {
-    const store = createUserJokeHistoryApiStoreDefaultModel().create()
+    createUserJokeHistoryApiStoreDefaultModel().create()
   })
 
   test("fetchUserJokeHistory correctly passes variables through", () => {
-    const store = createUserJokeHistoryApiStoreDefaultModel().create()
+    createUserJokeHistoryApiStoreDefaultModel().create()
   })
 })

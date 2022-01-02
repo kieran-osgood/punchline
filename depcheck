@@ -1,0 +1,15 @@
+* @react-native-community/blur
+* @react-native-community/datetimepicker
+* @react-native-community/masked-view
+* @react-native-community/netinfo
+* @react-native-picker/picker
+* @react-navigation/native-stack
+* date-fns
+* expo-font
+* expo-updates
+* graphql-request
+* react-native-collapsible
+* react-native-deck-swiper
+* react-native-modal
+* react-native-splash-screen
+* react-native-unimodules

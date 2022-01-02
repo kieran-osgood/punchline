@@ -2,7 +2,7 @@ import { isDevelopment } from "app/utils/current-environment"
 import { createHttpClient } from "mst-gql"
 import { API_URL } from "react-native-dotenv"
 
-let ReactotronDev
+let ReactotronDev: any
 if (isDevelopment) {
   const { Reactotron } = require("../services/reactotron")
   ReactotronDev = Reactotron
@@ -34,5 +34,5 @@ export class Environment {
    * Reactotron is only available in dev.
    */
   reactotron: typeof ReactotronDev
-  gqlHttpClient: GraphQLClient
+  gqlHttpClient: ReturnType<typeof createHttpClient>
 }

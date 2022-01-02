@@ -8,18 +8,18 @@ import { types } from "mobx-state-tree"
  */
 
 export enum ErrorCodes {
-  SERVER_ERROR="SERVER_ERROR",
-DUPLICATE_ENTRY="DUPLICATE_ENTRY",
-RESOURCE_NOT_FOUND="RESOURCE_NOT_FOUND",
-NOT_AUTHORIZED="NOT_AUTHORIZED"
+  SERVER_ERROR = "SERVER_ERROR",
+  DUPLICATE_ENTRY = "DUPLICATE_ENTRY",
+  RESOURCE_NOT_FOUND = "RESOURCE_NOT_FOUND",
+  NOT_AUTHORIZED = "NOT_AUTHORIZED",
 }
 
 /**
-* ErrorCodes
-*/
+ * ErrorCodes
+ */
 export const ErrorCodesEnumType = types.enumeration("ErrorCodes", [
-        "SERVER_ERROR",
+  "SERVER_ERROR",
   "DUPLICATE_ENTRY",
   "RESOURCE_NOT_FOUND",
   "NOT_AUTHORIZED",
-      ])
+])

@@ -1,7 +1,6 @@
-import * as React from "react"
 import { storiesOf } from "@storybook/react-native"
-import { StoryScreen, Story, UseCase } from "../../../storybook/views"
-import { color } from "../../theme"
+import * as React from "react"
+import { Story, StoryScreen, UseCase } from "../../../storybook/views"
 import { TroubleSigningInSheet } from "./trouble-signing-in-sheet"
 
 storiesOf("TroubleSigningInSheet", module)
@@ -9,7 +8,7 @@ storiesOf("TroubleSigningInSheet", module)
   .add("Style Presets", () => (
     <Story>
       <UseCase text="Primary" usage="The primary.">
-        <TroubleSigningInSheet style={{ backgroundColor: color.error }} />
+        <TroubleSigningInSheet onError={() => console.log("onError!")} />
       </UseCase>
     </Story>
   ))

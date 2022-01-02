@@ -5,4 +5,5 @@ test("can be created", () => {
 
   expect(instance).toBeTruthy()
 })
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 test("properly sends request for joke report", () => {})

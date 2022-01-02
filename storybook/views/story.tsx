@@ -1,5 +1,6 @@
 import * as React from "react"
-import { ScrollView, View, ViewStyle } from "react-native"
+import { ScrollView, ViewStyle } from "react-native"
+import { View } from "react-native-ui-lib"
 
 export interface StoryProps {
   children?: React.ReactNode

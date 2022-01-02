@@ -5,15 +5,18 @@ import { BugReportModelBase } from "./BugReportModel.base"
 export interface BugReportModelType extends Instance<typeof BugReportModel.Type> {}
 
 /* A graphql query fragment builders for BugReportModel */
-export { selectFromBugReport, bugReportModelPrimitives, BugReportModelSelector } from "./BugReportModel.base"
+export {
+  selectFromBugReport,
+  bugReportModelPrimitives,
+  BugReportModelSelector,
+} from "./BugReportModel.base"
 
 /**
  * BugReportModel
  */
-export const BugReportModel = BugReportModelBase
-  .actions(self => ({
-    // This is an auto-generated example action.
-    log() {
-      console.log(JSON.stringify(self))
-    }
-  }))
+export const BugReportModel = BugReportModelBase.actions((self) => ({
+  // This is an auto-generated example action.
+  log() {
+    console.log(JSON.stringify(self))
+  },
+}))

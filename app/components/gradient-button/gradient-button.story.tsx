@@ -1,7 +1,6 @@
-import * as React from "react"
 import { storiesOf } from "@storybook/react-native"
-import { StoryScreen, Story, UseCase } from "../../../storybook/views"
-import { color } from "../../theme"
+import * as React from "react"
+import { Story, StoryScreen, UseCase } from "../../../storybook/views"
 import { GradientButton } from "./gradient-button"
 
 storiesOf("GradientButton", module)
@@ -9,7 +8,7 @@ storiesOf("GradientButton", module)
   .add("Style Presets", () => (
     <Story>
       <UseCase text="Primary" usage="The primary.">
-        <GradientButton style={{ backgroundColor: color.error }} />
+        <GradientButton label="" />
       </UseCase>
     </Story>
   ))
