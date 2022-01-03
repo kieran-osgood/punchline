@@ -78,3 +78,11 @@ jest.mock("@gorhom/bottom-sheet", () => {
     })),
   }
 })
+
+jest.mock("@sentry/react-native", () => ({
+  captureException: () => jest.fn(),
+}))
+
+jest.mock("react-native-toast-message", () => ({
+  show: () => jest.fn(),
+}))

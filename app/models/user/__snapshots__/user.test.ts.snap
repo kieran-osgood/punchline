@@ -12,6 +12,7 @@ Object {
   },
   "phoneNumber": "",
   "photoURL": "",
+  "providerData": Array [],
   "providerId": "",
   "uid": "",
 }

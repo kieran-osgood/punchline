@@ -155,10 +155,14 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
       </Screen>
 
       <Freeze {...{ freeze }}>
-        <JokeLengthSettingSheet ref={(el) => refs.current.set("jokeLength", el)} />
-        <SocialSigninConversionSheet ref={(el) => refs.current.set("socialSigninConversion", el)} />
-        <JokeCategoriesSettingSheet ref={(el) => refs.current.set("jokeCategoriesRef", el)} />
-        <BugReportSheet ref={(el) => refs.current.set("bugReport", el)} close={() => close()} />
+        <View accessibilityLabel="action sheets">
+          <JokeLengthSettingSheet ref={(el) => refs.current.set("jokeLength", el)} />
+          <SocialSigninConversionSheet
+            ref={(el) => refs.current.set("socialSigninConversion", el)}
+          />
+          <JokeCategoriesSettingSheet ref={(el) => refs.current.set("jokeCategoriesRef", el)} />
+          <BugReportSheet ref={(el) => refs.current.set("bugReport", el)} close={() => close()} />
+        </View>
       </Freeze>
     </>
   )

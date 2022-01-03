@@ -1,6 +1,7 @@
 # OSX
 #
 .DS_Store
+*.hprof
 
 # VS Code
 .vscode/.react/*[.map, .bundle]

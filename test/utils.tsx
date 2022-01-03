@@ -16,9 +16,7 @@ type RenderDefaultAppProps = {
   children: React.ReactNode
 }
 const RenderDefaultApp = ({ children, propRootStore }: RenderDefaultAppProps) => {
-  const rootStore = propRootStore || createRootStore()
-  useAuthorization()
-
+  const [rootStore] = React.useState<RootStore>(propRootStore || createRootStore())
   return (
     <>
       <SafeAreaProvider initialSafeAreaInsets={{ top: 1, left: 2, right: 3, bottom: 4 }}>
@@ -35,3 +33,9 @@ const RenderDefaultApp = ({ children, propRootStore }: RenderDefaultAppProps) =>
 }
 
 export { createRootStore, TestChildComponent, RenderDefaultApp }
+
+export const AuthWrapper = ({ children }: { children: RenderDefaultAppProps["children"] }) => {
+  useAuthorization()
+
+  return <>{children}</>
+}

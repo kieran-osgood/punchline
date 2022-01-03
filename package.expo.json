@@ -25,24 +25,6 @@
     "detox-expo-helpers": "0.6.0",
     "jest-expo": "40.0.1"
   },
-  "jest": {
-    "projects": [
-      {
-        "preset": "jest-expo/ios",
-        "transformIgnorePatterns": [
-          "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|native-base|@storybook)"
-        ],
-        "testPathIgnorePatterns": ["/node_modules/", "/e2e"]
-      },
-      {
-        "preset": "jest-expo/android",
-        "transformIgnorePatterns": [
-          "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|native-base|@storybook)"
-        ],
-        "testPathIgnorePatterns": ["/node_modules/", "/e2e"]
-      }
-    ]
-  },
   "detox": {
     "configurations": {
       "ios.sim.expo": {
