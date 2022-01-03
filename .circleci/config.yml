@@ -153,8 +153,45 @@ jobs:
             bundle exec fastlane release_appstore
       - store_artifacts:
           path: ios/output
-  
+
+  update_git_tags:
+    docker: # run the steps with Docker
+      # CircleCI Go images available at: https://hub.docker.com/r/circleci/golang/
+      - image: circleci/golang:1.16
+    steps: 
+      - attach_workspace:
+          at: .
+      - checkout_code
+      - run: 
+          name: "Build Go Executable"
+          command: echo 
+          working_directory: ./a
+      # - run: FIXME: set the environnment variable for the github token here
+      - run:
+          name: "Run app"
+          environment:
+            SSH_PASSWORD: '${MY_APP_PREFIX}'
+          command: update-git-tags --project_url <<pipeline.project.git_url>> --branch <<pipeline.git.branch>> --ssh_key $SSH_KEY
+          working_directory: ./a
+      # checkout_code will pull the repo as it is included as a submodule
+      # Build the go executable
+      # Execute the app
+
 workflows:
+  # Update the git tags if the version number of the app has changed
+  update_git_tags: 
+    jobs:
+      # gonna try this in the job first
+      # - checkout_code:
+      - build_go:
+          filters:
+            tags:
+              # FIXME: Need ot work out how to do a !v
+              only: /^v.*/
+            branches:
+              only:
+                - master
+
   # Only runs on the develop branch 
   build_and_test:
     jobs: 
