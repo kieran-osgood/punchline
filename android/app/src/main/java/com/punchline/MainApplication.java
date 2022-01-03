@@ -1,7 +1,7 @@
 package com.ko.punchline;
-
-// Unimodules https://docs.expo.io/bare/installing-unimodules/#configuration-for-android
-import com.ko.punchline.generated.BasePackageList;
+import android.content.res.Configuration;
+import expo.modules.ApplicationLifecycleDispatcher;
+import expo.modules.ReactNativeHostWrapper;
 
 import android.app.Application;
 import android.content.Context;
@@ -15,8 +15,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Arrays;
  
-import org.unimodules.adapters.react.ModuleRegistryAdapter;
-import org.unimodules.adapters.react.ReactModuleRegistryProvider;
 import org.unimodules.core.interfaces.SingletonModule;
 
 import com.facebook.react.bridge.JSIModulePackage; // <- add
@@ -27,10 +25,9 @@ import expo.modules.updates.UpdatesController;
 import javax.annotation.Nullable;
 
 public class MainApplication extends Application implements ReactApplication {
-  private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
 
   private final ReactNativeHost mReactNativeHost =
-      new ReactNativeHost(this) {
+      new ReactNativeHostWrapper(this, new ReactNativeHost(this) {
         @Override
         public boolean getUseDeveloperSupport() {
           return BuildConfig.DEBUG;
@@ -43,12 +40,6 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
 
-          // Add unimodules
-          List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
-            new ModuleRegistryAdapter(mModuleRegistryProvider)
-          );
-          packages.addAll(unimodules);
-          
           return packages;
         }
 
@@ -79,7 +70,7 @@ public class MainApplication extends Application implements ReactApplication {
             return UpdatesController.getInstance().getBundleAssetName();
           }
         }
-      };
+      });
 
   @Override
   public ReactNativeHost getReactNativeHost() {
@@ -94,6 +85,7 @@ public class MainApplication extends Application implements ReactApplication {
       UpdatesController.initialize(this);
     }
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    ApplicationLifecycleDispatcher.onApplicationCreate(this);
   }
 
   /**
@@ -125,5 +117,11 @@ public class MainApplication extends Application implements ReactApplication {
         e.printStackTrace();
       }
     }
+  }
+
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig);
   }
 }

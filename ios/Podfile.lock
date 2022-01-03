@@ -7,40 +7,36 @@ PODS:
   - boost-for-react-native (1.63.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
-  - EXConstants (11.0.2):
+  - EXApplication (4.0.1):
     - ExpoModulesCore
-    - UMCore
-  - EXFileSystem (11.1.3):
+  - EXConstants (13.0.0):
     - ExpoModulesCore
-    - UMCore
-  - EXFont (9.2.1):
+  - EXFileSystem (13.1.0):
     - ExpoModulesCore
-    - UMCore
-  - EXImageLoader (2.2.0):
+  - EXFont (10.0.4):
     - ExpoModulesCore
+  - EXJSONUtils (0.2.0)
+  - EXKeepAwake (10.0.1):
+    - ExpoModulesCore
+  - EXManifests (0.2.2):
+    - EXJSONUtils
+  - Expo (44.0.3):
+    - ExpoModulesCore
+  - ExpoLinearGradient (11.0.0):
+    - ExpoModulesCore
+  - ExpoLocalization (12.0.0):
+    - ExpoModulesCore
+  - ExpoModulesCore (0.6.3):
     - React-Core
-    - UMCore
-  - EXLinearGradient (9.2.0):
-    - UMCore
-  - EXLocalization (9.1.0):
-    - UMCore
-  - ExpoModulesCore (0.2.0):
-    - ExpoModulesCore/Core (= 0.2.0)
-    - ExpoModulesCore/Interfaces (= 0.2.0)
-    - UMCore
-  - ExpoModulesCore/Core (0.2.0):
-    - UMCore
-  - ExpoModulesCore/Interfaces (0.2.0):
-    - ExpoModulesCore/Core
-    - UMCore
-  - EXStructuredHeaders (1.1.1):
-    - UMCore
-  - EXUpdates (0.8.5):
+    - ReactCommon/turbomodule/core
+  - EXStructuredHeaders (2.1.0)
+  - EXUpdates (0.11.3):
+    - EXManifests
+    - ExpoModulesCore
     - EXStructuredHeaders
     - EXUpdatesInterface
     - React-Core
-    - UMCore
-  - EXUpdatesInterface (0.2.2)
+  - EXUpdatesInterface (0.5.0)
   - FBLazyVector (0.65.1)
   - FBReactNativeSpec (0.65.1):
     - RCT-Folly (= 2021.04.26.00)
@@ -399,36 +395,36 @@ PODS:
   - React-jsinspector (0.65.1)
   - react-native-blur (0.8.0):
     - React
-  - react-native-fbsdk-next (4.3.0):
+  - react-native-fbsdk-next (4.6.0):
     - React-Core
-    - react-native-fbsdk-next/Core (= 4.3.0)
-    - react-native-fbsdk-next/Login (= 4.3.0)
-    - react-native-fbsdk-next/Share (= 4.3.0)
-  - react-native-fbsdk-next/Core (4.3.0):
+    - react-native-fbsdk-next/Core (= 4.6.0)
+    - react-native-fbsdk-next/Login (= 4.6.0)
+    - react-native-fbsdk-next/Share (= 4.6.0)
+  - react-native-fbsdk-next/Core (4.6.0):
     - FBSDKCoreKit (~> 9.3)
     - React-Core
-  - react-native-fbsdk-next/Login (4.3.0):
+  - react-native-fbsdk-next/Login (4.6.0):
     - FBSDKLoginKit (~> 9.3)
     - React-Core
-  - react-native-fbsdk-next/Share (4.3.0):
+  - react-native-fbsdk-next/Share (4.6.0):
     - FBSDKShareKit (~> 9.3)
     - React-Core
   - react-native-flipper (0.110.0):
     - React-Core
-  - react-native-get-random-values (1.7.0):
+  - react-native-get-random-values (1.7.2):
     - React-Core
-  - react-native-in-app-review (3.2.2):
+  - react-native-in-app-review (3.3.1):
     - React
-  - react-native-netinfo (6.0.1):
+  - react-native-netinfo (6.2.1):
     - React-Core
-  - react-native-pager-view (5.4.4):
+  - react-native-pager-view (5.4.9):
     - React-Core
   - react-native-restart (0.0.22):
     - React-Core
   - react-native-safe-area-context (3.3.2):
     - React-Core
-  - react-native-splash-screen (3.2.0):
-    - React
+  - react-native-splash-screen (3.3.0):
+    - React-Core
   - React-perflogger (0.65.1)
   - React-RCTActionSheet (0.65.1):
     - React-Core/RCTActionSheetHeaders (= 0.65.1)
@@ -497,25 +493,25 @@ PODS:
     - React
   - RNAppleAuthentication (2.1.5):
     - React-Core
-  - RNBootSplash (3.2.4):
+  - RNBootSplash (3.2.7):
     - React-Core
-  - RNCAsyncStorage (1.15.4):
+  - RNCAsyncStorage (1.15.14):
     - React-Core
   - RNCMaskedView (0.1.11):
     - React
-  - RNCPicker (1.16.6):
+  - RNCPicker (1.16.8):
     - React-Core
   - RNDateTimePicker (3.5.2):
     - React-Core
-  - RNFBAdMob (11.4.1):
+  - RNFBAdMob (11.5.0):
     - Firebase/AdMob (= 7.11.0)
     - PersonalizedAdConsent (~> 1.0.5)
     - React-Core
     - RNFBApp
-  - RNFBApp (11.4.1):
+  - RNFBApp (11.5.0):
     - Firebase/CoreOnly (= 7.11.0)
     - React-Core
-  - RNFBAuth (11.4.1):
+  - RNFBAuth (11.5.0):
     - Firebase/Auth (= 7.11.0)
     - React-Core
     - RNFBApp
@@ -561,7 +557,7 @@ PODS:
   - RNSentry (2.4.2):
     - React-Core
     - Sentry (= 6.1.4)
-  - RNShare (7.0.0):
+  - RNShare (7.3.2):
     - React-Core
   - RNSVG (12.1.1):
     - React
@@ -570,26 +566,22 @@ PODS:
   - Sentry (6.1.4):
     - Sentry/Core (= 6.1.4)
   - Sentry/Core (6.1.4)
-  - UMAppLoader (2.2.0)
-  - UMCore (7.1.2)
-  - UMReactNativeAdapter (6.3.7):
-    - ExpoModulesCore
-    - React-Core
-    - UMCore
-  - UMTaskManagerInterface (6.2.0):
-    - UMCore
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
 
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - EXApplication (from `../node_modules/expo-application/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
-  - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
-  - EXLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
-  - EXLocalization (from `../node_modules/expo-localization/ios`)
+  - EXJSONUtils (from `../node_modules/expo-json-utils/ios`)
+  - EXKeepAwake (from `../node_modules/expo-keep-awake/ios`)
+  - EXManifests (from `../node_modules/expo-manifests/ios`)
+  - Expo (from `../node_modules/expo/ios`)
+  - ExpoLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
+  - ExpoLocalization (from `../node_modules/expo-localization/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core/ios`)
   - EXStructuredHeaders (from `../node_modules/expo-structured-headers/ios`)
   - EXUpdates (from `../node_modules/expo-updates/ios`)
@@ -672,10 +664,6 @@ DEPENDENCIES:
   - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
-  - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
-  - "UMCore (from `../node_modules/react-native-unimodules/node_modules/@unimodules/core/ios`)"
-  - "UMReactNativeAdapter (from `../node_modules/@unimodules/react-native-adapter/ios`)"
-  - UMTaskManagerInterface (from `../node_modules/unimodules-task-manager-interface/ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -719,17 +707,25 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  EXApplication:
+    :path: "../node_modules/expo-application/ios"
   EXConstants:
     :path: "../node_modules/expo-constants/ios"
   EXFileSystem:
     :path: "../node_modules/expo-file-system/ios"
   EXFont:
     :path: "../node_modules/expo-font/ios"
-  EXImageLoader:
-    :path: "../node_modules/expo-image-loader/ios"
-  EXLinearGradient:
+  EXJSONUtils:
+    :path: "../node_modules/expo-json-utils/ios"
+  EXKeepAwake:
+    :path: "../node_modules/expo-keep-awake/ios"
+  EXManifests:
+    :path: "../node_modules/expo-manifests/ios"
+  Expo:
+    :path: "../node_modules/expo/ios"
+  ExpoLinearGradient:
     :path: "../node_modules/expo-linear-gradient/ios"
-  EXLocalization:
+  ExpoLocalization:
     :path: "../node_modules/expo-localization/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core/ios"
@@ -849,14 +845,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
-  UMAppLoader:
-    :path: "../node_modules/unimodules-app-loader/ios"
-  UMCore:
-    :path: "../node_modules/react-native-unimodules/node_modules/@unimodules/core/ios"
-  UMReactNativeAdapter:
-    :path: "../node_modules/@unimodules/react-native-adapter/ios"
-  UMTaskManagerInterface:
-    :path: "../node_modules/unimodules-task-manager-interface/ios"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -865,16 +853,20 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
-  EXConstants: 4cb52b6d8f636c767104a44bf7db3873e9c01a6f
-  EXFileSystem: 0a04aba8da751b9ac954065911bcf166503f8267
-  EXFont: 9846ba1bb6f5f5aed44e20eea3ac70693323832d
-  EXImageLoader: d3531a3fe530b22925c19977cb53bb43e3821fe6
-  EXLinearGradient: f9ea3259f096b27008860ca50764184225dc71c9
-  EXLocalization: 8b9463c81843da214476b541a27811dd885c9a76
-  ExpoModulesCore: 2734852616127a6c1fc23012197890a6f3763dc7
-  EXStructuredHeaders: e52b880264d15b8ad07d36670226c29476af6334
-  EXUpdates: 013d26649cb6ab4f8d8d80c35d3d4be150b47e7c
-  EXUpdatesInterface: b68e78b912a03fff7901a5f46ec200c45e3506a5
+  EXApplication: bdc8dc27713235565da1029a34385229f31b8e08
+  EXConstants: 5d18484e38e8eacef7695a82214b6ac90133dedf
+  EXFileSystem: 7d1309ba6b38b82ef7fc9e80174de3f9184ac8b4
+  EXFont: 1fb13af43dc517c01c0ff21a6e32f9f9bf2ea602
+  EXJSONUtils: f515cf71710855d7ba5bfc6752af3b9a6f6aad01
+  EXKeepAwake: b571c2ad8323b2fced6e907766e2549f75119471
+  EXManifests: 50e42e01335df4e54109dee7be5a91bfd37347db
+  Expo: 5f9812539b12998a813315ea8036971c9b56a9e7
+  ExpoLinearGradient: a7f1672e1727fedc4280d56c27606f8e195b9fcc
+  ExpoLocalization: 83582a967db52987a8479490b056d5eb9fd70552
+  ExpoModulesCore: d04e519b3e8e21523b195bb21a40144e30f1e163
+  EXStructuredHeaders: 2ce79a3770bd3795bade1aab215ada70deae8bbc
+  EXUpdates: 98b9e647ce7a0e9d5ab67135bf42188c750a99eb
+  EXUpdatesInterface: f459b515151bd73fff7a35366eace34a6c6a0d3f
   FBLazyVector: 33c82491102f20ecddb6c6a2c273696ace3191e0
   FBReactNativeSpec: df8f81d2a7541ee6755a047b398a5cb5a72acd0e
   FBSDKCoreKit: 0d1ae58388a458b8222f72025804cdc84eb5d0c3
@@ -920,15 +912,15 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 43f2542aed3c26e42175b339f8d37fe3dd683765
   React-jsinspector: 41e58e5b8e3e0bf061fdf725b03f2144014a8fb0
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
-  react-native-fbsdk-next: 19e974b071047b7ed1dad86a9dc3fe77dff76b8c
+  react-native-fbsdk-next: a0dd8905af573ec4d21b7bc398423ccaa2ce2b07
   react-native-flipper: 19d1ae21290a3e77445fc68322745eb71a753a71
-  react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
-  react-native-in-app-review: 00a66a085c61dbd4474041dc14e7bfee81a86130
-  react-native-netinfo: 7cb7877ff31ebeb3d03ce0b4fbb616f121ddd859
-  react-native-pager-view: 5ab4d0b4b44d89f77310cb3eb8129745f274ce55
+  react-native-get-random-values: 30b3f74ca34e30e2e480de48e4add2706a40ac8f
+  react-native-in-app-review: dbdf950d70d9f33edd6958949c1da50d90d3a15e
+  react-native-netinfo: 3d3769f0d65de15c83a9bf1346f8be71de5a24bf
+  react-native-pager-view: 3ee7d4c7697fb3ef788346e834a60cca97ed8540
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
-  react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
+  react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   React-perflogger: fd28ee1f2b5b150b00043f0301d96bd417fdc339
   React-RCTActionSheet: 7f3fa0855c346aa5d7c60f9ced16e067db6d29fa
   React-RCTAnimation: 2119a18ee26159004b001bc56404ca5dbaae6077
@@ -943,31 +935,27 @@ SPEC CHECKSUMS:
   ReactCommon: eafed38eec7b591c31751bfa7494801618460459
   ReactNativeUiLib: cde7263a7d308b60161cd286f95c9433e79f2f7d
   RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
-  RNBootSplash: 4844706cbb56a3270556c9b94e59dedadccd47e4
-  RNCAsyncStorage: f47a7e8f927f7c9da947491fc55752eb9ce17f2d
+  RNBootSplash: f31eba8f6d496e2029859e06e5582cac4607256d
+  RNCAsyncStorage: ea6b5c280997b2b32a587793163b1f10e580c4f7
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
-  RNCPicker: c3a3d481bec16624ed84a3c2a64c92fdc5515960
+  RNCPicker: 0991c56da7815c0cf946d6f63cf920b25296e5f6
   RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
-  RNFBAdMob: bbc64554e13d019d37fbc981f5f48ba4c6ea5889
-  RNFBApp: 996860ad6832996faba79ef3f6ec2d3ea5870dd9
-  RNFBAuth: 3726f7f9bc9e9efb80cd1f5b2e65c4b04dc53760
+  RNFBAdMob: a2b5f148468b16d02543707d4627bc9a19016bf3
+  RNFBApp: 9c90f9d576861947ba75fe0830567c570bcbcf6d
+  RNFBAuth: 99fdbce04ff3d39e57a7a3956d632ee69145685b
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: ad866d4c4af2651e36801dd3b7771d7715353499
   RNKeychain: b8e0711b959a19c5b057d1e970d3c83d159b6da5
   RNReanimated: d29057cf85e771be4f0180ba1d00a7185e423a7d
   RNScreens: 4d79118be80f79fa1f4aa131909a1d6e86280af3
   RNSentry: e86fb2e2fec0365644f4b582938bf66be515acce
-  RNShare: 00e7409201e3cab13e0febc41fd4465a83ae8225
+  RNShare: d76b8c9c6e6ffb38fc18f40b4338c9d867592ed3
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
-  UMAppLoader: 21af63390e55c82e037fb9752d93114a80ecf16e
-  UMCore: ce3a4faa010239063b8343895b29a6d97b01069d
-  UMReactNativeAdapter: bb7922210cf6fdb5768f78685f3c3a2060299119
-  UMTaskManagerInterface: 2be431101b73604e64fbfffcf759336f9d8fccbb
   Yoga: aa0cb45287ebe1004c02a13f279c55a95f1572f4
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 5ab5c8bc1a53425668cecfff83f4fdef9f314ac9
+PODFILE CHECKSUM: c8ea5ff1b59a7a6da6a8366e3f11ad5d82a694bc
 
 COCOAPODS: 1.11.2

@@ -9,9 +9,6 @@ project.ext.vectoricons = [
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 // MANUAL INSTALL
 
-// Unimodules: https://docs.expo.io/bare/installing-unimodules/#configuration-for-android
-apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
-
 import com.android.build.OutputFile
 import groovy.json.JsonSlurper
 
@@ -217,8 +214,6 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     androidTestImplementation('com.wix:detox:+')
-
-    addUnimodulesDependencies()
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

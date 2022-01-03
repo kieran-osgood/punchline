@@ -13,6 +13,7 @@
 		98F466DF6ED94BF686FA4FDB /* AvenirNextLTPro-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E096C8AD355042BDAE9D3826 /* AvenirNextLTPro-Bold.otf */; };
 		9E78FFED6110410DA467D161 /* AvenirNextLTPro-UltLt.otf in Resources */ = {isa = PBXBuildFile; fileRef = 6136A5C77C284C3BB59749D3 /* AvenirNextLTPro-UltLt.otf */; };
 		A4B148D367B119F99EC2C2E5 /* libPods-punchline.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EADEA568884090C1B008E181 /* libPods-punchline.a */; };
+		D2FF06E5943C32429FED226C /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EFC932CA7984B5C7D18A64 /* ExpoModulesProvider.swift */; };
 		E41867E52621B302004EC29E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E41867E42621B302004EC29E /* GoogleService-Info.plist */; };
 		E4A1FA6226DBEDC60020994F /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E4A1FA6126DBEDC60020994F /* BootSplash.storyboard */; };
 		E4A49E6227209AF7004B25CB /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = E4A49E6127209AF6004B25CB /* Expo.plist */; };
@@ -33,6 +34,7 @@
 		32B04630CC446F19212E357A /* Pods-punchline-punchlineTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline-punchlineTests.release.xcconfig"; path = "Target Support Files/Pods-punchline-punchlineTests/Pods-punchline-punchlineTests.release.xcconfig"; sourceTree = "<group>"; };
 		3ECD546F3378FD459F4E82B0 /* Pods-punchline.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline.debug.xcconfig"; path = "Target Support Files/Pods-punchline/Pods-punchline.debug.xcconfig"; sourceTree = "<group>"; };
 		4D40708BE521DBE7DC6E68C8 /* Pods-punchline.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline.release.xcconfig"; path = "Target Support Files/Pods-punchline/Pods-punchline.release.xcconfig"; sourceTree = "<group>"; };
+		55EFC932CA7984B5C7D18A64 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-punchline/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		6136A5C77C284C3BB59749D3 /* AvenirNextLTPro-UltLt.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "AvenirNextLTPro-UltLt.otf"; path = "../assets/fonts/AvenirNextLTPro-UltLt.otf"; sourceTree = "<group>"; };
 		8D3D2E99D3814D73E5353ACB /* Pods-punchline-punchlineTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-punchline-punchlineTests.debug.xcconfig"; path = "Target Support Files/Pods-punchline-punchlineTests/Pods-punchline-punchlineTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E096C8AD355042BDAE9D3826 /* AvenirNextLTPro-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "AvenirNextLTPro-Bold.otf"; path = "../assets/fonts/AvenirNextLTPro-Bold.otf"; sourceTree = "<group>"; };
@@ -61,6 +63,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D429F7F7860DD77C4311CF1 /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				E05ED2FC2F065528051B680B /* punchline */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
 		13B07FAE1A68108700A75B9A /* punchline */ = {
 			isa = PBXGroup;
 			children = (
@@ -129,6 +139,7 @@
 				71ED362ACEA45F9F60DCD285 /* Pods */,
 				54F52B37EBDC43109EFFE617 /* Resources */,
 				E4CB847126A3069900D5023F /* punchline-Bridging-Header.h */,
+				0D429F7F7860DD77C4311CF1 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -141,6 +152,14 @@
 				13B07F961A680F5B00A75B9A /* punchline.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E05ED2FC2F065528051B680B /* punchline */ = {
+			isa = PBXGroup;
+			children = (
+				55EFC932CA7984B5C7D18A64 /* ExpoModulesProvider.swift */,
+			);
+			name = punchline;
 			sourceTree = "<group>";
 		};
 		E4A49E6027209AA6004B25CB /* Supporting */ = {
@@ -259,6 +278,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-punchline/Pods-punchline-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXUpdates/EXUpdates.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/PersonalizedAdConsent/PersonalizedAdConsent.bundle",
@@ -282,6 +303,8 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXConstants.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXUpdates.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/PersonalizedAdConsent.bundle",
@@ -406,6 +429,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				E4CB847326A3069A00D5023F /* fbsdk-bridging.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				D2FF06E5943C32429FED226C /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -518,7 +542,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
@@ -572,7 +596,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
