@@ -106,7 +106,7 @@ export const SettingsModel = types
     },
     unselectAllBlockedCategories() {
       self.root.apiStore.api.categories.forEach((x) => x.update(false))
-    },
+    }
   }))
 
 /**

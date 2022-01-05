@@ -1,3 +1,4 @@
+import { JokeLength } from "app/graphql"
 import { RootStore } from "app/models"
 import { destroy, getEnv, getRoot, IAnyStateTreeNode, Instance, types } from "mobx-state-tree"
 import { RootStoreBase } from "./RootStore.base"
@@ -23,6 +24,15 @@ export const ApiRootStore = RootStoreBase.props({
     },
     removeChild(item: IAnyStateTreeNode) {
       destroy(item)
+    },
+    getQueryJokes() {
+      return self.queryJokes({
+        input: {
+          jokeLengths: [JokeLength.LARGE, JokeLength.MEDIUM, JokeLength.SMALL],
+          profanityFilter: false,
+          blockedCategoryIds: [],
+        },
+      })
     },
   }))
 

@@ -4,9 +4,9 @@ import "./mock-async-storage"
 import "./mock-i18n"
 import "./mock-reactotron"
 // import 'react-native-gesture-handler/jestSetup'
-
 // global.window = {};
 // global.window = global;
+// src/setupTests.js
 
 jest.mock("@react-native-firebase/admob", () => ({
   BannerAd: jest.fn(() => null),
