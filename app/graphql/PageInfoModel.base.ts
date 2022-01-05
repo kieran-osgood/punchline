@@ -49,5 +49,5 @@ export function selectFromPageInfo() {
   return new PageInfoModelSelector()
 }
 
-export const pageInfoModelPrimitives = selectFromPageInfo().hasNextPage.hasPreviousPage.startCursor
-  .endCursor
+export const pageInfoModelPrimitives =
+  selectFromPageInfo().hasNextPage.hasPreviousPage.startCursor.endCursor

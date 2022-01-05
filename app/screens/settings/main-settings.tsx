@@ -21,9 +21,8 @@ const MARGINS = spacing[4]
 
 export const MainSettingsScreen = observer(function MainSettingsScreen() {
   const { settings, userStore } = useStores()
-  const { open, close, refs, freeze } = useSheetsManager<
-    ["jokeLength", "jokeCategoriesRef", "socialSigninConversion", "bugReport"]
-  >()
+  const { open, close, refs, freeze } =
+    useSheetsManager<["jokeLength", "jokeCategoriesRef", "socialSigninConversion", "bugReport"]>()
 
   const onSharePress = async (url: string) => {
     try {

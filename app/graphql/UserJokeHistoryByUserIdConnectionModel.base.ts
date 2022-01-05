@@ -97,5 +97,5 @@ export function selectFromUserJokeHistoryByUserIdConnection() {
   return new UserJokeHistoryByUserIdConnectionModelSelector()
 }
 
-export const userJokeHistoryByUserIdConnectionModelPrimitives = selectFromUserJokeHistoryByUserIdConnection()
-  .totalCount
+export const userJokeHistoryByUserIdConnectionModelPrimitives =
+  selectFromUserJokeHistoryByUserIdConnection().totalCount

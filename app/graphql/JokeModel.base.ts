@@ -125,5 +125,6 @@ export function selectFromJoke() {
   return new JokeModelSelector()
 }
 
-export const jokeModelPrimitives = selectFromJoke().title.body.positiveRating.negativeRating
-  .skipRating.reportCount.explicitContent.length
+export const jokeModelPrimitives =
+  selectFromJoke().title.body.positiveRating.negativeRating.skipRating.reportCount.explicitContent
+    .length

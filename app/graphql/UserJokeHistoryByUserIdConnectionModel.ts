@@ -17,11 +17,10 @@ export {
  *
  * A connection to a list of items.
  */
-export const UserJokeHistoryByUserIdConnectionModel = UserJokeHistoryByUserIdConnectionModelBase.actions(
-  (self) => ({
+export const UserJokeHistoryByUserIdConnectionModel =
+  UserJokeHistoryByUserIdConnectionModelBase.actions((self) => ({
     // This is an auto-generated example action.
     log() {
       console.log(JSON.stringify(self))
     },
-  }),
-)
+  }))

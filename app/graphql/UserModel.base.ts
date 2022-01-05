@@ -116,5 +116,5 @@ export function selectFromUser() {
   return new UserModelSelector()
 }
 
-export const userModelPrimitives = selectFromUser().firebaseUid.jokeCount.name.createdOn.lastLogin
-  .onboardingComplete
+export const userModelPrimitives =
+  selectFromUser().firebaseUid.jokeCount.name.createdOn.lastLogin.onboardingComplete

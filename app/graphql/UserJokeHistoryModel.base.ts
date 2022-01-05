@@ -68,5 +68,5 @@ export function selectFromUserJokeHistory() {
   return new UserJokeHistoryModelSelector()
 }
 
-export const userJokeHistoryModelPrimitives = selectFromUserJokeHistory().bookmarked.rating
-  .createdAt
+export const userJokeHistoryModelPrimitives =
+  selectFromUserJokeHistory().bookmarked.rating.createdAt
