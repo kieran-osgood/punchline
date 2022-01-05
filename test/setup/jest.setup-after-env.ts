@@ -1,5 +1,5 @@
 import { afterAll, afterEach, beforeAll } from "@jest/globals"
-import { server } from "./msw/server"
+import { server } from "../msw/server"
 
 // Establish API mocking before all tests.
 beforeAll(() => {

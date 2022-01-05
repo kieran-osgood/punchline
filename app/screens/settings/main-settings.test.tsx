@@ -1,6 +1,6 @@
 import { render, waitFor } from "@testing-library/react-native"
 import * as React from "react"
-import { RenderDefaultApp } from "test/utils"
+import { RenderDefaultApp } from "test/utils/components"
 import { MainSettingsScreen } from "./main-settings"
 
 const RenderDefaultMainSettingsScreen = () => {

@@ -14,8 +14,8 @@ export default class MockGraphQLClient extends GraphQLClient {
     this.requests = requests
   }
 
-  // override request<T>(query: Query, variables?: Variables): Promise<T> {
-  //   if (this.requests.length === 0) return Promise.reject(new Error("No more requests"))
-  //   return Promise.resolve((this.requests.shift() as RequestFunction)(query, variables)) // return and remove the first mocked response
-  // }
+  override request<T>(query: Query, variables?: Variables): Promise<T> {
+    if (this.requests.length === 0) return Promise.reject(new Error("No more requests"))
+    return Promise.resolve((this.requests.shift() as RequestFunction)(query, variables)) // return and remove the first mocked response
+  }
 }

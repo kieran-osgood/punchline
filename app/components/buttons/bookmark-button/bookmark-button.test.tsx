@@ -1,10 +1,12 @@
-import * as React from "react"
-import { BookmarkButton, accessibilityLabel } from "./bookmark-button"
 import { fireEvent, render } from "@testing-library/react-native"
+import * as React from "react"
+import { accessibilityLabel, BookmarkButton } from "./bookmark-button"
 
-test("renders component", () => {
-  const { getByA11yLabel } = render(<BookmarkButton bookmarked onPress={jest.fn()} />)
-  expect(getByA11yLabel(accessibilityLabel)).toBeTruthy()
+test.only("renders component", () => {
+  const { getByA11yLabel, debug } = render(<BookmarkButton bookmarked onPress={jest.fn()} />)
+  debug()
+
+  expect(getByA11yLabel("123")).toBeTruthy()
 })
 
 test("button presses are detected", () => {

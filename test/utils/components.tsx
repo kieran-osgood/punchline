@@ -8,7 +8,7 @@ import { createHttpClient } from "mst-gql"
 import React from "react"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
 import { View, ViewProps } from "react-native-ui-lib"
-import MockEnvironment from "test/mock-environment"
+import MockEnvironment from "test/__mocks__/mock-environment"
 
 type Key = string | number
 export type InitialData = Parameters<typeof RootStoreModel.create>[0] &

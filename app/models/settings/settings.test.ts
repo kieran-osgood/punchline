@@ -1,7 +1,12 @@
 import { CategoryModel, JokeLength } from "app/graphql"
 import { createSettingsDefaultModel } from "app/models"
 import { SnapshotOut } from "mobx-state-tree"
-import { createMockedRootStore, failIfFalsy } from "test/utils"
+import {
+  createMockedRootStore,
+  createMockedRootStoreWithApi,
+  failIfFalsy,
+} from "test/utils/components"
+import MockGraphQLClient from "test/__mocks__/mock-graphql-client"
 
 const categories = {
   1: {
@@ -19,6 +24,17 @@ const categories = {
     name: "",
   },
 } as const
+
+test.only("iTEST", async () => {
+  const { apiStore } = createMockedRootStoreWithApi(undefined, new MockGraphQLClient([]))
+  // apiStore.api.setBearerToken("abc")
+  try {
+    const { jokes: connection } = await apiStore.api.getQueryJokes()
+    console.log("connection: ", connection)
+  } catch (err) {
+    console.log("err:", err)
+  }
+})
 
 describe("settings model", () => {
   test("can be created", () => {
