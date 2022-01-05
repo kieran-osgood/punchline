@@ -5,10 +5,6 @@ import "./mock-i18n"
 import "./mock-reactotron"
 // import 'react-native-gesture-handler/jestSetup'
 
-declare global {
-  let __TEST__: boolean
-}
-
 // global.window = {};
 // global.window = global;
 

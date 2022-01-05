@@ -91,5 +91,5 @@ export function selectFromUserCategoriesConnection() {
   return new UserCategoriesConnectionModelSelector()
 }
 
-export const userCategoriesConnectionModelPrimitives = selectFromUserCategoriesConnection()
-  .totalCount
+export const userCategoriesConnectionModelPrimitives =
+  selectFromUserCategoriesConnection().totalCount

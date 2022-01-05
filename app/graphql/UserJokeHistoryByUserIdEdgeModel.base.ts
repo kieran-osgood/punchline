@@ -56,5 +56,5 @@ export function selectFromUserJokeHistoryByUserIdEdge() {
   return new UserJokeHistoryByUserIdEdgeModelSelector()
 }
 
-export const userJokeHistoryByUserIdEdgeModelPrimitives = selectFromUserJokeHistoryByUserIdEdge()
-  .cursor
+export const userJokeHistoryByUserIdEdgeModelPrimitives =
+  selectFromUserJokeHistoryByUserIdEdge().cursor
