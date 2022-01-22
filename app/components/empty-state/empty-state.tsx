@@ -60,11 +60,11 @@ const Body = ({ type }: { type?: UserJokeListProps["type"] }) => {
         {type === "BOOKMARK" && (
           <>
             {"It appears you've not bookmarked any jokes.\n Make sure to press  "}
-            <Button
-              round
+            <BookmarkButton
               style={ACTION_BUTTON}
               activeOpacity={0.7}
-              iconSource={() => <BookmarkButton bookmarked size={13} />}
+              bookmarked
+              size={13}
               disabled
             />
             {"  to save them here!"}

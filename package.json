@@ -5,6 +5,7 @@
     "start": "npx react-native start",
     "android": "npx react-native run-android",
     "ios": "npx react-native run-ios",
+    "test": "jest --watch",
     "test:e2e": "detox test -c ios.sim.debug",
     "build:e2e": "detox build -c ios.sim.debug",
     "record:e2e": "detox recorder --configuration \"ios.sim.release\" --outputTestFile \"~/e2e/recorded.js\" --testName \"My Recorded Test\" --record",
@@ -15,6 +16,8 @@
     "ci:build:e2e:android": "detox build -c android.emu.debug",
     "ci:test:e2e:android": "detox test -c android.emu.debug -l verbose --cleanup",
     "compile": "tsc --noEmit -p . --pretty",
+    "detox:recorder": "detox recorder --configuration \"ios.sim.release\" --outputTestFile \"./e2e/recorded.js\" --testName \"My Recorded Test\" --record",
+    "detox:recorder:installed": "detox recorder --bundleId \"com.ko.punchline\" --simulatorId booted --outputTestFile \"./e2e/recorded.js\" --testName \"My Recorded Test\" --record",
     "format": "npm-run-all format:*",
     "format:js": "prettier --write \"**/*.js\"",
     "format:json": "prettier --write \"**/*.json\"",
@@ -23,7 +26,6 @@
     "lint": "eslint index.js app storybook test --fix --ext .js,.ts,.tsx && yarn format",
     "patch": "patch-package",
     "storybook": "start-storybook -p 9001 -c ./storybook",
-    "test": "jest --watch --detectOpenHandles",
     "adb": "adb reverse tcp:9090 tcp:9090 && adb reverse tcp:3000 tcp:3000 && adb reverse tcp:9001 tcp:9001 && adb reverse tcp:8081 tcp:8081 && adb reverse tcp:5000 tcp:5000",
     "postinstall": "node ./bin/postInstall",
     "build-ios": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios",
@@ -35,8 +37,6 @@
     "uri:android": "adb shell am start -W -a android.intent.action.VIEW -d \"punchline://joke/Sm9rZQppOA==\" com.ko.punchline/.MainActivity",
     "ios:certificates": "cd ios && fl match development --force",
     "nuke": "rm -rf node_modules && npm cache clean --force && yarn && watchman watch-del-all && rm -rf $TMPDIR/haste-map-* && rm -rf $TMPDIR/metro-cache && yarn start",
-    "detox:recorder": "detox recorder --configuration \"ios.sim.release\" --outputTestFile \"./e2e/recorded.js\" --testName \"My Recorded Test\" --record",
-    "detox:recorder:installed": "detox recorder --bundleId \"com.ko.punchline\" --simulatorId booted --outputTestFile \"./e2e/recorded.js\" --testName \"My Recorded Test\" --record",
     "prepare": "husky install",
     "tsc-check": "npx tsc --noEmit --watch"
   },
@@ -187,6 +187,7 @@
   },
   "jest": {
     "preset": "jest-expo",
+
     "clearMocks": true,
     "moduleDirectories": [
       "node_modules"
@@ -198,12 +199,12 @@
     },
     "setupFiles": [
       "<rootDir>/node_modules/react-native/jest/setup.js",
-      "<rootDir>/test/jest.setup.ts"
+      "<rootDir>/test/setup/jest.setup.ts"
     ],
     "setupFilesAfterEnv": [
       "@testing-library/jest-native/extend-expect",
       "jest-date-mock",
-      "<rootDir>/test/jest.setup-after-env.ts"
+      "<rootDir>/test/setup/jest.setup-after-env.ts"
     ],
     "transform": {
       "^.+\\.js$": "babel-jest"
@@ -213,7 +214,7 @@
       "/e2e"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@storybook|@react-native-community|expo-localization|@unimodules|@sentry/react-native|@invertase/react-native-apple-authentication|expo-linear-gradient|expo-updates|react-native-vector-icons|@expo|expo-*)"
+      "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@storybook|@react-native-community|expo-constants|expo-localization|@unimodules|@sentry/react-native|@invertase/react-native-apple-authentication|expo-linear-gradient|expo-asset|expo-updates|expo-modules-core|expo-font|@expo/vector-icons)"
     ]
   },
   "resolutions": {
