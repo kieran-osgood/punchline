@@ -23,7 +23,8 @@
     "lint": "eslint index.js app storybook test --fix --ext .js,.ts,.tsx && yarn format",
     "patch": "patch-package",
     "storybook": "start-storybook -p 9001 -c ./storybook",
-    "test": "jest --watch --detectOpenHandles",
+    "test": "jest --watch",
+    "test:once": "jest",
     "adb": "adb reverse tcp:9090 tcp:9090 && adb reverse tcp:3000 tcp:3000 && adb reverse tcp:9001 tcp:9001 && adb reverse tcp:8081 tcp:8081 && adb reverse tcp:5000 tcp:5000",
     "postinstall": "node ./bin/postInstall",
     "build-ios": "react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios",
@@ -129,7 +130,7 @@
     "@storybook/react-native": "^5.3.25",
     "@storybook/react-native-server": "5.3.23",
     "@testing-library/jest-native": "^4.0.2",
-    "@testing-library/react-native": "^8.0.0",
+    "@testing-library/react-native": "^9.0.0",
     "@types/detox": "^17.14.3",
     "@types/faker": "^5.5.3",
     "@types/i18n-js": "3.0.3",
@@ -147,17 +148,18 @@
     "canvas": "2.6.1",
     "detox": "^18.23.1",
     "detox-recorder": "^1.0.151",
-    "eslint": "7.15.0",
+    "eslint": "^8.8.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "16.0.2",
     "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jest": "^26.1.0",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-react": "7.21.5",
     "eslint-plugin-react-native": "3.10.0",
     "faker": "^5.5.3",
     "husky": ">=6",
-    "jest": "^27.4.5",
+    "jest": "^27.4.7",
     "jest-circus": "25.5.4",
     "jest-date-mock": "^1.0.8",
     "jest-expo": "^44.0.1",
@@ -198,12 +200,12 @@
     },
     "setupFiles": [
       "<rootDir>/node_modules/react-native/jest/setup.js",
-      "<rootDir>/test/jest.setup.ts"
+      "<rootDir>/test/setup/jest.setup.ts"
     ],
     "setupFilesAfterEnv": [
       "@testing-library/jest-native/extend-expect",
       "jest-date-mock",
-      "<rootDir>/test/jest.setup-after-env.ts"
+      "<rootDir>/test/setup/jest.setup-after-env.ts"
     ],
     "transform": {
       "^.+\\.js$": "babel-jest"
@@ -327,7 +329,8 @@
     "plugins": [
       "react",
       "react-native",
-      "@typescript-eslint"
+      "@typescript-eslint",
+      "jest"
     ],
     "parserOptions": {
       "ecmaFeatures": {
@@ -355,6 +358,7 @@
       "it": false
     },
     "rules": {
+      "jest/no-focused-tests": "error",
       "@typescript-eslint/ban-ts-ignore": 0,
       "@typescript-eslint/explicit-function-return-type": 0,
       "@typescript-eslint/explicit-member-accessibility": 0,
