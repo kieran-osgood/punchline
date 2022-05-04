@@ -53,7 +53,7 @@
     "react": "~16.13.1",
     "react-dom": "~16.13.1",
     "react-hook-form": "^6.8.4",
-    "react-native": "~0.63.2",
+    "react-native": "~0.68.1",
     "react-native-animated-nav-tab-bar": "^3.0.5",
     "react-native-code-push": "^6.3.0",
     "react-native-collapsible": "^1.5.3",
