@@ -65,7 +65,7 @@ export const JokeScreen = observer(function JokeScreen() {
         <View style={CARDS_CONTAINER}>
           {isLoading && <LoadingJokeCard />}
           {apiStore.jokeApi.deck.map((joke) => {
-            const onTop = joke.id === apiStore.jokeApi.topOfDeckJoke.id
+            const onTop = joke?.id === apiStore.jokeApi.topOfDeckJoke?.id
             const ref = onTop ? topCard : null
             return <Swipeable key={joke.id} {...{ onTop, joke, ref, isLoading }} />
           })}
