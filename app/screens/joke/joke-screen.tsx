@@ -150,13 +150,12 @@ export const Controls = (props: ButtonsProps) => {
       />
 
       <View style={SECONDARY_ACTION_BUTTONS}>
-        <Button
+        <BookmarkButton
           style={ACTION_BUTTON}
-          round
           onPress={handleBookmarkPress}
           activeOpacity={ACTIVE_OPACITY}
-          iconSource={() => <BookmarkButton bookmarked={bookmarked} size={24} />}
-          marginB-s2
+          bookmarked={bookmarked}
+          size={24}
         />
         <Button
           style={ACTION_BUTTON}

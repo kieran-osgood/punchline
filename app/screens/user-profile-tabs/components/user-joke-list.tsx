@@ -5,7 +5,7 @@ import { NavigationProps } from "app/navigators"
 import { ACTION_BUTTON } from "app/screens"
 import { EmptyStateImage, TrashCan } from "assets/images"
 import { BookmarkButton, EmptyState, Screen } from "components"
-import { observer, Observer } from "mobx-react-lite"
+import { observer } from "mobx-react-lite"
 import React from "react"
 import {
   Alert,
@@ -26,7 +26,7 @@ import Animated, {
 } from "react-native-reanimated"
 import { mix } from "react-native-redash"
 import Svg, { Path } from "react-native-svg"
-import { Button, Card, ExpandableSection, Text, ThemeManager, View } from "react-native-ui-lib"
+import { Card, ExpandableSection, Text, ThemeManager, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 
 const renderItem = ({ item: bookmark }: { item: UserJokeHistoryModelType }) => (
@@ -48,6 +48,7 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
     setRefreshing(true)
     refetch()
     setRefreshing(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -132,15 +133,11 @@ export const UserJoke = observer(function UserJoke(props: UserJokeProps) {
               {bookmark.joke.body}
             </Text>
             <View row centerV spread marginT-s3>
-              <Button
+              <BookmarkButton
                 {...{ onPress }}
-                round
                 style={ACTION_BUTTON}
-                iconSource={() => (
-                  <Observer>
-                    {() => <BookmarkButton size={24} bookmarked={bookmark.bookmarked} />}
-                  </Observer>
-                )}
+                size={24}
+                bookmarked={bookmark.bookmarked}
               />
 
               <ShareLink jokeId={bookmark.joke.id} style={SHARE}>

@@ -4,7 +4,7 @@ import { SnapshotOut } from "mobx-state-tree"
 import {
   createMockedRootStore,
   createMockedRootStoreWithApi,
-  failIfFalsy
+  failIfFalsy,
 } from "test/utils/components"
 import MockGraphQLClient from "test/__mocks__/mock-graphql-client"
 
@@ -25,7 +25,7 @@ const categories = {
   },
 } as const
 
-test.only("iTEST", async () => {
+test("iTEST", async () => {
   const { apiStore } = createMockedRootStoreWithApi(undefined, new MockGraphQLClient([]))
   // apiStore.api.setBearerToken("abc")
   try {

@@ -6,6 +6,8 @@ type RootParamListBase = import("app/navigators/root-navigator").RootStackParamL
 
 declare global {
   let __TEST__: boolean
+  export const __TEST__: boolean
+
   namespace ReactNavigation {
     interface RootParamList extends RootParamListBase {}
   }

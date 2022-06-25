@@ -31,6 +31,7 @@
   "exclude": ["node_modules"],
   "include": [
     "declarations.d.ts",
+    "env.d.ts",
     "app",
     "test",
     "e2e/*.ts",
