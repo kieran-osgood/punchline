@@ -53,6 +53,7 @@ export const JokeApiStoreModel = types
           .filter((x) => !(self.settings.profanityFilter && x.explicitContent))
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           .filter((x) => x?.categories?.some((y) => !y.isFiltered && self.api.categories.has(y.id)))
+          .filter(Boolean)
       )
     },
     get topOfDeckJoke() {
@@ -67,7 +68,9 @@ export const JokeApiStoreModel = types
     },
     get deck() {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      return [this.nonViewedJokes?.[this.nonViewedJokes.length - 2], this.topOfDeckJoke]
+      return [this.nonViewedJokes?.[this.nonViewedJokes.length - 2], this.topOfDeckJoke].filter(
+        Boolean,
+      )
     },
   }))
   .actions((self) => ({
