@@ -6,7 +6,7 @@ import { getSnapshot, types } from "mobx-state-tree"
 import * as React from "react"
 import InAppReview from "react-native-in-app-review"
 import { ViewProps } from "react-native-ui-lib"
-import { createRootStore, TestChildComponent } from "test/utils"
+import { createMockedRootStore, TestChildComponent } from "test/utils/components"
 import withRateApp from "./with-rate-app"
 
 // to avoid race conditions between expected and actual date values
@@ -30,13 +30,13 @@ const renderDefaultApp = (rootStore: RootStore) => {
 
 describe("Validate withRateApp side effects", () => {
   it("withRateApp will wrap and return child passing props", () => {
-    const rootStore = createRootStore({})
+    const rootStore = createMockedRootStore({})
     const { getByA11yLabel } = render(renderDefaultApp(rootStore))
     getByA11yLabel(/a11y label/i)
   })
 
   it("withRateApp resets goodJokeCount and sets lastDisplayedReviewPrompt to now", async () => {
-    const rootStore = createRootStore({
+    const rootStore = createMockedRootStore({
       userStore: getSnapshot(
         types
           .optional(UserStoreModel, {
@@ -51,15 +51,15 @@ describe("Validate withRateApp side effects", () => {
 
     render(renderDefaultApp(rootStore))
 
-    const spy = jest.spyOn(InAppReview, "isAvailable").mockImplementation(() => true)
-    const spy2 = jest
+    const spyIsAvailable = jest.spyOn(InAppReview, "isAvailable").mockImplementation(() => true)
+    const spyRequestInAppReview = jest
       .spyOn(InAppReview, "RequestInAppReview")
       .mockImplementation(() => Promise.resolve(true))
 
     //   const result = await InAppReview.isAvailable()
 
-    spy.mockRestore()
-    spy2.mockRestore()
+    spyIsAvailable.mockRestore()
+    spyRequestInAppReview.mockRestore()
 
     await waitFor(() => {
       expect(rootStore.userStore.goodJokeCount).toEqual(0)

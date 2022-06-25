@@ -1,13 +1,19 @@
 import { UserJokeHistoryModelType } from "app/graphql"
-import { createUserJokeHistoryApiStoreDefaultModel } from "./user-joke-history-api-store"
+import { RootStoreModel } from "app/models"
+
+const getUserJokeHistoryStore = () => {
+  const rootStore = RootStoreModel.create()
+  return rootStore.apiStore.userJokeHistoryApi
+}
+
 describe("", () => {
   test("can be created", () => {
-    const store = createUserJokeHistoryApiStoreDefaultModel().create()
+    const store = getUserJokeHistoryStore()
     expect(store).toBeTruthy()
   })
 
   test("bookmark jokes sorts by date", () => {
-    const store = createUserJokeHistoryApiStoreDefaultModel().create()
+    const store = getUserJokeHistoryStore()
     let prevItem: UserJokeHistoryModelType | null = null
 
     for (let i = 0; i < store.bookmarkedJokes.length; i++) {
@@ -19,7 +25,7 @@ describe("", () => {
   })
 
   test("bookmark jokes filters on bookmarked", () => {
-    const store = createUserJokeHistoryApiStoreDefaultModel().create()
+    const store = getUserJokeHistoryStore()
     let prevItem: UserJokeHistoryModelType | null = null
 
     for (let i = 0; i < store.historyJokes.length; i++) {
@@ -30,11 +36,11 @@ describe("", () => {
     }
   })
 
-  test("history sorts by date", () => {
-    const store = createUserJokeHistoryApiStoreDefaultModel().create()
-  })
+  // test("history sorts by date", () => {
+  //   const store = getUserJokeHistoryStore()
+  // })
 
-  test("fetchUserJokeHistory correctly passes variables through", () => {
-    const store = createUserJokeHistoryApiStoreDefaultModel().create()
-  })
+  // test("fetchUserJokeHistory correctly passes variables through", () => {
+  //   const store = getUserJokeHistoryStore()
+  // })
 })

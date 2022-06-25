@@ -1,6 +1,7 @@
 # OSX
 #
 .DS_Store
+*.hprof
 
 # VS Code
 .vscode/.react/*[.map, .bundle]
@@ -86,3 +87,6 @@ android/fastlane/.env
 
 # Detox
 .artifacts
+
+# eslint
+.eslintcache

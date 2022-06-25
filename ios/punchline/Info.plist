@@ -92,8 +92,6 @@
 	<string/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Feather.ttf</string>
-		<string>AntDesign.ttf</string>
 		<string>AvenirNextLTPro-Bold.otf</string>
 		<string>AvenirNextLTPro-It.otf</string>
 		<string>AvenirNextLTPro-Regular.otf</string>

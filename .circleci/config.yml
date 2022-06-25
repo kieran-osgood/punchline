@@ -15,31 +15,6 @@ jobs:
       - run: 
           name: Git submodule update
           command: git submodule update --init --recursive
-      - persist_to_workspace:
-          paths: .
-          root: .
-
-  analyse_js:
-    executor: rn/linux_android
-    # parallelism: 5
-    steps:
-      - attach_workspace:
-          at: .
-      - rn/yarn_install
-      - run:
-          name: Jest
-          command: |
-            TESTS=$(circleci tests glob "app/**/*.test.{ts,tsx}" | circleci tests split)
-            yarn ci:test:jest --findRelatedTests $TESTS
-      - persist_to_workspace:
-          paths: .
-          root: .
-
-  decrypt_keystore:
-    executor: rn/linux_android 
-    steps:
-      - attach_workspace:
-          at: .
       - run: 
           name: Decrypt keystore file
           command: gpg -d --pinentry-mode loopback --batch --yes --passphrase="$ENCRYPTION_PASSPHRASE" --output android/app/punchline.keystore --decrypt android/app/punchline-keys/punchline.keystore.gpg
@@ -47,78 +22,52 @@ jobs:
           name: Copy keystore to fastlane directory
           command: cp android/app/punchline.keystore android/fastlane/release.keystore 
       - persist_to_workspace:
-          paths: .
           root: .
-      
-  build_android_debug:
+          paths: 
+            - .
+
+  test_with_jest_and_typescript:
     executor: rn/linux_android
-    resource_class: medium+
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: "Fastlane Build Debug - Android"
-          working_directory: android
-          no_output_timeout: 30m
-          command: |
-            export LC_ALL=en_US.UTF-8
-            export LANG=en_US.UTF-8
-            gem install bundler
-            bundle install
-            bundle exec fastlane build_debug_apk
-      - store_artifacts:
-          path: android/app/build/outputs/apk/debug
-     
-  build_android_release:
-    executor: rn/linux_android
-    resource_class: medium+
+      # TODO: size: small?
+    # parallelism: 5
     steps:
       - attach_workspace:
           at: .
       - rn/yarn_install
+      - run: yarn tsc-check
+      - run: yarn lint
       - run:
-          name: "Fastlane Build Release - Android"
-          working_directory: android
-          no_output_timeout: 30m
+          name: Jest
           command: |
-            export LC_ALL=en_US.UTF-8
-            export LANG=en_US.UTF-8
-            gem install bundler
-            bundle install
-            bundle exec fastlane beta
-      - store_artifacts:
-          path: android/app/build/outputs/bundle/release
-
-  build_ios_release:
-    macos:
-      xcode: 12.4.0
-    steps:
-      - checkout
-      - run: 
-          name: "Fastlane Build Release - iOS"
-          working_directory: ios
-          no_output_timeout: 30m
-          command: |
-            bundle exec fastlane build_ios
-      - store_artifacts:
-          path: ios/output
+            TESTS=$(circleci tests glob "app/**/*.test.{ts,tsx}" | circleci tests split)
+            yarn ci:test:jest --findRelatedTests $TESTS
+      - persist_to_workspace:
+          root: .
+          paths: 
+            - .
   
-  e2e_android_debug:
+  optimize_assets:
+    executor: rn/linux_android
+    steps:
+      - run: npm install -g sharp-cli
+      - run: npx expo-optimize
+
+  e2e_android_release:
     executor:
       name: android/android-machine
       resource-class: large
     steps:
       - attach_workspace:
           at: .
-      - checkout
-      - run: npm i -g yarn
-      - rn/yarn_install
+      # - checkout
+      # - run: npm i -g yarn
+      # - rn/yarn_install
       - android/create-avd:
-          avd-name: android_29_avd
+          avd-name: android_30_avd
           install: true
-          system-image: system-images;android-29;default;x86
+          system-image: system-images;android-30;default;x86
       - android/start-emulator:
-          avd-name: android_29_avd
+          avd-name: android_30_avd
           no-window: true
           restore-gradle-cache-prefix: v1a
           post-emulator-launch-assemble-command: ''
@@ -135,125 +84,149 @@ jobs:
             export LANG=en_US.UTF-8
             gem install bundler
             bundle install
-            bundle exec fastlane e2e_debug
+            bundle exec fastlane e2e_release
       - android/save-gradle-cache:
           cache-prefix: v1a
 
+  build_android_playstore:
+    executor: rn/linux_android
+    resource_class: medium+
+    steps:
+      - attach_workspace:
+          at: .
+      # TODO: confirm this works without another install
+      # - rn/yarn_install
+      - run:
+          name: "Fastlane Build Release - Android"
+          working_directory: android
+          no_output_timeout: 30m
+          # TODO: confirm if its necessary to do all of these steps
+          # TODO: fork linux_android and setup stuff
+          command: |
+            export LC_ALL=en_US.UTF-8
+            export LANG=en_US.UTF-8
+            gem install bundler
+            bundle install
+            bundle exec fastlane playstore
+      - store_artifacts:
+          path: android/app/build/outputs/bundle/release
+
+  e2e_ios_release:
+    macos:
+      xcode: 13.1.0
+    steps:
+      - attach_workspace:
+          at: .
+      # - run: npm i -g yarn
+      # - rn/yarn_install
+      # TODO: add build and start simulator commands
+      - run:
+          name: Start Metro Packager (Background)
+          background: true
+          command: npm run start
+      - run: 
+          name: "Fastlane Build Release - iOS"
+          working_directory: ios
+          no_output_timeout: 30m
+          command: |
+            export LC_ALL=en_US.UTF-8
+            export LANG=en_US.UTF-8
+            gem install bundler
+            bundle install
+            bundle exec fastlane e2e_release
+      - persist_to_workspace:
+          root: .
+          paths: 
+            - .
+  
+  build_ios_appstore:
+    macos:
+      xcode: 13.1.0
+    steps:
+      - attach_workspace:
+          at: .
+      - run: 
+          name: "Fastlane Build Release - iOS"
+          working_directory: ios
+          no_output_timeout: 30m
+          command: |
+            bundle exec fastlane release_appstore
+      - store_artifacts:
+          path: ios/output
+
+  # update_git_tags:
+  #   docker: # run the steps with Docker
+  #     # CircleCI Go images available at: https://hub.docker.com/r/circleci/golang/
+  #     - image: circleci/golang:1.16
+  #   steps: 
+  #     - attach_workspace:
+  #         at: .
+  #     - checkout_code
+  #     - run: 
+  #         name: "Build Go Executable"
+  #         command: echo 
+  #         working_directory: ./a
+  #     # - run: FIXME: set the environnment variable for the github token here
+  #     - run:
+  #         name: "Run app"
+  #         environment:
+  #           SSH_PASSWORD: '${MY_APP_PREFIX}'
+  #         command: update-git-tags --project_url <<pipeline.project.git_url>> --branch <<pipeline.git.branch>> --ssh_key $SSH_KEY
+  #         working_directory: ./a
+  #     # checkout_code will pull the repo as it is included as a submodule
+  #     # Build the go executable
+  #     # Execute the app
+
 workflows:
+  # Update the git tags if the version number of the app has changed
+  # update_git_tags: 
+  #   jobs:
+  #     # gonna try this in the job first
+  #     # - checkout_code:
+  #     - build_go:
+  #         filters:
+  #           tags:
+  #             # FIXME: Need ot work out how to do a !v
+  #             only: /^v.*/
+  #           branches:
+  #             only:
+  #               - master
+
   # Only runs on the develop branch 
-  develop:
+  build_and_test:
     jobs: 
-      # Checkout the code and persist to the Workspace
       - checkout_code:
           filters:
+            # Runs on all tags starting with v
+            tags:
+              only: /^v.*/
             branches:
               only:
                 - develop
-      # Analyze the Javascript using ESLint, and Jest
-      - analyse_js:
+      - test_with_jest_and_typescript:
           requires:
             - checkout_code
-      # # Builds debug android apk
-      # Probably dont need this?
-      - build_android_debug:
+      - optimize_assets:
           requires:
-              - checkout_code
-              - analyse_js
-      - e2e_android_debug:
-          requires: 
-              - build_android_debug
-      - decrypt_keystore:
+            - checkout_code
+      - e2e_android_release:
           requires:
-            - e2e_android_debug
-      # Builds android aab
-      - build_android_release:
+            - test_with_jest_and_typescript
+          # Runs on all tags starting with v
+          filters:
+            tags:
+              only: /^v.*/
+      - build_android_playstore:
           requires:
-              - decrypt_keystore
-              - e2e_android_debug
+              - test_with_jest_and_typescript
       # Build and test the iOS app in release mode
-      - rn/ios_build_and_test:
-          yarn_cache: true
-          yarn_cache_folder: "~/.cache/yarn"          
-          xcodebuild_cache: false
-          homebrew_cache: false
-          project_type: "workspace"
-          project_path: "ios/punchline.xcworkspace"
-          device: "iPhone 11"
-          build_configuration: "Release"
-          scheme: "punchline"
-          detox_configuration: "ios.sim.release"
+      - e2e_ios_release:
           requires:
-            - checkout_code
-            - analyse_js
-
-  # Only runs on the master branch 
-  # master:
-  #   jobs: 
-  #     # Checkout the code and persist to the Workspace
-  #     - checkout_code:
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
-  #           tags:
-  #             only: /^v.*/
-      
-  #     - update_homebrew:
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
-  #           tags:
-  #             only: /^v.*/
-
-  #     # Analyze the Javascript using ESLint, and Jest
-  #     - analyse_js:
-  #         requires:
-  #           - checkout_code
-
-  #     - decrypt_keystore:
-  #         requires:
-  #           - checkout_code
-
-  #     # This configures the rn/linux_js for building android
-  #     - configure_fastlane_android:
-  #         requires:
-  #           - analyse_js
-  #     # This configures the rn/linux_js for e2e testing
-  #     - configure_fastlane_e2e:
-  #         requires:
-  #           - analyse_js
-
-  #     - build_android_release:
-  #         requires:
-  #             - configure_fastlane_android
-  #             - decrypt_keystore
-  #             - configure_fastlane_e2e
-
-  #     - fastlane_e2e_android:
-  #         requires:
-  #             - build_android_release
-  #             - configure_fastlane_android
-  #             - configure_fastlane_e2e
-
-  #     # Build and test the iOS app in release mode
-  #     # - rn/ios_build_and_test:
-  #     #     yarn_cache: false
-  #     #     xcodebuild_cache: false
-  #     #     homebrew_cache: false
-  #     #     project_type: "workspace"
-  #     #     project_path: "ios/punchline.xcworkspace"
-  #     #     device: "iPhone 11"
-  #     #     build_configuration: "Release"
-  #     #     scheme: "punchline"
-  #     #     detox_configuration: "ios.sim.release"
-  #     #     requires:
-  #     #       - checkout_code
-  #     #       - analyse_js
-  #     #       - update_homebrew
-
-  #     # - build_ios_release:
-  #     #     requires:
-  #     #         - configure_fastlane_android
-  #     #         - decrypt_keystore
-  #     #         - rn/ios_build_and_test
+            - test_with_jest_and_typescript
+          filters:
+            tags:
+              only: /^v.*/      
+      - build_ios_appstore:
+          requires:
+            - e2e_ios_release
+            # - rn/ios_build_and_test

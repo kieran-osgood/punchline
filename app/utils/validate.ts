@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import { contains } from "ramda"
 const ValidateJS = require("validate.js")
 
@@ -9,6 +12,7 @@ const Validate: any = ValidateJS.default ? ValidateJS.default : ValidateJS
  */
 Validate.validators.excludes = function custom(value, options, key, attributes) {
   const list = attributes[options.attribute] || []
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (value && contains(value, list)) {
     return options.message || `${value} is in the list`
   }

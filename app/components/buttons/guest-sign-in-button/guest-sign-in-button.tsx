@@ -2,8 +2,9 @@ import auth from "@react-native-firebase/auth"
 import * as Sentry from "@sentry/react-native"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
+import { ViewStyle } from "react-native"
 import { Button } from "react-native-ui-lib"
-import { spacing } from "theme"
+import { color, spacing } from "theme"
 
 export interface GuestSignInButtonProps {}
 
@@ -19,13 +20,7 @@ export const GuestSignInButton = observer(function GuestSignInButton(
 
   return (
     <Button
-      style={{
-        borderWidth: 1,
-        paddingHorizontal: spacing[7],
-        paddingVertical: spacing[3],
-        borderRadius: 8,
-        borderColor: "white",
-      }}
+      style={BUTTON}
       linkColor="white"
       link
       text80BO
@@ -34,3 +29,11 @@ export const GuestSignInButton = observer(function GuestSignInButton(
     />
   )
 })
+
+const BUTTON: ViewStyle = {
+  borderWidth: 1,
+  paddingHorizontal: spacing[7],
+  paddingVertical: spacing[3],
+  borderRadius: 8,
+  borderColor: color.palette.white,
+}

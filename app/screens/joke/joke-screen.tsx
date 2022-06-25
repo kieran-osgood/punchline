@@ -27,9 +27,8 @@ export const JokeScreen = observer(function JokeScreen() {
   const topCard = React.useRef<SwipeHandler>(null)
   const query = useQuery()
   const { apiStore } = useStores()
-  const { open, close, refs, freeze } = useSheetsManager<
-    ["jokeOptions", "reportJoke", "deepLinkJoke"]
-  >()
+  const { open, close, refs, freeze } =
+    useSheetsManager<["jokeOptions", "reportJoke", "deepLinkJoke"]>()
 
   const onSwipe = React.useCallback(
     (joke: JokeModelType, rating: RatingValue, bookmarked: boolean) => {
@@ -66,7 +65,7 @@ export const JokeScreen = observer(function JokeScreen() {
         <View style={CARDS_CONTAINER}>
           {isLoading && <LoadingJokeCard />}
           {apiStore.jokeApi.deck.map((joke) => {
-            const onTop = joke.id === apiStore.jokeApi.topOfDeckJoke.id
+            const onTop = joke?.id === apiStore.jokeApi.topOfDeckJoke?.id
             const ref = onTop ? topCard : null
             return <Swipeable key={joke.id} {...{ onTop, joke, ref, isLoading }} />
           })}
@@ -151,13 +150,12 @@ export const Controls = (props: ButtonsProps) => {
       />
 
       <View style={SECONDARY_ACTION_BUTTONS}>
-        <Button
+        <BookmarkButton
           style={ACTION_BUTTON}
-          round
           onPress={handleBookmarkPress}
           activeOpacity={ACTIVE_OPACITY}
-          iconSource={() => <BookmarkButton bookmarked={bookmarked} size={24} />}
-          marginB-s2
+          bookmarked={bookmarked}
+          size={24}
         />
         <Button
           style={ACTION_BUTTON}

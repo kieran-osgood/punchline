@@ -1,7 +1,6 @@
-import * as React from "react"
 import { storiesOf } from "@storybook/react-native"
-import { StoryScreen, Story, UseCase } from "../../../storybook/views"
-import { color } from "../../theme"
+import * as React from "react"
+import { Story, StoryScreen, UseCase } from "../../../storybook/views"
 import { BugReportSheet } from "./bug-report-sheet"
 
 storiesOf("BugReportSheet", module)
@@ -9,7 +8,7 @@ storiesOf("BugReportSheet", module)
   .add("Style Presets", () => (
     <Story>
       <UseCase text="Primary" usage="The primary.">
-        <BugReportSheet style={{ backgroundColor: color.error }} />
+        <BugReportSheet />
       </UseCase>
     </Story>
   ))

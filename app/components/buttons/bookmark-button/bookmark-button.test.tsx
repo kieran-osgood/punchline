@@ -1,17 +1,17 @@
-import * as React from "react"
-import { BookmarkButton, accessibilityLabel } from "./bookmark-button"
 import { fireEvent, render } from "@testing-library/react-native"
+import * as React from "react"
+import { BookmarkButton } from "./bookmark-button"
 
 test("renders component", () => {
-  const { getByA11yLabel } = render(<BookmarkButton bookmarked onPress={jest.fn()} />)
-  expect(getByA11yLabel(accessibilityLabel)).toBeTruthy()
+  const { getByTestId } = render(<BookmarkButton bookmarked onPress={jest.fn()} />)
+  expect(getByTestId("bookmarks-button")).toBeTruthy()
 })
 
 test("button presses are detected", () => {
   const mockCallback = jest.fn()
-  const { getByA11yLabel } = render(<BookmarkButton bookmarked onPress={mockCallback} />)
+  const { getByTestId } = render(<BookmarkButton bookmarked onPress={mockCallback} />)
 
   expect(mockCallback).toBeCalledTimes(0)
-  fireEvent.press(getByA11yLabel(accessibilityLabel))
+  fireEvent.press(getByTestId("bookmarks-button"))
   expect(mockCallback).toBeCalledTimes(1)
 })

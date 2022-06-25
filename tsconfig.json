@@ -10,7 +10,8 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
-    "noUnusedLocals": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": false,
     "sourceMap": true,
     "target": "esnext",
     "lib": ["esnext"],
@@ -28,5 +29,15 @@
     }
   },
   "exclude": ["node_modules"],
-  "include": ["app", "test", "e2e/*.ts", "storybook", "assets", "./*.ts", "./*.js"]
+  "include": [
+    "declarations.d.ts",
+    "env.d.ts",
+    "app",
+    "test",
+    "e2e/*.ts",
+    "storybook",
+    "assets",
+    "./*.ts",
+    "./*.js"
+  ]
 }

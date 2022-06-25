@@ -1,9 +1,89 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`.login() shows Toast and logs error if requests fail 1`] = `
+Object {
+  "apiStore": Object {
+    "api": Object {
+      "__queryCache": Object {},
+      "accessToken": null,
+      "categories": Object {},
+      "jokes": Object {},
+      "userJokeHistories": Object {},
+      "users": Object {},
+    },
+    "jokeApi": Object {
+      "deepLinkJoke": undefined,
+    },
+    "jokeReportApi": Object {},
+    "userJokeHistoryApi": Object {},
+  },
+  "settings": Object {
+    "blockedCategories": Array [],
+    "jokeLengthPreferences": Object {
+      "LARGE": true,
+      "MEDIUM": true,
+      "SMALL": true,
+    },
+    "notifications": Object {
+      "email": false,
+      "push": false,
+      "team": false,
+    },
+    "profanityFilter": true,
+  },
+  "userStore": Object {
+    "goodJokeCount": 0,
+    "lastDisplayedReviewPrompt": 1641323475000,
+    "onboardingComplete": false,
+    "user": null,
+  },
+}
+`;
+
+exports[`.login() shows Toast and logs error if requests fail 2`] = `
+Object {
+  "apiStore": Object {
+    "api": Object {
+      "__queryCache": Object {},
+      "accessToken": null,
+      "categories": Object {},
+      "jokes": Object {},
+      "userJokeHistories": Object {},
+      "users": Object {},
+    },
+    "jokeApi": Object {
+      "deepLinkJoke": undefined,
+    },
+    "jokeReportApi": Object {},
+    "userJokeHistoryApi": Object {},
+  },
+  "settings": Object {
+    "blockedCategories": Array [],
+    "jokeLengthPreferences": Object {
+      "LARGE": true,
+      "MEDIUM": true,
+      "SMALL": true,
+    },
+    "notifications": Object {
+      "email": false,
+      "push": false,
+      "team": false,
+    },
+    "profanityFilter": true,
+  },
+  "userStore": Object {
+    "goodJokeCount": 0,
+    "lastDisplayedReviewPrompt": 1641323475000,
+    "onboardingComplete": false,
+    "user": null,
+  },
+}
+`;
+
 exports[`store can be created with user 1`] = `
 Object {
   "goodJokeCount": 0,
-  "lastDisplayedReviewPrompt": 782939475000,
+  "lastDisplayedReviewPrompt": 1641323475000,
   "onboardingComplete": false,
   "user": Object {
     "displayName": "",
@@ -26,7 +106,7 @@ Object {
 exports[`store can be created without any user 1`] = `
 Object {
   "goodJokeCount": 0,
-  "lastDisplayedReviewPrompt": 782939475000,
+  "lastDisplayedReviewPrompt": 1641323475000,
   "onboardingComplete": false,
   "user": null,
 }

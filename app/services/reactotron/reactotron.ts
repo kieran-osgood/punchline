@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { isDevelopment } from "app/utils/current-environment"
 import { onSnapshot } from "mobx-state-tree"
@@ -73,6 +75,7 @@ export class Reactotron {
       state: {
         initial: false,
         snapshots: false,
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         ...(config && config.state),
       },
     }
@@ -122,6 +125,7 @@ export class Reactotron {
       if (this.config.useAsyncStorage) {
         Tron.setAsyncStorageHandler(AsyncStorage)
       }
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       Tron.useReactNative({
         asyncStorage: this.config.useAsyncStorage ? undefined : false,
       })

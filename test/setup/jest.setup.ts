@@ -1,16 +1,8 @@
 import "react-native"
 // libraries to mock
-import "./mock-async-storage"
-import "./mock-i18n"
-import "./mock-reactotron"
-// import 'react-native-gesture-handler/jestSetup'
-
-declare global {
-  let __TEST__: boolean
-}
-
-// global.window = {};
-// global.window = global;
+import "../__mocks__/mock-async-storage"
+import "../__mocks__/mock-i18n"
+import "../__mocks__/mock-reactotron"
 
 jest.mock("@react-native-firebase/admob", () => ({
   BannerAd: jest.fn(() => null),
@@ -50,15 +42,17 @@ jest.mock("react-native-share", () => ({}))
 
 require("react-native-reanimated/lib/reanimated2/jestUtils").setUpTests()
 
-global.__reanimatedWorkletInit = function (worklet) {
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+global.__reanimatedWorkletInit = function (worklet: { __worklet: boolean }) {
   worklet.__worklet = true
 }
 
 jest.mock("react-native-reanimated", () => ({
   ...jest.requireActual("react-native-reanimated/mock"),
-  makeMutable: (f) => f,
-  useWorkletCallback: (f) => f,
-  useAnimatedProps: (style) => style,
+  makeMutable: (f: any) => f,
+  useWorkletCallback: (f: any) => f,
+  useAnimatedProps: (style: any) => style,
 }))
 
 jest.mock("@gorhom/bottom-sheet", () => {
@@ -76,3 +70,11 @@ jest.mock("@gorhom/bottom-sheet", () => {
     })),
   }
 })
+
+jest.mock("@sentry/react-native", () => ({
+  captureException: () => jest.fn(),
+}))
+
+jest.mock("react-native-toast-message", () => ({
+  show: () => jest.fn(),
+}))

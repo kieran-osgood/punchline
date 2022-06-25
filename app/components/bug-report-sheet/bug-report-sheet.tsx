@@ -36,21 +36,18 @@ const ForwardBugReportSheet = (
     // const lastEventId = Sentry.lastEventId()
     // If we can hook into the event listener maybe leave it in asyncstorage until we need it?
     // for now just post description to backend
+
+    const onSuccess = () => {
+      props.close?.()
+    }
+
+    const onError = (error) => {
+      Sentry.captureException(error)
+    }
+
     apiStore.api
-      .mutateAddBugReport(
-        {
-          input: data,
-        },
-        (c) => c.bugReport((b) => b.id.description),
-      )
-      .then(
-        () => {
-          props.close?.()
-        },
-        (error) => {
-          Sentry.captureException(error)
-        },
-      )
+      .mutateAddBugReport({ input: data }, (c) => c.bugReport((b) => b.id.description))
+      .then(onSuccess, onError)
   }
 
   return (

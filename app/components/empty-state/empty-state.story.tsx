@@ -1,7 +1,6 @@
-import * as React from "react"
 import { storiesOf } from "@storybook/react-native"
-import { StoryScreen, Story, UseCase } from "../../../storybook/views"
-import { color } from "../../theme"
+import * as React from "react"
+import { Story, StoryScreen, UseCase } from "../../../storybook/views"
 import { EmptyState } from "./empty-state"
 
 storiesOf("EmptyState", module)
@@ -9,7 +8,7 @@ storiesOf("EmptyState", module)
   .add("Style Presets", () => (
     <Story>
       <UseCase text="Primary" usage="The primary.">
-        <EmptyState style={{ backgroundColor: color.error }} />
+        <EmptyState onPress={() => console.log("onpress")} />
       </UseCase>
     </Story>
   ))

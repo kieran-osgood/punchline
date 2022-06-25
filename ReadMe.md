@@ -1,28 +1,34 @@
 # Get Started
 
 ## Secret management
+
 Secret variables go in the .env.template, files should be included in the punchline-keys private repository, encrypted with openssl.
 
 Encrypt:
-``
-Decrypt:
-`gpg -d --pinentry-mode loopback --batch --yes --passphrase="$(passphrase)" --output android/app/punchline.keystore --decrypt android/app/punchlinekeys/punchline.keystore.gpg`
+``Decrypt:`gpg -d --pinentry-mode loopback --batch --yes --passphrase="$(passphrase)" --output android/app/punchline.keystore --decrypt android/app/punchlinekeys/punchline.keystore.gpg`
 
 ## Debugging
+
 If using VS Code there is a .vscode/launch.json already included in the repository.
+
 1. In order to run debugging, install the [react native tools](https://marketplace.visualstudio.com/items?itemName=msjsdiag.vscode-react-native) extension.
-2. *This must be done prior to step 3* Go to the debugging menu and select "Attach to Packager" configuration.
+2. _This must be done prior to step 3_ Go to the debugging menu and select "Attach to Packager" configuration.
 3. If your project is not already running then start it with `npm run _TARGET-OS_`
- a. If running the android emulator go to the terminal with the metro packager and press `D` to open the 
- b. If running the iOS simulator press `cmd + d`
+   a. If running the android emulator go to the terminal with the metro packager and press `D` to open the
+   b. If running the iOS simulator press `cmd + d`
 4. Select to turn on Debugging from the menu that displays - this should now connect the debugger to the running emulator/simulator instance.
 
 ## Third-Party Package Information
+
 ### react-native-vector-icons
+
 Only the following font-groups have been installed:
+
 - Feather
 - AntDesign
+
 ### react-native-swiper
+
 There is a patch (created with `patch-package`) that has disabled the touch controls to make it controllable only by buttons.
 
 # Welcome to your new ignited app!

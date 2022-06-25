@@ -1,7 +1,7 @@
-import * as Sentry from '@sentry/react-native'
-import 'expo-asset'
+import * as Sentry from "@sentry/react-native"
+import "expo-asset"
 import { AppRegistry } from "react-native"
-import 'react-native-gesture-handler'
+import "react-native-gesture-handler"
 import { enableFreeze } from "react-native-screens"
 // This is the first file that ReactNative will run when it starts up.
 //

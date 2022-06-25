@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { TouchableOpacity, View, ViewStyle } from "react-native"
-import { Text } from "react-native-ui-lib"
+import { TouchableOpacity, ViewStyle } from "react-native"
+import { Text, View } from "react-native-ui-lib"
 import { color } from "theme"
 
 export type CategorySettings = {
@@ -24,8 +24,6 @@ export interface SelectPillsProps {
  */
 export const SelectPills = observer(function SelectPills(props: SelectPillsProps) {
   const { data, onValueChange, accessibilityLabel = "List of selectable items" } = props
-
-  const handlePress = (item: CategorySettings) => onValueChange(item)
   const activeStyle = (isActive: boolean) => (isActive ? ACTIVE_SELECT : INACTIVE_SELECT)
   return (
     <View style={CONTAINER} {...{ accessibilityLabel }}>
@@ -34,7 +32,7 @@ export const SelectPills = observer(function SelectPills(props: SelectPillsProps
         return (
           <TouchableOpacity
             key={idx}
-            onPress={() => handlePress({ ...item, isActive: !item.isActive })}
+            onPress={() => onValueChange({ ...item, isActive: !item.isActive })}
             style={{ ...style, ...SELECT }}
             accessibilityLabel="category button"
             accessibilityHint={getAccessibilityHint(item)}

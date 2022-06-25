@@ -1,5 +1,6 @@
 import * as React from "react"
-import { View, Text, TextStyle, ViewStyle } from "react-native"
+import { TextStyle, ViewStyle } from "react-native"
+import { Text, View } from "react-native-ui-lib"
 
 const ROOT: ViewStyle = { backgroundColor: "#eee" }
 const TITLE: TextStyle = { fontWeight: "600", color: "#3d3d3d" }

@@ -9,21 +9,30 @@ import { Logout, RightArrow } from "assets/images"
 import { observer } from "mobx-react-lite"
 import React from "react"
 import { Freeze } from "react-freeze"
-import { Alert, Platform, StatusBar, TextStyle, TouchableOpacity, ViewStyle } from "react-native"
+import {
+  Alert,
+  Dimensions,
+  Platform,
+  StatusBar,
+  StyleSheet,
+  TextStyle,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native"
 import { APPSTORE_URL, PLAYSTORE_URL } from "react-native-dotenv"
 import Share from "react-native-share"
 import { Button, Switch, Text, ThemeManager, View, ViewProps } from "react-native-ui-lib"
 import { color, spacing } from "theme"
 import { AppLogo, BugReportSheet, JokeCategoriesSettingSheet, Screen } from "../../components"
 
+const { height } = Dimensions.get("screen")
 const appVersion = require("app.json").expo.version
 const MARGINS = spacing[4]
 
 export const MainSettingsScreen = observer(function MainSettingsScreen() {
   const { settings, userStore } = useStores()
-  const { open, close, refs, freeze } = useSheetsManager<
-    ["jokeLength", "jokeCategoriesRef", "socialSigninConversion", "bugReport"]
-  >()
+  const { open, close, refs, freeze } =
+    useSheetsManager<["jokeLength", "jokeCategoriesRef", "socialSigninConversion", "bugReport"]>()
 
   const onSharePress = async (url: string) => {
     try {
@@ -155,10 +164,19 @@ export const MainSettingsScreen = observer(function MainSettingsScreen() {
       </Screen>
 
       <Freeze {...{ freeze }}>
-        <JokeLengthSettingSheet ref={(el) => refs.current.set("jokeLength", el)} />
-        <SocialSigninConversionSheet ref={(el) => refs.current.set("socialSigninConversion", el)} />
-        <JokeCategoriesSettingSheet ref={(el) => refs.current.set("jokeCategoriesRef", el)} />
-        <BugReportSheet ref={(el) => refs.current.set("bugReport", el)} close={() => close()} />
+        <View
+          accessibilityLabel="action sheets"
+          height={height * 0.9}
+          style={StyleSheet.absoluteFillObject}
+          pointerEvents="box-none"
+        >
+          <JokeLengthSettingSheet ref={(el) => refs.current.set("jokeLength", el)} />
+          <SocialSigninConversionSheet
+            ref={(el) => refs.current.set("socialSigninConversion", el)}
+          />
+          <JokeCategoriesSettingSheet ref={(el) => refs.current.set("jokeCategoriesRef", el)} />
+          <BugReportSheet ref={(el) => refs.current.set("bugReport", el)} close={close} />
+        </View>
       </Freeze>
     </>
   )

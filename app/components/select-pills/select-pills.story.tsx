@@ -1,7 +1,7 @@
-import * as React from "react"
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { storiesOf } from "@storybook/react-native"
-import { StoryScreen, Story, UseCase } from "../../../storybook/views"
-import { color } from "../../theme"
+import * as React from "react"
+import { Story, StoryScreen, UseCase } from "../../../storybook/views"
 import { SelectPills } from "./select-pills"
 
 storiesOf("SelectPills", module)
@@ -9,7 +9,7 @@ storiesOf("SelectPills", module)
   .add("Style Presets", () => (
     <Story>
       <UseCase text="Primary" usage="The primary.">
-        <SelectPills style={{ backgroundColor: color.error }} />
+        <SelectPills data={[]} onValueChange={() => {}} />
       </UseCase>
     </Story>
   ))

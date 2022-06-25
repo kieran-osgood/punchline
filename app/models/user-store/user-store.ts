@@ -84,6 +84,7 @@ export const UserStoreModel = types
       } catch (err) {
         self.updateUser(null)
         auth().signOut()
+        // FIXME: need to abstract console logger around this for development
         Sentry.captureException(err)
         self.root.resetStore()
         Toast.show({
@@ -127,4 +128,5 @@ export const createUserStoreDefaultModel = () =>
     onboardingComplete: false,
     goodJokeCount: 0,
     lastDisplayedReviewPrompt: new Date(),
+    user: null,
   })

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { JokeApiStoreModel } from "./joke-api-store"
 
 describe("", () => {
@@ -15,4 +16,11 @@ describe("", () => {
   test("nonviewedjokes filters viewed joke", () => {})
   test("nonviewedjokes filters categories joke", () => {})
   test("queryJokes variables properly adds settings ", () => {})
+  test("after setting deep link joke its set", () => {
+    // Need to cover api and non api
+    // const snapshot = { id: "" }
+    // const store = JokeApiStoreModel.create()
+    // store.setDeepLinkJoke(snapshot)
+    // expect(store.deepLinkJoke?.id).toBe(snapshot.id)
+  })
 })

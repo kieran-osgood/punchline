@@ -5,7 +5,7 @@ import { NavigationProps } from "app/navigators"
 import { ACTION_BUTTON } from "app/screens"
 import { EmptyStateImage, TrashCan } from "assets/images"
 import { BookmarkButton, EmptyState, Screen } from "components"
-import { Observer, observer } from "mobx-react-lite"
+import { observer } from "mobx-react-lite"
 import React from "react"
 import {
   Alert,
@@ -14,7 +14,7 @@ import {
   RefreshControl,
   StatusBar,
   TextStyle,
-  ViewStyle
+  ViewStyle,
 } from "react-native"
 import { RectButton, Swipeable } from "react-native-gesture-handler"
 import Animated, {
@@ -22,12 +22,16 @@ import Animated, {
   useDerivedValue,
   useSharedValue,
   withSpring,
-  withTiming
+  withTiming,
 } from "react-native-reanimated"
 import { mix } from "react-native-redash"
 import Svg, { Path } from "react-native-svg"
-import { Button, Card, ExpandableSection, Text, ThemeManager, View } from "react-native-ui-lib"
+import { Card, ExpandableSection, Text, ThemeManager, View } from "react-native-ui-lib"
 import { color, spacing } from "theme"
+
+const renderItem = ({ item: bookmark }: { item: UserJokeHistoryModelType }) => (
+  <UserJoke key={bookmark.id} {...{ bookmark }} />
+)
 
 export type UserJokeListProps = {
   type: "HISTORY" | "BOOKMARK"
@@ -35,7 +39,6 @@ export type UserJokeListProps = {
   refetch: () => void
   data: UserJokeHistoryModelType[]
 }
-
 export const UserJokeList = observer(function JokeBookmarkHistoryList(props: UserJokeListProps) {
   const { type, fetchMore, refetch, data } = props
   const navigation = useNavigation<NavigationProps<"UserProfileTabs">["navigation"]>()
@@ -45,6 +48,7 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
     setRefreshing(true)
     refetch()
     setRefreshing(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -54,9 +58,10 @@ export const UserJokeList = observer(function JokeBookmarkHistoryList(props: Use
         <FlatList
           refreshControl={<RefreshControl {...{ refreshing, onRefresh }} />}
           data={data}
-          renderItem={({ item: bookmark }) => <UserJoke key={bookmark.id} {...{ bookmark }} />}
+          renderItem={renderItem}
           onEndReachedThreshold={0.65}
           onEndReached={fetchMore}
+          initialNumToRender={15}
         />
       ) : (
         <EmptyState
@@ -128,15 +133,11 @@ export const UserJoke = observer(function UserJoke(props: UserJokeProps) {
               {bookmark.joke.body}
             </Text>
             <View row centerV spread marginT-s3>
-              <Button
+              <BookmarkButton
                 {...{ onPress }}
-                round
                 style={ACTION_BUTTON}
-                iconSource={() => (
-                  <Observer>
-                    {() => <BookmarkButton size={24} bookmarked={bookmark.bookmarked} />}
-                  </Observer>
-                )}
+                size={24}
+                bookmarked={bookmark.bookmarked}
               />
 
               <ShareLink jokeId={bookmark.joke.id} style={SHARE}>
