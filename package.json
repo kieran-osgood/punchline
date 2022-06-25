@@ -215,7 +215,7 @@
       "/e2e"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@storybook|@react-native-community|expo-constants|expo-localization|@unimodules|@sentry/react-native|@invertase/react-native-apple-authentication|expo-linear-gradient|expo-asset|expo-updates|expo-modules-core|expo-font|@expo/vector-icons)"
+      "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@storybook|@react-native-community|expo-constants|expo-localization|@sentry/react-native|@invertase/react-native-apple-authentication|expo-linear-gradient|expo-asset|expo-updates|expo-modules-core|expo-font|@expo/vector-icons)"
     ]
   },
   "resolutions": {
@@ -415,12 +415,5 @@
     "**/*.{ts,tsx}": "tsc-files --noEmit",
     "*.{js,ts,tsx}": "eslint --cache --fix",
     "*.format:*": "prettier --write"
-  },
-  "expo": {
-    "autolinking": {
-      "exclude": [
-        "expo-file-system"
-      ]
-    }
   }
 }

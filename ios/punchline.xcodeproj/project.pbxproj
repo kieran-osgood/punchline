@@ -45,8 +45,6 @@
 		E4A49E6127209AF6004B25CB /* Expo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		E4CB847126A3069900D5023F /* punchline-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "punchline-Bridging-Header.h"; sourceTree = "<group>"; };
 		E4CB847226A3069A00D5023F /* fbsdk-bridging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "fbsdk-bridging.swift"; sourceTree = "<group>"; };
-		E4CC6CE82623186A0035557C /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
-		E4CC6CE92623187F0035557C /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		EADEA568884090C1B008E181 /* libPods-punchline.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-punchline.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -173,8 +171,6 @@
 		E4CC6CE72623176A0035557C /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				E4CC6CE92623187F0035557C /* AntDesign.ttf */,
-				E4CC6CE82623186A0035557C /* Feather.ttf */,
 			);
 			name = Fonts;
 			sourceTree = "<group>";
