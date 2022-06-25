@@ -23,7 +23,7 @@ export const LoadingModal = observer(function LoadingModal(props: LoadingModalPr
   if (!loading) return null
 
   return (
-    <View {...{ style, backgroundColor }} center>
+    <View {...{ style, backgroundColor }} center flex-1>
       <ActivityIndicator
         size="large"
         color={color.success}
