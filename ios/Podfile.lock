@@ -517,14 +517,14 @@ PODS:
     - Firebase/Auth (= 7.11.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (1.10.3):
+  - RNGestureHandler (2.5.0):
     - React-Core
   - RNGoogleSignin (5.0.0):
     - GoogleSignIn (~> 5.0.0)
     - React-Core
   - RNKeychain (6.2.0):
     - React
-  - RNReanimated (2.2.1):
+  - RNReanimated (2.8.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -532,7 +532,6 @@ PODS:
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
-    - React
     - React-callinvoker
     - React-Core
     - React-Core/DevSupport
@@ -550,7 +549,6 @@ PODS:
     - React-RCTNetwork
     - React-RCTSettings
     - React-RCTText
-    - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
   - RNScreens (3.9.0):
@@ -563,7 +561,7 @@ PODS:
     - React-Core
   - RNSVG (12.1.1):
     - React
-  - RNVectorIcons (8.1.0):
+  - RNVectorIcons (9.2.0):
     - React-Core
   - Sentry (6.1.4):
     - Sentry/Core (= 6.1.4)
@@ -949,15 +947,15 @@ SPEC CHECKSUMS:
   RNFBAdMob: a2b5f148468b16d02543707d4627bc9a19016bf3
   RNFBApp: 9c90f9d576861947ba75fe0830567c570bcbcf6d
   RNFBAuth: 99fdbce04ff3d39e57a7a3956d632ee69145685b
-  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNGestureHandler: bad495418bcbd3ab47017a38d93d290ebd406f50
   RNGoogleSignin: ad866d4c4af2651e36801dd3b7771d7715353499
   RNKeychain: b8e0711b959a19c5b057d1e970d3c83d159b6da5
-  RNReanimated: d29057cf85e771be4f0180ba1d00a7185e423a7d
+  RNReanimated: 40cf17b319e14401ebf6b188cce5c3a45ae81041
   RNScreens: 4d79118be80f79fa1f4aa131909a1d6e86280af3
   RNSentry: e86fb2e2fec0365644f4b582938bf66be515acce
   RNShare: d76b8c9c6e6ffb38fc18f40b4338c9d867592ed3
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
-  RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
+  RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   Sentry: 9d055e2de30a77685e86b219acf02e59b82091fc
   Yoga: aa0cb45287ebe1004c02a13f279c55a95f1572f4
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
