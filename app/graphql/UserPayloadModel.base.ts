@@ -4,12 +4,12 @@
 
 import { types } from "mobx-state-tree"
 import { MSTGQLRef, QueryBuilder, withTypedRefs } from "mst-gql"
-import { RootStoreType } from "./index"
 import { ModelBase } from "./ModelBase"
-import { UserErrorModel } from "./UserErrorModel"
+import { UserErrorModel, UserErrorModelType } from "./UserErrorModel"
 import { UserErrorModelSelector } from "./UserErrorModel.base"
 import { UserModel, UserModelType } from "./UserModel"
 import { UserModelSelector } from "./UserModel.base"
+import { RootStoreType } from "./index"
 
 /* The TypeScript type that explicits the refs to other models in order to prevent a circular refs issue */
 type Refs = {

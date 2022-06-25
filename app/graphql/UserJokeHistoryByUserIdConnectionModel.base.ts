@@ -1,4 +1,6 @@
 /* This is a mst-gql generated file, don't modify it manually */
+/* eslint-disable */
+/* tslint:disable */
 
 import { IObservableArray } from "mobx"
 import { types } from "mobx-state-tree"
@@ -63,7 +65,6 @@ export class UserJokeHistoryByUserIdConnectionModelSelector extends QueryBuilder
   get totalCount() {
     return this.__attr(`totalCount`)
   }
-
   pageInfo(
     builder?:
       | string
@@ -72,7 +73,6 @@ export class UserJokeHistoryByUserIdConnectionModelSelector extends QueryBuilder
   ) {
     return this.__child(`pageInfo`, PageInfoModelSelector, builder)
   }
-
   edges(
     builder?:
       | string
@@ -83,7 +83,6 @@ export class UserJokeHistoryByUserIdConnectionModelSelector extends QueryBuilder
   ) {
     return this.__child(`edges`, UserJokeHistoryByUserIdEdgeModelSelector, builder)
   }
-
   nodes(
     builder?:
       | string

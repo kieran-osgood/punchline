@@ -19,9 +19,9 @@ import { RootStoreType } from "./index"
 
 /* The TypeScript type that explicits the refs to other models in order to prevent a circular refs issue */
 type Refs = {
-  categories: IObservableArray<CategoryModelType>
   userJokeHistories: IObservableArray<UserJokeHistoryModelType>
   users: IObservableArray<UserModelType>
+  categories: IObservableArray<CategoryModelType>
 }
 
 /**
@@ -33,11 +33,6 @@ export const JokeModelBase = withTypedRefs<Refs>()(
     .props({
       __typename: types.optional(types.literal("Joke"), "Joke"),
       id: types.identifier,
-      categories: types.union(
-        types.undefined,
-        types.null,
-        types.array(types.union(types.null, MSTGQLRef(types.late((): any => CategoryModel)))),
-      ),
       title: types.union(types.undefined, types.string),
       body: types.union(types.undefined, types.string),
       positiveRating: types.union(types.undefined, types.integer),
@@ -54,6 +49,10 @@ export const JokeModelBase = withTypedRefs<Refs>()(
       jokeReports: types.union(
         types.undefined,
         types.array(types.late((): any => JokeReportModel)),
+      ),
+      categories: types.union(
+        types.undefined,
+        types.array(MSTGQLRef(types.late((): any => CategoryModel))),
       ),
     })
     .views((self) => ({
@@ -91,14 +90,6 @@ export class JokeModelSelector extends QueryBuilder {
   get length() {
     return this.__attr(`length`)
   }
-  categories(
-    builder?:
-      | string
-      | CategoryModelSelector
-      | ((selector: CategoryModelSelector) => CategoryModelSelector),
-  ) {
-    return this.__child(`categories`, CategoryModelSelector, builder)
-  }
   userJokeHistories(
     builder?:
       | string
@@ -119,6 +110,14 @@ export class JokeModelSelector extends QueryBuilder {
       | ((selector: JokeReportModelSelector) => JokeReportModelSelector),
   ) {
     return this.__child(`jokeReports`, JokeReportModelSelector, builder)
+  }
+  categories(
+    builder?:
+      | string
+      | CategoryModelSelector
+      | ((selector: CategoryModelSelector) => CategoryModelSelector),
+  ) {
+    return this.__child(`categories`, CategoryModelSelector, builder)
   }
 }
 export function selectFromJoke() {

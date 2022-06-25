@@ -22,7 +22,7 @@ export const BugReportModelBase = withTypedRefs<Refs>()(
   ModelBase.named("BugReport")
     .props({
       __typename: types.optional(types.literal("BugReport"), "BugReport"),
-      id: types.union(types.undefined, types.integer),
+      id: types.identifier,
       description: types.union(types.undefined, types.string),
       reportingUser: types.union(types.undefined, MSTGQLRef(types.late((): any => UserModel))),
     })

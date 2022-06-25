@@ -27,11 +27,11 @@ export const UserJokeHistoryModelBase = withTypedRefs<Refs>()(
     .props({
       __typename: types.optional(types.literal("UserJokeHistory"), "UserJokeHistory"),
       id: types.identifier,
-      joke: types.union(types.undefined, types.null, MSTGQLRef(types.late((): any => JokeModel))),
-      user: types.union(types.undefined, types.null, MSTGQLRef(types.late((): any => UserModel))),
       bookmarked: types.union(types.undefined, types.boolean),
       rating: types.union(types.undefined, RatingValueEnumType),
       createdAt: types.union(types.undefined, types.frozen()),
+      joke: types.union(types.undefined, MSTGQLRef(types.late((): any => JokeModel))),
+      user: types.union(types.undefined, MSTGQLRef(types.late((): any => UserModel))),
     })
     .views((self) => ({
       get store() {

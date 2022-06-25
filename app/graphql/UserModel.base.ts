@@ -5,22 +5,22 @@
 import { IObservableArray } from "mobx"
 import { types } from "mobx-state-tree"
 import { MSTGQLRef, QueryBuilder, withTypedRefs } from "mst-gql"
+import { ModelBase } from "./ModelBase"
 import { CategoryModel, CategoryModelType } from "./CategoryModel"
 import { CategoryModelSelector } from "./CategoryModel.base"
-import { RootStoreType } from "./index"
 import { JokeModel, JokeModelType } from "./JokeModel"
 import { JokeModelSelector } from "./JokeModel.base"
-import { JokeReportModel } from "./JokeReportModel"
+import { JokeReportModel, JokeReportModelType } from "./JokeReportModel"
 import { JokeReportModelSelector } from "./JokeReportModel.base"
-import { ModelBase } from "./ModelBase"
 import { UserJokeHistoryModel, UserJokeHistoryModelType } from "./UserJokeHistoryModel"
 import { UserJokeHistoryModelSelector } from "./UserJokeHistoryModel.base"
+import { RootStoreType } from "./index"
 
 /* The TypeScript type that explicits the refs to other models in order to prevent a circular refs issue */
 type Refs = {
-  categories: IObservableArray<CategoryModelType>
   userJokeHistories: IObservableArray<UserJokeHistoryModelType>
   jokes: IObservableArray<JokeModelType>
+  categories: IObservableArray<CategoryModelType>
 }
 
 /**
@@ -32,11 +32,6 @@ export const UserModelBase = withTypedRefs<Refs>()(
     .props({
       __typename: types.optional(types.literal("User"), "User"),
       id: types.identifier,
-      categories: types.union(
-        types.undefined,
-        types.null,
-        types.array(types.union(types.null, MSTGQLRef(types.late((): any => CategoryModel)))),
-      ),
       firebaseUid: types.union(types.undefined, types.string),
       jokeCount: types.union(types.undefined, types.integer),
       name: types.union(types.undefined, types.string),
@@ -51,6 +46,10 @@ export const UserModelBase = withTypedRefs<Refs>()(
       jokeReports: types.union(
         types.undefined,
         types.array(types.late((): any => JokeReportModel)),
+      ),
+      categories: types.union(
+        types.undefined,
+        types.array(MSTGQLRef(types.late((): any => CategoryModel))),
       ),
     })
     .views((self) => ({
@@ -82,14 +81,6 @@ export class UserModelSelector extends QueryBuilder {
   get onboardingComplete() {
     return this.__attr(`onboardingComplete`)
   }
-  categories(
-    builder?:
-      | string
-      | CategoryModelSelector
-      | ((selector: CategoryModelSelector) => CategoryModelSelector),
-  ) {
-    return this.__child(`categories`, CategoryModelSelector, builder)
-  }
   userJokeHistories(
     builder?:
       | string
@@ -110,6 +101,14 @@ export class UserModelSelector extends QueryBuilder {
       | ((selector: JokeReportModelSelector) => JokeReportModelSelector),
   ) {
     return this.__child(`jokeReports`, JokeReportModelSelector, builder)
+  }
+  categories(
+    builder?:
+      | string
+      | CategoryModelSelector
+      | ((selector: CategoryModelSelector) => CategoryModelSelector),
+  ) {
+    return this.__child(`categories`, CategoryModelSelector, builder)
   }
 }
 export function selectFromUser() {

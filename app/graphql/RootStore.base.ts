@@ -5,19 +5,12 @@ import { ObservableMap } from "mobx"
 import { types } from "mobx-state-tree"
 import { MSTGQLStore, configureStoreMixin, QueryOptions, withTypedRefs } from "mst-gql"
 
-import { JokeModel, JokeModelType } from "./JokeModel"
-import { jokeModelPrimitives, JokeModelSelector } from "./JokeModel.base"
 import { JokeReportModel, JokeReportModelType } from "./JokeReportModel"
 import { jokeReportModelPrimitives, JokeReportModelSelector } from "./JokeReportModel.base"
+import { JokeModel, JokeModelType } from "./JokeModel"
+import { jokeModelPrimitives, JokeModelSelector } from "./JokeModel.base"
 import { UserModel, UserModelType } from "./UserModel"
 import { userModelPrimitives, UserModelSelector } from "./UserModel.base"
-import { CategoryModel, CategoryModelType } from "./CategoryModel"
-import { categoryModelPrimitives, CategoryModelSelector } from "./CategoryModel.base"
-import { UserJokeHistoryModel, UserJokeHistoryModelType } from "./UserJokeHistoryModel"
-import {
-  userJokeHistoryModelPrimitives,
-  UserJokeHistoryModelSelector,
-} from "./UserJokeHistoryModel.base"
 import { JokesConnectionModel, JokesConnectionModelType } from "./JokesConnectionModel"
 import {
   jokesConnectionModelPrimitives,
@@ -51,6 +44,8 @@ import { PageInfoModel, PageInfoModelType } from "./PageInfoModel"
 import { pageInfoModelPrimitives, PageInfoModelSelector } from "./PageInfoModel.base"
 import { JokesEdgeModel, JokesEdgeModelType } from "./JokesEdgeModel"
 import { jokesEdgeModelPrimitives, JokesEdgeModelSelector } from "./JokesEdgeModel.base"
+import { CategoryModel, CategoryModelType } from "./CategoryModel"
+import { categoryModelPrimitives, CategoryModelSelector } from "./CategoryModel.base"
 import { CategoriesEdgeModel, CategoriesEdgeModelType } from "./CategoriesEdgeModel"
 import {
   categoriesEdgeModelPrimitives,
@@ -61,6 +56,11 @@ import {
   userCategoriesEdgeModelPrimitives,
   UserCategoriesEdgeModelSelector,
 } from "./UserCategoriesEdgeModel.base"
+import { UserJokeHistoryModel, UserJokeHistoryModelType } from "./UserJokeHistoryModel"
+import {
+  userJokeHistoryModelPrimitives,
+  UserJokeHistoryModelSelector,
+} from "./UserJokeHistoryModel.base"
 import {
   UserJokeHistoryByUserIdEdgeModel,
   UserJokeHistoryByUserIdEdgeModelType,
@@ -103,9 +103,9 @@ import { userErrorModelPrimitives, UserErrorModelSelector } from "./UserErrorMod
 import { nodeModelPrimitives, NodeModelSelector, NodeUnion } from "./"
 
 import { ApplyPolicy } from "./ApplyPolicyEnum"
-import { JokeLength } from "./JokeLengthEnum"
-import { RatingValue } from "./RatingValueEnum"
 import { SortEnumType } from "./SortEnumTypeEnum"
+import { RatingValue } from "./RatingValueEnum"
+import { JokeLength } from "./JokeLengthEnum"
 import { ErrorCodes } from "./ErrorCodesEnum"
 
 export type JokeFilterInput = {
@@ -285,11 +285,17 @@ export type UserSortInput = {
 export type JokeReportFilterInput = {
   and?: JokeReportFilterInput[]
   or?: JokeReportFilterInput[]
-  id?: ComparableInt32OperationFilterInput
+  id?: IdOperationFilterInput
   description?: StringOperationFilterInput
   createdAt?: ComparableDateTimeOperationFilterInput
   reportedJoke?: JokeFilterInput
   reportingUser?: UserFilterInput
+}
+export type IdOperationFilterInput = {
+  eq?: string
+  neq?: string
+  in?: string[]
+  nin?: string[]
 }
 export type UserLoginInput = {
   firebaseUid: string
@@ -330,6 +336,8 @@ type Refs = {
  * Enums for the names of base graphql actions
  */
 export enum RootStoreBaseQueries {
+  queryNode = "queryNode",
+  queryNodes = "queryNodes",
   queryJokes = "queryJokes",
   queryCategories = "queryCategories",
   queryUserCategories = "queryUserCategories",
@@ -354,19 +362,19 @@ export const RootStoreBase = withTypedRefs<Refs>()(
     .extend(
       configureStoreMixin(
         [
-          ["Joke", () => JokeModel],
           ["JokeReport", () => JokeReportModel],
+          ["Joke", () => JokeModel],
           ["User", () => UserModel],
-          ["Category", () => CategoryModel],
-          ["UserJokeHistory", () => UserJokeHistoryModel],
           ["JokesConnection", () => JokesConnectionModel],
           ["CategoriesConnection", () => CategoriesConnectionModel],
           ["UserCategoriesConnection", () => UserCategoriesConnectionModel],
           ["UserJokeHistoryByUserIdConnection", () => UserJokeHistoryByUserIdConnectionModel],
           ["PageInfo", () => PageInfoModel],
           ["JokesEdge", () => JokesEdgeModel],
+          ["Category", () => CategoryModel],
           ["CategoriesEdge", () => CategoriesEdgeModel],
           ["UserCategoriesEdge", () => UserCategoriesEdgeModel],
+          ["UserJokeHistory", () => UserJokeHistoryModel],
           ["UserJokeHistoryByUserIdEdge", () => UserJokeHistoryByUserIdEdgeModel],
           ["UserPayload", () => UserPayloadModel],
           ["MutateBugReportPayload", () => MutateBugReportPayloadModel],
@@ -386,6 +394,46 @@ export const RootStoreBase = withTypedRefs<Refs>()(
       userJokeHistories: types.optional(types.map(types.late((): any => UserJokeHistoryModel)), {}),
     })
     .actions((self) => ({
+      // Fetches an object given its ID.
+      queryNode(
+        variables: { id: string },
+        resultSelector:
+          | string
+          | ((qb: NodeModelSelector) => NodeModelSelector) = nodeModelPrimitives.toString(),
+        options: QueryOptions = {},
+      ) {
+        return self.query<{ node: NodeUnion }>(
+          `query node($id: ID!) { node(id: $id) {
+        ${
+          typeof resultSelector === "function"
+            ? resultSelector(new NodeModelSelector()).toString()
+            : resultSelector
+        }
+      } }`,
+          variables,
+          options,
+        )
+      },
+      // Lookup nodes by a list of IDs.
+      queryNodes(
+        variables: { ids: string[] },
+        resultSelector:
+          | string
+          | ((qb: NodeModelSelector) => NodeModelSelector) = nodeModelPrimitives.toString(),
+        options: QueryOptions = {},
+      ) {
+        return self.query<{ nodes: NodeUnion[] }>(
+          `query nodes($ids: [ID!]!) { nodes(ids: $ids) {
+        ${
+          typeof resultSelector === "function"
+            ? resultSelector(new NodeModelSelector()).toString()
+            : resultSelector
+        }
+      } }`,
+          variables,
+          options,
+        )
+      },
       queryJokes(
         variables: {
           input: JokeQueryInput

@@ -14,9 +14,9 @@ import { RootStoreType } from "./index"
 
 /* The TypeScript type that explicits the refs to other models in order to prevent a circular refs issue */
 type Refs = {
-  jokes: IObservableArray<JokeModelType>
   users: IObservableArray<UserModelType>
   joke: JokeModelType
+  jokes: IObservableArray<JokeModelType>
 }
 
 /**
@@ -30,9 +30,9 @@ export const CategoryModelBase = withTypedRefs<Refs>()(
       id: types.identifier,
       name: types.union(types.undefined, types.string),
       image: types.union(types.undefined, types.null, types.string),
-      jokes: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => JokeModel)))),
       users: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => UserModel)))),
       joke: types.union(types.undefined, MSTGQLRef(types.late((): any => JokeModel))),
+      jokes: types.union(types.undefined, types.array(MSTGQLRef(types.late((): any => JokeModel)))),
     })
     .views((self) => ({
       get store() {
@@ -51,11 +51,6 @@ export class CategoryModelSelector extends QueryBuilder {
   get image() {
     return this.__attr(`image`)
   }
-  jokes(
-    builder?: string | JokeModelSelector | ((selector: JokeModelSelector) => JokeModelSelector),
-  ) {
-    return this.__child(`jokes`, JokeModelSelector, builder)
-  }
   users(
     builder?: string | UserModelSelector | ((selector: UserModelSelector) => UserModelSelector),
   ) {
@@ -65,6 +60,11 @@ export class CategoryModelSelector extends QueryBuilder {
     builder?: string | JokeModelSelector | ((selector: JokeModelSelector) => JokeModelSelector),
   ) {
     return this.__child(`joke`, JokeModelSelector, builder)
+  }
+  jokes(
+    builder?: string | JokeModelSelector | ((selector: JokeModelSelector) => JokeModelSelector),
+  ) {
+    return this.__child(`jokes`, JokeModelSelector, builder)
   }
 }
 export function selectFromCategory() {
