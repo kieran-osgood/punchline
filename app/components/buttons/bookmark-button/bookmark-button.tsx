@@ -1,9 +1,6 @@
 import { Observer, observer } from "mobx-react-lite"
 import * as React from "react"
-import { Button, ButtonProps, View } from "react-native-ui-lib"
-import Icon from "react-native-vector-icons/AntDesign"
-// import { AntDesign } from "@expo/vector-icons"
-import Icons from "react-native-vector-icons/FontAwesome"
+import { Button, ButtonProps } from "react-native-ui-lib"
 import Svg, { SvgProps, Path } from "react-native-svg"
 
 export type BookmarkButtonProps = Omit<ButtonProps, "size"> & {
@@ -16,7 +13,6 @@ export const accessibilityLabel = "Bookmark Button"
  */
 export const BookmarkButton = function BookmarkButton(props: BookmarkButtonProps) {
   const { bookmarked = false, size = 34, ...rest } = props
-  const name = bookmarked ? "star" : "staro"
   const color = bookmarked ? "rgb(255, 193, 7)" : "#000000"
 
   return (
