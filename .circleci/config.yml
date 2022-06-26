@@ -105,16 +105,27 @@ jobs:
       # TODO: confirm this works without another install
       # - rn/yarn_install
       - run:
-          name: "Fastlane Build Release - Android"
+          name: "Install gem"
           working_directory: android
-          no_output_timeout: 30m
           # TODO: confirm if its necessary to do all of these steps
           # TODO: fork linux_android and setup stuff
           command: |
+            gem install bundler
+      - run:
+          name: "bundle install"
+          command: bundle install
+          working_directory: android
+      - run:
+          name: "setup env for bundler"
+          working_directory: android
+          command: |
             export LC_ALL=en_US.UTF-8
             export LANG=en_US.UTF-8
-            gem install bundler
-            bundle install
+            ruby --version
+      - run:
+          name: "run bundler"
+          working_directory: android
+          command: |
             bundle exec fastlane playstore
       - store_artifacts:
           path: android/app/build/outputs/bundle/release
@@ -128,10 +139,10 @@ jobs:
       # - run: npm i -g yarn
       # - rn/yarn_install
       # TODO: add build and start simulator commands
-      - run:
-          name: Start Metro Packager (Background)
-          background: true
-          command: npm run start
+      # - run:
+      #     name: Start Metro Packager (Background)
+      #     background: true
+      #     command: npm run start
       - run: 
           name: "Fastlane Build Release - iOS"
           working_directory: ios
@@ -141,9 +152,9 @@ jobs:
             export LANG=en_US.UTF-8
             gem install bundler
             bundle install
-            brew tap wix/brew
-            brew install applesimutils
-            bundle exec fastlane e2e_release
+            # brew tap wix/brew
+            # brew install applesimutils
+            # bundle exec fastlane e2e_release
       - persist_to_workspace:
           root: .
           paths: 
@@ -231,13 +242,13 @@ workflows:
           # requires:
               # - e2e_android_release
       # Build and test the iOS app in release mode
+      - e2e_ios_release
       # - e2e_ios_release:
       #     requires:
       #       - test_with_jest_and_typescript
       #     filters:
       #       tags:
       #         only: /^v.*/      
-      # - build_ios_appstore:
-      #     requires:
-      #       - e2e_ios_release
-      - build_ios_appstore
+      - build_ios_appstore:
+          requires:
+            - e2e_ios_release
