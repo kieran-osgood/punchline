@@ -49,7 +49,7 @@ jobs:
   optimize_assets:
     executor: rn/linux_android
     steps:
-      - run: npm install -g sharp-cli
+      - run: sudo npm install --unsafe-perm -g sharp-cli
       - run: npx expo-optimize
 
   e2e_android_release:
@@ -218,7 +218,6 @@ workflows:
               only: /^v.*/
       - build_android_playstore:
           requires:
-              - test_with_jest_and_typescript
               - e2e_android_release
       # Build and test the iOS app in release mode
       - e2e_ios_release:
