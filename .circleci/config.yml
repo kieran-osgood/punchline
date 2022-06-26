@@ -219,6 +219,7 @@ workflows:
       - build_android_playstore:
           requires:
               - test_with_jest_and_typescript
+              - e2e_android_release
       # Build and test the iOS app in release mode
       - e2e_ios_release:
           requires:
