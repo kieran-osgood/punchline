@@ -141,6 +141,8 @@ jobs:
             export LANG=en_US.UTF-8
             gem install bundler
             bundle install
+            brew tap wix/brew
+            brew install applesimutils
             bundle exec fastlane e2e_release
       - persist_to_workspace:
           root: .
@@ -214,27 +216,28 @@ workflows:
       - test_with_jest_and_typescript:
           requires:
             - checkout_code
-      - optimize_assets:
-          requires:
-            - checkout_code
-      - e2e_android_release:
-          requires:
-            - test_with_jest_and_typescript
-          # Runs on all tags starting with v
-          filters:
-            tags:
-              only: /^v.*/
-      - build_android_playstore:
-          requires:
-              - e2e_android_release
+      # - optimize_assets:
+      #     requires:
+      #       - checkout_code
+      # - e2e_android_release:
+      #     requires:
+      #       - test_with_jest_and_typescript
+      #     # Runs on all tags starting with v
+      #     filters:
+      #       tags:
+      #         only: /^v.*/
+      - build_android_playstore
+      # - build_android_playstore:
+          # requires:
+              # - e2e_android_release
       # Build and test the iOS app in release mode
-      - e2e_ios_release:
-          requires:
-            - test_with_jest_and_typescript
-          filters:
-            tags:
-              only: /^v.*/      
-      - build_ios_appstore:
-          requires:
-            - e2e_ios_release
-            # - rn/ios_build_and_test
+      # - e2e_ios_release:
+      #     requires:
+      #       - test_with_jest_and_typescript
+      #     filters:
+      #       tags:
+      #         only: /^v.*/      
+      # - build_ios_appstore:
+      #     requires:
+      #       - e2e_ios_release
+      - build_ios_appstore
