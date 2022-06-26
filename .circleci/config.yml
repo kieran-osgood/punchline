@@ -34,7 +34,7 @@ jobs:
       - attach_workspace:
           at: .
       - rn/yarn_install
-      - run: yarn tsc-check
+      - run: npx tsc --noEmit
       - run: yarn lint
       - run:
           name: Jest
@@ -50,6 +50,9 @@ jobs:
     executor: rn/linux_android
     steps:
       - run: sudo npm install --unsafe-perm -g sharp-cli
+      - run: 
+          name: "ls -a"
+          command: ls -a 
       - run: npx expo-optimize
 
   e2e_android_release:
