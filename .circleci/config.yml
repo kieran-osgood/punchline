@@ -28,8 +28,7 @@ jobs:
 
   test_with_jest_and_typescript:
     executor: rn/linux_android
-      # TODO: size: small?
-    # parallelism: 5
+    parallelism: 2
     steps:
       - attach_workspace:
           at: .
@@ -37,15 +36,22 @@ jobs:
       - run: npx tsc --noEmit
       - run: yarn lint
       - run:
-          name: Jest
+          name: Install JUnit coverage reporter
+          command: yarn add --dev jest-junit
+      - run:
+          name: Run tests with JUnit as reporter
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
           command: |
             TESTS=$(circleci tests glob "app/**/*.test.{ts,tsx}" | circleci tests split)
-            yarn ci:test:jest --findRelatedTests $TESTS
+            jest --ci --runInBand --reporters=default --reporters=jest-junit --findRelatedTests $TESTS
+      - store_test_results:
+          path: ./reports/junit/  
       - persist_to_workspace:
-          root: .
-          paths: 
-            - .
-  
+            root: .
+            paths: 
+              - .
+    
   optimize_assets:
     executor: rn/linux_android
     steps:
