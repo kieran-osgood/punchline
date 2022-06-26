@@ -46,11 +46,11 @@ jobs:
           paths: 
             - .
   
-  optimize_assets:
-    executor: rn/linux_android
-    steps:
-      - run: sudo npm install --unsafe-perm -g sharp-cli
-      - run: npx expo-optimize
+  # optimize_assets:
+  #   executor: rn/linux_android
+  #   steps:
+  #     - run: sudo npm install --unsafe-perm -g sharp-cli
+  #     - run: npx expo-optimize
 
   e2e_android_release:
     executor:
