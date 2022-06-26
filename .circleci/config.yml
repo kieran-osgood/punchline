@@ -1,6 +1,6 @@
 
 orbs:
-  rn: react-native-community/react-native@5.4.0
+  rn: react-native-community/react-native@7.1.0
   ruby: circleci/ruby@1.1.2
   android: circleci/android@1.0.3
 version: 2.1
@@ -219,6 +219,7 @@ workflows:
       - build_android_playstore:
           requires:
               - test_with_jest_and_typescript
+              - e2e_android_release
       # Build and test the iOS app in release mode
       - e2e_ios_release:
           requires:

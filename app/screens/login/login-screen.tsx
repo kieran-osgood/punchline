@@ -29,7 +29,7 @@ export type ErrorCallback = (error: Error) => void
 export const LoginScreen = observer(function LoginScreen() {
   // pre-fetch for the onboarding screens
   // useQuery((store) => store.queryCategories({}, (c) => c.nodes((nodes) => nodes.id.image.name)))
-  const ref = React.useRef<BottomSheetImperativeHandle | null>(null)
+  // const ref = React.useRef<BottomSheetImperativeHandle | null>(null)
   const [isLoading, setIsLoading] = React.useState(false)
 
   React.useEffect(() => {
@@ -85,7 +85,7 @@ export const LoginScreen = observer(function LoginScreen() {
         </View>
       </View>
       <GradientBackground style={BACKGROUND} />
-      <TroubleSigningInSheet ref={ref} onError={onError} />
+      {/* <TroubleSigningInSheet ref={ref} onError={onError} /> */}
     </Screen>
   )
 })

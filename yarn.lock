@@ -13816,7 +13816,7 @@ lodash@^3.10.1:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
   integrity sha1-W/Rejkm6QYnhfUgnid/RW9FAt7Y=
 
-lodash@^4.0.0, lodash@^4.0.1, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.5, lodash@^4.7.0, lodash@~4.17.10:
+lodash@^4.0.1, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.5, lodash@^4.7.0, lodash@~4.17.10:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -13849,6 +13849,14 @@ log-symbols@^2.2.0:
   integrity sha512-VeIAFslyIerEJLXHziedo2basKbMKtTw3vfn5IzG0XTjhAVEJyNHnL2p7vc+wBDSdQuUpNw3M2u6xb9QsAY5Eg==
   dependencies:
     chalk "^2.0.1"
+
+log-symbols@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-4.1.0.tgz#3fbdbb95b4683ac9fc785111e792e558d4abd503"
+  integrity sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==
+  dependencies:
+    chalk "^4.1.0"
+    is-unicode-supported "^0.1.0"
 
 log-symbols@^4.1.0:
   version "4.1.0"
@@ -17243,19 +17251,20 @@ react-native-toast-message@^1.4.9:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-ui-lib@6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-ui-lib/-/react-native-ui-lib-6.1.0.tgz#89d295fa2a96ad6483dd696d3ed5835b2b14e4a0"
-  integrity sha512-seZSvw6GpkwskmULhHgVqjQoVAM/7janANhD9PMXt/c8rf3X8F6Vp2fgLeSJxMJQ8t8cpAEfov49st7UCgOf4w==
+react-native-ui-lib@^6.17.2:
+  version "6.17.2"
+  resolved "https://registry.yarnpkg.com/react-native-ui-lib/-/react-native-ui-lib-6.17.2.tgz#8a82faf4dc4fd3f9e79db7bd38713aebf0d8d2d7"
+  integrity sha512-GirovYhG5Y7ziXMzNmRSaYHliNou3GNuhi4meNJG0K3kTw4N90PUP+Kj8JaLEulEmyKnwCYuce5C4IZC+w+X+g==
   dependencies:
     babel-plugin-transform-inline-environment-variables "^0.0.2"
     color "^3.1.0"
     commons-validator-js "^1.0.237"
     hoist-non-react-statics "^3.0.0"
-    lodash "^4.0.0"
+    lodash "^4.17.21"
     memoize-one "^5.0.5"
     moment "^2.24.0"
     prop-types "^15.5.10"
+    react-freeze "^1.0.0"
     react-native-color "0.0.10"
     react-native-redash "^12.0.3"
     react-native-text-size "4.0.0-rc.1"

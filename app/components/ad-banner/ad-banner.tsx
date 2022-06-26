@@ -4,6 +4,8 @@ import { isProduction } from "app/utils/current-environment"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { ViewStyle } from "react-native"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { ADMOB_HOME_FOOTER } from "react-native-dotenv"
 import { heightPercentageToDP } from "react-native-responsive-screen"
 import { View } from "react-native-ui-lib"

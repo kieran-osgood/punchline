@@ -8,7 +8,7 @@ import { ViewStyle } from "react-native"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import Toast from "react-native-toast-message"
-import { Button, Colors, Text, TextArea, View } from "react-native-ui-lib"
+import { Button, Colors, Text, Incubator, View } from "react-native-ui-lib"
 
 // TODO: convert over to zod
 // import { z } from "zod"
@@ -45,37 +45,39 @@ const ForwardReportJokeSheet = (
   }))
 
   const submit = () => {
-    jokeReportApi
-      .sendJokeReport({
-        id: jokeApi.topOfDeckJoke.id,
-        description: text,
+    const onSuccess = () => {
+      // setText("")
+      opacity.value = withTiming(0, {}, (finished) => {
+        if (finished) opacity1.value = 1
       })
-      .then(
-        () => {
-          opacity.value = withTiming(0, {}, (finished) => {
-            if (finished) opacity1.value = 1
-          })
-        },
-        () => {
-          Toast.show({
-            type: "error",
-            text1: "Error",
-            text2:
-              "Having trouble connecting to server. Please send an email through the settings page if this persists.",
-            position: "bottom",
-          })
-        },
-      )
+    }
+
+    const onError = () => {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2:
+          "Having trouble connecting to server. Please send an email through the settings page if this persists.",
+        position: "bottom",
+      })
+      // setText("")
+    }
+
+    jokeReportApi
+      .sendJokeReport({ id: jokeApi.topOfDeckJoke.id, description: text })
+      .then(onSuccess, onError)
   }
+
   const handleClose = () => {
     close?.()
     // After close animation, reset form state
     setTimeout(() => {
+      setText("")
       opacity.value = 1
       opacity1.value = 0
-      setText("")
     }, 500)
   }
+
   return (
     <BottomSheetHoc ref={ref} containerStyle={BOTTOM_SHEET_VIEW}>
       {/* Initially displayed UI */}
@@ -112,11 +114,14 @@ const ForwardReportJokeSheet = (
             Provide a description of what this report is regarding.
           </Text>
           <View style={TEXT_AREA_CONTAINER} paddingH-s2 marginB-s4 height={150}>
-            <TextArea
+            <Incubator.TextField
               placeholder="Describe the issue"
               value={text}
               onChangeText={setText}
               numberOfLines={3}
+              fieldStyle={TEXT_AREA_FIELD}
+              hitSlop={{ bottom: 100 }}
+              multiline
             />
           </View>
           <Text text90L marginB-s3>
@@ -138,21 +143,9 @@ const ForwardReportJokeSheet = (
           </View>
         </View>
       </Animated.View>
+
       {/* Only visible after submiting the form */}
-      <Animated.View style={[FORM_SUBMITTED, style2]}>
-        <View width="75%" centerH spread paddingT-s3 style={FORM_SUBMITTED_CONTAINER}>
-          <Success width="40%" />
-          <View center>
-            <Text text50 bold marginT-s5>
-              Report Received
-            </Text>
-            <Text marginT-s3>
-              Thank you for reporting this, apologies for any inconvenience caused.
-            </Text>
-          </View>
-        </View>
-        <Button label="Close" onPress={() => handleClose()} marginT-s5 />
-      </Animated.View>
+      <ReportFormSubmitted style={style2} onClosePress={handleClose} />
     </BottomSheetHoc>
   )
 }
@@ -175,4 +168,27 @@ const FORM_SUBMITTED_CONTAINER: ViewStyle = {
 const TEXT_AREA_CONTAINER: ViewStyle = {
   borderWidth: 1,
   borderColor: Colors.grey60,
+}
+const TEXT_AREA_FIELD: ViewStyle = {
+  paddingHorizontal: 5,
+  paddingVertical: 10,
+}
+
+const ReportFormSubmitted = (props: { style: ViewStyle; onClosePress: () => void }) => {
+  return (
+    <Animated.View style={[FORM_SUBMITTED, props.style]}>
+      <View width="75%" centerH spread paddingT-s3 style={FORM_SUBMITTED_CONTAINER}>
+        <Success width="40%" />
+        <View center>
+          <Text text50 bold marginT-s5>
+            Report Received
+          </Text>
+          <Text marginT-s3>
+            Thank you for reporting this, apologies for any inconvenience caused.
+          </Text>
+        </View>
+      </View>
+      <Button label="Close" onPress={() => props.onClosePress()} marginT-s5 />
+    </Animated.View>
+  )
 }

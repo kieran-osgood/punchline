@@ -7,6 +7,8 @@ import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { Controller, useForm } from "react-hook-form"
 import { TextStyle, ViewStyle } from "react-native"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { API_URL } from "react-native-dotenv"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import { Button, Incubator, Text } from "react-native-ui-lib"

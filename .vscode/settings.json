@@ -11,5 +11,6 @@
         "Moti",
         "crashlytics"
     ],
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "circleci-vscode.apiToken": "acc8511c266d5fd4d1e23b035b47bc76efbd4cab"
 }

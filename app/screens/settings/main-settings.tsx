@@ -19,6 +19,8 @@ import {
   TouchableOpacity,
   ViewStyle,
 } from "react-native"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { APPSTORE_URL, PLAYSTORE_URL } from "react-native-dotenv"
 import Share from "react-native-share"
 import { Button, Switch, Text, ThemeManager, View, ViewProps } from "react-native-ui-lib"

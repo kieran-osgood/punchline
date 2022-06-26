@@ -2,6 +2,8 @@ import * as Sentry from "@sentry/react-native"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { Linking, TextStyle, ViewStyle } from "react-native"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { WEB_URL } from "react-native-dotenv"
 import { ButtonProps, Text, TouchableOpacity } from "react-native-ui-lib"
 

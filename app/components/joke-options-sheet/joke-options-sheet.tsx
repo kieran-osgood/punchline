@@ -1,13 +1,13 @@
 import BottomSheetHoc, {
   BottomSheetImperativeHandle,
 } from "app/components/bottom-sheet-hoc/bottom-sheet-hoc"
-// import { useStores } from "app/models"
 import { Divider } from "app/screens/settings/main-settings"
 import { ErrorReportIcon } from "assets/images"
-// import { Share as ShareIcon } from "images"
 import { observer } from "mobx-react-lite"
 import * as React from "react"
 import { StyleProp, TouchableOpacity, ViewStyle } from "react-native"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { API_URL } from "react-native-dotenv"
 import { widthPercentageToDP } from "react-native-responsive-screen"
 import Share from "react-native-share"
