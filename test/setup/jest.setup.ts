@@ -40,7 +40,13 @@ jest.mock("react-native/Libraries/Animated/NativeAnimatedHelper")
 
 jest.mock("react-native-share", () => ({}))
 
-require("react-native-reanimated/lib/reanimated2/jestUtils").setUpTests()
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+global.__reanimatedWorkletInit = () => {}
+jest.mock("react-native-reanimated", () => require("react-native-reanimated/mock"))
+
+// require("react-native-reanimated/lib/reanimated2/jestUtils").setUpTests()
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

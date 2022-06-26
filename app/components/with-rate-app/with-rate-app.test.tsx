@@ -1,4 +1,4 @@
-import { render, waitFor } from "@testing-library/react-native"
+import { render, screen, waitFor } from "@testing-library/react-native"
 import { RootStore, UserStoreModel } from "app/models"
 import { RootStoreProvider } from "app/models/root-store/root-store-context"
 import { advanceTo, clear } from "jest-date-mock"
@@ -31,8 +31,8 @@ const renderDefaultApp = (rootStore: RootStore) => {
 describe("Validate withRateApp side effects", () => {
   it("withRateApp will wrap and return child passing props", () => {
     const rootStore = createMockedRootStore({})
-    const { getByA11yLabel } = render(renderDefaultApp(rootStore))
-    getByA11yLabel(/a11y label/i)
+    render(renderDefaultApp(rootStore))
+    screen.getByLabelText(/a11y label/i)
   })
 
   it("withRateApp resets goodJokeCount and sets lastDisplayedReviewPrompt to now", async () => {

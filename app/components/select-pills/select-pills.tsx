@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite"
 import * as React from "react"
-import { TouchableOpacity, ViewStyle } from "react-native"
-import { Text, View } from "react-native-ui-lib"
+import { Pressable, ViewStyle } from "react-native"
+import { Text, View, TouchableOpacity } from "react-native-ui-lib"
 import { color } from "theme"
 
 export type CategorySettings = {

@@ -129,19 +129,19 @@
     "@storybook/addon-storyshots": "6.1.10",
     "@storybook/react-native": "^5.3.25",
     "@storybook/react-native-server": "5.3.23",
-    "@testing-library/jest-native": "^4.0.2",
-    "@testing-library/react-native": "^9.0.0",
+    "@testing-library/jest-native": "^4.0.5",
+    "@testing-library/react-native": "^10.1.1",
     "@types/detox": "^17.14.3",
     "@types/faker": "^5.5.3",
     "@types/i18n-js": "3.0.3",
-    "@types/jest": "^27.0.2",
+    "@types/jest": "^28.1.3",
     "@types/ramda": "0.27.32",
     "@types/react": "16.14.0",
     "@types/react-native": "0.63.40",
     "@types/react-test-renderer": "16.9.4",
     "@typescript-eslint/eslint-plugin": "^5.3.0",
     "@typescript-eslint/parser": "^5.3.0",
-    "babel-jest": "^27.4.5",
+    "babel-jest": "^28.1.1",
     "babel-loader": "8.2.2",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "bufferutil": "4.0.2",
@@ -152,15 +152,15 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "16.0.2",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jest": "^26.1.0",
+    "eslint-plugin-jest": "26.1.0",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-react": "7.21.5",
     "eslint-plugin-react-native": "3.10.0",
     "faker": "^5.5.3",
     "husky": ">=6",
-    "jest": "^27.4.7",
-    "jest-circus": "25.5.4",
+    "jest": "^28.1.1",
+    "jest-circus": "^28.1.1",
     "jest-date-mock": "^1.0.8",
     "jest-expo": "^44.0.1",
     "jetifier": "1.6.6",
@@ -182,7 +182,7 @@
     "rimraf": "3.0.2",
     "solidarity": "2.3.1",
     "testdouble": "^3.16.3",
-    "ts-jest": "^27.0.7",
+    "ts-jest": "^28.0.5",
     "tsc-files": "^1.1.2",
     "typescript": "^4.4.4",
     "utf-8-validate": "5.0.3"
@@ -208,7 +208,7 @@
       "<rootDir>/test/setup/jest.setup-after-env.ts"
     ],
     "transform": {
-      "^.+\\.js$": "babel-jest"
+      "\\.[jt]sx?$": "babel-jest"
     },
     "testPathIgnorePatterns": [
       "/node_modules/",
@@ -219,7 +219,8 @@
     ]
   },
   "resolutions": {
-    "react-native/@jest/create-cache-key-function": "^27.0.2"
+    "react-native/@jest/create-cache-key-function": "^27.0.2",
+    "@types/react": "17.0.40"
   },
   "prettier": {
     "printWidth": 100,
