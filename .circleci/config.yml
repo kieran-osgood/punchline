@@ -44,7 +44,7 @@ jobs:
             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
           command: |
             TESTS=$(circleci tests glob "app/**/*.test.{ts,tsx}" | circleci tests split)
-            jest --ci --runInBand --reporters=default --reporters=jest-junit --findRelatedTests $TESTS
+            yarn ci:test:jest --findRelatedTests $TESTS --ci --runInBand --reporters=default --reporters=jest-junit 
       - store_test_results:
           path: ./reports/junit/  
       - persist_to_workspace:
