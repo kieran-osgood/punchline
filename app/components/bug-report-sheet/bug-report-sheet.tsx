@@ -41,7 +41,7 @@ const ForwardBugReportSheet = (
       props.close?.()
     }
 
-    const onError = (error) => {
+    const onError = (error: any) => {
       Sentry.captureException(error)
     }
 
@@ -74,6 +74,7 @@ const ForwardBugReportSheet = (
             numberOfLines={4}
             labelStyle={LABEL_STYLE}
             fieldStyle={FIELD_STYLE}
+            hitSlop={{ bottom: 100 }}
             maxLength={500}
             {...{ value, onBlur }}
           />

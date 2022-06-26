@@ -1,5 +1,7 @@
 import { isDevelopment } from "app/utils/current-environment"
 import { createHttpClient } from "mst-gql"
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { API_URL } from "react-native-dotenv"
 
 let ReactotronDev: any
