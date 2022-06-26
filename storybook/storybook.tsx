@@ -4,10 +4,6 @@ import { initFonts } from "../app/theme/fonts"
 
 declare let module: any
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const TEST = __TEST__
-
 configure(() => {
   require("./storybook-registry")
 }, module)
@@ -23,7 +19,9 @@ export function StorybookUIRoot() {
   useEffect(() => {
     (async () => {
       await initFonts() // expo only
-      if (typeof TEST === "undefined" || !TEST) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (typeof __TEST__ === "undefined" || !__TEST__) {
         const Reactotron = require("../app/services/reactotron")
         const reactotron = new Reactotron.Reactotron()
         reactotron.setup()
