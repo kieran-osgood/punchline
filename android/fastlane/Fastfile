@@ -14,7 +14,8 @@
 default_platform(:android)
 $gradle_flags = '--no-daemon --max-workers=2 -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-XX:+UnlockExperimentalVMOptions -XX:+HeapDumpOnOutOfMemoryError"'
 # Retrieve version of my app in package.json (React Native case)
-$package = load_json(json_path: "../app.json")
+$appJson = load_json(json_path: "../app.json")
+$package = load_json(json_path: "../package.json")
 # $slack_url = "https://hooks.slack.com/services/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"
 $symbols_zip = "app/build/symbols.zip"
 
@@ -44,8 +45,8 @@ lane :build_debug_apk do
     task: "assemble", # apk
     build_type: "Debug",
     properties: {
-      "vname" => $package["expo"]["version"],
-      "android.injected.version.name" => $package["expo"]["version"],
+      "vname" => $appJson["expo"]["version"],
+      "android.injected.version.name" => $appJson["expo"]["version"],
     },
     flags: $gradle_flags,
   )
@@ -57,8 +58,8 @@ lane :build_release_apk do
     task: "assemble", # apk
     build_type: "Release",
     properties: {
-      "vname" => $package["expo"]["version"],
-      "android.injected.version.name" => $package["expo"]["version"],
+      "vname" => $appJson["expo"]["version"],
+      "android.injected.version.name" => $appJson["expo"]["version"],
     },
     flags: $gradle_flags,
   )
@@ -73,7 +74,7 @@ lane :build_release_aab do
     task: "bundle", # aab
     build_type: "Release",
     properties: {
-      "vname" => $package["expo"]["version"],
+      "vname" => $appJson["expo"]["version"],
     },
     flags: $gradle_flags,
   )
@@ -96,7 +97,8 @@ end
 
 lane :e2e_release do
   Dir.chdir "../.." do ## Navigate to the root of the project where the Detox files are placed
-    sh("npm i -g detox-cli@#{package["devDependencies"]["detox"]}")
+    puts $package["devDependencies"]["detox"]
+    sh("npm i -g detox-cli@#{$package["devDependencies"]["detox"]}")
     sh("detox build --configuration android.emu.release")
     sh("detox test --configuration android.emu.release --cleanup --loglevel trace")
   end
@@ -114,13 +116,15 @@ lane :beta do
   upload_to_play_store(
     track: "internal",
     skip_upload_apk: true,
-    version_name: $package["expo"]["version"],
+    version_name: $appJson["expo"]["version"],
     mapping: $symbols_zip,
   )
 end
 
 desc "Build Release configuration and Google Play Store"
 lane :playstore do
+  clean_build_artifacts
+
   # Do the bundle of the application
   build_release_aab
 
@@ -130,7 +134,7 @@ lane :playstore do
   upload_to_play_store(
     release_status: "draft", ## <http://docs.fastlane.tools/actions/upload_to_play_store/#parameters>
     skip_upload_apk: true,
-    version_name: $package["expo"]["version"],
+    version_name: $appJson["expo"]["version"],
   )
 end
 
