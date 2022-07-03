@@ -237,12 +237,16 @@ workflows:
       #     filters:
       #       tags:
       #         only: /^v.*/
-      - build_android_playstore
+      - build_android_playstore:
+          requires:
+            - test_with_jest_and_typescript
       # - build_android_playstore:
           # requires:
               # - e2e_android_release
       # Build and test the iOS app in release mode
-      - e2e_ios_release
+      # - e2e_ios_release:
+      #     requires:
+      #       - test_with_jest_and_typescript
       # - e2e_ios_release:
       #     requires:
       #       - test_with_jest_and_typescript
@@ -251,4 +255,4 @@ workflows:
       #         only: /^v.*/      
       - build_ios_appstore:
           requires:
-            - e2e_ios_release
+            - test_with_jest_and_typescript
