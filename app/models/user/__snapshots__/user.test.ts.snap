@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Can be created and matches default user data 1`] = `
+Object {
+  "displayName": "",
+  "email": "",
+  "emailVerified": false,
+  "isAnonymous": false,
+  "metadata": Object {
+    "creationTime": "",
+    "lastSignInTime": "",
+  },
+  "phoneNumber": "",
+  "photoURL": "",
+  "providerData": Array [],
+  "providerId": "",
+  "uid": "",
+}
+`;

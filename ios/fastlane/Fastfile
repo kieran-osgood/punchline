@@ -1,0 +1,137 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+############## STATIC ##############
+default_platform(:ios)
+# Retrieve version of my app in package.json (React Native case)
+$package = load_json(json_path: "../app.json")
+$slack_url = "https://hooks.slack.com/services/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"
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+before_all do
+  setup_circle_ci
+end
+
+############## FRAMEIT ##############
+lane :generate_screenshots do
+  frameit(
+    use_platform: "IOS",
+    path: "./fastlane/screenshots"
+  )
+end
+
+############## GIT ##############
+lane :bump_and_commit_versions do
+  increment_build_number(xcodeproj: "punchline.xcodeproj")
+  increment_version_number_in_plist(
+    version_number: $package["expo"]["version"],
+  )
+  commit_version_bump(
+    message: "[fastlane:ios] Version Bump", # create a commit with a custom message
+    xcodeproj: "punchline.xcodeproj", # optional, if you have multiple Xcode project files, you must specify your main project here
+  )
+end
+
+############## DETOX ##############
+
+lane :e2e_debug_build do
+  Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed.
+    sh("detox build --configuration ios.sim.release")
+  end
+end
+
+lane :e2e_debug_test do
+  Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed.
+    sh("detox test --configuration ios.sim.debug --cleanup --loglevel trace")
+  end
+end
+
+lane :e2e_release do
+  Dir.chdir "../.." do # Navigate to the root of the project where the Detox files are placed.
+    sh("detox build --configuration ios.sim.release")
+    sh("detox test --configuration ios.sim.release --cleanup --loglevel trace")
+  end
+end
+
+############## BUILD TASKS ##############
+desc "Builds a release and pushes to testflight"
+lane :beta do
+  # get_certificates           # invokes cert
+  # get_provisioning_profile   # invokes sigh
+  bump_and_commit_versions
+
+  # Get latest certs appstore
+  match(type: "appstore") # Set type of code signing required
+  gym(
+    export_method: "app-store",
+    output_directory: "output/beta",
+    output_name: "punchline.ipa",       # specify the name of the .ipa file to generate (including file extension)
+  ) # Directory where signed .ipa file will be placed
+  api_key = app_store_connect_api_key(
+    key_id: "LXL29858RV",
+    issuer_id: "d76715a4-757f-468f-9a52-7c0cc2b62b08",
+    key_filepath: "./fastlane/AuthKey_LXL29858RV.p8",
+    duration: 1200, # optional (maximum 1200)
+    in_house: false, # optional but may be required if using match/sigh
+  )
+
+  upload_to_testflight(api_key: api_key, skip_waiting_for_build_processing: true)
+end
+
+desc "Run tests and build the app"
+lane :release_appstore do
+  # generate_screenshots
+
+  bump_and_commit_versions
+
+  # changelog_from_git_commits
+  
+  # Get latest certs appstore
+  match(
+    type: "appstore", 
+    readonly: is_ci
+  ) # Set type of code signing required
+  
+  # Gym aliases build_app
+  gym(export_method: "app-store", output_directory: "output/release") # Directory where signed .ipa file will be placed
+ 
+  api_key = app_store_connect_api_key(
+    key_id: "LXL29858RV",
+    issuer_id: "d76715a4-757f-468f-9a52-7c0cc2b62b08",
+    key_filepath: "./fastlane/AuthKey_LXL29858RV.p8",
+    duration: 1200, # optional (maximum 1200)
+    in_house: false, # optional but may be required if using match/sigh
+  )
+
+  upload_to_app_store(
+    submit_for_review: false,
+    automatic_release: false,
+    force: true,
+    ipa: Actions.lane_context[SharedValues::IPA_OUTPUT_PATH],
+    username: 'kieranbosgood@gmail.com',
+    app_identifier: 'com.ko.punchline',
+    precheck_include_in_app_purchases: false,
+    # overwrite_screenshots: true,
+    api_key: api_key,
+)
+end
+
+############# MISC ##############
+lane :generate_new_icons do
+  ## Generates the app icons - splash screen icons are handled by bootsplash (`yarn bootsplash`)
+  appicon(
+    appicon_devices: [:iphone, :ipad],
+    appicon_path: "generated/app-icons.xcassets", # output path
+    # `appicon_image_file` defaults to "fastlane/metadata/app_icon.png"
+  )
+end

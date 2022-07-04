@@ -6,12 +6,10 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>punchline</string>
-	<key>CodePushDeploymentKey</key>
-	<string>$(CODEPUSH_KEY)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<string>com.ko.$(PRODUCT_NAME)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -19,9 +17,13 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>2.3.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLSchemes</key>
+	<array>
+		<string>360796595283083</string>
+	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -29,18 +31,54 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.681986405885-oms8c4edds7s1cjlm550ss1sa8rqui7d</string>
+				<string>com.googleusercontent.apps.681986405885-gfppj7edi8rbb3h1t1gms2el14gr2c1l</string>
+				<string>punchline</string>
+				<string>fb360796595283083</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>36</string>
+	<key>FacebookAppID</key>
+	<string>360796595283083</string>
+	<key>FacebookClientToken</key>
+	<string>35e33471fb9de6537ff9ec008a2391ba</string>
+	<key>FacebookDisplayName</key>
+	<string>punchline</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-3681973098458031~6045236896</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbshareextension</string>
+		<string>facebook</string>
+		<string>facebookstories</string>
+		<string>facebook-stories</string>
+		<string>instagram-stories</string>
+		<string>mailto</string>
+		<string>instagram</string>
+		<string>whatsapp</string>
+		<string>fbapi</string>
+		<string>fbapi20130214</string>
+		<string>fbapi20130410</string>
+		<string>fbapi20130702</string>
+		<string>fbapi20131010</string>
+		<string>fbapi20131219</string>
+		<string>fbapi20140410</string>
+		<string>fbapi20140116</string>
+		<string>fbapi20150313</string>
+		<string>fbapi20150629</string>
+		<string>fbapi20160328</string>
+		<string>fbauth</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>localhost</key>
@@ -51,54 +89,30 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>AvenirNextLTPro-Bold.otf</string>
+		<string>AvenirNextLTPro-It.otf</string>
+		<string>AvenirNextLTPro-Regular.otf</string>
+		<string>AvenirNextLTPro-UltLt.otf</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>SplashScreen</string>
+	<string>BootSplash</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleDefault</string>
+	<string>UIStatusBarStyleDarkContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Fontisto.ttf</string>
-		<string>Octicons.ttf</string>
-		<string>Feather.ttf</string>
-		<string>Entpo.ttf</string>
-		<string>FontAwesome5_Brands.ttf</string>
-		<string>AntDesign.ttf</string>
-		<string>Foundation.ttf</string>
-		<string>Ionicons.ttf</string>
-		<string>FontAwesome5_Solid.ttf</string>
-		<string>FontAwesome5_Regular.ttf</string>
-		<string>FontAwesome.ttf</string>
-		<string>Zocial.ttf</string>
-		<string>EvilIcons.ttf</string>
-		<string>SimpleLineIcons.ttf</string>
-		<string>MaterialIcons.ttf</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-
-	<key>CFBundleURLTypes</key>
-	<array>
-	<dict>
-	<key>CFBundleURLSchemes</key>
-	<array>
-		<string>fb360796595283083</string>
-	</array>
-	</dict>
-	</array>
-	<key>FacebookAppID</key>
-	<string>360796595283083</string>
-	<key>FacebookDisplayName</key>
-	<string>[punchline]</string>
 </dict>
 </plist>

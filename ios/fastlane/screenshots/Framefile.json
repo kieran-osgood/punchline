@@ -1,0 +1,38 @@
+{
+	"default": {
+		"device_frame_version": "latest",
+		"background": "./background.png",
+		"title": {
+			"color": "#ffffff"
+		},
+		"padding": 50,
+		"font": "../../../assets/fonts/AvenirNextLTPro-Bold.otf",
+		"stack_title" : false
+	},
+	"data": [
+		{
+			"filter": "onboarding-screen-3",
+			"title": {
+				"text": "New features inbound!"
+			}
+		},
+		{
+			"filter": "onboarding-screen-1",
+			"title": {
+				"text": "Personalise the experience!"
+			}
+		},
+		{
+			"filter": "joke-screen",
+			"title": {
+				"text": "Unlimited Jokes!"
+			}
+		},
+		{
+			"filter": "history-screen",
+			"title": {
+				"text": "Save your favourites!"
+			}
+		}
+	]
+}

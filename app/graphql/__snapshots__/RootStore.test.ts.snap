@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`can be created without any user 1`] = `
+Object {
+  "__queryCache": Object {},
+  "accessToken": null,
+  "categories": Object {},
+  "jokes": Object {},
+  "userJokeHistories": Object {},
+  "users": Object {},
+}
+`;

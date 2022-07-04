@@ -1,0 +1,258 @@
+
+orbs:
+  rn: react-native-community/react-native@7.1.0
+  ruby: circleci/ruby@1.1.2
+  android: circleci/android@1.0.3
+version: 2.1
+
+jobs:
+  checkout_code:
+    executor: rn/linux_js
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run: 
+          name: Git submodule update
+          command: git submodule update --init --recursive
+      - run: 
+          name: Decrypt keystore file
+          command: gpg -d --pinentry-mode loopback --batch --yes --passphrase="$ENCRYPTION_PASSPHRASE" --output android/app/punchline.keystore --decrypt android/app/punchline-keys/punchline.keystore.gpg
+      - run: 
+          name: Copy keystore to fastlane directory
+          command: cp android/app/punchline.keystore android/fastlane/release.keystore 
+      - persist_to_workspace:
+          root: .
+          paths: 
+            - .
+
+  test_with_jest_and_typescript:
+    executor: rn/linux_android
+    parallelism: 2
+    steps:
+      - attach_workspace:
+          at: .
+      - rn/yarn_install
+      - run: npx tsc --noEmit
+      - run: yarn lint
+      - run:
+          name: Install JUnit coverage reporter
+          command: yarn add --dev jest-junit
+      - run:
+          name: Run tests with JUnit as reporter
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+          command: |
+            TESTS=$(circleci tests glob "app/**/*.test.{ts,tsx}" | circleci tests split)
+            yarn ci:test:jest --findRelatedTests $TESTS --ci --runInBand --reporters=default --reporters=jest-junit 
+      - store_test_results:
+          path: ./reports/junit/  
+      - persist_to_workspace:
+            root: .
+            paths: 
+              - .
+    
+  optimize_assets:
+    executor: rn/linux_android
+    steps:
+      - attach_workspace:
+          at: .
+      - run: sudo npm install --unsafe-perm -g sharp-cli
+      - run: npx expo-optimize
+
+  e2e_android_release:
+    executor:
+      name: android/android-machine
+      resource-class: large
+    steps:
+      - attach_workspace:
+          at: .
+      # - checkout
+      # - run: npm i -g yarn
+      # - rn/yarn_install
+      - android/create-avd:
+          avd-name: android_30_avd
+          install: true
+          system-image: system-images;android-30;default;x86
+      - android/start-emulator:
+          avd-name: android_30_avd
+          no-window: true
+          restore-gradle-cache-prefix: v1a
+          post-emulator-launch-assemble-command: ''
+      - run:
+          name: Start Metro Packager (Background)
+          background: true
+          command: npm run start
+      - run: 
+          name: "Fastlane Build Release - Android"
+          working_directory: android
+          no_output_timeout: 30m
+          command: |
+            export LC_ALL=en_US.UTF-8
+            export LANG=en_US.UTF-8
+            gem install bundler
+            bundle install
+            bundle exec fastlane e2e_release
+      - android/save-gradle-cache:
+          cache-prefix: v1a
+
+  build_android_playstore:
+    executor: rn/linux_android
+    resource_class: medium+
+    steps:
+      - attach_workspace:
+          at: .
+      # TODO: confirm this works without another install
+      # - rn/yarn_install
+      - run:
+          name: "Install gem"
+          working_directory: android
+          # TODO: confirm if its necessary to do all of these steps
+          # TODO: fork linux_android and setup stuff
+          command: |
+            gem install bundler
+      - run:
+          name: "bundle install"
+          command: bundle install
+          working_directory: android
+      - run:
+          name: "setup env for bundler"
+          working_directory: android
+          command: |
+            export LC_ALL=en_US.UTF-8
+            export LANG=en_US.UTF-8
+            ruby --version
+      - run:
+          name: "run bundler"
+          working_directory: android
+          command: |
+            bundle exec fastlane playstore
+      - store_artifacts:
+          path: android/app/build/outputs/bundle/release
+
+  e2e_ios_release:
+    macos:
+      xcode: 13.1.0
+    steps:
+      - attach_workspace:
+          at: .
+      # - run: npm i -g yarn
+      # - rn/yarn_install
+      # TODO: add build and start simulator commands
+      # - run:
+      #     name: Start Metro Packager (Background)
+      #     background: true
+      #     command: npm run start
+      - run: 
+          name: "Fastlane Build Release - iOS"
+          working_directory: ios
+          no_output_timeout: 30m
+          command: |
+            export LC_ALL=en_US.UTF-8
+            export LANG=en_US.UTF-8
+            gem install bundler
+            bundle install
+            # brew tap wix/brew
+            # brew install applesimutils
+            # bundle exec fastlane e2e_release
+      - persist_to_workspace:
+          root: .
+          paths: 
+            - .
+  
+  build_ios_appstore:
+    macos:
+      xcode: 13.1.0
+    steps:
+      - attach_workspace:
+          at: .
+      - run: 
+          name: "Fastlane Build Release - iOS"
+          working_directory: ios
+          no_output_timeout: 30m
+          command: |
+            bundle exec fastlane release_appstore
+      - store_artifacts:
+          path: ios/output
+
+  # update_git_tags:
+  #   docker: # run the steps with Docker
+  #     # CircleCI Go images available at: https://hub.docker.com/r/circleci/golang/
+  #     - image: circleci/golang:1.16
+  #   steps: 
+  #     - attach_workspace:
+  #         at: .
+  #     - checkout_code
+  #     - run: 
+  #         name: "Build Go Executable"
+  #         command: echo 
+  #         working_directory: ./a
+  #     # - run: FIXME: set the environnment variable for the github token here
+  #     - run:
+  #         name: "Run app"
+  #         environment:
+  #           SSH_PASSWORD: '${MY_APP_PREFIX}'
+  #         command: update-git-tags --project_url <<pipeline.project.git_url>> --branch <<pipeline.git.branch>> --ssh_key $SSH_KEY
+  #         working_directory: ./a
+  #     # checkout_code will pull the repo as it is included as a submodule
+  #     # Build the go executable
+  #     # Execute the app
+
+workflows:
+  # Update the git tags if the version number of the app has changed
+  # update_git_tags: 
+  #   jobs:
+  #     # gonna try this in the job first
+  #     # - checkout_code:
+  #     - build_go:
+  #         filters:
+  #           tags:
+  #             # FIXME: Need ot work out how to do a !v
+  #             only: /^v.*/
+  #           branches:
+  #             only:
+  #               - master
+
+  # Only runs on the develop branch 
+  build_and_test:
+    jobs: 
+      - checkout_code:
+          filters:
+            # Runs on all tags starting with v
+            tags:
+              only: /^v.*/
+            branches:
+              only:
+                - develop
+      - test_with_jest_and_typescript:
+          requires:
+            - checkout_code
+      # - optimize_assets:
+      #     requires:
+      #       - checkout_code
+      # - e2e_android_release:
+      #     requires:
+      #       - test_with_jest_and_typescript
+      #     # Runs on all tags starting with v
+      #     filters:
+      #       tags:
+      #         only: /^v.*/
+      - build_android_playstore:
+          requires:
+            - test_with_jest_and_typescript
+      # - build_android_playstore:
+          # requires:
+              # - e2e_android_release
+      # Build and test the iOS app in release mode
+      # - e2e_ios_release:
+      #     requires:
+      #       - test_with_jest_and_typescript
+      # - e2e_ios_release:
+      #     requires:
+      #       - test_with_jest_and_typescript
+      #     filters:
+      #       tags:
+      #         only: /^v.*/      
+      - build_ios_appstore:
+          requires:
+            - test_with_jest_and_typescript

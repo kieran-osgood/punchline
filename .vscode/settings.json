@@ -5,5 +5,12 @@
         "**/.settings": true,
         "**/.factorypath": true
     },
-    "java.configuration.updateBuildConfiguration": "disabled"
+    "java.configuration.updateBuildConfiguration": "disabled",
+    "cSpell.words": [
+        "Firestore",
+        "Moti",
+        "crashlytics"
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "circleci-vscode.apiToken": "acc8511c266d5fd4d1e23b035b47bc76efbd4cab"
 }

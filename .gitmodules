@@ -1,0 +1,7 @@
+[submodule "android/app/punchlinekeys"]
+	path = android/app/punchlinekeys
+	url = git@github.com:kieran-osgood/punchline-keys.git
+  branch = master
+[submodule "android/app/punchline-keys"]
+	path = android/app/punchline-keys
+	url = git@github.com:kieran-osgood/punchline-keys.git

@@ -1,0 +1,187 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+############## STATIC ##############
+default_platform(:android)
+$gradle_flags = '--no-daemon --max-workers=2 -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-XX:+UnlockExperimentalVMOptions -XX:+HeapDumpOnOutOfMemoryError"'
+# Retrieve version of my app in package.json (React Native case)
+$appJson = load_json(json_path: "../app.json")
+$package = load_json(json_path: "../package.json")
+# $slack_url = "https://hooks.slack.com/services/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"
+$symbols_zip = "app/build/symbols.zip"
+
+# Uncomment the line below if you want fastlane to automatically update itself
+# update_fastlane
+before_all do
+  ensure_bundle_exec
+  setup_circle_ci
+end
+
+############## GIT ##############
+desc "Increments internal build number tracking (different than version)"
+lane :bump_and_commit_versions do
+  ## Bump android.defaultConfig.versionCode
+  # bump_build_number
+  increment_version_code
+  commit_android_version_bump(
+    app_folder_name: "app",
+    message: "[fastlane:android] Version Bump",
+  )
+end
+
+############## GRADLE TASKS ##############
+desc "Build debug apk"
+lane :build_debug_apk do
+  gradle(
+    task: "assemble", # apk
+    build_type: "Debug",
+    properties: {
+      "vname" => $appJson["expo"]["version"],
+      "android.injected.version.name" => $appJson["expo"]["version"],
+    },
+    flags: $gradle_flags,
+  )
+end
+
+desc "Builds release apk - for local debugging"
+lane :build_release_apk do
+  gradle(
+    task: "assemble", # apk
+    build_type: "Release",
+    properties: {
+      "vname" => $appJson["expo"]["version"],
+      "android.injected.version.name" => $appJson["expo"]["version"],
+    },
+    flags: $gradle_flags,
+  )
+end
+
+desc "Build release aab"
+lane :build_release_aab do
+  # Bump android.defaultConfig.versionCode
+  bump_and_commit_versions
+
+  gradle(
+    task: "bundle", # aab
+    build_type: "Release",
+    properties: {
+      "vname" => $appJson["expo"]["version"],
+    },
+    flags: $gradle_flags,
+  )
+
+  zip(
+    path: "app/build/outputs/",
+    output_path: $symbols_zip,
+  )
+end
+
+############## DETOX ##############
+lane :e2e_debug do
+  # TODO - refactor this to take a parameter to switch the debug/release parts
+  Dir.chdir "../.." do ## Navigate to the root of the project where the Detox files are placed
+    sh("npm i -g detox-cli@#{$package["devDependencies"]["detox"]}")
+    sh("detox build --configuration android.emu.debug")
+    sh("detox test --configuration android.emu.debug --cleanup --loglevel trace")
+  end
+end
+
+lane :e2e_release do
+  Dir.chdir "../.." do ## Navigate to the root of the project where the Detox files are placed
+    puts $package["devDependencies"]["detox"]
+    sh("npm i -g detox-cli@#{$package["devDependencies"]["detox"]}")
+    sh("detox build --configuration android.emu.release")
+    sh("detox test --configuration android.emu.release --cleanup --loglevel trace")
+  end
+end
+
+############## BUILD TASKS ##############
+desc "Builds a release and pushes to beta track on play store"
+lane :beta do
+  # Do the bundle of the application
+  build_release_aab
+
+  changelog_from_git_commits
+
+  ## Upload Android App Bundle to PlayStore like Internal testing Release
+  upload_to_play_store(
+    track: "internal",
+    skip_upload_apk: true,
+    version_name: $appJson["expo"]["version"],
+    mapping: $symbols_zip,
+  )
+end
+
+desc "Build Release configuration and Google Play Store"
+lane :playstore do
+  clean_build_artifacts
+
+  # Do the bundle of the application
+  build_release_aab
+
+  # changelog_from_git_commits
+
+  # Upload Android App Bundle to PlayStore like Internal testing Release
+  upload_to_play_store(
+    release_status: "draft", ## <http://docs.fastlane.tools/actions/upload_to_play_store/#parameters>
+    skip_upload_apk: true,
+    version_name: $appJson["expo"]["version"],
+    mapping: $symbols_zip,
+  )
+end
+
+############## MISC ##############
+# lane :generate_new_icons do
+#   ## Generates the app icons - splash screen icons are handled by bootsplash (`yarn bootsplash`)
+#   android_appicon(
+#     appicon_image_file: "fastlane/metadata/app_icon.png",
+#     appicon_icon_types: [:launcher],
+#     appicon_path: "app/src/main/res/mipmap",
+#     generate_rounded: true,
+#     appicon_filename: "ic_launcher_foreground",
+#   )
+#   android_appicon(
+#     appicon_image_file: "fastlane/metadata/app_icon.png",
+#     appicon_icon_types: [:notification],
+#     appicon_path: "app/src/main/res/drawable",
+#     generate_rounded: true,
+#   )
+# end
+
+# TODO - Look into how to import lanes from top level
+# def sendSlack(message, success)
+#   slack(
+#     slack_url: $slack_url,
+#     message: message,
+#     success: success,
+#     payload: {
+#       "Build Date" => Time.new.to_s,
+#       "Built by" => "KO",
+#     },
+#     default_payloads: [:git_branch, :git_author],
+#     attachment_properties: {
+#       fields: [{
+#  # title: "My Field",
+#                # value: "My Value",
+#                # short: true
+#         }],
+#     },
+#   )
+# end
+
+# after_all do
+#   sendSlack("App successfully built!", true)
+# end
+
+# error do
+#   sendSlack("App build failed!", false)
+# end

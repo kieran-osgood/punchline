@@ -1,25 +1,43 @@
 {
   "compilerOptions": {
+    "allowJs": false,
     "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
     "jsx": "react-native",
-    "lib": ["dom", "esnext"],
+    "module": "es2015",
     "moduleResolution": "node",
-    "noEmit": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": false,
+    "sourceMap": true,
+    "target": "esnext",
+    "lib": ["esnext"],
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "strict": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
-      // "*": ["src/*"],
-      "theme": ["src/theme"], // import {padding} from 'theme'
-      "theme/*": ["src/theme/*"], // import padding from 'theme/padding'
-      "components/*": ["src/components/*"],
-      "images/*": ["src/images/"],
-      "screens/*": ["src/app/main/screens/*"],
-      "app/*": ["src/app/*"],
-      "auth/*": ["src/app/auth/*"],
-      "main/*": ["src/app/main/*"],
-      "src/*": ["src/*"]
+      "test/*": ["test/*"],
+      "theme": ["app/theme"], // import {padding} from 'theme'
+      "images": ["assets/images"],
+      "assets/*": ["assets/*"],
+      "components": ["app/components"],
+      "app/*": ["app/*"],
+      "*": ["*"]
     }
-  }
+  },
+  "exclude": ["node_modules"],
+  "include": [
+    "declarations.d.ts",
+    "env.d.ts",
+    "app",
+    "test",
+    "e2e/*.ts",
+    "storybook",
+    "assets",
+    "./*.ts",
+    "./*.js"
+  ]
 }

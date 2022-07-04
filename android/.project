@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>punchline</name>
+	<name>android</name>
 	<comment>Project android created by Buildship.</comment>
 	<projects>
 	</projects>
@@ -16,7 +16,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1599311774751</id>
+			<id>1634756264660</id>
 			<name></name>
 			<type>30</type>
 			<matcher>

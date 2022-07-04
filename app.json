@@ -1,19 +1,21 @@
 {
-  "name": "punchline",
-  "displayName": "punchline",
   "expo": {
+    "owner": "kierano",
+    "sdkVersion": "44.0.0",
     "name": "punchline",
     "slug": "punchline",
-    "version": "1.1.0",
-    "icon": "./icon.svg",
-    "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "bundleIdentifier": "com.ko.punchline",
-      "buildNumber": "1.1.0"
+    "version": "2.3.2",
+    "orientation": "portrait",
+    "icon": "./android/fastlane/metadata/android/en-GB/images/icon.png",
+    "updates": {
+      "fallbackToCacheTimeout": 0
     },
+    "assetBundlePatterns": ["**/*"],
     "android": {
-      "package": "com.ko.punchline",
-      "versionCode": 4
+      "jsEngine": "hermes"
+    },
+    "ios": {
+      "supportsTablet": true
     },
     "packagerOpts": {
       "config": "metro.config.js",
