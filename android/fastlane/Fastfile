@@ -135,6 +135,7 @@ lane :playstore do
     release_status: "draft", ## <http://docs.fastlane.tools/actions/upload_to_play_store/#parameters>
     skip_upload_apk: true,
     version_name: $appJson["expo"]["version"],
+    mapping: $symbols_zip,
   )
 end
 
