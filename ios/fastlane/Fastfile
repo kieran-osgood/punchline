@@ -83,7 +83,6 @@ lane :beta do
     key_filepath: "./fastlane/AuthKey_LXL29858RV.p8",
     duration: 1200, # optional (maximum 1200)
     in_house: false, # optional but may be required if using match/sigh
-    # ipa: Actions.lane_context[SharedValues::IPA_OUTPUT_PATH],
   )
 
   upload_to_testflight(api_key: api_key, skip_waiting_for_build_processing: true)
@@ -106,6 +105,14 @@ lane :release_appstore do
   # Gym aliases build_app
   gym(export_method: "app-store", output_directory: "output/release") # Directory where signed .ipa file will be placed
  
+  api_key = app_store_connect_api_key(
+    key_id: "LXL29858RV",
+    issuer_id: "d76715a4-757f-468f-9a52-7c0cc2b62b08",
+    key_filepath: "./fastlane/AuthKey_LXL29858RV.p8",
+    duration: 1200, # optional (maximum 1200)
+    in_house: false, # optional but may be required if using match/sigh
+  )
+
   upload_to_app_store(
     submit_for_review: false,
     automatic_release: false,
@@ -114,7 +121,8 @@ lane :release_appstore do
     username: 'kieranbosgood@gmail.com',
     app_identifier: 'com.ko.punchline',
     precheck_include_in_app_purchases: false,
-    overwrite_screenshots: true
+    overwrite_screenshots: true,
+    api_key: api_key,
 )
 end
 
