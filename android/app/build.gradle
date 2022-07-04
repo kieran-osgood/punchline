@@ -150,7 +150,7 @@ android {
         applicationId "com.ko.punchline"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 30
+        versionCode 31
         versionName new JsonSlurper().parseText(file('../../app.json').text)['expo']['version']
         multiDexEnabled true
 

@@ -18,7 +18,7 @@ android_release:
 	cd android && bundle exec fastlane build_release_local_android --env production
 
 android_playstore: 
-	cd android && bundle exec fastlane build_release_android --env production
+	cd android && bundle exec fastlane build_release_aab --env production
 
 ios_debug: 
 	cd ios && bundle exec fastlane build_release_ios --env development
