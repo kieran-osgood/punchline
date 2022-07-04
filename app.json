@@ -4,7 +4,7 @@
     "sdkVersion": "44.0.0",
     "name": "punchline",
     "slug": "punchline",
-    "version": "2.3.1",
+    "version": "2.3.2",
     "orientation": "portrait",
     "icon": "./android/fastlane/metadata/android/en-GB/images/icon.png",
     "updates": {
