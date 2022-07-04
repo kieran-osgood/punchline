@@ -74,10 +74,10 @@ const App = observer(function App() {
 
   return (
     <ToggleStorybook>
-      <Sentry.ErrorBoundary fallback={ErrorFallback}>
-        <RootStoreProvider value={rootStore}>
-          <GraphQLStoreContext.Provider value={rootStore.apiStore.api}>
-            <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+        <Sentry.ErrorBoundary fallback={ErrorFallback}>
+          <RootStoreProvider value={rootStore}>
+            <GraphQLStoreContext.Provider value={rootStore.apiStore.api}>
               <ConnectionStatusBar
                 useAbsolutePosition
                 onConnectionChange={(isConnected) => setConnected({ isConnected })}
@@ -87,10 +87,10 @@ const App = observer(function App() {
                 initialState={initialNavigationState}
                 onStateChange={onNavigationStateChange}
               />
-            </SafeAreaProvider>
-          </GraphQLStoreContext.Provider>
-        </RootStoreProvider>
-      </Sentry.ErrorBoundary>
+            </GraphQLStoreContext.Provider>
+          </RootStoreProvider>
+        </Sentry.ErrorBoundary>
+      </SafeAreaProvider>
     </ToggleStorybook>
   )
 })
