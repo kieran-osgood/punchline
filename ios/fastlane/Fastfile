@@ -121,7 +121,7 @@ lane :release_appstore do
     username: 'kieranbosgood@gmail.com',
     app_identifier: 'com.ko.punchline',
     precheck_include_in_app_purchases: false,
-    overwrite_screenshots: true,
+    # overwrite_screenshots: true,
     api_key: api_key,
 )
 end
