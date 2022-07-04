@@ -83,7 +83,7 @@ lane :beta do
     key_filepath: "./fastlane/AuthKey_LXL29858RV.p8",
     duration: 1200, # optional (maximum 1200)
     in_house: false, # optional but may be required if using match/sigh
-    ipa: Actions.lane_context[SharedValues::IPA_OUTPUT_PATH],
+    # ipa: Actions.lane_context[SharedValues::IPA_OUTPUT_PATH],
   )
 
   upload_to_testflight(api_key: api_key, skip_waiting_for_build_processing: true)
@@ -98,7 +98,10 @@ lane :release_appstore do
   # changelog_from_git_commits
   
   # Get latest certs appstore
-  match(type: "appstore", readonly: is_ci) # Set type of code signing required
+  match(
+    type: "appstore", 
+    readonly: is_ci
+  ) # Set type of code signing required
   
   # Gym aliases build_app
   gym(export_method: "app-store", output_directory: "output/release") # Directory where signed .ipa file will be placed
